@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Persona Profile</title>
+    <style>
+        /* General Body & Container Styles */
+
+        body {
+            background-color: #31587D;
+            font-family: 'Arial', sans-serif;
+            color: #000;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 90%;
+            max-width: 1200px;
+            background-color: #D3D3D3;
+            border: 1px solid #9A9A9A;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5), inset 0 0 15px rgba(255,255,255,0.7);
+            padding: 10px;
+        }
+
+        /* Column Layout */
+        .column {
+            padding: 20px;
+        }
+
+        .profile-column {
+            flex: 1;
+            min-width: 250px;
+            background-color: #fff;
+            border-right: 1px dashed #999;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .content-column {
+            flex: 2;
+            background-color: #fff;
+            padding: 20px;
+            border-left: 1px dashed #999;
+        }
+
+        /* Profile Elements */
+        .profile-section {
+            width: 100%;
+        }
+        
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border: 5px solid #fff;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.5), 0 5px 10px rgba(0,0,0,0.3);
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        .persona-name {
+            margin: 0;
+            color: #336699;
+            text-shadow: none;
+        }
+
+        .username-text {
+            color: #555;
+            font-size: 1em;
+            margin-top: 5px;
+        }
+
+        .button-container {
+            margin: 20px 0;
+        }
+
+        .fake-button {
+            background: linear-gradient(to top, #6699CC, #79B3E2);
+            color: #fff;
+            border: 1px solid #31587D;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 5px;
+            margin: 0 5px;
+            box-shadow: 0 2px 0 #31587D, 0 3px 5px rgba(0,0,0,0.3);
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+            transition: all 0.1s ease-in-out;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .fake-button:active {
+            box-shadow: 0 0 0 #31587D;
+            transform: translateY(2px);
+        }
+
+        .bio-section {
+            width: 100%;
+            text-align: left;
+        }
+
+        .bio-section h3 {
+            border-bottom: 2px solid #336699;
+            padding-bottom: 5px;
+            margin-top: 20px;
+            color: #336699;
+            text-shadow: none;
+        }
+
+        .bio-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .bio-section li {
+            padding: 5px 0;
+            font-size: 0.9em;
+        }
+
+        /* Content & Posts */
+        .status-message {
+            position: relative;
+            background-color: #E0E0E0;
+            padding: 15px;
+            border-radius: 20px;
+            border: 1px solid #999;
+            margin-bottom: 40px;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+        }
+
+        .status-message::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 20px;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-top-color: #E0E0E0;
+            border-right-color: #E0E0E0;
+            transform: rotate(-45deg);
+        }
+
+        .status-header {
+            margin-top: 0;
+            color: #336699;
+        }
+
+        .posts-section {
+            border-top: 2px solid #c0c0c0;
+            padding-top: 20px;
+        }
+
+        .post {
+            background-color: #F9F9F9;
+            padding: 15px;
+            margin-bottom: 25px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.3), inset 0 0 5px rgba(255,255,255,0.5);
+            line-height: 1.2em;
+        }
+
+        .post-header {
+            font-size: 1.1em;
+            color: #000;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+
+        .highlighted-text {
+            color: #336699;
+            font-weight: bold;
+            text-shadow: 1px 1px 1px #fff;
+        }
+
+        .post-footer {
+            margin-top: 10px;
+            text-align: right;
+            font-size: 0.9em;
+        }
+
+        .action-button {
+            display: inline-block;
+            background: linear-gradient(to top, #D3D3D3, #EBEBEB);
+            color: #31587D;
+            border: 1px solid #9A9A9A;
+            padding: 5px 10px;
+            margin-left: 8px;
+            cursor: pointer;
+            border-radius: 3px;
+            box-shadow: 0 2px 0 #9A9A9A;
+            transition: all 0.1s ease-in-out;
+        }
+
+        .action-button:active {
+            box-shadow: 0 0 0 #9A9A9A;
+            transform: translateY(2px);
+        }
+
+        /* Suggested Friends Section */
+        .suggested-friends {
+            flex-basis: 100%;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #777;
+            box-shadow: none;
+        }
+
+        .suggested-friends h3 {
+            margin: 0 0 15px 0;
+            color: #336699;
+            text-shadow: 1px 1px 1px #fff;
+            border-bottom: 2px solid #336699;
+            padding-bottom: 5px;
+        }
+
+        .friends-list {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .friend-card {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .friend-card img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border: 2px solid #fff;
+            box-shadow: inset 0 0 3px rgba(0,0,0,0.3), 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .friend-info {
+            margin-left: 10px;
+        }
+
+        .friend-info h4 {
+            margin: 0;
+            color: #336699;
+        }
+
+        .friend-info p {
+            margin: 5px 0 0;
+            font-size: 0.8em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="column profile-column">
+            <div class="profile-section">
+                <img id="main-profile-pic" src="" alt="Profile Picture" class="profile-pic">
+                <h1 id="main-persona-name" class="persona-name"></h1>
+                <p id="main-username" class="username-text"></p>
+            </div>
+            <div class="button-container">
+                <a href="#" class="fake-button">Add Friend</a>
+                <a href="#" class="fake-button">Follow</a>
+                <a href="glossary.html" target="_blank" class="fake-button">Message</a>
+            </div>
+            <div id="bio-section" class="bio-section">
+                <h3>Profile Bio</h3>
+                <ul id="bio-list"></ul>
+            </div>
+        </div>
+
+        <div class="column content-column">
+            <div class="status-message">
+                <h2 class="status-header">Status Message:</h2>
+                <p id="status-message-text"></p>
+            </div>
+            <div id="posts-section" class="posts-section">
+                <div id="posts-container"></div>
+            </div>
+        </div>
+        
+        <div class="suggested-friends">
+            <h3>Suggested Friends</h3>
+            <div id="friends-list" class="friends-list"></div>
+        </div>
+    </div>
+
+    <script>
+        // --- Data for Personas ---
+        const personas = [
+            {
+                id: 'main',
+                name: 'Thao Pham 🌸✨',
+                username: '@thao_uwu',
+                jobTitle: 'Media & Communication Student',
+                img: 'persona_ava.png',
+                status: 'I’m that person who could spend hours decorating a digital bedroom or taking silly personality quizzes just to find out “what type of bread I am.” 😂 (its sourdough btw). And I enjoy bite-sized, casual, cozy games or little creative activities online. So if you feel the same, then lets be friends!',
+
+                bio: ['Hi, I’m Thao 👋 I grew up during the early Internet days when Zingme, Buzzfeed quizzes, and Tumblr reigned supreme.', 'While some kids were hooked on TV, I was way more into playing browser games, customizing avatars, and chatting with random friends online.', 'Honestly, I’ve always felt more confident behind a screen than in a crowded room — online is where I really get to express myself.','Buzzfeed is my guilty pleasure, and my Tumblr page is overflowing with fan arts and memes. I also love making new friends on Omegle — you never know who you will meet there!',''],
+                posts: [
+                    { category: 'Goals', content: `* To have fun reliving childhood Internet vibes through easy, accessible games.<br>
+                            * To express myself in creative ways — whether it’s customizing a character, making an aesthetic playlist, or just decorating my stuff with washi tapes and glitter glue.<br>
+                            * To meet new people who share my sense of humor and hobbies.<br>
+                            * To collect little mementos and share them with my online friends. Anyone got a polariod camera?`},
+                    { category: 'Needs', content: `* Platforms that bring back nostalgic content without needing fancy tech. (I'm really low-tech guys...)<br>
+* Fun tools for self-expression, like quizzes or customization features.<br>
+* Safe online spaces where I can meet people with the same interests.<br>
+* Affordable and accessible entertainment (no hidden costs or big commitments).<br>`},
+                    { category: 'Pain Points', content: `I don’t have the money (or the interest) to build some high-end gaming setup — and honestly, I don’t even want to spend hours grinding in one game. I like quick, snackable fun.<br>Offline events also aren’t my thing: I’m shy, I don’t like crowds, and I hate dealing with motorbike parking in the city (I'm bad at parking tbh).<br>But I still want cool things I can screenshot or share with my online friends, so I don’t feel left out.`},
+                    { category: 'Personality Traits', content: `Online, I’m outgoing, chatty, and experimental — I’ll try new aesthetics, take every quiz, and share memes all day.<br>Offline, I’m quieter and more reserved, but the Internet gives me the space to be the person I want to be.<br>I’d say I’m expressive, curious, frugal, and always looking for new ways to connect with people.
+` }
+                ]
+            },
+            {
+                id: 'friend1',
+                name: 'Anh Thu Vo (Annie) 🏛️',
+                username: '@archive_with_annie',
+                jobTitle: 'Archivist',
+                img: 'archivist.png',
+                status: 'In the digital age, an archivist’s questions how interactive and digital media can be harnessed not only as preservation tools but also as mechanisms for participation, education, and safeguarding traditions at risk of being forgotten.',
+                bio: ['From an archivist’s perspective, the concern is how cultural knowledge can be preserved, contextualized, and made accessible across generations.','Archivists are trained to think about sustainability, reliability, and the risks of loss — whether through material decay, technological obsolescence, or shifting social practices.','Their point of view emphasizes long-term preservation, the creation of accessible and inclusive archives, and strategies to engage the public while respecting cultural context.'],
+                posts: [{ category: 'Research Questions', content: `1. How can digital media be leveraged to archive and safeguard Vietnamese intangible cultural heritage?<br>2. Which interactive media mechanisms best preserve the nuances and lived experiences of intangible culture?<br>3. Is digital media a technically sustainable and reliable medium for long-term cultural preservation?<br>4. How can archived digital media be made widely accessible to the public while respecting cultural context?<br>5. What strategies can generate youth community participation with digital cultural archives?<br>6. What risks threaten intangible cultural artifacts in the digital age, and how can archives mitigate them?`},]
+            },
+            {
+                id: 'friend2',
+                name: 'Sam Emmery 🤖',
+                username: '@systems_of_sams',
+                jobTitle: 'System Engineer',
+                img: 'system_engineer.png',
+                status: 'A system engineer makes sure the system actually works — reliable storage, smooth performance, and future-proof systems. We care about scalability, security, and making sure data stays safe and accessible no matter what tech changes come next.”',
+                bio: ['A system engineer’s main concern is how complex technical systems work together reliably over time.','Their focus is on infrastructure, scalability, interoperability, and risk management.','When looking at cultural preservation through digital or interactive media, they would be less focused on the content itself and more on how the system that stores, delivers, and maintains that content functions.'],
+                posts: [{ category: 'Research Questions', content: `1. Which digital technologies provide the most reliable and maintainable infrastructure for storing archival data?<br>2. How can a digital archive be optimized to handle high volumes of user engagement without compromising performance?<br>3. What strategies ensure archives remain accessible across devices and resilient against technological obsolescence?<br>4. How can updated archival data be verified for accuracy, and what mechanisms can filter or validate user-submitted content? What security risks do publicly accessible archives face, and how can these be mitigated?`},]
+            }
+        ];
+
+        let currentPersona = personas[0]; // Set initial persona
+
+        // --- DOM Elements ---
+        const mainProfilePic = document.getElementById('main-profile-pic');
+        const mainPersonaName = document.getElementById('main-persona-name');
+        const mainUsername = document.getElementById('main-username');
+        const bioSection = document.getElementById('bio-section');
+        const bioList = document.getElementById('bio-list');
+        const statusMessageText = document.getElementById('status-message-text');
+        const postsSection = document.getElementById('posts-section');
+        const postsContainer = document.getElementById('posts-container');
+        const friendsList = document.getElementById('friends-list');
+
+        // --- Functions to Render Content ---
+        function renderProfile(persona) {
+            mainProfilePic.src = persona.img;
+            mainPersonaName.textContent = persona.name;
+            mainUsername.textContent = persona.username;
+            statusMessageText.textContent = persona.status;
+
+            // Render Bio
+            bioList.innerHTML = '';
+            if (persona.bio.length > 0) {
+                persona.bio.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    bioList.appendChild(li);
+                });
+            }
+
+            // Render Posts
+            postsContainer.innerHTML = '';
+            if (persona.posts.length > 0) {
+                postsSection.style.display = 'block';
+                persona.posts.forEach(post => {
+                    const postDiv = document.createElement('div');
+                    postDiv.className = 'post';
+                    postDiv.innerHTML = `
+                        <div class="post-header">
+                            <span class="highlighted-text">${persona.name}</span> updated their <span class="highlighted-text">${post.category}</span>
+                        </div>
+                        <p>${post.content}</p>
+                        <div class="post-footer">
+                            <span class="action-button">Like</span>
+                            <span class="action-button">Comment</span>
+                            <span class="action-button">Share</span>
+                        </div>
+                    `;
+                    postsContainer.appendChild(postDiv);
+                });
+            } else {
+                postsSection.style.display = 'none';
+            }
+        }
+
+        function renderSuggestedFriends(currentPersonaId) {
+            friendsList.innerHTML = '';
+            const suggestedFriends = personas.filter(p => p.id !== currentPersonaId);
+
+            suggestedFriends.forEach(friend => {
+                const friendCard = document.createElement('div');
+                friendCard.className = 'friend-card';
+                friendCard.onclick = () => {
+                    currentPersona = friend;
+                    loadPage();
+                };
+                friendCard.innerHTML = `
+                    <img src="${friend.img}" alt="${friend.name} Profile Pic">
+                    <div class="friend-info">
+                        <h4>${friend.name}</h4>
+                        <p>${friend.jobTitle}</p>
+                        <p>Status: "${friend.status}"</p>
+                    </div>
+                `;
+                friendsList.appendChild(friendCard);
+            });
+        }
+
+        function loadPage() {
+            renderProfile(currentPersona);
+            renderSuggestedFriends(currentPersona.id);
+        }
+
+        // Initial page load
+        loadPage();
+    </script>
+
+</body>
+</html>

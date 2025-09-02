@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Glossary</title>
+<style>
+    /* ---- Global Styles & Body ---- */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #d0d0d0;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .messenger-container {
+        display: flex;
+        width: 100%;
+        max-width: 900px;
+        height: 70vh;
+        min-height: 500px;
+        background-color: #f0f0f0;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        overflow: hidden;
+        flex-direction: column;
+    }
+
+    /* --- Window Bar --- */
+    .window-bar {
+        height: 25px;
+        background: linear-gradient(90deg, #316AC5 0%, #20539E 100%);
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 10px;
+        cursor: move;
+        color: white;
+        font-weight: bold;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .window-title {
+        font-size: 0.9em;
+    }
+
+    .window-controls {
+        display: flex;
+        gap: 5px;
+    }
+
+    .window-button {
+        width: 15px;
+        height: 15px;
+        border-radius: 3px;
+        background: linear-gradient(180deg, #f7f7f7 0%, #e0e0e0 100%);
+        border: 1px solid #999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        font-weight: bold;
+        color: #333;
+        cursor: pointer;
+        user-select: none;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .window-button:hover {
+        background: #ccc;
+    }
+
+    .window-button.close {
+        background: linear-gradient(180deg, #FF6F6F 0%, #D84242 100%);
+        border-color: #A92D2D;
+        color: white;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+    }
+    .window-button.close:hover {
+        background: #D84242;
+    }
+
+    /* --- Skeuomorphic Styles (Extra Shiny) --- */
+    .glossy-panel {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.7) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 15px;
+        box-shadow: inset 0px 1px 5px rgba(0, 0, 0, 0.1), 0 6px 15px rgba(0, 0, 0, 0.2);
+        color: #222;
+        text-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);
+    }
+    
+    .glossy-button {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.6) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 3px 8px rgba(0, 0, 0, 0.15);
+        transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+        cursor: pointer;
+    }
+
+    .glossy-button:hover {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.5) 100%);
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1), 0 2px 5px rgba(0, 0, 0, 0.1);
+        transform: translateY(1px);
+    }
+
+    .glossy-button.active, .glossy-button:active {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.9) 100%);
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2), inset 0 -1px 1px rgba(255, 255, 255, 0.5);
+        transform: translateY(1px);
+    }
+
+    /* ---- Tab Menu ---- */
+    .tab-menu {
+        display: flex;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        background: linear-gradient(180deg, #f7f7f7 0%, #e0e0e0 100%);
+    }
+    .tab-button {
+        flex-grow: 1;
+        text-align: center;
+        padding: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        transition: background-color 0.2s;
+        text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+    }
+    .tab-button.active {
+        background: linear-gradient(180deg, #316AC5 0%, #20539E 100%);
+        color: #fff;
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-bottom: 3px solid #1a427f;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    /* ---- Content Panels Container ---- */
+    .content-container {
+        display: flex;
+        flex-grow: 1;
+        position: relative;
+    }
+
+    .tab-content {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        flex-direction: row;
+    }
+    .tab-content.active {
+        display: flex;
+    }
+
+    /* ---- Left Panel (Contact List) ---- */
+    .contact-list {
+        width: 300px;
+        flex-shrink: 0;
+        border-right: 1px solid rgba(0, 0, 0, 0.1);
+        background: linear-gradient(180deg, #fcfcfc 0%, #e8e8e8 100%);
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* --- Profile Bar Styling --- */
+    .profile-bar {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        background: transparent;
+    }
+    .profile-avatar {
+        width: 40px;
+        height: 40px;
+        background-color: #555;
+        border-radius: 50%;
+        margin-right: 10px;
+        border: 2px solid white;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    }
+    .profile-info {
+        flex-grow: 1;
+    }
+    .profile-name {
+        font-weight: bold;
+        color: #333;
+        margin: 0;
+    }
+    .profile-status {
+        font-size: 0.8em;
+        color: #777;
+        margin: 0;
+    }
+
+    .contact-header {
+        background: linear-gradient(180deg, #316AC5 0%, #20539E 100%);
+        color: #fff;
+        padding: 15px;
+        font-size: 1.2em;
+        font-weight: bold;
+        text-align: center;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: inset 0 -1px 2px rgba(0, 0, 0, 0.1);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    }
+    .contact-list ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        overflow-y: auto;
+    }
+    .contact-list li {
+        padding: 12px 15px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: background-color 0.2s;
+        display: flex;
+        align-items: center;
+        color: #333;
+        text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+    }
+    .contact-list li:hover { background-color: #e6e6e6; }
+    .contact-list li.active { 
+        background-color: #d6d6d6; 
+        font-weight: bold; 
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15);
+    }
+    .contact-icon {
+        width: 30px;
+        height: 30px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.6) 100%);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: #333;
+        margin-right: 10px;
+        font-size: 0.9em;
+        text-transform: uppercase;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    .filter-container {
+        padding: 10px 15px;
+        background-color: #f0f0f0;
+        border-bottom: 1px solid #ddd;
+    }
+    .filter-container select {
+        width: 100%;
+        padding: 8px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-family: inherit;
+        background: linear-gradient(180deg, #fff 0%, #f0f0f0 100%);
+    }
+
+    /* ---- Right Panel (Chat Window) ---- */
+    .chat-window {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        background-color: #f8f8f8;
+    }
+    .chat-header {
+        background: linear-gradient(180deg, #316AC5 0%, #20539E 100%);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        text-align: center;
+        font-weight: bold;
+        color: #fff;
+        box-shadow: inset 0 -1px 2px rgba(0, 0, 0, 0.1);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    }
+    .chat-header h2 {
+        font-size: 1.2em;
+        margin: 0;
+    }
+    .chat-header p {
+        font-size: 0.8em;
+        font-weight: normal;
+        color: rgba(255, 255, 255, 0.8);
+        margin: 5px 0 0 0;
+    }
+    #chat-messages {
+        flex-grow: 1;
+        padding: 20px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+        background-image: url('data:image/svg+xml,%3Csvg width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23d0d0d0" fill-opacity="0.2"%3E%3Cpath d="M0 0h1v1H0zM2 2h1v1H2zM4 4h1v1H4zM6 6h1v1H6zM8 8h1v1H8z"%3E%3C/path%3E%3C/g%3E%3C/svg%3E');
+    }
+    .message-bubble {
+        max-width: 80%;
+        padding: 10px 15px;
+        border-radius: 20px;
+        line-height: 1.4;
+        position: relative;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    .message-bubble.incoming { 
+        background: linear-gradient(180deg, #F0F0F0 0%, #E0E0E0 100%);
+        color: #333; 
+        border-bottom-left-radius: 5px; 
+        align-self: flex-start; 
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-shadow: none;
+    }
+    .message-bubble.outgoing { 
+        background: linear-gradient(180deg, #ff80bf 0%, #ff1493 100%);
+        color: #fff; 
+        align-self: flex-end; 
+        border-bottom-right-radius: 5px; 
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 2px 5px rgba(0, 0, 0, 0.1);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    }
+    .message-bubble::before { content: ''; position: absolute; width: 0; height: 0; border-style: solid; }
+    .message-bubble.incoming::before { border-width: 0 10px 10px 0; border-color: transparent #E0E0E0 transparent transparent; left: -10px; bottom: 0; }
+    .message-bubble.outgoing::before { border-width: 0 0 10px 10px; border-color: transparent transparent transparent #ff1493; right: -10px; bottom: 0; }
+    .message-text p { margin: 0; }
+    .message-text img { max-width: 100%; border-radius: 10px; margin-top: 10px; }
+    #initial-message { align-self: center; text-align: center; color: #888; font-style: italic; margin-top: 50px; }
+
+    /* ---- New SVG Graph Styles ---- */
+    .graph-container {
+        flex-grow: 1;
+        position: relative;
+        background: linear-gradient(180deg, #fcfcfc 0%, #e8e8e8 100%);
+        overflow: hidden;
+    }
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+    .link {
+        stroke: #ccc;
+        stroke-opacity: 0.6;
+        transition: stroke-width 0.2s, stroke 0.2s;
+    }
+    .link.highlighted {
+        stroke: #ff1493;
+        stroke-width: 3px;
+        stroke-opacity: 1;
+    }
+    
+    .node-group {
+        cursor: pointer;
+    }
+
+    .node-shape.group {
+        fill: url(#blueGlossyGradient);
+        stroke: #20539E;
+        stroke-width: 1.5px;
+    }
+    .node-shape.word {
+        fill: url(#pinkGlossyGradient);
+        stroke: #E50073;
+        stroke-width: 1.5px;
+    }
+    .node-label {
+        font-family: sans-serif;
+        text-anchor: middle;
+        alignment-baseline: central;
+        pointer-events: none;
+    }
+    .node-group.group .node-label {
+        fill: #fff;
+        font-size: 0.8em;
+        font-weight: bold;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
+    }
+    .node-group.word .node-label {
+        fill: #000;
+        font-size: 0.6em;
+        font-weight: bold;
+        text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+    }
+</style>
+</head>
+<body>
+
+<div class="messenger-container">
+    <div class="window-bar">
+        <span class="window-title">Interactive Glossary</span>
+        <div class="window-controls">
+            <div class="window-button">-</div>
+            <div class="window-button">&#x25A1;</div>
+            <div class="window-button close">&#x2715;</div>
+        </div>
+    </div>
+    <div class="tab-menu glossy-panel">
+        <button class="tab-button active" onclick="switchTab('chat-tab')">Chat View</button>
+        <button class="tab-button" onclick="switchTab('venn-tab')">Graph View</button>
+    </div>
+
+    <div class="content-container">
+        <div id="chat-tab" class="tab-content active">
+            <div class="contact-list glossy-panel">
+                <!-- New Profile Bar -->
+                <div class="profile-bar">
+                    <div class="profile-avatar" style="background-image: url('https://placehold.co/100x100/4c51bf/ffffff?text=U');"></div>
+                    <div class="profile-info">
+                        <p class="profile-name">User 1</p>
+                        <p class="profile-status">Online</p>
+                    </div>
+                </div>
+                <!-- End of New Profile Bar -->
+                <div class="contact-header" id="contact-header">My Glossary</div>
+                <div class="filter-container">
+                    <select id="categoryFilter" class="glossy-button"></select>
+                </div>
+                <ul id="contact-list-ul"></ul>
+            </div>
+            <div class="chat-window glossy-panel">
+                <div class="chat-header" id="chat-header">
+                    <p>Select a term to see the definition</p>
+                </div>
+                <div id="chat-messages">
+                    <div id="initial-message">Click on a glossary term from the left panel to begin.</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="venn-tab" class="tab-content">
+            <div class="graph-container">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="glossary-data.js"></script>
+
+<script>
+    // Get references to all the important HTML elements
+    const contactListUl = document.getElementById('contact-list-ul');
+    const chatHeader = document.getElementById('chat-header');
+    const chatMessagesContainer = document.getElementById('chat-messages');
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const graphContainer = document.querySelector('.graph-container');
+    const categoryFilter = document.getElementById('categoryFilter');
+    let svgGenerated = false;
+
+    /**
+     * Switches the active tab in the UI.
+     * @param {string} tabId The ID of the tab to switch to ('chat-tab' or 'venn-tab').
+     */
+    function switchTab(tabId) {
+        tabButtons.forEach(button => button.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        const selectedButton = document.querySelector(`[onclick="switchTab('${tabId}')"]`);
+        const selectedContent = document.getElementById(tabId);
+        selectedButton.classList.add('active');
+        selectedContent.classList.add('active');
+        if (tabId === 'venn-tab' && !svgGenerated) {
+            renderGraph();
+            svgGenerated = true;
+        }
+    }
+
+    /**
+     * Populates the category filter dropdown with unique group names from the glossary data.
+     */
+    function populateFilterDropdown() {
+        // The glossaryData is available globally from the included script tag.
+        if (typeof glossaryData === 'undefined') {
+            console.error("glossaryData not found.");
+            return;
+        }
+
+        const groupSet = new Set();
+        glossaryData.forEach(item => item.groups.forEach(group => groupSet.add(group)));
+        const sortedGroups = Array.from(groupSet).sort();
+        
+        categoryFilter.innerHTML = '<option value="all">All</option>';
+        sortedGroups.forEach(group => {
+            const option = document.createElement('option');
+            option.value = group;
+            option.textContent = group;
+            categoryFilter.appendChild(option);
+        });
+        
+        categoryFilter.addEventListener('change', (event) => {
+            populateContactList(event.target.value);
+        });
+    }
+
+    /**
+     * Populates the contact list with glossary terms, optionally filtered by category.
+     * @param {string} filterCategory The category to filter by. Defaults to 'all'.
+     */
+    function populateContactList(filterCategory = 'all') {
+        if (typeof glossaryData === 'undefined') {
+            console.error("glossaryData not found.");
+            return;
+        }
+        
+        // Clear existing list
+        contactListUl.innerHTML = '';
+        
+        // Filter the data
+        let filteredData = glossaryData;
+        if (filterCategory !== 'all') {
+            filteredData = glossaryData.filter(item => item.groups.includes(filterCategory));
+        }
+
+        const sortedData = [...filteredData].sort((a, b) => a.word.localeCompare(b.word));
+
+        sortedData.forEach(item => {
+            const li = document.createElement('li');
+            li.setAttribute('data-word', item.word);
+            li.innerHTML = `
+                <div class="contact-icon">${item.word.charAt(0)}</div>
+                <span>${item.word}</span>
+            `;
+            li.addEventListener('click', () => {
+                displayMeaning(item);
+                const allListItems = document.querySelectorAll('#contact-list-ul li');
+                allListItems.forEach(li => li.classList.remove('active'));
+                li.classList.add('active');
+            });
+            contactListUl.appendChild(li);
+        });
+        
+        // Update the count in the header
+        const contactHeader = document.getElementById('contact-header');
+        contactHeader.textContent = `My Glossary (${sortedData.length})`;
+    }
+
+    /**
+     * Displays the definition and chat messages for a selected glossary term.
+     * @param {object} item The glossary item object.
+     */
+    function displayMeaning(item) {
+        chatMessagesContainer.innerHTML = '';
+        document.getElementById('initial-message')?.remove();
+        
+        // Update the header with the word and its groups
+        const groupsString = item.groups.join(', ');
+        chatHeader.innerHTML = `<h2>${item.word}</h2><p>Groups: ${groupsString}</p>`;
+
+        item.messages.forEach(message => {
+            const bubble = document.createElement('div');
+            bubble.className = `message-bubble ${message.type}`;
+            bubble.innerHTML = `<div class="message-text">${message.content}</div>`;
+            chatMessagesContainer.appendChild(bubble);
+        });
+    }
+
+    /**
+     * Renders the D3.js force-directed graph.
+     */
+    function renderGraph() {
+        if (typeof glossaryData === 'undefined') {
+            console.error("glossaryData not found.");
+            return;
+        }
+
+        graphContainer.innerHTML = '';
+        const width = graphContainer.clientWidth;
+        const height = graphContainer.clientHeight;
+        
+        if (width === 0 || height === 0) {
+            console.error("Graph container has no dimensions. Cannot render.");
+            return;
+        }
+
+        const svg = d3.select(graphContainer).append("svg")
+            .attr("viewBox", [0, 0, width, height]);
+
+        // Add a parent group to hold all graph elements for zooming
+        const g = svg.append("g");
+
+        // Define a blue gradient for the group rectangles
+        const defs = svg.append("defs");
+        const blueGlossyGradient = defs.append("linearGradient")
+            .attr("id", "blueGlossyGradient")
+            .attr("x1", "0%")
+            .attr("y1", "0%")
+            .attr("x2", "0%")
+            .attr("y2", "100%");
+        blueGlossyGradient.append("stop")
+            .attr("offset", "0%")
+            .attr("stop-color", "#316AC5");
+        blueGlossyGradient.append("stop")
+            .attr("offset", "100%")
+            .attr("stop-color", "#20539E");
+
+        // Define a pink gradient for the word circles
+        const pinkGlossyGradient = defs.append("radialGradient")
+            .attr("id", "pinkGlossyGradient")
+            .attr("cx", "50%")
+            .attr("cy", "50%")
+            .attr("r", "50%")
+            .attr("fx", "65%")
+            .attr("fy", "25%");
+        pinkGlossyGradient.append("stop")
+            .attr("offset", "0%")
+            .attr("stop-color", "#ff80bf");
+        pinkGlossyGradient.append("stop")
+            .attr("offset", "100%")
+            .attr("stop-color", "#ff1493");
+
+        // Build the graph data
+        const groupSet = new Set();
+        glossaryData.forEach(d => d.groups.forEach(g => groupSet.add(g)));
+        const sortedGroups = Array.from(groupSet).sort();
+
+        const nodes = [];
+        const links = [];
+
+        // Add group nodes
+        sortedGroups.forEach(g => {
+            nodes.push({ id: g, type: 'group' });
+        });
+
+        // Add word nodes and links to groups
+        glossaryData.forEach(d => {
+            nodes.push({ id: d.word, type: 'word' });
+            d.groups.forEach(g => {
+                links.push({ source: d.word, target: g });
+            });
+        });
+
+        // Create the force simulation
+        const simulation = d3.forceSimulation(nodes)
+            .force("link", d3.forceLink(links).id(d => d.id).distance(100))
+            .force("charge", d3.forceManyBody().strength(-400))
+            .force("center", d3.forceCenter(width / 2, height / 2));
+        
+        // Render the links
+        const link = g.append("g")
+            .attr("class", "links")
+            .selectAll("line")
+            .data(links)
+            .enter().append("line")
+            .attr("class", "link");
+        
+        // Render the node groups (wraps shape and text)
+        const nodeGroup = g.append("g")
+            .attr("class", "node-groups")
+            .selectAll("g")
+            .data(nodes)
+            .enter().append("g")
+            .attr("class", d => `node-group ${d.type}`)
+            .call(d3.drag()
+                .on("start", dragstarted)
+                .on("drag", dragged)
+                .on("end", dragended));
+
+        // Append shapes to the node groups
+        nodeGroup.filter(d => d.type === 'group').append("rect")
+            .attr("class", "node-shape group")
+            .attr("rx", 5)
+            .attr("ry", 5)
+            .attr("width", d => d.id.length * 8 + 20)
+            .attr("height", 30)
+            .attr("x", d => -(d.id.length * 8 + 20) / 2)
+            .attr("y", -15);
+            
+        nodeGroup.filter(d => d.type === 'word').append("circle")
+            .attr("class", "node-shape word")
+            .attr("r", 10);
+
+        // Append labels to the node groups
+        nodeGroup.append("text")
+            .attr("class", "node-label")
+            .text(d => d.id)
+            .attr("dy", "0.3em");
+
+        // Event listener for node clicks
+        nodeGroup.on("click", (event, d) => {
+            link.classed("highlighted", false);
+            link.filter(l => l.source.id === d.id || l.target.id === d.id)
+                .classed("highlighted", true);
+
+            if (d.type === 'word') {
+                const item = glossaryData.find(g => g.word === d.id);
+                if (item) {
+                    displayMeaning(item);
+                }
+            }
+        });
+        
+        // Update positions on each tick of the simulation
+        simulation.on("tick", () => {
+            link
+                .attr("x1", d => d.source.x)
+                .attr("y1", d => d.source.y)
+                .attr("x2", d => d.target.x)
+                .attr("y2", d => d.target.y);
+            
+            nodeGroup.attr("transform", d => `translate(${d.x}, ${d.y})`);
+        });
+
+        // Dragging functionality
+        function dragstarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+
+        function dragended(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+
+        // Add zoom functionality
+        const zoom = d3.zoom()
+            .scaleExtent([0.1, 4])
+            .on("zoom", (event) => {
+                g.attr("transform", event.transform);
+            });
+        
+        svg.call(zoom);
+    }
+    
+    // The application entry point
+    function init() {
+        // We no longer need to fetch the data as it's provided by the script tag.
+        // We can just check if the global variable exists.
+        if (typeof glossaryData !== 'undefined') {
+            populateFilterDropdown();
+            populateContactList();
+            // The graph will be rendered when the user switches to that tab
+        } else {
+            console.error("glossaryData.js failed to load. Please ensure the file is present.");
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+</script>
+
+</body>
+</html>
