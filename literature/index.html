@@ -27,8 +27,14 @@
 }
 
 /* Header stays at natural height */
-#pv-head{ display:flex; align-items:center; gap:.5rem; padding:10px 12px; border-bottom:1px solid #e9e9e9; background:#fafafa; }
-
+#pv-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* pushes items to opposite sides */
+  padding: 10px 12px;
+  border-bottom: 1px solid #e9e9e9;
+  background: #fafafa;
+}
 /* Placeholder occupies remaining height until an item is opened */
 #pv-placeholder{
   flex: 1 1 auto;
@@ -102,10 +108,8 @@
       <!-- Preview panel -->
       <aside id="preview" aria-hidden="true" role="dialog" aria-labelledby="pv-title">
         <div id="pv-head">
-          <div id="pv-actions">
-            <a id="open-full" target="_blank" rel="noopener">Open full page ↗</a>
-            <button id="close-preview" type="button" aria-label="Close preview">Close</button>
-          </div>
+          <a id="open-full" target="_blank" rel="noopener">Open full page ↗</a>
+          <button id="close-preview" type="button" aria-label="Close preview">Close</button>
         </div>
         <div id="pv-placeholder"><p>Click on an item to preview it here</p></div>
         <iframe id="pv-frame" title="Item preview" loading="lazy" referrerpolicy="no-referrer"></iframe>
