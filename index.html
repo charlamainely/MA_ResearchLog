@@ -69,7 +69,22 @@
                 justify-content: left;
             }
         }
-    </style>
+    
+/* Anchor jump offset for sticky nav */
+section[id] { scroll-margin-top: 88px; }
+
+/* Keyboard focus parity with hover (show title on focus too) */
+.gallery-item:focus .gallery-item-title,
+.gallery-item:focus-within .gallery-item-title {
+  opacity: 1;
+  outline: none;
+}
+.gallery-item:focus-visible {
+  box-shadow: 0 0 0 3px rgba(59,130,246,.6);
+  border-radius: 0.5rem;
+}
+
+</style>
 </head>
 <body class="bg-gray-100">
 
@@ -94,6 +109,25 @@
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
 
+        <!-- Gallery Section 0: Weekly Logs -->
+        <section id="exercises" class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">Weekly Logs</h2>
+            <p class="text-gray-600 mb-6">Here are my weekly logs and reflections.</p>
+
+            <div class="gallery-container flex flex-wrap gap-4">
+                <!-- Exercise 1 -->
+                <a href="log/week-04.html" class="gallery-item bg-gray-200 shadow-lg relative">
+                    <div class="gallery-item-frame">
+                        <img src="https://placehold.co/150x150/3cb371/ffffff?text=Week+04" alt="Thumbnail for Exercise 1">
+                    </div>
+                    <div class="gallery-item-title">Week 04 Log</div>
+                </a>
+               
+                <!-- Add more exercise modules here by copying the above <a> tag -->
+
+            </div>
+        </section>
+
         <!-- Gallery Section 1: Research Activities -->
         <section id="projects" class="mb-12">
             <h2 class="text-3xl font-bold text-gray-800 mb-2">Research Activities</h2>
@@ -105,7 +139,7 @@
                     <div class="gallery-item-frame">
                         <img src="https://placehold.co/150x150/8a2be2/ffffff?text=Fieldwork" alt="Thumbnail for Project 1">
                     </div>
-                    <div class="gallery-item-title">Fieldwork @ Singapore National Gallery</div>
+                    <div class="gallery-item-title">Fieldwork</div>
                 </a>
                 
                 <!-- Project 2 -->
@@ -113,7 +147,7 @@
                     <div class="gallery-item-frame">
                         <img src="https://placehold.co/150x150/4169e1/ffffff?text=Case+Studies" alt="Thumbnail for Project 2">
                     </div>
-                    <div class="gallery-item-title">Game Case Studies</div>
+                    <div class="gallery-item-title">Case Studies</div>
                 </a>
 
                 <!-- Project 3 - Placeholder -->
@@ -123,13 +157,6 @@
                     </div>
                     <div class="gallery-item-title">Literature Review</div>
                 </a>
-                <a href="project3.html" class="gallery-item bg-gray-200 shadow-lg relative">
-                    <div class="gallery-item-frame">
-                        <img src="https://placehold.co/150x150/004500/ffffff?text=Prototyping" alt="Thumbnail for Project 3">
-                    </div>
-                    <div class="gallery-item-title">Prototyping</div>
-                </a>
-
                 <a href="project3.html" class="gallery-item bg-gray-200 shadow-lg relative">
                     <div class="gallery-item-frame">
                         <img src="https://placehold.co/150x150/004500/ffffff?text=Peer+Discussion" alt="Thumbnail for Project 3">
@@ -151,9 +178,15 @@
                 <!-- Exercise 1 -->
                 <a href="exercises/LyDuKhanhHan_MicroMesoMacroAnalysis.pdf" class="gallery-item bg-gray-200 shadow-lg relative">
                     <div class="gallery-item-frame">
-                        <img src="https://placehold.co/150x150/3cb371/ffffff?text=MMM+Analysis" alt="Thumbnail for Exercise 1">
+                        <img src="https://placehold.co/150x150/3cb371/ffffff?text=MMM" alt="Thumbnail for Exercise 1">
                     </div>
                     <div class="gallery-item-title">MMM Analysis</div>
+                </a>
+                <a href="exercises/LyDuKhanhHan_MicroMesoMacroAnalysis_V02.pdf" class="gallery-item bg-gray-200 shadow-lg relative">
+                    <div class="gallery-item-frame">
+                        <img src="https://placehold.co/150x150/3cb371/ffffff?text=MMM+V02" alt="Thumbnail for Exercise 1">
+                    </div>
+                    <div class="gallery-item-title">MMM Analysis V02</div>
                 </a>
                  <a href="exercises/LyDuKhanhHan_MicroMesoMacroAnalysis.pdf" class="gallery-item bg-gray-200 shadow-lg relative">
                     <div class="gallery-item-frame">
@@ -186,7 +219,7 @@
             </div>
         </section>
          <!-- Gallery Section 3: Prototypes -->
-        <section id="exercises" class="mb-12">
+        <section id="prototypes" class="mb-12">
             <h2 class="text-3xl font-bold text-gray-800 mb-2">Prototypes</h2>
             <p class="text-gray-600 mb-6">Here are the updates of my prototypes and testing data.</p>
 
@@ -198,6 +231,12 @@
                     </div>
                     <div class="gallery-item-title">Mala Ingredients Quiz</div>
                 </a>
+                <a href="exercises/LyDuKhanhHan_MicroMesoMacroAnalysis.pdf" class="gallery-item bg-gray-200 shadow-lg relative">
+                    <div class="gallery-item-frame">
+                        <img src="https://placehold.co/150x150/ff00aa/ffffff?text=Text-Based" alt="Thumbnail for Exercise 1">
+                    </div>
+                    <div class="gallery-item-title">Text-based Adventure</div>
+                </a>
                
                 <!-- Add more exercise modules here by copying the above <a> tag -->
 
@@ -206,5 +245,13 @@
 
     </main>
 
-</body>
-</html>
+
+<script>
+  // Lazy-load all gallery thumbnails
+  document.querySelectorAll('.gallery-item-frame img').forEach(img => {
+    img.loading = 'lazy';
+    if ('decode' in img) { img.decode().catch(()=>{}); }
+  });
+</script>
+
+</body></html>
