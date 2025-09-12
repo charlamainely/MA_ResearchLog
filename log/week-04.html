@@ -4,9 +4,29 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Week 04 — Research Log</title>
+  <!-- Match your homepage stack -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/styles.css" />
 </head>
 <body>
+      <!-- Navigation Bar -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <a href="/index.html" class="font-bold text-xl text-gray-900">Research Logs</a>
+                </div>
+                <div class="flex items-center">
+                    <div class="flex space-x-4">
+                        <a href="#projects" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md font-medium">Projects</a>
+                        <a href="#exercises" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md font-medium">Exercises</a>
+                        <a href="#" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md font-medium">About</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
   <header class="page-head container">
     <div class="kicker">Weekly Log</div>
     <h1 class="h1">Week 04 — Narrow to Vietnamese Folktales (ICH)</h1>
@@ -81,7 +101,7 @@
 
       <section class="card">
       <h2 class="h2">Navigation</h2>
-      <ul class="meta-list" data-prevnext data-json="../assets/literature.json"></ul>
+      <ul class="meta-list" data-prevnext data-json="../assets/weeks.json"></ul>
       </section>
     <script src="../assets/prevnext_universal.js"></script>
 </section>
