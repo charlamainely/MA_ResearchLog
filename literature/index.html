@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
+    
     /* Keep the look consistent with your homepage cards */
     body { font-family: 'Inter', sans-serif; background:#f3f4f6; color:#333; }
 
@@ -17,33 +18,46 @@
     #subwrap { display:grid; grid-template-columns: 1fr 0; gap: 1rem; transition: grid-template-columns .25s ease; }
     #subwrap.open { grid-template-columns: 1fr min(520px, 40vw); }
 
-    /* Preview panel */
-    #preview {
-      border-left: 1px solid #e9e9e9; background:#fff;
-      height: 100vh; position: sticky; top: 0;
-      display: grid; grid-template-rows: auto auto 1fr;
-      border-radius: 0.5rem; overflow: hidden;
-    }
-    #pv-head { display:flex; align-items:center; gap:.5rem; padding:10px 12px; border-bottom:1px solid #e9e9e9; background:#fafafa; }
-    #pv-title { font-weight:700; margin-right:auto; font-size:.95rem; }
-    #pv-actions a, #pv-actions button {
-      border:1px solid #e9e9e9; background:#fff; padding:6px 10px; border-radius:8px; text-decoration:none;
-    }
-    #pv-placeholder { display:flex; align-items:center; justify-content:center; color:#666; font-size:.95rem; padding: 8px 12px; }
-    #pv-frame { width:100%; height:100%; border:0; background:#fff; display:none; }
+    /* Preview panel — switch from grid to flex for reliable full-height iframe */
+#preview{
+  border-left: 1px solid #e9e9e9; background:#fff;
+  height: 100vh; position: sticky; top: 0;
+  display: flex; flex-direction: column;
+  border-radius: 0.5rem; overflow: hidden;
+}
 
-    /* Toggle placeholder vs iframe */
-    #preview.showing-placeholder #pv-frame { display:none; }
-    #preview.showing-iframe #pv-placeholder { display:none; }
-    #preview.showing-iframe #pv-frame { display:block; }
+/* Header stays at natural height */
+#pv-head{ display:flex; align-items:center; gap:.5rem; padding:10px 12px; border-bottom:1px solid #e9e9e9; background:#fafafa; }
 
-    /* Mobile: hide preview until opened */
-    @media (max-width: 900px){
-      #subwrap { grid-template-columns: 1fr; }
-      #subwrap.open { grid-template-columns: 1fr; }
-      #preview { position: fixed; inset: 0; z-index: 50; display:none; grid-template-rows:auto 1fr; }
-      #subwrap.open #preview { display:grid; }
-    }
+/* Placeholder occupies remaining height until an item is opened */
+#pv-placeholder{
+  flex: 1 1 auto;
+  display:flex; align-items:center; justify-content:center;
+  color:#666; font-size:.95rem; padding: 8px 12px;
+}
+
+/* The iframe should fill the entire remaining panel height */
+#pv-frame{
+  display:none;           /* hidden until 'showing-iframe' */
+  width:100%;
+  height:auto;
+  flex: 1 1 auto;         /* <— makes it fill the panel */
+  background:#fff; border:0;
+  min-height:0;           /* defensive: allow it to grow inside flex */
+}
+
+/* Toggle states */
+#preview.showing-placeholder #pv-frame{ display:none; }
+#preview.showing-iframe #pv-placeholder{ display:none; }
+#preview.showing-iframe #pv-frame{ display:block; }
+
+/* On mobile, keep your existing drawer behavior */
+@media (max-width: 900px){
+  #subwrap{ grid-template-columns: 1fr; }
+  #subwrap.open{ grid-template-columns: 1fr; }
+  #preview{ position: fixed; inset: 0; z-index: 50; display:none; }
+  #subwrap.open #preview{ display:flex; }
+}
 
     /* Your existing gallery card look (reused) */
     .gallery-item {
@@ -69,23 +83,8 @@
   </style>
 </head>
 <body class="bg-gray-100">
-    <!-- Navigation Bar -->
-    <nav class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex-shrink-0">
-                    <a href="/index.html" class="font-bold text-xl text-gray-900">Research Logs</a>
-                </div>
-                <div class="flex items-center">
-                    <div class="flex space-x-4">
-                        <a href="#projects" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md font-medium">Projects</a>
-                        <a href="#exercises" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md font-medium">Exercises</a>
-                        <a href="#" class="text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md font-medium">About</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <div id="navbar"></div>
+    <script src="../assets/nav-inject.js" defer></script>
   <!-- Simple header to match your homepage tone -->
   <header class="bg-white border-b border-gray-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -103,7 +102,6 @@
       <!-- Preview panel -->
       <aside id="preview" aria-hidden="true" role="dialog" aria-labelledby="pv-title">
         <div id="pv-head">
-          <div id="pv-title">Preview</div>
           <div id="pv-actions">
             <a id="open-full" target="_blank" rel="noopener">Open full page ↗</a>
             <button id="close-preview" type="button" aria-label="Close preview">Close</button>
@@ -169,7 +167,6 @@
     subwrap.classList.add('open');                        // show panel / allocate width
     preview.classList.remove('showing-placeholder');
     preview.classList.add('showing-iframe');
-    titleEl.textContent = item.title || 'Preview';
 
     const url = hrefFor(item.path);
     frame.src = url;

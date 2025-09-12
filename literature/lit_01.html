@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title><!-- Book/Paper Name --> — Literature Review</title>
+
+  <!-- Match your stack: Tailwind + Inter (same as homepage) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Your 12-col grid + tokens (container, grid, spans, card, figure, etc.) -->
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <!-- ^ Adjust to /assets/styles.css if this page is at the site root -->
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    /* Tiny helpers specific to this template only */
+    .meta-list { list-style: none; padding: 0; margin: 0; }
+    .meta-list li + li { margin-top: 6px; }
+    .badge { display:inline-block; padding:2px 8px; border:1px solid var(--line); border-radius:999px; font-size:.85rem; color:var(--muted); }
+    .quote { font-size:1.05rem; line-height:1.6; }
+    .cite { color: var(--muted); font-size:.9rem; }
+  </style>
+</head>
+<body>
+    <div id="navbar"></div>
+    <script src="../assets/nav-inject.js" defer></script>
+  <!-- Page header -->
+  <header class="page-head">
+    <div class="container">
+      <div class="kicker">Literature Review</div>
+      <h1 class="h1"><!-- Book/Paper Name -->Designing for Cultural Memory</h1>
+      <div class="page-meta">
+        <span><strong>Author:</strong> Jane Doe</span>
+        <span><strong>Year:</strong> 2022</span>
+        <span><strong>Type:</strong> Book</span>
+        <span><strong>Keywords:</strong> ICH, folktales, interaction design</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:20px">
+    <div class="grid">
+
+      <!-- MAIN CONTENT (left) -->
+      <article class="span-8 stack measure order-1">
+
+        <!-- Summary / abstract (optional) -->
+        <section class="card">
+          <h2 class="h2">Summary</h2>
+          <p><!-- 2–4 lines summarizing the work’s focus and scope. --></p>
+        </section>
+
+        <!-- Key Takeaways -->
+        <section>
+          <h2 class="h2">Key Takeaways</h2>
+          <ul>
+            <li><!-- Takeaway 1: concrete insight --></li>
+            <li><!-- Takeaway 2 --></li>
+            <li><!-- Takeaway 3 --></li>
+          </ul>
+        </section>
+
+        <!-- Critical Reflections (your voice) -->
+        <section>
+          <h2 class="h2">Critical Reflections</h2>
+          <p><!-- What you agree/disagree with; implications for your practice; limits, gaps. --></p>
+          <p><!-- How this reframes your approach (e.g., Flash nostalgia → native web; folktales as ICH). --></p>
+        </section>
+
+        <!-- Pull-out: quote OR diagram -->
+        <section>
+          <h2 class="h2">Notable Passage</h2>
+          <blockquote class="quote callout">
+            “<!-- Short quote (<= 50 words) that captures the argument or method. -->”
+            <div class="cite">— Author, <em>Title</em>, p. 42</div>
+          </blockquote>
+        </section>
+
+        <!-- Optional Figure -->
+        <section>
+          <h2 class="h2">Diagram / Figure (optional)</h2>
+          <figure class="figure">
+            <img class="ratio" src="../literature/covers/example-diagram.jpg" alt="Diagram from the book/article" />
+            <figcaption class="figcap">Caption describing the diagram and your interpretation.</figcaption>
+          </figure>
+        </section>
+
+        <hr class="rule" />
+
+        <!-- Application to your project -->
+        <section>
+          <h2 class="h2">How This Informs My Project</h2>
+          <ul>
+            <li><!-- Concrete design change or decision influenced by this work. --></li>
+            <li><!-- Link to a week log, case study, or fieldwork that uses this idea. --></li>
+          </ul>
+        </section>
+
+        <!-- (Optional) Cross-links -->
+        <section class="card">
+          <h2 class="h2">Referenced In</h2>
+          <ul class="meta-list">
+            <li>Weekly Log: <a href="../log/week-04.html">Week 04 — Folktales focus</a></li>
+            <li>Case Study: <a href="../cases/work-a.html">Work A</a></li>
+          </ul>
+        </section>
+      </article>
+
+      <!-- SIDEBAR (right) -->
+      <aside class="span-4 order-2 stack">
+        <!-- Cover -->
+        <figure class="figure">
+          <img src="../literature/covers/example-cover.jpg" alt="Book/article cover" />
+          <figcaption class="figcap">Cover image (source / credit if needed).</figcaption>
+        </figure>
+
+        <!-- Citation details -->
+        <section class="card">
+          <h2 class="h2">Details</h2>
+          <ul class="meta-list">
+            <li><strong>Full Citation:</strong> <!-- e.g., MLA/APA entry here. --></li>
+            <li><strong>Publisher / Venue:</strong> <!-- Journal / Press --></li>
+            <li><strong>DOI / URL:</strong> <a href="#" target="_blank" rel="noopener">View source</a></li>
+            <li><strong>Notes:</strong> <!-- edition / translator / etc. --></li>
+          </ul>
+        </section>
+
+        <!-- Tags -->
+        <section class="card">
+          <h2 class="h2">Tags</h2>
+          <p>
+            <span class="badge">ICH</span>
+            <span class="badge">Folktales</span>
+            <span class="badge">Interaction</span>
+          </p>
+        </section>
+
+        <!-- Prev / Next (dynamic) -->
+        <section class="card">
+          <h2 class="h2">Navigation</h2>
+          <ul class="meta-list" data-prevnext data-json="../assets/literature.json">
+            <!-- Auto-filled by your universal script -->
+          </ul>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Universal Prev/Next (the generic script you named prevnext_universal.js) -->
+  <script src="../assets/prevnext_universal.js" defer></script>
+</body>
+</html>
