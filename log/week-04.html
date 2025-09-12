@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Week 04 — Research Log</title>
   <link rel="stylesheet" href="../assets/styles.css" />
-  <script src="../assets/prevnext.js"></script>
 </head>
 <body>
   <header class="page-head container">
@@ -81,10 +80,10 @@
       </section>
 
       <section class="card">
-        <h2 class="h2">Navigation</h2>
-        <ul class="meta-list" id="prev-next">
-          <!-- Auto-filled by ../assets/prevnext.js -->
-        </ul>
+      <h2 class="h2">Navigation</h2>
+      <ul class="meta-list" data-prevnext data-json="../assets/literature.json"></ul>
+      </section>
+    <script src="../assets/prevnext_universal.js"></script>
 </section>
     </aside>
   </main>
