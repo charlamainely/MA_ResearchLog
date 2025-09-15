@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Literature — Sub Gallery</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Fieldwork — Sub Gallery</title>
 
   <link rel="stylesheet" href="../assets/styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
@@ -17,16 +17,16 @@
   <!-- Header -->
   <header class="page-head">
     <div class="container">
-      <h1 class="h1">Literature</h1>
-      <p class="page-meta">Browse and preview entries before opening the full page.</p>
+      <h1 class="h1">Fieldwork</h1>
+      <p class="page-meta">Preview activities (interviews, workshops, exhibitions) before opening full pages.</p>
     </div>
   </header>
 
   <!-- Main -->
   <main class="container" style="padding-top:20px">
-    <div id="subwrap" class="subwrap" data-json="../assets/literature.json">
+    <div id="subwrap" class="subwrap" data-json="../assets/fieldwork.json">
 
-      <section id="cards" class="gallery-tiles" aria-label="Literature items"></section>
+      <section id="cards" class="gallery-tiles" aria-label="Fieldwork items"></section>
 
       <aside id="preview" class="preview" aria-hidden="true" role="dialog">
         <div class="preview-head">
@@ -38,13 +38,8 @@
       </aside>
 
     </div>
-
-    <noscript>
-      <p class="page-meta">Enable JavaScript to view in-page previews. All items are still accessible via their links.</p>
-    </noscript>
   </main>
 
-  <!-- Inline script (unchanged logic; classes now match styles.css) -->
   <script>
   (function(){
     const subwrap = document.getElementById('subwrap');
@@ -54,7 +49,7 @@
     const openBtn = document.getElementById('open-full');
     const closeBtn= document.getElementById('close-preview');
 
-    const jsonPath= subwrap.getAttribute('data-json');
+    const jsonPath= subwrap.getAttribute('data-json'); // ../assets/fieldwork.json
     const baseDir = location.pathname.replace(/\/[^\/]*$/, '/');
     const hrefFor = rel => new URL((rel||'').replace(/^\//,''), location.origin + baseDir).href;
 
@@ -86,7 +81,7 @@
       }
     }
 
-    function openPreview(item, pushState = true){
+    function openPreview(item, pushState=true){
       subwrap.classList.add('open');
       preview.classList.add('showing-iframe');
       const url = hrefFor(item.path);
@@ -95,8 +90,8 @@
       preview.setAttribute('aria-hidden','false');
 
       if (pushState){
-        const u = new URL(location.href);
-        u.searchParams.set('preview', (item.path||'').replace(/^\.\//,''));
+        const u=new URL(location.href);
+        u.searchParams.set('preview',(item.path||'').replace(/^\.\//,''));
         history.pushState({preview:item.path},'',u);
       }
       closeBtn.focus();
@@ -107,7 +102,7 @@
       preview.classList.remove('showing-iframe');
       frame.removeAttribute('src');
       preview.setAttribute('aria-hidden','true');
-      const u = new URL(location.href);
+      const u=new URL(location.href);
       u.searchParams.delete('preview');
       history.pushState({},'',u);
       cards.querySelector('.gallery-item')?.focus();
@@ -120,9 +115,7 @@
     fetch(jsonPath,{cache:'no-store'})
       .then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
       .then(renderCards)
-      .catch(err=>{ console.error('Failed to load list', err);
-        cards.innerHTML = `<p class="page-meta">Could not load <code>${jsonPath}</code>.</p>`;
-      });
+      .catch(err=>{ console.error(err); cards.innerHTML = `<p class="page-meta">Could not load <code>${jsonPath}</code>.</p>`; });
   })();
   </script>
 </body>

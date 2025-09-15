@@ -1,261 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My MA Research Log</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
-            color: #333;
-        }
-        .gallery-item {
-            width: 150px;
-            height: 150px;
-            border-radius: 0.5rem;
-            overflow: hidden;
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            position: relative;
-            transition: transform 0.2s ease-in-out;
-            cursor: pointer;
-        }
-
-        .gallery-item:hover {
-            transform: scale(1.05);
-        }
-        
-        /* The frame around the image */
-        .gallery-item-frame {
-            border: 10px solid #fff; /* A simple white border as a placeholder frame */
-            border-radius: 0.9rem;
-            position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        .gallery-item-frame img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .gallery-item-title {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            padding: 0.5rem;
-            text-align: center;
-            font-size: 0.875rem;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-        }
-        
-        .gallery-item:hover .gallery-item-title {
-            opacity: 1;
-        }
-
-        @media (max-width: 768px) {
-            .gallery-container {
-                justify-content: left;
-            }
-        }
-    
-/* Anchor jump offset for sticky nav */
-section[id] { scroll-margin-top: 88px; }
-
-/* Keyboard focus parity with hover (show title on focus too) */
-.gallery-item:focus .gallery-item-title,
-.gallery-item:focus-within .gallery-item-title {
-  opacity: 1;
-  outline: none;
-}
-.gallery-item:focus-visible {
-  box-shadow: 0 0 0 3px rgba(59,130,246,.6);
-  border-radius: 0.5rem;
-}
-
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My MA Research Log</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
 </head>
-<body class="bg-gray-100">
-    <div id="navbar"></div>
-    <script src="assets/nav-inject.js" defer></script>
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+<body>
 
-        <!-- Gallery Section 0: Weekly Logs -->
-        <section id="exercises" class="mb-12">
-            <h2 class="text-3xl font-bold text-gray-800 mb-2">Weekly Logs</h2>
-            <p class="text-gray-600 mb-6">Here are my weekly logs and reflections.</p>
+  <!-- Shared navbar -->
+  <div id="navbar"></div>
+  <script src="assets/nav-inject.js" defer></script>
 
-            <div class="gallery-container flex flex-wrap gap-4">
-                <!-- Week 1 -->
-                <a href="log/week-01.html" class="gallery-item bg-gray-200 shadow-lg relative">
-                    <div class="gallery-item-frame">
-                        <img src="https://placehold.co/150x150/3cb371/ffffff?text=Week+01" alt="Thumbnail for Exercise 1">
-                    </div>
-                    <div class="gallery-item-title">Week 01 Log</div>
-                </a>
-                <!-- Week 2 -->
-                <a href="log/week-02.html" class="gallery-item bg-gray-200 shadow-lg relative">
-                    <div class="gallery-item-frame">
-                        <img src="https://placehold.co/150x150/3cb371/ffffff?text=Week+02" alt="Thumbnail for Exercise 1">
-                    </div>
-                    <div class="gallery-item-title">Week 02 Log</div>
-                </a>
-                <!-- Week 3 -->
-                <a href="log/week-03.html" class="gallery-item bg-gray-200 shadow-lg relative">
-                    <div class="gallery-item-frame">
-                        <img src="https://placehold.co/150x150/3cb371/ffffff?text=Week+03" alt="Thumbnail for Exercise 1">
-                    </div>
-                    <div class="gallery-item-title">Week 03 Log</div>
-                </a>
-                <!-- Week 4 -->
-                <a href="log/week-04.html" class="gallery-item bg-gray-200 shadow-lg relative">
-                    <div class="gallery-item-frame">
-                        <img src="https://placehold.co/150x150/3cb371/ffffff?text=Week+04" alt="Thumbnail for Exercise 1">
-                    </div>
-                    <div class="gallery-item-title">Week 04 Log</div>
-                </a>
-               
-                <!-- Add more exercise modules here by copying the above <a> tag -->
+  <main class="container" style="padding-top:20px">
 
-            </div>
-        </section>
+    <!-- Weekly Logs -->
+    <section id="weekly-logs" class="stack">
+      <h2 class="h1">Weekly Logs</h2>
+      <p class="page-meta">Here are my weekly logs and reflections.</p>
 
-        <!-- Gallery Section 1: Research Activities -->
-        <section id="projects" class="mb-12">
-            <h2 class="text-3xl font-bold text-gray-800 mb-2">Research Activities</h2>
-            <p class="text-gray-600 mb-6">Here's an overview of the main research activities I'm currently working on.</p>
-            
-            <div class="gallery-container flex flex-wrap gap-4">
-                <!-- Project 1 -->
-                <a href="project1.html" class="gallery-item bg-gray-200 shadow-lg relative">
-                    <div class="gallery-item-frame">
-                        <img src="https://placehold.co/150x150/8a2be2/ffffff?text=Fieldwork" alt="Thumbnail for Project 1">
-                    </div>
-                    <div class="gallery-item-title">Fieldwork</div>
-                </a>
-                
-                <!-- Project 2 -->
-                <a href="project2.html" class="gallery-item bg-gray-200 shadow-lg relative">
-                    <div class="gallery-item-frame">
-                        <img src="https://placehold.co/150x150/4169e1/ffffff?text=Case+Studies" alt="Thumbnail for Project 2">
-                    </div>
-                    <div class="gallery-item-title">Case Studies</div>
-                </a>
+      <div class="gallery-tiles">
+        <a href="log/week-01.html" class="gallery-item">
+          <div class="gallery-item-frame">
+            <img src="https://placehold.co/150x150/3cb371/ffffff?text=Week+01" alt="Thumbnail for Week 01">
+          </div><div class="gallery-item-title">Week 01 Log</div>
+        </a>
 
-                <!-- Project 3 - Placeholder -->
-                <a href="literature/index.html" class="gallery-item bg-gray-200 shadow-lg relative">
-                    <div class="gallery-item-frame">
-                        <img src="https://placehold.co/150x150/ff4500/ffffff?text=Literature+Review" alt="Thumbnail for Project 3">
-                    </div>
-                    <div class="gallery-item-title">Literature Review</div>
-                </a>
-                <a href="project3.html" class="gallery-item bg-gray-200 shadow-lg relative">
-                    <div class="gallery-item-frame">
-                        <img src="https://placehold.co/150x150/004500/ffffff?text=Peer+Discussion" alt="Thumbnail for Project 3">
-                    </div>
-                    <div class="gallery-item-title">Peer Discussion</div>
-                </a>
+        <a href="log/week-02.html" class="gallery-item">
+          <div class="gallery-item-frame">
+            <img src="https://placehold.co/150x150/3cb371/ffffff?text=Week+02" alt="Thumbnail for Week 02">
+          </div><div class="gallery-item-title">Week 02 Log</div>
+        </a>
 
-                <!-- Add more project modules here by copying the above <a> tag -->
+        <a href="log/week-03.html" class="gallery-item">
+          <div class="gallery-item-frame">
+            <img src="https://placehold.co/150x150/3cb371/ffffff?text=Week+03" alt="Thumbnail for Week 03">
+          </div><div class="gallery-item-title">Week 03 Log</div>
+        </a>
 
-            </div>
-        </section>
+        <a href="log/week-04.html" class="gallery-item">
+          <div class="gallery-item-frame">
+            <img src="https://placehold.co/150x150/3cb371/ffffff?text=Week+04" alt="Thumbnail for Week 04">
+          </div><div class="gallery-item-title">Week 04 Log</div>
+        </a>
+      </div>
+    </section>
 
-        <!-- Gallery Section 2: Class Exercises -->
-        <section id="exercises" class="mb-12">
-            <h2 class="text-3xl font-bold text-gray-800 mb-2">Class Exercises</h2>
-            <p class="text-gray-600 mb-6">This gallery contains my class exercises.</p>
+    <!-- Research Activities -->
+    <section id="projects" class="stack">
+      <h2 class="h1">Research Activities</h2>
+      <p class="page-meta">Here's an overview of the main research activities I'm currently working on.</p>
 
-            <div class="gallery-container flex flex-wrap gap-4">
-                <!-- Exercise 1 -->
-                <a href="exercises/LyDuKhanhHan_MicroMesoMacroAnalysis.pdf" class="gallery-item bg-gray-200 shadow-lg relative">
-                    <div class="gallery-item-frame">
-                        <img src="https://placehold.co/150x150/3cb371/ffffff?text=MMM" alt="Thumbnail for Exercise 1">
-                    </div>
-                    <div class="gallery-item-title">MMM Analysis</div>
-                </a>
-                <a href="exercises/LyDuKhanhHan_MicroMesoMacroAnalysis_V02.pdf" class="gallery-item bg-gray-200 shadow-lg relative">
-                    <div class="gallery-item-frame">
-                        <img src="https://placehold.co/150x150/3cb371/ffffff?text=MMM+V02" alt="Thumbnail for Exercise 1">
-                    </div>
-                    <div class="gallery-item-title">MMM Analysis V02</div>
-                </a>
-                 <a href="exercises/LyDuKhanhHan_MicroMesoMacroAnalysis.pdf" class="gallery-item bg-gray-200 shadow-lg relative">
-                    <div class="gallery-item-frame">
-                        <img src="https://placehold.co/150x150/3cb3ff/ffffff?text=Research+Framework" alt="Thumbnail for Exercise 1">
-                    </div>
-                    <div class="gallery-item-title">Research Framework</div>
-                </a>
+      <div class="gallery-tiles">
+        <a href="fieldwork/index.html" class="gallery-item">
+          <div class="gallery-item-frame">
+            <img src="https://placehold.co/150x150/8a2be2/ffffff?text=Fieldwork" alt="Fieldwork">
+          </div><div class="gallery-item-title">Fieldwork</div>
+        </a>
 
-                <a href="exercises/CriticalDiscourse_BubbleExercise.pdf" class="gallery-item bg-gray-200 shadow-lg relative">
-                    <div class="gallery-item-frame">
-                        <img src="https://placehold.co/150x150/20b2aa/ffffff?text=Research+Bubble" alt="Thumbnail for Exercise 2">
-                    </div>
-                    <div class="gallery-item-title">Research Bubble</div>
-                </a>
-                <a href="exercises/glossary.html" class="gallery-item bg-gray-200 shadow-lg relative">
-                    <div class="gallery-item-frame">
-                        <img src="https://placehold.co/150x150/3cb371/ffffff?text=Glossary" alt="Thumbnail for Exercise 2">
-                    </div>
-                    <div class="gallery-item-title">Glossary</div>
-                </a>
-                <a href="exercises/profile.html" class="gallery-item bg-gray-200 shadow-lg relative">
-                    <div class="gallery-item-frame">
-                        <img src="https://placehold.co/150x150/20b2aa/ffffff?text=Personas" alt="Thumbnail for Exercise 2">
-                    </div>
-                    <div class="gallery-item-title">Personas</div>
-                </a>
-               
-                <!-- Add more exercise modules here by copying the above <a> tag -->
+        <a href="project2.html" class="gallery-item">
+          <div class="gallery-item-frame">
+            <img src="https://placehold.co/150x150/4169e1/ffffff?text=Case+Studies" alt="Case Studies">
+          </div><div class="gallery-item-title">Case Studies</div>
+        </a>
 
-            </div>
-        </section>
-         <!-- Gallery Section 3: Prototypes -->
-        <section id="prototypes" class="mb-12">
-            <h2 class="text-3xl font-bold text-gray-800 mb-2">Prototypes</h2>
-            <p class="text-gray-600 mb-6">Here are the updates of my prototypes and testing data.</p>
+        <a href="literature/index.html" class="gallery-item">
+          <div class="gallery-item-frame">
+            <img src="https://placehold.co/150x150/ff4500/ffffff?text=Literature+Review" alt="Literature Review">
+          </div><div class="gallery-item-title">Literature Review</div>
+        </a>
 
-            <div class="gallery-container flex flex-wrap gap-4">
-                <!-- Exercise 1 -->
-                <a href="exercises/LyDuKhanhHan_MicroMesoMacroAnalysis.pdf" class="gallery-item bg-gray-200 shadow-lg relative">
-                    <div class="gallery-item-frame">
-                        <img src="https://placehold.co/150x150/ff0000/ffffff?text=Mala+Quiz" alt="Thumbnail for Exercise 1">
-                    </div>
-                    <div class="gallery-item-title">Mala Ingredients Quiz</div>
-                </a>
-                <a href="exercises/LyDuKhanhHan_MicroMesoMacroAnalysis.pdf" class="gallery-item bg-gray-200 shadow-lg relative">
-                    <div class="gallery-item-frame">
-                        <img src="https://placehold.co/150x150/ff00aa/ffffff?text=Text-Based" alt="Thumbnail for Exercise 1">
-                    </div>
-                    <div class="gallery-item-title">Text-based Adventure</div>
-                </a>
-               
-                <!-- Add more exercise modules here by copying the above <a> tag -->
+        <a href="peer/index.html" class="gallery-item">
+          <div class="gallery-item-frame">
+            <img src="https://placehold.co/150x150/004500/ffffff?text=Peer+Discussion" alt="Peer Discussion">
+          </div><div class="gallery-item-title">Peer Discussion</div>
+        </a>
+      </div>
+    </section>
 
-            </div>
-        </section>
+    <!-- Class Exercises -->
+    <section id="class-exercises" class="stack">
+      <h2 class="h1">Class Exercises</h2>
+      <p class="page-meta">This gallery contains my class exercises.</p>
 
-    </main>
+      <div class="gallery-tiles">
+        <a href="exercises/LyDuKhanhHan_MicroMesoMacroAnalysis.pdf" class="gallery-item">
+          <div class="gallery-item-frame">
+            <img src="https://placehold.co/150x150/3cb371/ffffff?text=MMM" alt="MMM Analysis">
+          </div><div class="gallery-item-title">MMM Analysis</div>
+        </a>
 
+        <a href="exercises/LyDuKhanhHan_MicroMesoMacroAnalysis_V02.pdf" class="gallery-item">
+          <div class="gallery-item-frame">
+            <img src="https://placehold.co/150x150/3cb371/ffffff?text=MMM+V02" alt="MMM Analysis V02">
+          </div><div class="gallery-item-title">MMM Analysis V02</div>
+        </a>
 
-<script>
-  // Lazy-load all gallery thumbnails
-  document.querySelectorAll('.gallery-item-frame img').forEach(img => {
-    img.loading = 'lazy';
-    if ('decode' in img) { img.decode().catch(()=>{}); }
-  });
-</script>
+        <a href="exercises/LyDuKhanhHan_MicroMesoMacroAnalysis.pdf" class="gallery-item">
+          <div class="gallery-item-frame">
+            <img src="https://placehold.co/150x150/3cb3ff/ffffff?text=Research+Framework" alt="Research Framework">
+          </div><div class="gallery-item-title">Research Framework</div>
+        </a>
 
-</body></html>
+        <a href="exercises/CriticalDiscourse_BubbleExercise.pdf" class="gallery-item">
+          <div class="gallery-item-frame">
+            <img src="https://placehold.co/150x150/20b2aa/ffffff?text=Research+Bubble" alt="Research Bubble">
+          </div><div class="gallery-item-title">Research Bubble</div>
+        </a>
+
+        <a href="exercises/glossary.html" class="gallery-item">
+          <div class="gallery-item-frame">
+            <img src="https://placehold.co/150x150/3cb371/ffffff?text=Glossary" alt="Glossary">
+          </div><div class="gallery-item-title">Glossary</div>
+        </a>
+
+        <a href="exercises/profile.html" class="gallery-item">
+          <div class="gallery-item-frame">
+            <img src="https://placehold.co/150x150/20b2aa/ffffff?text=Personas" alt="Personas">
+          </div><div class="gallery-item-title">Personas</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Prototypes -->
+    <section id="prototypes" class="stack">
+      <h2 class="h1">Prototypes</h2>
+      <p class="page-meta">Here are the updates of my prototypes and testing data.</p>
+
+      <div class="gallery-tiles">
+        <a href="exercises/LyDuKhanhHan_MicroMesoMacroAnalysis.pdf" class="gallery-item">
+          <div class="gallery-item-frame">
+            <img src="https://placehold.co/150x150/ff0000/ffffff?text=Mala+Quiz" alt="Mala Quiz">
+          </div><div class="gallery-item-title">Mala Ingredients Quiz</div>
+        </a>
+
+        <a href="exercises/LyDuKhanhHan_MicroMesoMacroAnalysis.pdf" class="gallery-item">
+          <div class="gallery-item-frame">
+            <img src="https://placehold.co/150x150/ff00aa/ffffff?text=Text-Based" alt="Text-based Adventure">
+          </div><div class="gallery-item-title">Text-based Adventure</div>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Lazy-load thumbnails
+    document.querySelectorAll('.gallery-item-frame img').forEach(img => {
+      img.loading = 'lazy';
+      if ('decode' in img) { img.decode().catch(()=>{}); }
+    });
+  </script>
+</body>
+</html>

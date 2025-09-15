@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Peer Discussion Log</title>
+
+  <!-- Add this -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles.css"/>
+</head>
+<body>
+
+ <!-- Optional: injected navbar placeholder -->
+  <div id="navbar"></div>
+  <script src="../assets/nav-inject.js" defer></script>
+
+  <!-- Page header -->
+  <header class="page-head">
+    <div class="container">
+      <div class="kicker">Peer Discussion</div>
+      <h1 class="h1">Discussion Log</h1>
+      <p class="measure">
+        Ongoing notes from conversations with peers/mentors. Each block captures context,
+        the discussion and insights, then my reflection and next steps. Newest entries appear first.
+      </p>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:20px">
+    <div class="grid">
+      <!-- MAIN log column -->
+      <section class="span-8 stack order-1" id="log">
+
+        <!-- ───────────────── BLOCK TEMPLATE (copy this for new entries) ─────────────────
+          - Give each block a unique id (used for deep-links)
+          - data-date must be ISO (YYYY-MM-DD or YYYY-MM-DDTHH:MM) for sorting
+          - data-people and data-tags are optional (comma-separated)
+        -->
+        <article class="card block" id="2025-09-08-folktales-branching" data-date="2025-09-08" data-people="Ava,Ken" data-tags="prototype,folktales,branching">
+          <div class="block-head">
+            <h2 class="h2 block-title">Clarifying branching prompts for folktale choices</h2>
+            <div class="block-meta">
+              <span>2025-09-08</span>
+              <span>People: Ava · Ken</span>
+              <span>Tags: <span class="badge">prototype</span> <span class="badge">folktales</span> <span class="badge">branching</span></span>
+            </div>
+          </div>
+
+          <hr class="hr"/>
+
+          <h2 class="h3">Context</h2>
+          <p>Peer review of the prototype’s choice points. The current labels (“A path opens”) were read as too abstract.</p>
+
+          <h3 class="h3">Discussion & Insights</h3>
+          <ul>
+            <li>Use verb-led prompts: “Ask elder”, “Follow footprints”, “Return to village”.</li>
+            <li>Surface variant paths as “other tellings” to respect ICH diversity without overwhelming.</li>
+            <li>Audio narration helps non-readers; captions help noisy environments.</li>
+          </ul>
+
+          <h3 class="h3">Reflection</h3>
+          <p>I’ll keep branching but tighten language and add an audio toggle. For accessibility, I’ll test
+            a minimum 16px body size and contrast against dark image backgrounds.</p>
+
+          <h3 class="h3">Next Steps</h3>
+          <ol>
+            <li>Rewrite 6 prompts with verbs + nouns, test comprehension with 3–5 users.</li>
+            <li>Prototype “other tellings” drawer for variants.</li>
+            <li>Add audio on/off and measure load time on mobile.</li>
+          </ol>
+
+          <details class="attachments">
+            <summary>Attachments</summary>
+            <ul class="meta-list">
+              <li><a href="../exercises/prompt-rewrite-v1.pdf" target="_blank" rel="noopener">Prompt rewrite v1 (PDF)</a></li>
+            </ul>
+          </details>
+        </article>
+
+        <article class="card block" id="2025-09-03-ich-scope" data-date="2025-09-03" data-people="Maya" data-tags="scope,ich,folktales">
+          <div class="block-head">
+            <h2 class="h2 block-title">Narrowing ICH to folktales for prototype focus</h2>
+            <div class="block-meta">
+              <span>2025-09-03</span>
+              <span>People: Maya</span>
+              <span>Tags: <span class="badge">scope</span> <span class="badge">ICH</span> <span class="badge">folktales</span></span>
+            </div>
+          </div>
+
+          <hr class="hr"/>
+
+          <h3 class="h3">Context</h3>
+          <p>Earlier ICH scope was broad. We discussed reducing cognitive load by choosing folktales as the first concrete strand.</p>
+
+          <h3 class="h3">Discussion & Insights</h3>
+          <p>Using folktales sharpens content modeling (characters, motifs, regional variants) and lets interface patterns
+            (branching, glossary, provenance notes) be tested meaningfully.</p>
+
+          <h3 class="h3">Reflection</h3>
+          <p>This narrows the brief while remaining true to ICH. It also aligns with my weekly pivot from Flash-inspired UI to native web patterns.</p>
+
+          <h3 class="h3">Next Steps</h3>
+          <ul>
+            <li>Pick one folktale; map 2–3 variant tellings.</li>
+            <li>Draft a minimal glossary (motifs, characters).</li>
+            <li>Connect to a case study for reference UI.</li>
+          </ul>
+        </article>
+
+        <article class="card block" id="2025-08-27-flash-vs-native" data-date="2025-08-27" data-people="Jo" data-tags="framework,tech">
+          <div class="block-head">
+            <h2 class="h2 block-title">From Flash nostalgia to native web interactions</h2>
+            <div class="block-meta">
+              <span>2025-08-27</span>
+              <span>People: Jo</span>
+              <span>Tags: <span class="badge">framework</span> <span class="badge">tech</span></span>
+            </div>
+          </div>
+
+          <hr class="hr"/>
+
+          <h3 class="h3">Context</h3>
+          <p>We weighed keeping a Flash-inspired aesthetic vs leaning into semantic HTML/JS for longevity and accessibility.</p>
+
+          <h3 class="h3">Discussion & Insights</h3>
+          <p>Consensus: keep playful micro-interactions but implement with native web (no plugin aesthetics baked in). Prioritize performance + accessibility.</p>
+
+          <h3 class="h3">Reflection</h3>
+          <p>This reframes the design language as “native + playful”, simplifying the framework and weekly templates.</p>
+
+          <h3 class="h3">Next Steps</h3>
+          <p>Audit existing interactions; remove any that rely on brittle CSS hacks.</p>
+        </article>
+
+        <!-- ───────────────── END TEMPLATE ───────────────── -->
+
+      </section>
+
+      <!-- SIDEBAR -->
+      <aside class="span-4 order-2 stack">
+        <section class="card">
+          <h2 class="h2">About this Log</h2>
+          <p class="measure">
+            Long-scrolling record of peer/mentor conversations. Blocks include context,
+            the discussion/insights, personal reflection, and concrete next steps.
+          </p>
+        </section>
+
+        <section class="card">
+          <h2 class="h2">Quick Filters (client-side)</h2>
+          <div class="stack">
+            <label>By person:
+              <input type="text" id="f-person" placeholder="e.g., Ava" />
+            </label>
+            <label>By tag:
+              <input type="text" id="f-tag" placeholder="e.g., folktales" />
+            </label>
+            <button id="f-clear">Clear</button>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+  (function(){
+    // 1) Sort blocks by date (newest first)
+    const container = document.getElementById('log');
+    const blocks = Array.from(container.querySelectorAll('.block'));
+    blocks.sort((a,b) => {
+      const da = new Date(a.dataset.date).getTime();
+      const db = new Date(b.dataset.date).getTime();
+      return db - da; // newest first
+    });
+    blocks.forEach(b => container.appendChild(b));
+
+    // 2) Deep-link to a block via ?id=...
+    const qp = new URLSearchParams(location.search);
+    const targetId = qp.get('id');
+    if (targetId) {
+      const el = document.getElementById(targetId);
+      if (el) { el.scrollIntoView({behavior:'smooth', block:'start'}); el.focus?.(); }
+    }
+
+    // 3) Tiny client-side filters (people / tag contains)
+    const fPerson = document.getElementById('f-person');
+    const fTag = document.getElementById('f-tag');
+    const fClear = document.getElementById('f-clear');
+
+    function applyFilters(){
+      const p = (fPerson.value || '').toLowerCase().trim();
+      const t = (fTag.value || '').toLowerCase().trim();
+      blocks.forEach(b => {
+        const people = (b.dataset.people || '').toLowerCase();
+        const tags = (b.dataset.tags || '').toLowerCase();
+        const okP = p ? people.includes(p) : true;
+        const okT = t ? tags.includes(t) : true;
+        b.style.display = (okP && okT) ? '' : 'none';
+      });
+    }
+    fPerson?.addEventListener('input', applyFilters);
+    fTag?.addEventListener('input', applyFilters);
+    fClear?.addEventListener('click', () => { fPerson.value=''; fTag.value=''; applyFilters(); });
+
+  })();
+  </script>
+</body>
+</html>

@@ -1,4 +1,6 @@
 [
   { "title": "Lit 01 — TITLE A", "path": "lit_01.html", "thumb": "covers/title-a.jpg" },
+  { "title": "Lit 02 — TITLE B", "path": "lit_01.html", "thumb": "covers/title-b.jpg" },
+  { "title": "Lit 01 — TITLE A", "path": "lit_01.html", "thumb": "covers/title-a.jpg" },
   { "title": "Lit 02 — TITLE B", "path": "lit_01.html", "thumb": "covers/title-b.jpg" }
 ]

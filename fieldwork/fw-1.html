@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Fieldwork — Interview at Museum X</title>
+
+  <link rel="stylesheet" href="../assets/styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body{ font-family:'Inter',sans-serif; }
+    .meta-list{ list-style:none; padding:0; margin:0; }
+    .meta-list li + li{ margin-top:6px; }
+    .badge{ display:inline-block; padding:2px 8px; border:1px solid var(--line); border-radius:999px; font-size:.85rem; color:var(--muted); }
+    .inline-img{ max-width:100%; height:auto; vertical-align:baseline; }
+    .side-by-side{ display:flex; gap:12px; flex-wrap:wrap; }
+    .side-by-side figure{ flex:1 1 260px; }
+  </style>
+</head>
+<body>
+    
+  <header class="page-head">
+    <div class="container">
+      <div class="kicker">Fieldwork</div>
+      <h1 class="h1">Interview at Museum X (Folktale Curation)</h1>
+      <div class="page-meta">
+        <span><strong>Date:</strong> 2025-08-20</span>
+        <span><strong>Location:</strong> Hanoi</span>
+        <span><strong>People:</strong> Curator A, Docent B</span>
+        <span><strong>Method:</strong> Semi-structured interview · audio recorded</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:20px">
+    <div class="grid">
+      <!-- MAIN -->
+      <article class="span-8 stack measure order-1">
+
+        <section class="card">
+          <h2 class="h2">Context / Objective</h2>
+          <p>
+            I scheduled a semi-structured interview with Curator A to understand how folktales are currently
+            presented to audiences. I focused on narrative structure, interactive elements, and constraints
+            (space, conservation, audience expectations).
+          </p>
+        </section>
+
+        <section>
+          <h2 class="h2">What Happened</h2>
+
+          <!-- Between-paragraph image -->
+          <figure class="figure">
+            <img class="ratio" src="./shots/a.jpg" alt="Exhibition entry hall with folktale panel"/>
+            <figcaption class="figcap">Entry panel. Visitors clustered around an interactive kiosk retelling a local folktale.</figcaption>
+          </figure>
+
+          <p>
+            We toured the gallery and discussed the current folktale kiosk. The curator described how children
+            linger at stations when there’s a choice mechanic. I also observed an elderly group skipping the kiosk
+            entirely and moving straight to artifacts. I noted accessibility considerations and signage clarity.
+          </p>
+
+          <!-- Inline image inside paragraph -->
+          <p>
+            The kiosk presents three branches; <img class="inline-img" src="./shots/branch-ui.jpg" alt="Kiosk branching UI mockup" />
+            however, the choice labels are vague (e.g., “A path opens”). The curator wants more descriptive prompts
+            and audio narration for non-readers.
+          </p>
+
+          <!-- Side-by-side images -->
+          <div class="side-by-side">
+            <figure class="figure">
+              <img src="./shots/kiosk.jpg" alt="Kiosk station"/>
+              <figcaption class="figcap">Kiosk station with physical buttons.</figcaption>
+            </figure>
+            <figure class="figure">
+              <img src="./shots/signage.jpg" alt="Exhibit signage close-up"/>
+              <figcaption class="figcap">Signage typography is small for longer folktale passages.</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="h2">Key Observations / Insights</h2>
+          <ul>
+            <li>Choice-based narratives increase dwell time for children; older audiences prioritize artifacts.</li>
+            <li>Branch labels are too abstract; descriptive prompts likely improve comprehension.</li>
+            <li>Audio narration and bigger type would broaden accessibility.</li>
+            <li>Folktale variants can be surfaced as “alternate paths” without overwhelming visitors.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2 class="h2">Reflection</h2>
+          <p>
+            This session reinforces a dual-track presentation: concise artifact-first routes and deeper branching
+            folktale paths for engaged visitors. For the web prototype, I’ll retain branching but clarify prompts
+            and add optional audio. The folktale “variant” mechanic can house regional differences without
+            feeling exhaustive.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="h2">Next Actions</h2>
+          <ul>
+            <li>Prototype clearer branch labels and prompt text; test with 3–5 users.</li>
+            <li>Add audio narration toggle and evaluate load time on mobile.</li>
+            <li>Map one folktale with 2–3 regional variants as optional branches.</li>
+          </ul>
+        </section>
+      </article>
+
+      <!-- SIDEBAR -->
+      <aside class="span-4 order-2 stack">
+        <section class="card">
+          <h2 class="h2">Materials</h2>
+          <ul class="meta-list">
+            <li>Interview guide (v1)</li>
+            <li>Consent form (signed)</li>
+            <li>Audio recorder (46 mins)</li>
+            <li>Sketches / photos (12)</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2 class="h2">Tags</h2>
+          <p>
+            <span class="badge">Interview</span>
+            <span class="badge">Folktales</span>
+            <span class="badge">Accessibility</span>
+          </p>
+        </section>
+
+        <!-- Dynamic Prev / Next for fieldwork -->
+        <section class="card">
+          <h2 class="h2">Navigation</h2>
+          <ul class="meta-list" data-prevnext data-json="../assets/fieldwork.json">
+            <!-- Auto-filled by prevnext_universal.js -->
+          </ul>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Universal Prev/Next (your generic script) -->
+  <script src="../assets/prevnext_universal.js" defer></script>
+</body>
+</html>
