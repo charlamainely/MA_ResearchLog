@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Research Log Content Generator</title>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f4f4f4;
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    .container {
+      background: #fff;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: 'Inter', sans-serif;
+      box-sizing: border-box;
+    }
+    textarea {
+      min-height: 100px;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      margin-right: 10px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #outputContainer {
+      margin-top: 40px;
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 8px;
+      display: none;
+      position: relative;
+    }
+    #outputCode {
+      width: 100%;
+      height: 400px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      background: #eee;
+      border: 1px solid #ccc;
+      padding: 10px;
+      box-sizing: border-box;
+      resize: vertical;
+    }
+    #copyButton {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 8px 12px;
+      background-color: #28a745;
+      font-size: 14px;
+      font-weight: 400;
+    }
+    #copyButton:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Research Log Content Generator</h1>
+      <p>Fill in the fields below to generate the HTML content for the weekly log. Copy the output and save as html file in according folder.</p>
+    </header>
+
+    <form id="logForm">
+      <div class="form-group">
+        <label for="weekTitle">Week Title:</label>
+        <input type="text" id="weekTitle" required placeholder="e.g., Week 05 — Storytelling as ICH Practice...">
+      </div>
+      <div class="form-group">
+        <label for="dates">Dates:</label>
+        <input type="text" id="dates" required placeholder="e.g., 2025-09-15 → 2025-09-21">
+      </div>
+      <div class="form-group">
+        <label for="activities">Activities (use Markdown `*` for bullet points):</label>
+        <textarea id="activities"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="reflection">Reflection (plain text, separate paragraphs with a blank line):</label>
+        <textarea id="reflection"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="literature">Literature This Week (use Markdown `*` for bullet points):</label>
+        <textarea id="literature"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="tasks">Tasks (use Markdown `*` for bullet points):</label>
+        <textarea id="tasks"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="links">Links (use Markdown `*` for bullet points):</label>
+        <textarea id="links"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="toDo">To Do (use Markdown `*` for bullet points):</label>
+        <textarea id="toDo"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="researchQuestion">Research Question (plain text):</label>
+        <textarea id="researchQuestion"></textarea>
+      </div>
+
+      <button type="button" onclick="generateAndShowCode()">Generate HTML Code</button>
+    </form>
+  </div>
+
+  <div id="outputContainer">
+    <h2>Generated HTML Code</h2>
+    <button id="copyButton" onclick="copyCode()">Copy Code</button>
+    <textarea id="outputCode" readonly></textarea>
+  </div>
+
+  <script>
+    function generateHTMLContent() {
+      const weekTitle = document.getElementById('weekTitle').value;
+      const dates = document.getElementById('dates').value;
+      const activitiesMarkdown = document.getElementById('activities').value;
+      const reflectionText = document.getElementById('reflection').value;
+      const literatureMarkdown = document.getElementById('literature').value;
+      const tasksMarkdown = document.getElementById('tasks').value;
+      const linksMarkdown = document.getElementById('links').value;
+      const toDoMarkdown = document.getElementById('toDo').value;
+      const researchQuestionText = document.getElementById('researchQuestion').value;
+
+      // Helper function to convert Markdown list to HTML
+      function markdownToList(markdown) {
+        if (!markdown) return '';
+        const items = markdown.split('\n').filter(item => item.trim() !== '');
+        return items.map(item => {
+          const content = item.trim().startsWith('* ') ? item.trim().substring(2).trim() : item.trim();
+          return `<li>\n  ${content}\n</li>`;
+        }).join('\n');
+      }
+
+      // Helper function to convert paragraphs
+      function textToParagraphs(text) {
+        if (!text) return '';
+        const paragraphs = text.split('\n\n').filter(p => p.trim() !== '');
+        return paragraphs.map(p => `<p class="measure">\n  ${p.trim()}\n</p>`).join('\n\n');
+      }
+
+      const activitiesHtml = markdownToList(activitiesMarkdown);
+      const reflectionHtml = textToParagraphs(reflectionText);
+      const literatureHtml = markdownToList(literatureMarkdown);
+      const tasksHtml = markdownToList(tasksMarkdown);
+      const linksHtml = markdownToList(linksMarkdown);
+      const toDoHtml = markdownToList(toDoMarkdown);
+      const researchQuestionHtml = textToParagraphs(researchQuestionText);
+
+      return `
+  <header class="page-head">
+    <div class="container">
+      <div class="kicker">Weekly Log</div>
+      <h1 class="h1">${weekTitle}</h1>
+      <div class="page-meta">
+        <span class="badge">Dates: ${dates}</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:20px">
+    <div class="grid">
+
+      <article class="span-8 measure stack order-1">
+
+        <section id="actual">
+          <h2 class="h2">Activities</h2>
+          <ul>
+            ${activitiesHtml}
+          </ul>
+        </section>
+
+        <section id="reflection">
+          <h2 class="h2">Reflection</h2>
+          ${reflectionHtml}
+        </section>
+
+        <section id="literature">
+          <h2 class="h2">Literature This Week</h2>
+          <ul class="meta-list">
+            ${literatureHtml}
+          </ul>
+        </section>
+
+        <section id="decisions">
+          <h2 class="h2">Tasks</h2>
+          <ul>
+            ${tasksHtml}
+          </ul>
+        </section>
+
+        <section id="resources">
+          <h2 class="h2">Links</h2>
+          <ul class="meta-list">
+            ${linksHtml}
+          </ul>
+        </section>
+
+      </article>
+
+      <aside class="span-4 stack">
+        <section class="card">
+          <h2 class="h2">To Do</h2>
+          <ul class="meta-list">
+            ${toDoHtml}
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2 class="h2">Research Question</h2>
+          <p class="measure">
+            ${researchQuestionHtml}
+          </p>
+        </section>
+
+        <section class="card">
+          <h2 class="h2">Navigation</h2>
+          <ul class="meta-list" data-prevnext data-json="../assets/weeks.json"></ul>
+        </section>
+      </aside>
+
+    </div>
+  </main>
+`;
+    }
+
+    function generateAndShowCode() {
+      const output = generateHTMLContent();
+      const outputCodeElement = document.getElementById('outputCode');
+      const outputContainer = document.getElementById('outputContainer');
+      outputCodeElement.value = output.trim();
+      outputContainer.style.display = 'block';
+    }
+
+    function copyCode() {
+      const outputCodeElement = document.getElementById('outputCode');
+      outputCodeElement.select();
+      document.execCommand('copy');
+      alert('Code copied to clipboard!');
+    }
+  </script>
+
+</body>
+</html>

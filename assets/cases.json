@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Case 01 — Interactive Folktale Kiosk",
+    "path": "kiosk.html",
+    "thumb": "shots/kiosk.jpg",
+    "meta": "Museum X · 2024"
+  },
+  {
+    "title": "Case 02 — Story Map Microsite",
+    "path": "story-map.html",
+    "thumb": "shots/story-map.jpg",
+    "meta": "Cultural Board · 2023"
+  }
+]

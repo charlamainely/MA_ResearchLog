@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Interaction Design at Singapore National Gallery</title>
+
+  <link rel="stylesheet" href="../assets/styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+  <header class="page-head">
+    <div class="container">
+      <div class="kicker">Fieldwork</div>
+      <h1 class="h1">Investigating Interaction Designs at Singapore National Gallery</h1>
+      <div class="page-meta">
+        <span><strong>Date:</strong> 2025-08-30</span>
+        <span><strong>Location:</strong> Singapore</span>
+        <span><strong>Method:</strong> Observation & Interaction</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:20px">
+    <div class="grid">
+      <!-- MAIN -->
+      <article class="span-8 stack measure order-1">
+
+        <section class="card">
+          <h2 class="h2">Context & Objective</h2>
+          <p>
+            Knowing that I want to design an interaction that helps translate expansive cultural content into a digestible and engaging experience, I wanted to explore if the exhibitions at Singapore Botanic Gardens have implemented any interactive design and explore how effective they are at supporting the exhibition content.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="h2">What Happened</h2>
+
+          <!-- Between-paragraph image -->
+          <figure class="figure">
+            <img class="ratio" src="./shots/a.jpg" alt="Exhibition entry hall with folktale panel"/>
+            <figcaption class="figcap">Entry panel. Visitors clustered around an interactive kiosk retelling a local folktale.</figcaption>
+          </figure>
+
+          <p>
+            During our walk around the Centre for Ethnobotany, I found a very beautiful interaction display called 'Burkill's Dictionary', which is a a digitized version of Burkill's Dictionary of the Economic Products of the Malay Peninsula in a space designed to resemble his study, allowing visitors to explore excerpts from the 1935 document on useful tropical plants and their indigenous knowledge. 
+          </p>
+          <p>
+            With the heavy text content, the interaction was designed to resemble the physical book, and visitors can 'flip' the page to see the content, which is quite immersive. The entire interaction is designed very beautifully and looks like a dated manuscript, which is fitting with the theme and the spatial design of the building.
+            However, aside from the flipping pages, I felt that the display doesn't employ any further interaction design and was still heavily reliant on long text content with occasional images.
+          </p>
+
+          <!-- Inline image inside paragraph -->
+          <p>
+            The kiosk presents three branches; <img class="inline-img" src="./shots/branch-ui.jpg" alt="Kiosk branching UI mockup" />
+            however, the choice labels are vague (e.g., “A path opens”). The curator wants more descriptive prompts
+            and audio narration for non-readers.
+          </p>
+
+          <!-- Side-by-side images -->
+          <div class="side-by-side">
+            <figure class="figure">
+              <img src="./shots/kiosk.jpg" alt="Kiosk station"/>
+              <figcaption class="figcap">Kiosk station with physical buttons.</figcaption>
+            </figure>
+            <figure class="figure">
+              <img src="./shots/signage.jpg" alt="Exhibit signage close-up"/>
+              <figcaption class="figcap">Signage typography is small for longer folktale passages.</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section>
+          <h2 class="h2">Key Observations / Insights</h2>
+          <ul>
+            <li>Choice-based narratives increase dwell time for children; older audiences prioritize artifacts.</li>
+            <li>Branch labels are too abstract; descriptive prompts likely improve comprehension.</li>
+            <li>Audio narration and bigger type would broaden accessibility.</li>
+            <li>Folktale variants can be surfaced as “alternate paths” without overwhelming visitors.</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2 class="h2">Reflection</h2>
+          <p>
+            This session reinforces a dual-track presentation: concise artifact-first routes and deeper branching
+            folktale paths for engaged visitors. For the web prototype, I’ll retain branching but clarify prompts
+            and add optional audio. The folktale “variant” mechanic can house regional differences without
+            feeling exhaustive.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="h2">Next Actions</h2>
+          <ul>
+            <li>Prototype clearer branch labels and prompt text; test with 3–5 users.</li>
+            <li>Add audio narration toggle and evaluate load time on mobile.</li>
+            <li>Map one folktale with 2–3 regional variants as optional branches.</li>
+          </ul>
+        </section>
+      </article>
+
+      <!-- SIDEBAR -->
+      <aside class="span-4 order-2 stack">
+        <section class="card">
+          <h2 class="h2">Materials</h2>
+          <ul class="meta-list">
+            <li>Photos</li>
+            <li>Video Recordings</li>
+            <li>Written reflections</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2 class="h2">Tags</h2>
+          <p>
+            <span class="badge">Interactions</span>
+          </p>
+        </section>
+
+        <!-- Dynamic Prev / Next for fieldwork -->
+        <section class="card">
+          <h2 class="h2">Navigation</h2>
+          <ul class="meta-list" data-prevnext data-json="../assets/fieldwork.json">
+            <!-- Auto-filled by prevnext_universal.js -->
+          </ul>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <!-- Universal Prev/Next (your generic script) -->
+  <script src="../assets/prevnext_universal.js" defer></script>
+</body>
+</html>

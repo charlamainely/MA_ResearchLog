@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Framework Log</title>
+  <link rel="stylesheet" href="../assets/styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    .meta-list{ list-style:none; padding:0; margin:0; }
+    .meta-list li+li{ margin-top:6px; }
+    .block{ scroll-margin-top: 88px; }
+    .block-head{ display:flex; gap:12px; align-items:baseline; flex-wrap:wrap; }
+    .block-title{ margin:0; }
+    .block-meta{ color: var(--muted); font-size:.9rem; display:flex; gap:10px; flex-wrap:wrap; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <div id="navbar"></div>
+  <script src="../assets/nav-inject.js" defer></script>
+
+  <header class="page-head">
+    <div class="container">
+      <div class="kicker">Framework</div>
+      <h1 class="h1">Design Framework Log</h1>
+      <p class="measure">A running record of framework updates. Newest entries appear first.</p>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:20px">
+    <div class="grid">
+      <section class="span-8 stack order-1" id="log">
+
+        <!-- ===== BLOCK TEMPLATE (copy for each new update) =====
+             id: unique slug; data-date: ISO YYYY-MM-DD (or full datetime)
+        -->
+        <article class="card block" id="2025-09-10-branching-clarity" data-date="2025-09-10">
+          <div class="block-head">
+            <h2 class="h2 block-title">Clarified branching labels</h2>
+            <div class="block-meta"><span>2025-09-10</span></div>
+          </div>
+          <p class="page-meta"><strong>Summary:</strong> Rewrote choice prompts to verb+noun format.</p>
+
+          <h3 class="h3">Content & Graphic</h3>
+          <p>Branch labels moved from poetic to descriptive (“A path opens” → “Follow the footprints”).</p>
+          <figure class="figure">
+            <img class="ratio" src="../fieldwork/shots/branch-ui.jpg" alt="New branch prompt examples">
+            <figcaption class="figcap">Prompt set v2 used in A/B test.</figcaption>
+          </figure>
+
+          <h3 class="h3">Links & References</h3>
+          <ul class="meta-list">
+            <li>Peer log: <a href="../peer/index.html?id=2025-09-08-folktales-branching">2025-09-08 discussion</a></li>
+            <li>Case: <a href="../cases/kiosk.html">Interactive kiosk</a></li>
+          </ul>
+        </article>
+
+        <article class="card block" id="2025-09-03-scope-folktales" data-date="2025-09-03">
+          <div class="block-head">
+            <h2 class="h2 block-title">Scoped ICH to folktales</h2>
+            <div class="block-meta"><span>2025-09-03</span></div>
+          </div>
+          <p class="page-meta"><strong>Summary:</strong> Framework now prototypes ICH via folktale strand first.</p>
+
+          <h3 class="h3">Content & Graphic</h3>
+          <p>Folktales give a concrete content model (characters, motifs, regional variants), letting UI patterns
+            (branching, glossary, provenance notes) be tested meaningfully.</p>
+          <figure class="figure">
+            <img class="ratio" src="./diagram/scope-folktales.png" alt="Scope diagram">
+            <figcaption class="figcap">Scope diagram: folktales as first-class strand.</figcaption>
+          </figure>
+
+          <h3 class="h3">Links & References</h3>
+          <ul class="meta-list">
+            <li>Peer log: <a href="../peer/index.html?id=2025-09-03-ich-scope">ICH scope narrowing</a></li>
+          </ul>
+        </article>
+
+      </section>
+
+      <!-- Sidebar -->
+      <aside class="span-4 order-2 stack">
+        <section class="card">
+          <h2 class="h2">About this Log</h2>
+          <p class="measure">One long page. Each entry: title, date, summary, content/graphic, links.</p>
+        </section>
+        <section class="card">
+          <h2 class="h2">Add a New Block</h2>
+          <p>Duplicate any block, change <code>id</code> and <code>data-date</code>, then fill sections.</p>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+  (function(){
+    // newest first
+    const container = document.getElementById('log');
+    const blocks = Array.from(container.querySelectorAll('.block'));
+    blocks.sort((a,b)=> new Date(b.dataset.date)-new Date(a.dataset.date));
+    blocks.forEach(b => container.appendChild(b));
+
+    // deep link: ?id=slug
+    const id = new URLSearchParams(location.search).get('id');
+    if (id){ const el = document.getElementById(id); el?.scrollIntoView({behavior:'smooth'}); el?.focus?.(); }
+  })();
+  </script>
+</body>
+</html>

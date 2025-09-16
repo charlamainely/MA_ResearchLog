@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Case Studies</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Navbar -->
+  <div id="navbar"></div>
+  <script src="../assets/nav-inject.js" defer></script>
+
+  <!-- Header -->
+  <header class="page-head">
+    <div class="container">
+      <h1 class="h1">Case Studies</h1>
+      <p class="page-meta">Browse and preview case studies, then open full pages.</p>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="container" style="padding-top:20px">
+    <div id="subwrap" class="subwrap" data-json="../assets/cases.json">
+      <section id="cards" class="gallery-tiles" aria-label="Case studies"></section>
+
+      <aside id="preview" class="preview" aria-hidden="true" role="dialog">
+        <div class="preview-head">
+          <a id="open-full" class="btn" target="_blank" rel="noopener">Open full page ↗</a>
+          <button id="close-preview" class="btn" type="button" aria-label="Close preview">Close</button>
+        </div>
+        <div class="preview-placeholder"><p>Click on a case to preview it here</p></div>
+        <iframe id="pv-frame" class="preview-iframe" title="Case preview" loading="lazy" referrerpolicy="no-referrer"></iframe>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+  (function(){
+    const subwrap = document.getElementById('subwrap');
+    const cards   = document.getElementById('cards');
+    const preview = document.getElementById('preview');
+    const frame   = document.getElementById('pv-frame');
+    const openBtn = document.getElementById('open-full');
+    const closeBtn= document.getElementById('close-preview');
+
+    const jsonPath= subwrap.getAttribute('data-json'); // ../assets/cases.json
+    const baseDir = location.pathname.replace(/\/[^\/]*$/, '/'); // /.../cases/
+    const hrefFor = rel => new URL((rel||'').replace(/^\//,''), location.origin + baseDir).href;
+
+    function renderCard(it,i){
+      const thumb = it.thumb ? `<img src="${hrefFor(it.thumb)}" alt="" loading="lazy">`
+                             : `<div aria-hidden="true" style="width:100%;height:100%;background:#e5e7eb;"></div>`;
+      return `
+      <article class="gallery-item" data-index="${i}" tabindex="0" aria-haspopup="dialog" style="width:150px;height:150px;">
+        <div class="gallery-item-frame">${thumb}</div>
+        <div class="gallery-item-title">${it.title || 'Untitled'}</div>
+      </article>`;
+    }
+
+    function renderCards(list){
+      cards.innerHTML = list.map(renderCard).join('');
+      cards.querySelectorAll('.gallery-item').forEach(el=>{
+        const idx = +el.dataset.index;
+        el.addEventListener('click', ()=>openPreview(list[idx]));
+        el.addEventListener('keydown', e=>{
+          if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openPreview(list[idx]); }
+        });
+      });
+      const want = new URLSearchParams(location.search).get('preview');
+      if (want){
+        const item = list.find(x => (x.path||'').replace(/^\.\//,'') === want.replace(/^\.\//,''));
+        if (item) openPreview(item, false);
+      }
+    }
+
+    function openPreview(item, push=true){
+      subwrap.classList.add('open');
+      preview.classList.add('showing-iframe');
+      const url = hrefFor(item.path);
+      frame.src = url; openBtn.href = url;
+      preview.setAttribute('aria-hidden','false');
+      if (push){
+        const u=new URL(location.href);
+        u.searchParams.set('preview',(item.path||'').replace(/^\.\//,''));
+        history.pushState({preview:item.path},'',u);
+      }
+      closeBtn.focus();
+    }
+    function closePreview(){
+      subwrap.classList.remove('open');
+      preview.classList.remove('showing-iframe');
+      frame.removeAttribute('src');
+      preview.setAttribute('aria-hidden','true');
+      const u=new URL(location.href); u.searchParams.delete('preview'); history.pushState({},'',u);
+      cards.querySelector('.gallery-item')?.focus();
+    }
+
+    closeBtn.addEventListener('click', closePreview);
+    window.addEventListener('keydown', e=>{ if(e.key==='Escape') closePreview(); });
+    window.addEventListener('popstate', ()=>{ const want=new URL(location.href).searchParams.get('preview'); if(!want) closePreview(); });
+
+    fetch(jsonPath,{cache:'no-store'}).then(r=>{ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+      .then(renderCards)
+      .catch(err=>{ console.error(err); cards.innerHTML = `<p class="page-meta">Could not load <code>${jsonPath}</code>.</p>`; });
+  })();
+  </script>
+</body>
+</html>
