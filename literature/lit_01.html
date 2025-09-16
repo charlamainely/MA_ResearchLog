@@ -1,35 +1,23 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Reflective Practioner</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>The Reflective Practitioner</title>
+
+  <!-- Universal CSS + fonts -->
+  <link rel="stylesheet" href="../assets/styles.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Your 12-col grid + tokens (container, grid, spans, card, figure, etc.) -->
-  <link rel="stylesheet" href="../assets/styles.css" />
-  <!-- ^ Adjust to /assets/styles.css if this page is at the site root -->
-
-  <style>
-    body { font-family: 'Inter', sans-serif; }
-    /* Tiny helpers specific to this template only */
-    .meta-list { list-style: none; padding: 0; margin: 0; }
-    .meta-list li + li { margin-top: 6px; }
-    .badge { display:inline-block; padding:2px 8px; border:1px solid var(--line); border-radius:999px; font-size:.85rem; color:var(--muted); }
-    .quote { font-size:1.05rem; line-height:1.6; }
-    .cite { color: var(--muted); font-size:.9rem; }
-  </style>
 </head>
 <body>
   <!-- Page header -->
   <header class="page-head">
     <div class="container">
-      <div class="kicker">Literature Review</div>
-      <h1 class="h1">The Reflective Practioner</h1>
+      <div class="kicker">Literature</div>
+      <h1 class="h1">The Reflective Practitioner</h1>
       <div class="page-meta">
-        <span><strong>Author:</strong>Donald A. Schon</span>
-        <span><strong>Year:</strong> 1983</span>
-        <span><strong>Type:</strong> Book</span>
+        <span>Donald A. Schön</span>
+        <span>Key concepts: reflection-in-action, reframing, repertoire, sketching, affirmation logic</span>
       </div>
     </div>
   </header>
@@ -37,92 +25,96 @@
   <main class="container" style="padding-top:20px">
     <div class="grid">
 
-      <!-- MAIN CONTENT (left) -->
+      <!-- MAIN -->
       <article class="span-8 stack measure order-1">
 
-        <!-- Summary / abstract (optional) -->
         <section class="card">
-          <h2 class="h2">Summary</h2>
-          <p><!-- 2–4 lines summarizing the work’s focus and scope. --></p>
+          <h2 class="h2">Work</h2>
+          <p><strong>Schön, Donald A.</strong> <em>The Reflective Practitioner: How Professionals Think in Action</em>. (Cite your edition: publisher, year).</p>
         </section>
 
-        <!-- Key Takeaways -->
         <section>
           <h2 class="h2">Key Takeaways</h2>
           <ul>
-            <li><!-- Takeaway 1: concrete insight --></li>
-            <li><!-- Takeaway 2 --></li>
-            <li><!-- Takeaway 3 --></li>
+            <li><strong>What counts as a practice</strong> (p.60): practices repeat situation-types; risk of becoming “over-learned” → reflection counters routine blindness.</li>
+            <li><strong>Reflection-in-action loop</strong> (pp.129–133): in uncertain/unique cases, avoid default “standard techniques”; instead <em>reframe → experiment → re-appreciate</em> as unintended outcomes appear (“appreciation → action → re-appreciation”).</li>
+            <li><strong>Reframing prompts</strong> (p.133): solvability, desirability (“Do I like what I get?”), coherence, values congruence, and “Have I kept inquiry moving?”.</li>
+            <li><strong>Logic of affirmation</strong> (p.155): practice privileges change; failed moves trigger critique of the implicit theory → restructure → test a new move.</li>
+            <li><strong>Sketchpad as “virtual world”</strong> (pp.158–159): sketching enables rapid, low-constraint trials and noticing unintended results; insights must transfer to the built world.</li>
+            <li><strong>Practice as research</strong> (p.308): practitioners can be reflective researchers amid uncertainty and conflict.</li>
+            <li><strong>Frames analysis steer action</strong> (p.309): frames set strategy and encode values.</li>
+            <li><strong>Repertoire building research</strong> (p.315): accumulated examples strengthen in-action judgment and reframing.</li>
           </ul>
         </section>
 
-        <!-- Critical Reflections (your voice) -->
-        <section>
-          <h2 class="h2">Critical Reflections</h2>
-          <p><!-- What you agree/disagree with; implications for your practice; limits, gaps. --></p>
-          <p><!-- How this reframes your approach (e.g., Flash nostalgia → native web; folktales as ICH). --></p>
-        </section>
-
-        <!-- Pull-out: quote OR diagram -->
-        <section>
-          <h2 class="h2">Notable Passage</h2>
-          <blockquote class="quote callout">
-            “<!-- Short quote (<= 50 words) that captures the argument or method. -->”
-            <div class="cite">— Author, <em>Title</em>, p. 60</div>
-          </blockquote>
-        </section>
-
-        <hr class="rule" />
-
-        <!-- Application to your project -->
-        <section>
-          <h2 class="h2">How This Informs My Project</h2>
-          <ul>
-            <li><!-- Concrete design change or decision influenced by this work. --></li>
-            <li><!-- Link to a week log, case study, or fieldwork that uses this idea. --></li>
-          </ul>
-        </section>
-
-        <!-- (Optional) Cross-links -->
         <section class="card">
-          <h2 class="h2">Referenced In</h2>
+          <h2 class="h2">Reflections / Critical Notes</h2>
+          <p>
+            In this MA, my practice is <strong>game design + prototyping + user testing</strong> toward preserving ICH.
+            Schön’s loop maps cleanly onto my process: start with a problem framing, test a specific mechanic observe consequences,
+            and look out for unintended outcomes to refocus the next iteration.
+            To avoid “over-learning,” I’ll log new insights from each playtest and use them as evidence against my current design theory.
+          </p>
+          <p>
+            My position as a game designer drawn to oral traditions of Vietnam shapes how I read Schön:
+            I naturally prioritize games mechanics and entertainment values, which could undermine cultural nuances if not careful.
+            I’m also early-career; novelty to the practice makes reframing feel “easier,” but limited repertoire can slow sense-making.
+            I will therefore (a) state my <strong>values frame</strong> (community engagement, storytelling practices, accessibility)
+            in each prototype note, and (b) expand a <strong>repertoire</strong> of interactive design/mechanics to strengthen my in-action choices.
+          </p>
+
+          <h3 class="h3">Integrating Reflection-in-Action in my workflow</h3>
+          <ul>
+            <li><strong>Frame statement</strong> per sprint (1–2 lines: aim + values + audience).</li>
+            <li><strong>Affirmation logic log</strong>: when a move fails, write the implicit theory → revise → specify the next move to test.</li>
+            <li><strong>RiA questions</strong> (p.133) 'Can I solve the problem I have set?',
+            'Do I like what I get when I solve this problem?',
+            'Have I made the situation coherent?',
+            'Have I made it congruent with my fundamental values and theories?',
+            'Have I kept inquiry moving?'
+</li>
+            <li><strong>Transfer check</strong> for sketches: pair each “virtual” sketch with a micro-prototype and 2–3 quick user checks.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="h2">Links & References</h2>
           <ul class="meta-list">
-            <li>Weekly Log: <a href="../log/week-04.html">Week 04 — Folktales focus</a></li>
-            <li>Case Study: <a href="../cases/work-a.html">Work A</a></li>
+            <li>Schön, D. A. <em>The Reflective Practitioner</em>. (1st edition, Basic Books, 1984). Cited pp. 60, 63, 129–133, 136, 155, 158–159, 308–309, 315.</li>
+            <!-- Add stable links or catalogue entries if you have them -->
           </ul>
         </section>
       </article>
 
-      <!-- SIDEBAR (right) -->
+      <!-- SIDEBAR -->
       <aside class="span-4 order-2 stack">
-        <!-- Cover -->
+        <!-- Optional cover/thumbnail -->
         <figure class="figure">
-          <img src="../literature/covers/example-cover.jpg" alt="Book/article cover" />
-          <figcaption class="figcap">Cover image (source / credit if needed).</figcaption>
+          <img src="lit_images/reflection_practitioner.jpg" alt="Book cover: The Reflective Practitioner"/>
+          <figcaption class="figcap">Book cover of the edition I borrowed from the library</figcaption>
         </figure>
 
-        <!-- Citation details -->
         <section class="card">
-          <h2 class="h2">Details</h2>
-          <ul class="meta-list">
-            <li><strong>Full Citation:</strong> <!-- e.g., MLA/APA entry here. --></li>
-            <li><strong>Publisher / Venue:</strong> <!-- Journal / Press --></li>
-            <li><strong>DOI / URL:</strong> <a href="#" target="_blank" rel="noopener">View source</a></li>
-            <li><strong>Notes:</strong> <!-- edition / translator / etc. --></li>
-          </ul>
+          <h2 class="h2">Tags</h2>
+          <p>
+            <span class="badge">reflection-in-action</span>
+            <span class="badge">reframing</span>
+            <span class="badge">repertoire</span>
+            <span class="badge">sketching</span>
+            <span class="badge">practice-based research</span>
+            <span class="badge">ICH</span>
+          </p>
         </section>
-        <!-- Prev / Next (dynamic) -->
+
         <section class="card">
           <h2 class="h2">Navigation</h2>
-          <ul class="meta-list" data-prevnext data-json="../assets/literature.json">
-            <!-- Auto-filled by your universal script -->
-          </ul>
+          <ul class="meta-list" data-prevnext data-json="../assets/literature.json"></ul>
         </section>
       </aside>
     </div>
   </main>
 
-  <!-- Universal Prev/Next (the generic script you named prevnext_universal.js) -->
+  <!-- Prev/Next wiring -->
   <script src="../assets/prevnext_universal.js" defer></script>
 </body>
 </html>

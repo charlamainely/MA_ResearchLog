@@ -1,14 +1,8 @@
 [
   {
-    "title": "Case 01 — Interactive Folktale Kiosk",
-    "path": "kiosk.html",
+    "title": "Making Beshbarmak: Games for Central Asian Cultural Heritage",
+    "path": "case-1.html",
     "thumb": "shots/kiosk.jpg",
-    "meta": "Museum X · 2024"
-  },
-  {
-    "title": "Case 02 — Story Map Microsite",
-    "path": "story-map.html",
-    "thumb": "shots/story-map.jpg",
-    "meta": "Cultural Board · 2023"
+    "meta": "Interactive Game · 2024"
   }
 ]
