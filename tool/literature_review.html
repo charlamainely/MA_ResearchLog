@@ -1,0 +1,60 @@
+<header class="page-head">
+    <div class="container">
+      <div class="kicker">Literature</div>
+      <h1 class="h1">${title}</h1>
+      <div class="page-meta">
+        <span>${author}</span>
+        <span>Key concepts: ${keyConcepts}</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:20px">
+    <div class="grid">
+
+      <article class="span-8 stack measure order-1">
+
+        <section class="card">
+          <h2 class="h2">Work</h2>
+          <p>${work}</p>
+        </section>
+
+        <section>
+          <h2 class="h2">Key Takeaways</h2>
+          <ul>
+            ${takeawaysHtml}
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2 class="h2">Reflections / Critical Notes</h2>
+          ${reflectionsHtml}
+        </section>
+
+        <section>
+          <h2 class="h2">Links & References</h2>
+          <ul class="meta-list">
+            ${referencesHtml}
+          </ul>
+        </section>
+      </article>
+
+      <aside class="span-4 order-2 stack">
+        ${coverImageHtml}
+
+        <section class="card">
+          <h2 class="h2">Tags</h2>
+          <p>
+            ${tagsHtml}
+          </p>
+        </section>
+
+        <section class="card">
+          <h2 class="h2">Navigation</h2>
+          <ul class="meta-list" data-prevnext data-json="../assets/literature.json"></ul>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <script src="../assets/prevnext_universal.js" defer></script>

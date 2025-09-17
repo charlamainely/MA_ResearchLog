@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>${title}</title>
+
+  <link rel="stylesheet" href="../assets/styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+  <header class="page-head">
+    <div class="container">
+      <div class="kicker">Fieldwork</div>
+      <h1 class="h1">${title}</h1>
+      <div class="page-meta">
+        <span><strong>Date:</strong> ${date}</span>
+        <span><strong>Location:</strong> ${location}</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:20px">
+    <div class="grid">
+      <article class="span-8 stack measure order-1">
+
+        <section class="card">
+          <h2 class="h2">Summary</h2>
+          ${summaryHtml}
+        </section>
+
+        <section>
+          <h2 class="h2">Observations</h2>
+          <ul>
+            ${observationsHtml}
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="h2">Photos & Visuals</h2>
+          ${photosHtml}
+        </section>
+
+        <section>
+          <h2 class="h2">Challenges & Reflections</h2>
+          ${challengesHtml}
+        </section>
+
+        <section>
+          <h2 class="h2">Next Steps</h2>
+          <ul>
+            ${next_stepsHtml}
+          </ul>
+        </section>
+      </article>
+
+      <aside class="span-4 order-2 stack">
+        <section class="card">
+          <h2 class="h2">Materials</h2>
+          <ul class="meta-list">
+            <li>Photos</li>
+            <li>Video Recordings</li>
+            <li>Written reflections</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2 class="h2">Navigation</h2>
+          <ul class="meta-list" data-prevnext data-json="../assets/fieldwork.json">
+            </ul>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <script src="../assets/prevnext_universal.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<div id="navbar"></div>
+  <script src="../assets/nav-inject.js" defer></script>
+
+  <header class="page-head">
+    <div class="container">
+      <div class="kicker">Weekly Log</div>
+      <h1 class="h1">${weekTitle}</h1>
+      <div class="page-meta">
+        <span class="badge">Dates: ${dates}</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:20px">
+    <div class="grid">
+
+      <article class="span-8 measure stack order-1">
+
+        <section id="actual">
+          <h2 class="h2">Activities</h2>
+          <ul>
+            ${activitiesHtml}
+          </ul>
+        </section>
+
+        <section id="reflection">
+          <h2 class="h2">Reflection</h2>
+          ${reflectionHtml}
+        </section>
+
+        <section id="literature">
+          <h2 class="h2">Literature This Week</h2>
+          <ul class="meta-list">
+            ${literatureHtml}
+          </ul>
+        </section>
+
+        <section id="decisions">
+          <h2 class="h2">Tasks</h2>
+          <ul>
+            ${tasksHtml}
+          </ul>
+        </section>
+
+        <section id="resources">
+          <h2 class="h2">Links</h2>
+          <ul class="meta-list">
+            ${linksHtml}
+          </ul>
+        </section>
+
+      </article>
+
+      <aside class="span-4 stack">
+        <section class="card">
+          <h2 class="h2">To Do</h2>
+          <ul class="meta-list">
+            ${toDoHtml}
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2 class="h2">Research Question</h2>
+          <p class="measure">
+            ${researchQuestionHtml}
+          </p>
+        </section>
+
+        <section class="card">
+          <h2 class="h2">Navigation</h2>
+          <ul class="meta-list" data-prevnext data-json="../assets/weeks.json"></ul>
+        </section>
+      </aside>
+
+    </div>
+  </main>
+
+  <script src="../assets/prevnext_universal.js" defer></script>

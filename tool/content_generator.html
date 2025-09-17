@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Content Generator</title>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f4f4f4;
+      padding: 20px;
+      margin: 0;
+    }
+    .main-container {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      max-width: 1200px; /* Adjust this value as needed for your screen size */
+      margin: 0 auto;
+    }
+    .form-content {
+      flex: 1;
+      min-width: 600px;
+      max-width: 900px;
+      background: #fff;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    input[type="text"], textarea, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: 'Inter', sans-serif;
+      box-sizing: border-box;
+    }
+    textarea {
+      min-height: 100px;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      margin-right: 10px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #outputContainer {
+      margin-top: 40px;
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 8px;
+      display: none;
+      position: relative;
+    }
+    #outputCode {
+      width: 100%;
+      height: 400px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      background: #eee;
+      border: 1px solid #ccc;
+      padding: 10px;
+      box-sizing: border-box;
+      resize: vertical;
+    }
+    #copyButton {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 8px 12px;
+      background-color: #28a745;
+      font-size: 10px;
+      font-weight: 400;
+    }
+    #copyButton:hover {
+      background-color: #218838;
+    }
+    .syntax-sidebar {
+      width: 300px;
+      position: sticky;
+      top: 20px;
+      height: calc(100vh - 40px);
+      overflow-y: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .syntax-sidebar h3 {
+      margin-top: 0;
+      font-size: 1.2rem;
+    }
+    .syntax-sidebar pre {
+      background: #f0f0f0;
+      padding: 10px;
+      border-radius: 4px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-family: 'Courier New', monospace;
+      font-size: 0.7rem;
+      position: relative;
+      cursor: pointer;
+    }
+    .syntax-sidebar pre:after {
+      content: 'Copy';
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      font-size: 0.75rem;
+      color: #777;
+      padding: 2px 2px;
+      background-color: #dfdfdf;
+      border-radius: 2px;
+    }
+    .syntax-sidebar pre:hover:after {
+      color: #000;
+    }
+    .syntax-sidebar p {
+        font-size: 0.7rem;
+        margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-container">
+    <div class="form-content">
+      <header>
+        <h1>Research Content Generator</h1>
+        <p>Select a template to generate the HTML content for your log or literature review.</p>
+      </header>
+
+      <div class="form-group">
+        <label for="templateSelector">Select Template:</label>
+        <select id="templateSelector" onchange="updateFormFields()">
+          <option value="weekly_log.html">Weekly Log</option>
+          <option value="literature_review.html">Literature Review</option>
+          <option value="fieldwork_log.html">Fieldwork Log</option>
+        </select>
+      </div>
+
+      <form id="logForm">
+        <div id="weeklyLogFields">
+          <div class="form-group">
+            <label for="weekTitle">Week Title:</label>
+            <input type="text" id="weekTitle" required placeholder="e.g., Week 05 — Storytelling as ICH Practice...">
+          </div>
+          <div class="form-group">
+            <label for="dates">Dates:</label>
+            <input type="text" id="dates" required placeholder="e.g., 2025-09-15 → 2025-09-21">
+          </div>
+          <div class="form-group">
+            <label for="activities">Activities:</label>
+            <textarea id="activities" placeholder="Use Markdown: * for bullet points, blank lines for paragraphs."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="reflection">Reflection:</label>
+            <textarea id="reflection" placeholder="Plain text, separate paragraphs with a blank line."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="literature">Literature This Week:</label>
+            <textarea id="literature" placeholder="Use Markdown: * for bullet points."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="tasks">Tasks:</label>
+            <textarea id="tasks" placeholder="Use Markdown: * for bullet points."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="links">Links:</label>
+            <textarea id="links" placeholder="Use Markdown: * for bullet points."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="toDo">To Do:</label>
+            <textarea id="toDo" placeholder="Use Markdown: * for bullet points."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="researchQuestion">Research Question:</label>
+            <textarea id="researchQuestion" placeholder="Plain text."></textarea>
+          </div>
+        </div>
+
+        <div id="literatureReviewFields" style="display: none;">
+          <div class="form-group">
+            <label for="litTitle">Book/Paper Title:</label>
+            <input type="text" id="litTitle" placeholder="e.g., The Reflective Practitioner">
+          </div>
+          <div class="form-group">
+            <label for="litAuthor">Author(s):</label>
+            <input type="text" id="litAuthor" placeholder="e.g., Donald A. Schön">
+          </div>
+          <div class="form-group">
+            <label for="litKeyConcepts">Key Concepts (comma-separated):</label>
+            <input type="text" id="litKeyConcepts" placeholder="e.g., reflection-in-action, reframing, repertoire">
+          </div>
+          <div class="form-group">
+            <label for="litCoverImage">Cover Image Path:</label>
+            <input type="text" id="litCoverImage" placeholder="e.g., lit_images/reflection_practitioner.jpg">
+          </div>
+          <div class="form-group">
+            <label for="litCoverCaption">Cover Image Caption:</label>
+            <input type="text" id="litCoverCaption" placeholder="e.g., Book cover of the edition I borrowed from the library">
+          </div>
+          <div class="form-group">
+            <label for="litWork">Work Citation:</label>
+            <textarea id="litWork" placeholder="e.g., Schön, Donald A. The Reflective Practitioner: How Professionals Think in Action."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="litTakeaways">Key Takeaways:</label>
+            <textarea id="litTakeaways" placeholder="Use Markdown: * for bullet points."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="litReflections">Reflections / Critical Notes:</label>
+            <textarea id="litReflections" placeholder="Use Markdown: * for bullet points, ### for headings."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="litReferences">Links & References:</label>
+            <textarea id="litReferences" placeholder="Use Markdown: * for bullet points."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="litTags">Tags (comma-separated):</label>
+            <input type="text" id="litTags" placeholder="e.g., ICH, reflection-in-action">
+          </div>
+        </div>
+
+        <div id="fieldworkLogFields" style="display: none;">
+          <div class="form-group">
+            <label for="fwTitle">Log Title:</label>
+            <input type="text" id="fwTitle" required placeholder="e.g., Fieldwork at National Heritage Board">
+          </div>
+          <div class="form-group">
+            <label for="fwLocation">Location:</label>
+            <input type="text" id="fwLocation" placeholder="e.g., Singapore, Singapore">
+          </div>
+          <div class="form-group">
+            <label for="fwDate">Date:</label>
+            <input type="text" id="fwDate" placeholder="e.g., 2025-10-01">
+          </div>
+          <div class="form-group">
+            <label for="fwSummary">Summary:</label>
+            <textarea id="fwSummary" placeholder="Plain text, separate paragraphs with a blank line."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="fwObservations">Observations:</label>
+            <textarea id="fwObservations" placeholder="Use Markdown: * for bullet points, blank lines for paragraphs."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="fwPhotos">Photos & Visuals:</label>
+            <textarea id="fwPhotos" placeholder="Use Markdown: ![]() and [[side-by-side: ...]] syntax."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="fwChallenges">Challenges & Reflections:</label>
+            <textarea id="fwChallenges" placeholder="Plain text, separate paragraphs with a blank line."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="fwNextSteps">Next Steps:</label>
+            <textarea id="fwNextSteps" placeholder="Use Markdown: * for bullet points."></textarea>
+          </div>
+        </div>
+
+        <button type="button" onclick="generateAndShowCode()">Generate HTML Code</button>
+      </form>
+      <div id="outputContainer">
+        <h2>Generated HTML Code</h2>
+        <button id="copyButton" onclick="copyCode()">Copy Code</button>
+        <textarea id="outputCode" readonly></textarea>
+      </div>
+    </div>
+
+    <aside class="syntax-sidebar">
+      <h3>Syntax Guide</h3>
+      <p>Click on any code block to copy it.</p>
+      
+      <h4>Lists</h4>
+      <pre onclick="copyToClipboard(this)">* This is a list item</pre>
+
+      <h4>Headings</h4>
+      <pre onclick="copyToClipboard(this)">### This is a sub-heading</pre>
+
+      <h4>Single Image</h4>
+      <pre onclick="copyToClipboard(this)">![Your Caption](path/to/image.jpg)</pre>
+      <p>Creates a large, centered image with a caption.</p>
+      
+      <h4>Inline Image</h4>
+      <pre onclick="copyToClipboard(this)">{{inline:path/to/image.jpg}}</pre>
+      <p>Embeds a small image within a line of text.</p>
+
+      <h4>Side-by-Side Images</h4>
+      <pre onclick="copyToClipboard(this)">[[side-by-side:![Caption 1](path1.jpg), ![Caption 2](path2.jpg)]]</pre>
+      <p>Creates two images next to each other in a row.</p>
+    </aside>
+  </div>
+
+  <script>
+    // Show/hide form fields based on template selection
+    function updateFormFields() {
+      const template = document.getElementById('templateSelector').value;
+      document.getElementById('weeklyLogFields').style.display = (template === 'weekly_log.html') ? 'block' : 'none';
+      document.getElementById('literatureReviewFields').style.display = (template === 'literature_review.html') ? 'block' : 'none';
+      document.getElementById('fieldworkLogFields').style.display = (template === 'fieldwork_log.html') ? 'block' : 'none';
+    }
+
+    // Main function to fetch template and generate content
+    async function generateAndShowCode() {
+      const templatePath = document.getElementById('templateSelector').value;
+      
+      try {
+        const response = await fetch(templatePath);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        let templateContent = await response.text();
+        
+        let output = '';
+        if (templatePath === 'weekly_log.html') {
+          output = generateWeeklyLog(templateContent);
+        } else if (templatePath === 'literature_review.html') {
+          output = generateLiteratureReview(templateContent);
+        } else if (templatePath === 'fieldwork_log.html') {
+          output = generateFieldworkLog(templateContent);
+        }
+        
+        const outputCodeElement = document.getElementById('outputCode');
+        const outputContainer = document.getElementById('outputContainer');
+        outputCodeElement.value = output.trim();
+        outputContainer.style.display = 'block';
+
+      } catch (e) {
+        alert(`Error fetching template: ${e.message}\nPlease ensure you are running a local web server.`);
+        console.error("Error details:", e);
+      }
+    }
+
+    // Fill in the weekly log template
+    function generateWeeklyLog(templateContent) {
+      const weekTitle = document.getElementById('weekTitle').value;
+      const dates = document.getElementById('dates').value;
+      const activitiesMarkdown = document.getElementById('activities').value;
+      const reflectionText = document.getElementById('reflection').value;
+      const literatureMarkdown = document.getElementById('literature').value;
+      const tasksMarkdown = document.getElementById('tasks').value;
+      const linksMarkdown = document.getElementById('links').value;
+      const toDoMarkdown = document.getElementById('toDo').value;
+      const researchQuestionText = document.getElementById('researchQuestion').value;
+
+      const activitiesHtml = markdownToList(activitiesMarkdown);
+      const reflectionHtml = textToParagraphsWithImages(reflectionText);
+      const literatureHtml = markdownToList(literatureMarkdown);
+      const tasksHtml = markdownToList(tasksMarkdown);
+      const linksHtml = markdownToList(linksMarkdown);
+      const toDoHtml = markdownToList(toDoMarkdown);
+      const researchQuestionHtml = textToParagraphsWithImages(researchQuestionText);
+
+      return templateContent
+        .replace(/\${weekTitle}/g, weekTitle)
+        .replace(/\${dates}/g, dates)
+        .replace(/\${activitiesHtml}/g, activitiesHtml)
+        .replace(/\${reflectionHtml}/g, reflectionHtml)
+        .replace(/\${literatureHtml}/g, literatureHtml)
+        .replace(/\${tasksHtml}/g, tasksHtml)
+        .replace(/\${linksHtml}/g, linksHtml)
+        .replace(/\${toDoHtml}/g, toDoHtml)
+        .replace(/\${researchQuestionHtml}/g, researchQuestionHtml);
+    }
+    
+    // Fill in the literature review template
+    function generateLiteratureReview(templateContent) {
+        const title = document.getElementById('litTitle').value;
+        const author = document.getElementById('litAuthor').value;
+        const keyConcepts = document.getElementById('litKeyConcepts').value;
+        const coverImage = document.getElementById('litCoverImage').value;
+        const coverCaption = document.getElementById('litCoverCaption').value;
+        const work = document.getElementById('litWork').value;
+        const takeaways = document.getElementById('litTakeaways').value;
+        const reflections = document.getElementById('litReflections').value;
+        const references = document.getElementById('litReferences').value;
+        const tags = document.getElementById('litTags').value;
+        
+        const takeawaysHtml = markdownToList(takeaways);
+        const reflectionsHtml = textToLitReview(reflections);
+        const referencesHtml = markdownToList(references);
+        const tagsHtml = generateTags(tags);
+        
+        const coverImageHtml = coverImage ? 
+            `        <figure class="figure">\n          <img src="${coverImage}" alt="Book cover: ${title}"/>\n          <figcaption class="figcap">${coverCaption}</figcaption>\n        </figure>` :
+            ``;
+            
+        return templateContent
+            .replace(/\${title}/g, title)
+            .replace(/\${author}/g, author)
+            .replace(/\${keyConcepts}/g, keyConcepts)
+            .replace(/\${coverImageHtml}/g, coverImageHtml)
+            .replace(/\${work}/g, work)
+            .replace(/\${takeawaysHtml}/g, takeawaysHtml)
+            .replace(/\${reflectionsHtml}/g, reflectionsHtml)
+            .replace(/\${referencesHtml}/g, referencesHtml)
+            .replace(/\${tagsHtml}/g, tagsHtml);
+    }
+
+    // Fill in the fieldwork log template
+    function generateFieldworkLog(templateContent) {
+        const title = document.getElementById('fwTitle').value;
+        const location = document.getElementById('fwLocation').value;
+        const date = document.getElementById('fwDate').value;
+        const summaryText = document.getElementById('fwSummary').value;
+        const observationsText = document.getElementById('fwObservations').value;
+        const photosMarkdown = document.getElementById('fwPhotos').value;
+        const challengesText = document.getElementById('fwChallenges').value;
+        const nextStepsMarkdown = document.getElementById('fwNextSteps').value;
+
+        const summaryHtml = textToParagraphsWithImages(summaryText);
+        const observationsHtml = markdownToList(observationsText);
+        const photosHtml = processImages(photosMarkdown);
+        const challengesHtml = textToParagraphsWithImages(challengesText);
+        const nextStepsHtml = markdownToList(nextStepsMarkdown);
+
+        return templateContent
+            .replace(/\${title}/g, title)
+            .replace(/\${location}/g, location)
+            .replace(/\${date}/g, date)
+            .replace(/\${summaryHtml}/g, summaryHtml)
+            .replace(/\${observationsHtml}/g, observationsHtml)
+            .replace(/\${photosHtml}/g, photosHtml)
+            .replace(/\${challengesHtml}/g, challengesHtml)
+            .replace(/\${next_stepsHtml}/g, nextStepsHtml);
+    }
+    
+    // Helper functions for formatting
+    function markdownToList(markdown) {
+      if (!markdown) return '';
+      // Process any images within the list items
+      const processedMarkdown = processImages(markdown);
+      const items = processedMarkdown.split('\n').filter(item => item.trim() !== '');
+      return items.map(item => {
+        const content = item.trim().startsWith('* ') ? item.trim().substring(2).trim() : item.trim();
+        return `            <li>\n              ${content}\n            </li>`;
+      }).join('\n');
+    }
+
+    // New helper function to process ALL image syntaxes
+    function processImages(text) {
+        // Between-paragraph images: ![Caption](path)
+        const betweenParagraphRegex = /!\[(.*?)\]\((.*?)\)/g;
+        text = text.replace(betweenParagraphRegex, (match, caption, imagePath) => {
+            // Check if this is part of a side-by-side block. If so, don't wrap it in a figure here.
+            if (match.startsWith('[[side-by-side:')) return match; 
+            return `<figure class="figure">\n  <img src="${imagePath}" alt="${caption}"/>\n  <figcaption class="figcap">${caption}</figcaption>\n</figure>`;
+        });
+
+        // Inline images: {{inline:path}}
+        const inlineRegex = /\{\{inline:(.*?)\}\}/g;
+        text = text.replace(inlineRegex, (match, imagePath) => {
+            return `<img class="inline-img" src="${imagePath}" alt=""/>`;
+        });
+        
+        // Side-by-side images: [[side-by-side: ... ]]
+        const sideBySideRegex = /\[\[side-by-side:(.*?)\]\]/g;
+        text = text.replace(sideBySideRegex, (match, content) => {
+            const imagePairs = content.split(',').map(pair => pair.trim());
+            const figureBlocks = imagePairs.map(pair => {
+                const parts = pair.match(/!\[(.*?)\]\((.*?)\)/);
+                if (parts && parts.length === 3) {
+                    const caption = parts[1];
+                    const imagePath = parts[2];
+                    return `<figure class="figure">\n  <img src="${imagePath}" alt="${caption}"/>\n  <figcaption class="figcap">${caption}</figcaption>\n</figure>`;
+                }
+                return '';
+            }).join('\n');
+            return `<div class="side-by-side">\n${figureBlocks}\n</div>`;
+        });
+        
+        return text;
+    }
+
+
+    function textToParagraphsWithImages(text) {
+      if (!text) return '';
+      const processedText = processImages(text);
+      const paragraphs = processedText.split('\n\n').filter(p => p.trim() !== '');
+      return paragraphs.map(p => {
+          // Don't wrap image or side-by-side blocks in <p> tags
+          if (p.trim().startsWith('<figure') || p.trim().startsWith('<div class="side-by-side"')) {
+              return p.trim(); 
+          }
+          return `          <p class="measure">\n            ${p.trim()}\n          </p>`;
+      }).join('\n\n');
+    }
+    
+    function textToLitReview(text) {
+        if (!text) return '';
+        const processedText = processImages(text);
+        const paragraphs = processedText.split('\n\n').filter(p => p.trim() !== '');
+        return paragraphs.map(p => {
+          if (p.trim().startsWith('### ')) {
+            return `          <h3 class="h3">${p.trim().substring(4).trim()}</h3>`;
+          } else if (p.trim().startsWith('* ')) {
+            const listItems = p.split('\n').filter(li => li.trim() !== '');
+            return `          <ul>\n${listItems.map(li => {
+              const content = li.trim().startsWith('* ') ? li.trim().substring(2).trim() : li.trim();
+              return `            <li>\n              ${content}\n            </li>`;
+            }).join('\n')}\n          </ul>`;
+          } else if (p.trim().startsWith('<figure') || p.trim().startsWith('<div class="side-by-side"')) {
+              return p.trim();
+          } else {
+            return `          <p class="measure">\n            ${p.trim()}\n          </p>`;
+          }
+        }).join('\n\n');
+    }
+    
+    function generateTags(tags) {
+        if (!tags) return '';
+        const tagArray = tags.split(',').map(tag => tag.trim());
+        return tagArray.map(tag => `<span class="badge">${tag}</span>`).join('\n');
+    }
+
+    // Function to copy text from a pre element
+    function copyToClipboard(element) {
+        const text = element.textContent.replace('Copy', '').trim();
+        navigator.clipboard.writeText(text).then(() => {
+           
+        }).catch(err => {
+            console.error('Could not copy text: ', err);
+        });
+    }
+
+    // Initialize form fields on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        updateFormFields();
+    });
+  </script>
+</body>
+</html>
