@@ -4,6 +4,24 @@
   "path": "lit_01.html",
   "thumb": "../icons/book_icon.jpg",
   "meta": "Reflection-in-action, reframing, repertoire"
+  },
+  {
+  "title": "Bridging storytelling traditions with digital technology",
+  "path": "lit_02.html",
+  "thumb": "../icons/article_icon.jpg",
+  "meta": "digital storytelling"
+  },
+  {
+  "title": "Incremental and Radical Innovation",
+  "path": "lit_03.html",
+  "thumb": "../icons/article_icon.jpg",
+  "meta": "innovation, human-centered-design, design research"
+  },
+  {
+  "title": "Finding access and digital preservation solutions for a digitized oral history project",
+  "path": "lit_04.html",
+  "thumb": "../icons/article_icon.jpg",
+  "meta": "archival, digitization,storytelling"
   }
 
 ]
