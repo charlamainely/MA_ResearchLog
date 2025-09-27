@@ -22,6 +22,24 @@
   "path": "lit_04.html",
   "thumb": "../icons/article_icon.jpg",
   "meta": "archival, digitization,storytelling"
+  },
+  {
+  "title": "Analyzing the Efforts of Digitizing Cultural Heritage in Vietnam",
+  "path": "lit_05.html",
+  "thumb": "../icons/article_icon.jpg",
+  "meta": "indigenous knowledge, digitization,cultural heritage, Vietnam"
+  },
+  {
+  "title": "Discover Babylon",
+  "path": "lit_06.html",
+  "thumb": "../icons/website_icon.jpg",
+  "meta": "gamification, learning experience, museum education, video games, cultural heritage"
+  },
+  {
+  "title": "InHeritage",
+  "path": "lit_07.html",
+  "thumb": "../icons/article_icon.jpg",
+  "meta": "gamification, mobile application, AR/VR, cultural heritage, education"
   }
 
 ]
