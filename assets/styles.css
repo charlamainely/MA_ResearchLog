@@ -40,6 +40,18 @@ html, body{
   background-attachment: fixed;
 }
 
+.cases{
+  background: linear-gradient(180deg, rgba(252, 252, 252, 0.8) 0%, rgba(247, 247, 247, 0.8) 100%), url('../icons/case_tile.jpg');
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
+.peer{
+  background: linear-gradient(180deg, rgba(252, 252, 252, 0.8) 0%, rgba(247, 247, 247, 0.8) 100%), url('../icons/peer_tile.jpg');
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
 .exercise{
   background: linear-gradient(180deg, rgba(252, 252, 252, 0.8) 0%, rgba(247, 247, 247, 0.8) 100%), url('../icons/exercise_tile.jpg');
   background-repeat: repeat;

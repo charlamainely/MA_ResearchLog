@@ -10,5 +10,11 @@
     "path": "case-02.html",
     "thumb": "../icons/case_study_icon.jpg",
     "meta": "website"
+  },
+  {
+    "title": "disanvietnam.vn",
+    "path": "case-03.html",
+    "thumb": "../icons/case_study_icon.jpg",
+    "meta": "website"
   }
 ]
