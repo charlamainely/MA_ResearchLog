@@ -1,46 +1,47 @@
-(async function(){
-  // 1) Find where to load navbar.html from (works on root & subpages)
-  const candidates = [
-    'assets/navbar.html',     // when page is at site root (/index.html)
-    '../assets/navbar.html',  // when page is one folder deep (/log/…, /literature/…)
-    '/assets/navbar.html'     // fallback for custom domains
-  ];
-  async function loadFirst(paths){
-    for (const p of paths){
-      try {
-        const r = await fetch(p, {cache:'no-store'});
-        if (r.ok) return await r.text();
-      } catch(_){}
-    }
-    throw new Error('navbar.html not found at: ' + paths.join(', '));
-  }
-
-  // 2) Inject markup into placeholder
+(async function () {
   const mount = document.getElementById('navbar');
-  if (!mount) return; // nothing to do
-  const html = await loadFirst(candidates);
+  if (!mount) return;
+
+  const res = await fetch((window.location.pathname.includes('/literature/') ||
+                           window.location.pathname.includes('/cases/') ||
+                           window.location.pathname.includes('/fieldwork/') ||
+                           window.location.pathname.includes('/peer/') ||
+                           window.location.pathname.includes('/framework/'))
+                          ? '../assets/navbar.html' : 'assets/navbar.html', { cache: 'no-store' });
+
+  const html = await res.text();
   mount.innerHTML = html;
 
-  // 3) Compute base prefix for GitHub Pages project sites
-  //    - user.github.io/<repo>/...  => base "/<repo>/"
-  //    - local server or custom domain at root => "/"
-  const parts = location.pathname.split('/').filter(Boolean);
-  const isGH = location.hostname.endsWith('.github.io');
-  const base = (isGH && parts.length > 0) ? ('/' + parts[0] + '/') : '/';
-
-  // 4) Convert all <a data-path="..."> to proper hrefs
-  document.querySelectorAll('#site-nav a[data-path]').forEach(a => {
-    const rel = a.getAttribute('data-path').replace(/^\/+/, '');
-    a.setAttribute('href', base + rel);
+  const nav = mount.querySelector('#site-nav');
+  const base = nav?.getAttribute('data-base') || '/';
+  nav?.querySelectorAll('[data-path]').forEach(a => {
+    const path = a.getAttribute('data-path') || '';
+    a.setAttribute('href', base.replace(/\/$/, '/') + path.replace(/^\//, ''));
   });
 
-  // 5) (Optional) Mark the active link
-  const here = location.pathname.replace(/\/+$/, '');
-  document.querySelectorAll('#site-nav a[href]').forEach(a => {
-    const target = new URL(a.href, location.origin).pathname.replace(/\/+$/, '');
-    if (target === here) {
-      a.setAttribute('aria-current', 'page');
-      a.classList.add('font-semibold', 'text-gray-900');
-    }
-  });
+  // Hamburger toggle
+  const btn   = nav?.querySelector('#menu-toggle');
+  const panel = nav?.querySelector('#nav-panel');
+  if (btn && panel) {
+    btn.addEventListener('click', () => {
+      const open = nav.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    // Close menu on resize back to desktop
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 900 && nav.classList.contains('open')) {
+        nav.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+    // Close after clicking a link (mobile)
+    panel.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        if (nav.classList.contains('open')) {
+          nav.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+  }
 })();
