@@ -1,8 +1,14 @@
 [
   {
-    "title": "Making Beshbarmak: Games for Central Asian Cultural Heritage",
-    "path": "case-1.html",
-    "thumb": "shots/kiosk.jpg",
-    "meta": "Interactive Game · 2024"
+    "title": "disanso.vn",
+    "path": "case-01.html",
+    "thumb": "../icons/case_study_icon.jpg",
+    "meta": "website"
+  },
+  {
+    "title": "dsvh.gov.vn",
+    "path": "case-02.html",
+    "thumb": "../icons/case_study_icon.jpg",
+    "meta": "website"
   }
 ]
