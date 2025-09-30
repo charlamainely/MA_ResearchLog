@@ -608,11 +608,11 @@
         
         // This is the structure from your index.html example
         return `
-        <article class="block" data-date="${date}" id="${id}" tabindex="-1" data-people="${people}" data-tags="${tags}">
+        <article class="card block" data-date="${date}" id="${id}" tabindex="-1" data-people="${people}" data-tags="${tags}">
           <h2 class="h2"><a href="#${id}">${title}</a></h2>
           <div class="block-meta">
-            <span class="badge">${date}</span>
-            <span class="meta-people">People: ${peopleHtml}</span>
+            <span>${date}</span><br>
+            <span>People: ${peopleHtml}</span><br>
             <div class="meta-tags">Tags: ${tagsHtml}</div>
           </div>
 
