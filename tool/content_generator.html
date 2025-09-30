@@ -288,12 +288,16 @@
             <input type="text" id="caseCreator" placeholder="e.g., Human Interaction & Robotics Lab of National University of Hanoi">
           </div>
           <div class="form-group">
-            <label for="caseWebsite">Website URL (no http/https):</label>
-            <input type="text" id="caseWebsite" placeholder="e.g., disanso.vn">
+            <label for="caseYear">Year</label>
+            <input type="text" id="caseYear" placeholder="2025">
           </div>
           <div class="form-group">
             <label for="caseType">Type (comma-separated):</label>
             <input type="text" id="caseType" placeholder="e.g., Digital Archive, Interactive Storytelling">
+          </div>
+          <div class="form-group">
+            <label for="caseType">Why selected</label>
+            <input type="text" id="caseWhy" placeholder="Because it looks cool">
           </div>
           <div class="form-group">
             <label for="caseCoverImage">Sidebar Image Path:</label>
@@ -552,8 +556,9 @@
     function generateCaseStudy(templateContent) {
         const title = document.getElementById('caseTitle').value;
         const creator = document.getElementById('caseCreator').value;
-        const website = document.getElementById('caseWebsite').value;
+        const year = document.getElementById('caseYear').value;
         const type = document.getElementById('caseType').value;
+        const why = document.getElementById('caseWhy').value;
         const coverImage = document.getElementById('caseCoverImage').value;
         const coverCaption = document.getElementById('caseCoverCaption').value;
         const contextText = document.getElementById('caseContext').value;
@@ -578,8 +583,9 @@
         return templateContent
             .replace(/\${title}/g, title)
             .replace(/\${creator}/g, creator)
-            .replace(/\${website}/g, website)
+            .replace(/\${year}/g, year)
             .replace(/\${type}/g, type)
+            .replace(/\${why}/g, why)
             .replace(/\${coverImageHtml}/g, coverImageHtml)
             .replace(/\${contextHtml}/g, contextHtml)
             .replace(/\${analysisHtml}/g, analysisHtml)
