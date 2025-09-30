@@ -146,20 +146,22 @@
     <div class="form-content">
       <header>
         <h1>Research Content Generator</h1>
-        <p>Select a template to generate the HTML content for your log or literature review.</p>
+        <p>Select a template to generate the HTML content for your log or block entry.</p>
       </header>
 
       <div class="form-group">
         <label for="templateSelector">Select Template:</label>
         <select id="templateSelector" onchange="updateFormFields()">
-          <option value="weekly_log.html">Weekly Log</option>
-          <option value="literature_review.html">Literature Review</option>
-          <option value="fieldwork_log.html">Fieldwork Log</option>
+          <option value="weekly_log.html">Weekly Log (Full Page)</option>
+          <option value="literature_review.html">Literature Review (Full Page)</option>
+          <option value="fieldwork_log.html">Fieldwork Log (Full Page)</option>
+          <option value="case_study.html">Case Study (Full Page)</option>
+          <option value="peer_block">Peer Discussion Block (HTML Block)</option>
         </select>
       </div>
 
       <form id="logForm">
-        <div id="weeklyLogFields">
+        <div id="weeklyLogFields" style="display: none;">
           <div class="form-group">
             <label for="weekTitle">Week Title:</label>
             <input type="text" id="weekTitle" required placeholder="e.g., Week 05 — Storytelling as ICH Practice...">
@@ -276,6 +278,92 @@
           </div>
         </div>
 
+        <div id="caseStudyFields" style="display: none;">
+          <div class="form-group">
+            <label for="caseTitle">Case Study Title:</label>
+            <input type="text" id="caseTitle" required placeholder="e.g., Investigating disanso.vn by Human Interaction & Robotics Lab...">
+          </div>
+          <div class="form-group">
+            <label for="caseCreator">Creator/Organization:</label>
+            <input type="text" id="caseCreator" placeholder="e.g., Human Interaction & Robotics Lab of National University of Hanoi">
+          </div>
+          <div class="form-group">
+            <label for="caseWebsite">Website URL (no http/https):</label>
+            <input type="text" id="caseWebsite" placeholder="e.g., disanso.vn">
+          </div>
+          <div class="form-group">
+            <label for="caseType">Type (comma-separated):</label>
+            <input type="text" id="caseType" placeholder="e.g., Digital Archive, Interactive Storytelling">
+          </div>
+          <div class="form-group">
+            <label for="caseCoverImage">Sidebar Image Path:</label>
+            <input type="text" id="caseCoverImage" placeholder="e.g., case_images/disansovn/image_1.jpg">
+          </div>
+          <div class="form-group">
+            <label for="caseCoverCaption">Sidebar Image Caption:</label>
+            <input type="text" id="caseCoverCaption" placeholder="e.g., Homepage of the site">
+          </div>
+          <div class="form-group">
+            <label for="caseContext">Context & Objective:</label>
+            <textarea id="caseContext" placeholder="Plain text, separate paragraphs with a blank line."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="caseAnalysis">Analysis:</label>
+            <textarea id="caseAnalysis" placeholder="Plain text, use blank lines for paragraphs. Use * for lists or ### for headings."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="caseTakeaways">Key Takeaways:</label>
+            <textarea id="caseTakeaways" placeholder="Use Markdown: * for bullet points."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="caseReflection">Reflection:</label>
+            <textarea id="caseReflection" placeholder="Plain text, separate paragraphs with a blank line."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="caseReferences">Links & References (with full URLs):</label>
+            <textarea id="caseReferences" placeholder="Use Markdown: * for bullet points, e.g., * [link text](full URL)"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="caseTags">Tags (comma-separated):</label>
+            <input type="text" id="caseTags" placeholder="e.g., Interaction Design, Digital Archive">
+          </div>
+        </div>
+
+        <div id="peerBlockFields" style="display: none;">
+          <div class="form-group">
+            <label for="pbID">Block ID (for deep-linking):</label>
+            <input type="text" id="pbID" required placeholder="e.g., block-2025-10-25">
+          </div>
+          <div class="form-group">
+            <label for="pbDate">Date (YYYY-MM-DD):</label>
+            <input type="text" id="pbDate" required placeholder="e.g., 2025-10-25">
+          </div>
+          <div class="form-group">
+            <label for="pbTitle">Title:</label>
+            <input type="text" id="pbTitle" required placeholder="e.g., Discussing Story Branching with Mentor A">
+          </div>
+          <div class="form-group">
+            <label for="pbPeople">People Discussed With (comma-separated):</label>
+            <input type="text" id="pbPeople" placeholder="e.g., Mentor A, Peer B">
+          </div>
+          <div class="form-group">
+            <label for="pbTags">Tags (comma-separated):</label>
+            <input type="text" id="pbTags" placeholder="e.g., Storytelling, Interactive Design">
+          </div>
+          <div class="form-group">
+            <label for="pbContext">Context:</label>
+            <textarea id="pbContext" placeholder="Plain text, use blank lines for paragraphs."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="pbDiscussion">Discussion & Insights:</label>
+            <textarea id="pbDiscussion" placeholder="Plain text, use blank lines for paragraphs. Use * for lists or ### for headings."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="pbReflection">Reflection & Next Steps:</label>
+            <textarea id="pbReflection" placeholder="Plain text, use blank lines for paragraphs."></textarea>
+          </div>
+        </div>
+
         <button type="button" onclick="generateAndShowCode()">Generate HTML Code</button>
       </form>
       <div id="outputContainer">
@@ -316,6 +404,15 @@
       document.getElementById('weeklyLogFields').style.display = (template === 'weekly_log.html') ? 'block' : 'none';
       document.getElementById('literatureReviewFields').style.display = (template === 'literature_review.html') ? 'block' : 'none';
       document.getElementById('fieldworkLogFields').style.display = (template === 'fieldwork_log.html') ? 'block' : 'none';
+      document.getElementById('caseStudyFields').style.display = (template === 'case_study.html') ? 'block' : 'none';
+      document.getElementById('peerBlockFields').style.display = (template === 'peer_block') ? 'block' : 'none';
+
+      if (template === 'peer_block') {
+        // Set a default value for the block ID and date
+        const today = new Date().toISOString().slice(0, 10);
+        document.getElementById('pbDate').value = today;
+        document.getElementById('pbID').value = `block-${today}`;
+      }
     }
 
     // Main function to fetch template and generate content
@@ -323,19 +420,27 @@
       const templatePath = document.getElementById('templateSelector').value;
       
       try {
-        const response = await fetch(templatePath);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        let templateContent = await response.text();
-        
         let output = '';
-        if (templatePath === 'weekly_log.html') {
-          output = generateWeeklyLog(templateContent);
-        } else if (templatePath === 'literature_review.html') {
-          output = generateLiteratureReview(templateContent);
-        } else if (templatePath === 'fieldwork_log.html') {
-          output = generateFieldworkLog(templateContent);
+
+        if (templatePath === 'weekly_log.html' || templatePath === 'literature_review.html' || templatePath === 'fieldwork_log.html' || templatePath === 'case_study.html') {
+             const response = await fetch(templatePath);
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            let templateContent = await response.text();
+
+            if (templatePath === 'weekly_log.html') {
+              output = generateWeeklyLog(templateContent);
+            } else if (templatePath === 'literature_review.html') {
+              output = generateLiteratureReview(templateContent);
+            } else if (templatePath === 'fieldwork_log.html') {
+              output = generateFieldworkLog(templateContent);
+            } else if (templatePath === 'case_study.html') {
+              output = generateCaseStudy(templateContent);
+            }
+        } else if (templatePath === 'peer_block') {
+             // For the Peer Discussion Block, we generate the HTML directly
+             output = generatePeerBlock();
         }
         
         const outputCodeElement = document.getElementById('outputCode');
@@ -344,7 +449,7 @@
         outputContainer.style.display = 'block';
 
       } catch (e) {
-        alert(`Error fetching template: ${e.message}\nPlease ensure you are running a local web server.`);
+        alert(`Error fetching template: ${e.message}\nPlease ensure you are running a local web server (if using a full-page template).`);
         console.error("Error details:", e);
       }
     }
@@ -442,7 +547,93 @@
             .replace(/\${challengesHtml}/g, challengesHtml)
             .replace(/\${next_stepsHtml}/g, nextStepsHtml);
     }
-    
+
+    // Fill in the Case Study template
+    function generateCaseStudy(templateContent) {
+        const title = document.getElementById('caseTitle').value;
+        const creator = document.getElementById('caseCreator').value;
+        const website = document.getElementById('caseWebsite').value;
+        const type = document.getElementById('caseType').value;
+        const coverImage = document.getElementById('caseCoverImage').value;
+        const coverCaption = document.getElementById('caseCoverCaption').value;
+        const contextText = document.getElementById('caseContext').value;
+        const analysisText = document.getElementById('caseAnalysis').value;
+        const takeawaysMarkdown = document.getElementById('caseTakeaways').value;
+        const reflectionText = document.getElementById('caseReflection').value;
+        const referencesMarkdown = document.getElementById('caseReferences').value;
+        const tags = document.getElementById('caseTags').value;
+
+        const contextHtml = textToParagraphsWithImages(contextText);
+        // Using textToLitReview for Analysis to support paragraphs, lists, and H3 headings
+        const analysisHtml = textToLitReview(analysisText); 
+        const takeawaysHtml = markdownToList(takeawaysMarkdown);
+        const reflectionHtml = textToParagraphsWithImages(reflectionText);
+        const referencesHtml = markdownToList(referencesMarkdown);
+        const tagsHtml = generateTags(tags);
+        
+        const coverImageHtml = coverImage ? 
+            `        <figure class="figure">\n          <img src="${coverImage}" alt="Case Study Image: ${title}"/>\n          <figcaption class="figcap">${coverCaption}</figcaption>\n        </figure>` :
+            ``;
+
+        return templateContent
+            .replace(/\${title}/g, title)
+            .replace(/\${creator}/g, creator)
+            .replace(/\${website}/g, website)
+            .replace(/\${type}/g, type)
+            .replace(/\${coverImageHtml}/g, coverImageHtml)
+            .replace(/\${contextHtml}/g, contextHtml)
+            .replace(/\${analysisHtml}/g, analysisHtml)
+            .replace(/\${takeawaysHtml}/g, takeawaysHtml)
+            .replace(/\${reflectionHtml}/g, reflectionHtml)
+            .replace(/\${referencesHtml}/g, referencesHtml)
+            .replace(/\${tagsHtml}/g, tagsHtml);
+    }
+
+    // Generate the Peer Discussion Block HTML (NEW FUNCTION)
+    function generatePeerBlock() {
+        const id = document.getElementById('pbID').value;
+        const date = document.getElementById('pbDate').value;
+        const title = document.getElementById('pbTitle').value;
+        const people = document.getElementById('pbPeople').value;
+        const tags = document.getElementById('pbTags').value;
+        const contextText = document.getElementById('pbContext').value;
+        const discussionText = document.getElementById('pbDiscussion').value;
+        const reflectionText = document.getElementById('pbReflection').value;
+
+        const peopleHtml = people.split(',').map(p => p.trim()).filter(p => p).map(p => `<span class="badge">${p}</span>`).join('\n          ');
+        const tagsHtml = tags.split(',').map(t => t.trim()).filter(t => t).map(t => `<span class="badge">${t}</span>`).join('\n          ');
+        const contextHtml = textToParagraphsWithImages(contextText);
+        const discussionHtml = textToLitReview(discussionText); // Supports headings, lists, and paragraphs
+        const reflectionHtml = textToParagraphsWithImages(reflectionText);
+        
+        // This is the structure from your index.html example
+        return `
+        <article class="block" data-date="${date}" id="${id}" tabindex="-1" data-people="${people}" data-tags="${tags}">
+          <h2 class="h2"><a href="#${id}">${title}</a></h2>
+          <div class="block-meta">
+            <span class="badge">${date}</span>
+            <span class="meta-people">People: ${peopleHtml}</span>
+            <div class="meta-tags">Tags: ${tagsHtml}</div>
+          </div>
+
+          <section>
+            <h3 class="h3">Context</h3>
+            ${contextHtml}
+          </section>
+
+          <section>
+            <h3 class="h3">Discussion & Insights</h3>
+            ${discussionHtml}
+          </section>
+
+          <section>
+            <h3 class="h3">Reflection & Next Steps</h3>
+            ${reflectionHtml}
+          </section>
+        </article>
+        `;
+    }
+
     // Helper functions for formatting
     function markdownToList(markdown) {
       if (!markdown) return '';

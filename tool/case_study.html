@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>${title}</title>
+  
+  <link rel="stylesheet" href="../assets/styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  
+  <header class="page-head">
+    <div class="container">
+      <div class="kicker">Case Study</div>
+      <h1 class="h1">${title}</h1>
+      <div class="page-meta">
+        <span><strong>Creator/Organization:</strong> ${creator}</span>
+        <span><strong>Website:</strong> <a href="${website}" target="_blank" rel="noopener">${website}</a></span>
+        <span><strong>Type:</strong> ${type}</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:20px">
+    <div class="grid">
+      <article class="span-8 stack measure order-1">
+
+        <section class="card">
+          <h2 class="h2">Context & Objective</h2>
+          ${contextHtml}
+        </section>
+
+        <section>
+          <h2 class="h2">Analysis</h2>
+          ${analysisHtml}
+        </section>
+
+        <section>
+          <h2 class="h2">Key Takeaways</h2>
+          <ul>
+            ${takeawaysHtml}
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="h2">Reflection</h2>
+          ${reflectionHtml}
+        </section>
+
+        <section>
+          <h2 class="h2">Links & References</h2>
+          <ul class="meta-list">
+            ${referencesHtml}
+          </ul>
+        </section>
+      </article>
+
+      <aside class="span-4 order-2 stack">
+        ${coverImageHtml}
+
+        <section class="card">
+          <h2 class="h2">Tags</h2>
+          <p>
+            ${tagsHtml}
+          </p>
+        </section>
+
+        <section class="card">
+          <h2 class="h2">Navigation</h2>
+          <ul class="meta-list" data-prevnext data-json="../assets/cases.json">
+            </ul>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <script src="../assets/prevnext_universal.js" defer></script>
+</body>
+</html>
