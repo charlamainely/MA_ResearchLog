@@ -40,6 +40,18 @@
   "path": "lit_07.html",
   "thumb": "../icons/article_icon.jpg",
   "meta": "gamification, mobile application, AR/VR, cultural heritage, education"
+  },
+  {
+  "title": "Hearing Ordinary Voices",
+  "path": "lit_08.html",
+  "thumb": "../icons/article_icon.jpg",
+  "meta": "digital storytelling, ordinary voices, cultural studies, vernacular creativity"
+  },
+  {
+  "title": "Research in Art and Design",
+  "path": "lit_09.html",
+  "thumb": "../icons/article_icon.jpg",
+  "meta": "design research"
   }
 
 ]

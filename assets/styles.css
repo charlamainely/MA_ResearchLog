@@ -132,7 +132,7 @@ html, body{
 .figcap{ font-size:.9rem; color: var(--muted); padding:8px 12px 12px; }
 
 /* Optional: control image aspect with cropping */
-.ratio{ aspect-ratio: 16/9; object-fit: cover; width: 100%; height: auto; }
+.ratio{ /*aspect-ratio: 16/9; object-fit: cover;*/ width: 100%; height: auto; }
 
 /* Order utilities (to change mobile order) */
 @media (max-width: 900px){
