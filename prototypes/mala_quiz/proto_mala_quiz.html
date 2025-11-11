@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mala Quiz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Your 12-col grid + tokens (container, grid, spans, card, figure, etc.) -->
+  <link rel="stylesheet" href="../../assets/styles.css" />
+  <!-- ^ Adjust to /assets/styles.css if this page is at the site root -->
+</head>
+<body>
+  <!-- Page header -->
+  <header class="page-head">
+    <div class="container">
+      <div class="kicker">Prototype</div>
+      <h1 class="h1">Mala Quiz - What Does Your Bowl Say About You?</h1>
+      <div class="page-meta">
+        <span><strong>Date:</strong> 31-08-2025</span>
+        <span><strong>Type:</strong> Personality Quiz</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:20px">
+    <div class="grid">
+
+      <!-- MAIN CONTENT (left) -->
+      <article class="span-8 stack measure order-1">
+
+        <!-- Summary / abstract (optional) -->
+        <section class="card">
+          <h2 class="h2">Context</h2>
+          <p>This weekend the mall close to my home closed down, and I decided to have a farewell meal at the food court here. And since most vendors have already closed down, the crowd of people also having farewell meals flocked to the few remaining stalls, so the only available option left was Mala Xiao Guo. </p>
+          <p>While waiting for my meal, I observed the patrons around me. There seems to be a mix of nostalgia among the crowd as everyone celebrate the memories of this mall, which makes me wonder about the kind of personal, social and cultural attachment the residents in this area have to this mall, a purely physical place.</p>
+          <p>This leads to me questioning if I can establish a connection between personal identity and something cultural relevant, using game as a medium. And through that, encourage players to reconnect with their cultural identity through personal experience. Hence, the idea for this game came to be, while I was eating my last meal at Gek Poh shopping mall.</p>
+          <figure class="figure">
+          <img src="context.jpg" alt="Mala Xiao Guo" />
+          <figcaption class="figcap">The actual meal that I had</figcaption>
+        </figure>
+        </section>
+
+        <!-- Key Takeaways -->
+        <section>
+          <h2 class="h2">Idea Development</h2>
+          <ul>
+            <li>I firstly want to create a simple personality quiz where players can choose the ingredients they'd typically choose for their Mala meal, and based on their choice, I would reveal something about their personality type. The goal isn't to deeply dive into their psyche, but to connect their identity (through their choices) to the culture of eating Mala.</li>
+            <li>So, I went about making a list of common (and some uncommon) ingredients, so deep diving into online forums, restaurant takeout menus, and even some fieldwork to other mala vendors to see the available selections. All the options are shown in the sketches below.</li>
+            <figure class="figure">
+            <img src="ingredient_sketch.jpg" alt="Ingredients" />
+            <figcaption class="figcap">Sketches of ingredients</figcaption>
+            </figure>
+            <li>After compiling a good list of ingredients, I established some key features of these ingredients, based on elements such as type, texture, quality, price, dietary preferences,...</li>
+            <figure class="figure">
+            <img src="game_design_sketch.jpg" alt="Game Design" />
+            <figcaption class="figcap">Ideas for Game Mechanics</figcaption>
+            </figure>
+            <li>However, as the list grows, I see that allowing the player to pick endlessly would muddle the results, hence, I establish the game loop and some game design features to create limiting mechanics, and forcing players to be more selective with their choices. You can see in the sketch for game ideas below.</li>
+            <li>The hardest part was connecting my list of descriptions to an existing personality classification framework. And after researching a few different options, I decided adapting the Jungian 12 archetypes framework by associating certain qualities in food with a specific archetype.</li>
+            <figure class="figure">
+            <img src="jungian_archetypes.jpg" alt="Archetypes" />
+            <figcaption class="figcap">List of Jungian Archetypes</figcaption>
+            </figure>
+            <li>So now, I have a simple game concept: The player can pick different ingredients based on their preferences, but are constrained by a 'budget', and based on their choice, the game would reveal what archetype they are (phrased in a way that fits with the hotpot theme).</li>
+            <!-- <li> Takeaway 3 </li>-->
+          </ul>
+        </section>
+
+        <!-- Critical Reflections (your voice) -->
+        <section>
+          <h2 class="h2">Images</h2>
+          <p>This is the game loop for this prototype, showing the stages that the player would go through.</p>
+          <p>And a list of the 12 possible results the player would get based on their choices.</p>
+          <p><!-- How this reframes your approach (e.g., Flash nostalgia → native web; folktales as ICH). --></p>
+          <p></p>
+        </section>
+        
+
+        <hr class="rule" />
+
+        <!-- Application to your project -->
+        <section>
+          <h2 class="h2">How This Informs My Project</h2>
+          <ul>
+            <li><!-- Concrete design change or decision influenced by this work. --></li>
+            <li><!-- Link to a week log, case study, or fieldwork that uses this idea. --></li>
+          </ul>
+        </section>
+
+        <!-- (Optional) Cross-links -->
+        <section class="card">
+          <h2 class="h2">References</h2>
+          <ul class="meta-list">
+            <li><a href="https://conorneill.com/2018/04/21/understanding-personality-the-12-jungian-archetypes/">Jungian Archetypes</a></li>
+          </ul>
+        </section>
+      </article>
+
+      <!-- SIDEBAR (right) -->
+      <aside class="span-4 order-2 stack">
+        <!-- Cover -->
+        <figure class="figure">
+          <img src="mala_poster.jpg" alt="Book/article cover" />
+          <figcaption class="figcap">Game Poster</figcaption>
+        </figure>
+
+        <!-- Citation details -->
+        <section class="card">
+          <h2 class="h2">Details</h2>
+          <ul class="meta-list">
+            <li><strong>Full Citation:</strong> <!-- e.g., MLA/APA entry here. --></li>
+          </ul>
+        </section>
+      </aside>
+    </div>
+  </main>
+</body>
+</html>

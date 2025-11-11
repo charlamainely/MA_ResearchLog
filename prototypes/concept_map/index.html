@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tell It Your Way - The Concept Map</title>
+    
+    <style>
+        /* --- General Reset & Page Centering --- */
+        body { 
+            margin: 0; 
+            background-color: #1a1a1a; /* Dark background for the area outside the frame */
+            overflow: hidden; 
+            font-family: sans-serif;
+            color: #ccc;
+            /* Flexbox to center the entire game on the screen */
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        button {
+            cursor: pointer;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.2s;
+            font-size: 1em;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        #intro-screen {
+            aspect-ratio: 4 / 3; 
+    
+    /* Maximize size within the viewport */
+    max-width: 95vw;
+    max-height: 95vh;
+    width: auto; 
+    height: 100%;
+    position: fixed;
+    
+    /* 1. BACKGROUND IMAGE FIXES */
+    background-image: url('backgrounds/room_00.jpg'); /* <-- ADD YOUR IMAGE PATH HERE */
+    background-repeat: no-repeat; /* Prevents the image from tiling */
+    background-size: cover;       /* Ensures the image fills the screen */
+    background-position: center;  /* Centers the image */
+    
+    /* 2. ALIGNMENT FIXES */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Aligns content to the top */
+    align-items: flex-start;   /* Aligns content to the left */
+    
+    /* 3. PADDING/OFFSET */
+    padding-top: 20vh; /* Push content down 5% from the top edge */
+    padding-left: 5vw; /* Push content right 5% from the left edge */
+    box-sizing: border-box; /* Ensures padding is included in the 100% height/width */
+    
+    background-color: #111;
+    z-index: 200;
+}
+
+/* You might need to adjust the heading to remove default margins that affect spacing */
+#intro-screen h1 {
+    margin-bottom: 5px; /* Keep this for spacing below the title */
+    color: white;
+    font-size: 50px;
+}
+#intro-screen h2 {
+    margin-bottom: 20px; /* Keep this for spacing below the title */
+    color: white;
+    font-size: 20px;
+}
+
+#intro-screen button {
+            margin: 10px;
+            padding: 15px 30px;
+            font-size: 1.2em;
+        }
+
+        /* --- Game Container (The 4:3 Scaling Canvas) --- */
+        /* --- Game Container (The 4:3 Scaling Canvas) --- */
+#game-container {
+    /* Adaptive Scaling: Game will always be 4:3 */
+    aspect-ratio: 4 / 3; 
+    
+    /* Maximize size within the viewport */
+    max-width: 95vw;
+    max-height: 95vh;
+    
+    /* 💥 CRITICAL FIX: Add a starting point for width */
+    width: auto; 
+    height: 100%; /* Let aspect-ratio and width determine the height */
+    
+    /* Crucial for percentage positioning of children */
+    position: relative; 
+    overflow: hidden;
+    
+    /* Starts hidden */
+    display: none; 
+}
+        /* --- Rooms (Full 100% of the game container) --- */
+        .room {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        /* Room Backgrounds: Use local path for your files */
+        #room-1 { 
+            background-image: url('backgrounds/room_01.jpg');
+            background-color: #4CAF50; /* Fallback color for testing */
+        }
+        #room-2 { 
+            background-image: url('backgrounds/room_02.jpg');
+            background-color: #999999; /* Fallback color for testing */
+        }
+        #room-3 { 
+            background-image: url('backgrounds/room_03.jpg');
+            background-color: #008800; /* Fallback */
+        }
+        #room-3b { 
+            background-image: url('backgrounds/room_03b.jpg');
+            background-color: #008800; /* Fallback */
+        }
+        #room-4 { 
+            background-image: url('backgrounds/room_04.jpg');
+            background-color: #000088; /* Fallback */
+        }
+        #room-5 { 
+            background-image: url('backgrounds/room_05.jpg');
+            background-color: #008800; /* Fallback */
+        }
+        #room-6 { 
+            background-image: url('backgrounds/room_06.jpg');
+            background-color: #000088; /* Fallback */
+        }#room-7 { 
+            background-image: url('backgrounds/room_07.jpg');
+            background-color: #008800; /* Fallback */
+        }
+        #room-8 { 
+            background-image: url('backgrounds/room_08.jpg');
+            background-color: #000088; /* Fallback */
+        }#room-9 { 
+            background-image: url('backgrounds/room_09.jpg');
+            background-color: #008800; /* Fallback */
+        }
+        #room-10 { 
+            background-image: url('backgrounds/room_10.jpg');
+            background-color: #000088; /* Fallback */
+        }
+
+        /* --- Bottom HUD Bar (Fixed to the Bottom using Percentage) --- */
+        #bottom-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%; 
+            height: 10%; /* 10% of the 4:3 container height */
+            color: white;
+        
+            display: flex;
+            justify-content: space-between; 
+            align-items: center;
+            padding: 0 3%; 
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            z-index: 20;
+        }
+
+        #section-title-display {
+            /* Use viewport units for scaling text relative to the screen */
+            font-size: clamp(12px, 1.8vw, 24px); 
+            font-weight: bold;
+            color: gold;
+            width: 40%;
+            text-shadow: 1px 1px 3px #000;
+        }
+
+        #nav-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end; /* Align buttons to the right */
+            width: 60%; 
+        }
+
+        #nav-buttons button {
+            background-color: #1abc9c;
+            color: white;
+            padding: 0.8em 1.5em;
+            font-size: clamp(10px, 1.2vw, 18px); /* Scaling font size */
+        }
+
+
+        /* --- Interactable Elements (Positioning uses PERCENTAGE) --- */
+        /* --- Interactable Elements (Cleaned for Image Display) --- */
+/* --- Interactable Elements (Positioning uses PERCENTAGE) --- */
+.interactable {
+    position: absolute;
+    cursor: pointer;
+    
+    border-radius: 10px;
+    box-sizing: border-box;
+    color: white;
+    text-align: center;
+    z-index: 5;
+    
+    /* 💥 ADDED: Smooth transition for scale and shadow */
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out; 
+}
+
+/* ---------------------------------------------------- */
+/* --- NEW HOVER RULES --- */
+/* ---------------------------------------------------- */
+
+/* 1. Slight Expansion (on the parent container) */
+.interactable:hover {
+    /* Expands the item slightly (e.g., 5% larger) */
+    /*transform: scale(1.05);*/ 
+    z-index: 10; /* Ensure the hovered item is on top of others */
+}
+
+/* 2. Backlit Glow (on the inner image) */
+.interactable:hover .interactable-image {
+    /* Applies a glow filter that respects PNG transparency */
+    filter: drop-shadow(0 0 10px gold) drop-shadow(0 0 5px white);
+    /* Syntax: drop-shadow(x-offset y-offset blur-radius color) */
+}
+
+/* --- Scene Link Hover Glow (Unique Style) --- */
+.interactable.scene:hover .interactable-image {
+    /* Uses a vibrant green glow for navigation/scene changers */
+    filter: drop-shadow(0 0 10px #1abc9c) drop-shadow(0 0 5px #7fffd4);
+}
+/* Optional: Use a specific class for the dashed border if needed for other items */
+.interactable.dashed-border {
+    border: 3px dashed yellow;
+    background-color: rgba(255, 255, 0, 0.2);
+}
+        
+        .interactable-image {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Room 1 Item and Character (Positions are relative to the 100% room size) */
+        #item-1a { 
+            left: 33%;  
+            top: 20%;   
+            width: 16%; 
+            height: 24%;
+        }
+        #char-1b { 
+            left: 15%;
+            /* Positioned just above the 10% bottom-bar */
+            top: 28%; 
+            width: 12%; 
+            height: 32%; 
+            border-color: orange; 
+        }
+
+        /* --- Navigation Arrows --- */
+        .nav-arrow {
+            position: absolute;
+            width: 4%;
+            height: 20%;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.6); 
+            color: white;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .left-arrow { left: 0; border-radius: 0 10px 10px 0; }
+        .right-arrow { right: 0; border-radius: 10px 0 0 10px; }
+
+        /* --- Overlays (Modals) --- */
+        /* Overlay styles are unchanged and remain fixed to the viewport (not scaled) */
+        /* --- Overlays (Modals) --- */
+.overlay {
+    display: none; 
+    position: fixed; 
+    z-index: 200;
+    left: 0; top: 0; width: 100%; height: 100%;
+    /*background-color: rgba(0,0,0,0.95);*/
+    backdrop-filter: blur(5px);
+    
+    /* CRITICAL FIX: Add centering to the full-screen container */
+    justify-content: center; 
+    align-items: center;
+}
+        .overlay-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            color: #333;
+        }
+        #info-overlay .overlay-content { 
+    /* Ensures the image and text are side-by-side */
+    flex-direction: row; 
+    /* Aligns content to the top */
+    align-items: flex-start; 
+}
+/* --- Info Overlay Image Sizing (40% width) --- */
+#info-overlay .overlay-content #info-image {
+    /* Set image container to take 40% of the modal's width */
+    width: 60%; 
+    min-width: 250px; /* Prevents the image from becoming too small */
+    
+    /* Ensure the container maintains a 4:3 ratio for the image */
+    aspect-ratio: 4/3; 
+    
+    /* CRITICAL: Ensures the background image is visible and scaled to fit */
+    background-size: contain; 
+    background-repeat: no-repeat;
+    background-position: center; 
+    
+    /* Add space between the image and the text */
+    margin-right: 20px; 
+}
+
+/* --- Info Overlay Text Sizing (40% width) --- */
+#info-overlay .overlay-content #info-text {
+    /* Set text container to take the remaining space */
+    width: 40%; 
+    font-size: 1em;
+    line-height: 1.2em;
+}
+        .close-btn { 
+            position: absolute; top: 10px; right: 10px; 
+            background-color: #dc3545; padding: 5px 10px; border-radius: 50%; 
+        }
+       /* --- Dialogue Box Structure (UPDATED) --- */
+/* --- Dialogue Overlay Structure (Visual Novel Style) --- */
+
+/* --- Dialogue Overlay Structure (Visual Novel Style) --- */
+
+/* Dialogue Box (The 3:4 Visual Scene) */
+        #dialogue-overlay .dialogue-box {
+            position: relative; /* Crucial for positioning the text box inside */
+            margin: 0;
+            
+            /* CRITICAL: Enforce the 3:4 aspect ratio */
+            aspect-ratio: 4/3;
+            height: 100vh; /* Base the width on viewport height for stability */
+            max-width: 90vw;
+            max-height: 90vh;
+            
+            /* Character Image as Background */
+            background-size: cover; 
+            background-position: center; 
+            background-repeat: no-repeat;
+            
+            padding: 0; 
+            border-radius: 10px;
+            background-color: transparent;
+            
+            /* We are relying on JS (showOverlay) to set the dialogue-overlay parent to display: flex */
+            /* DO NOT set display: flex here */
+        }
+
+        /* Dialogue Content (The Text Box) */
+        #dialogue-content {
+            /* Position the text box at the very bottom */
+            position: absolute; 
+            bottom: 0;
+            left: 0;
+            width: 100%; 
+            
+            background-color: rgba(0, 0, 0, 0.7); 
+            color: white;
+            padding: 20px 30px;
+            box-sizing: border-box;
+            
+            /* Text layout within the box */
+            display: flex;
+            flex-direction: column;
+        }
+
+        #dialogue-content p {
+            margin: 0;
+            font-size: 1.1em;
+            min-height: 40px; 
+        }
+
+        #dialogue-overlay .next-btn {
+            align-self: flex-end; /* Push button to the right */
+            background-color: #1abc9c;
+            margin-top: 10px;
+        }
+
+        #map-overlay .map-grid button {
+            display: inline-block; margin: 5px; width: 150px; background-color: #1abc9c;
+        }
+        /* --- MAP GALLERY STYLES (Retained/Refined) --- */
+#map-gallery {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 20px;
+    justify-content: center;
+    padding: 20px 0;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.map-thumbnail {
+    /* Use a fixed width relative to the overlay size */
+    width: 20%; 
+    min-width: 200px;
+    padding: 0;
+    margin: 0;
+    
+    position: relative; 
+    border: 3px solid #1abc9c;
+    overflow: hidden;
+    background: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.map-thumbnail:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Stronger shadow on hover */
+}
+
+.map-thumbnail.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 16:9 Aspect Ratio Container (unchanged) */
+.thumbnail-image {
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    background-color: #555;
+}
+
+/* --- TITLE OVERLAY (The Hover Effect) --- */
+.thumbnail-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; /* Title covers the entire thumbnail area */
+    
+    /* Center the text vertically and horizontally */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Initial State: Hidden and Transparent */
+    opacity: 0; 
+    background-color: rgba(0, 0, 0, 0.85); /* Semi-transparent black overlay */
+    color: white;
+    font-weight: bold;
+    font-size: 1em; /* Larger text when it appears */
+    
+    /* Smooth transition for fade-in/out */
+    transition: opacity 0.3s ease; 
+}
+
+/* Hover State: When the parent is hovered, make the title visible */
+.map-thumbnail:hover .thumbnail-title {
+    opacity: 1; /* Fade in completely */
+}
+/* Thumbnails need to pull the same images as the rooms */
+.thumbnail-image[data-room-id="room-1"] {
+    /* NOTE: You should use your 'backgrounds/room_01.png' here too! */
+    background-image: url('backgrounds/thumbnails/thumbnail_01.jpg'); 
+}
+.thumbnail-image[data-room-id="room-2"] {
+    background-image: url('backgrounds/thumbnails/thumbnail_02.jpg');
+}
+.thumbnail-image[data-room-id="room-3"] {
+    background-image: url('backgrounds/thumbnails/thumbnail_03.jpg');
+}
+.thumbnail-image[data-room-id="room-4"] {
+    background-image: url('backgrounds/thumbnails/thumbnail_04.jpg');
+}
+.thumbnail-image[data-room-id="room-5"] {
+    background-image: url('backgrounds/thumbnails/thumbnail_05.jpg');
+}
+.thumbnail-image[data-room-id="room-6"] {
+    background-image: url('backgrounds/thumbnails/thumbnail_06.jpg');
+}
+.thumbnail-image[data-room-id="room-7"] {
+    background-image: url('backgrounds/thumbnails/thumbnail_07.jpg');
+}
+.thumbnail-image[data-room-id="room-8"] {
+    background-image: url('backgrounds/thumbnails/thumbnail_08.jpg');
+}
+.thumbnail-image[data-room-id="room-9"] {
+    background-image: url('backgrounds/thumbnails/thumbnail_09.jpg');
+}
+.thumbnail-image[data-room-id="room-10"] {
+    background-image: url('backgrounds/thumbnails/thumbnail_10.jpg');
+}
+    </style>
+</head>
+<body>
+
+    <div id="intro-screen">
+
+        <h1>Tell It Your Way</h1>
+        <h2>Engaging Community in Preserving Vietnamese<br>Folktales with Narrative Web-based Game</h2>
+        <button id="start-btn">Start Tour</button>
+        <button onclick="showOverlay('instructions-overlay')">Instructions & Help</button>
+        <button onclick="showOverlay('map-overlay')">Museum Map (Quick Travel)</button>
+    </div>
+
+    <div id="game-container" style="display: none;"> 
+        
+        <div class="room" id="room-1">
+            <h2 class="room-title" style="display: none;">Background & Context</h2>
+            <div class="interactable item" id="item-1a">
+                <div class="interactable-image" style="background-image: url('items/item_1A.jpg');"></div>
+            </div>
+            <div class="interactable item" id="item-1b" style="left: 65%; top: 46%; width: 9%; height: 14%;">
+                <div class="interactable-image" style="background-image: url('items/item_1B.png');"></div>
+            </div>
+            <div class="interactable item" id="item-1c" style="left: 75%; top: 46%; width: 9%; height: 14%;">
+                <div class="interactable-image" style="background-image: url('items/item_1C.png');"></div>
+            </div>
+            <div class="interactable item" id="item-1d" style="left: 65%; top: 60%; width: 9%; height: 14%;">
+                <div class="interactable-image" style="background-image: url('items/item_1D.png');"></div>
+            </div>
+            <div class="interactable item" id="item-1e" style="left: 75%; top: 60%; width: 9%; height: 14%;">
+                <div class="interactable-image" style="background-image: url('items/item_1E.png');"></div>
+            </div>
+            <div class="interactable character" id="char-1b">
+                <div class="interactable-image" style="background-image: url('characters/character_placeholder.png');"></div>
+            </div>
+            
+            <div class="interactable link" id="external-link-1" style="left: 59%; top: 20%; width: 30%; height: 20%;">
+                <div class="interactable-image" style="background-image: url('items/item_1F.png');"></div>
+            </div>
+            <div class="nav-arrow right-arrow" data-target="room-2">NEXT ></div>
+        </div>
+
+        <div class="room" id="room-2" style="display: none;">
+            <h2 class="room-title" style="display: none;">Role of Design & Objectives</h2>
+            <div class="interactable item" id="item-2a">Item A (Room 2)</div>
+            <div class="nav-arrow left-arrow" data-target="room-1">< PREV</div>
+            <div class="nav-arrow right-arrow" data-target="room-3">NEXT ></div>
+        </div>
+
+
+        <div class="room" id="room-3" style="display: none;">
+            <h2 class="room-title" style="display: none;">Themes & Research Questions</h2>
+            <div class="interactable scene" id="link-to-room-3" style="left: 5%; top: 20%; width: 15%; height: 20%;">
+                <div class="interactable-image" style="background-image: url('placeholders/doorway.png');"></div>
+            </div>
+            <div class="nav-arrow left-arrow" data-target="room-2">< PREV</div>
+            <div class="nav-arrow right-arrow" data-target="room-3b">NEXT ></div>
+        </div>
+        <div class="room" id="room-3b" style="display: none;">
+            <h2 class="room-title" style="display: none;">Themes & Research Questions</h2>
+            <div class="nav-arrow left-arrow" data-target="room-3">< PREV</div>
+            <div class="nav-arrow right-arrow" data-target="room-4">NEXT ></div>
+        </div>
+        <div class="room" id="room-4" style="display: none;">
+            <h2 class="room-title" style="display: none;"> Design Framework & Methodologies</h2>
+            <div class="nav-arrow left-arrow" data-target="room-3">< PREV</div>
+            <div class="nav-arrow right-arrow" data-target="room-5">NEXT ></div>
+        </div>
+        <div class="room" id="room-5" style="display: none;">
+            <h2 class="room-title" style="display: none;">Areas of Research & Theoretical Framework</h2>
+            <div class="nav-arrow left-arrow" data-target="room-4">< PREV</div>
+            <div class="nav-arrow right-arrow" data-target="room-6">NEXT ></div>
+        </div>
+        <div class="room" id="room-6" style="display: none;">
+            <h2 class="room-title" style="display: none;">Audience & Stakeholders</h2>
+            <div class="nav-arrow left-arrow" data-target="room-5">< PREV</div>
+            <div class="nav-arrow right-arrow" data-target="room-7">NEXT ></div>
+        </div>
+        <div class="room" id="room-7" style="display: none;">
+            <h2 class="room-title" style="display: none;">My Findings</h2>
+            <div class="nav-arrow left-arrow" data-target="room-6">< PREV</div>
+            <div class="nav-arrow right-arrow" data-target="room-8">NEXT ></div>
+        </div>
+        <div class="room" id="room-8" style="display: none;">
+            <h2 class="room-title" style="display: none;">Case Studies</h2>
+            <div class="nav-arrow left-arrow" data-target="room-7">< PREV</div>
+            <div class="nav-arrow right-arrow" data-target="room-9">NEXT ></div>
+        </div>
+        <div class="room" id="room-9" style="display: none;">
+            <h2 class="room-title" style="display: none;">Design Briefs & Prototypes</h2>
+            <div class="nav-arrow left-arrow" data-target="room-8">< PREV</div>
+            <div class="nav-arrow right-arrow" data-target="room-10">NEXT ></div>
+        </div>
+        <div class="room" id="room-10" style="display: none;">
+            <h2 class="room-title" style="display: none;">Future Framing</h2>
+            <div class="nav-arrow left-arrow" data-target="room-9">< PREV</div>
+            </div>
+        <div id="bottom-bar">
+            <div id="section-title-display"></div>
+            <div id="nav-buttons">
+                <button onclick="goHome()">Home</button> 
+                <button onclick="showOverlay('map-overlay')">Map</button>
+                <button onclick="showOverlay('instructions-overlay')">Help</button>
+            </div>
+
+        </div>
+
+    </div>
+    
+    <div id="info-overlay" class="overlay">
+        <div class="overlay-content">
+            <button class="close-btn" onclick="closeOverlay('info-overlay')">X</button>
+            <div id="info-image"></div>
+            <div id="info-text"></div>
+        </div>
+    </div>
+<div id="dialogue-overlay" class="overlay">
+    <div class="dialogue-box">
+        <div id="dialogue-content"> 
+            <p id="dialogue-text"></p>
+            <button class="next-btn" onclick="nextDialogue()">Continue...</button>
+        </div>
+    </div>
+</div>
+    <div id="instructions-overlay" class="overlay">
+        <div class="overlay-content">
+            <button class="close-btn" onclick="closeOverlay('instructions-overlay')">X</button>
+            <h2>How to Tour the Museum</h2>
+            <p><strong>Movement:</strong> Use the **PREV/NEXT** arrows on the sides of the room.</p>
+            <p><strong>Item Interaction:</strong> Click on **dashed objects** (Items) to see research content overlays.</p>
+            <p><strong>Controls:</strong> Use the **buttons in the bottom frame** for navigation and help.</p>
+        </div>
+    </div>
+    <div id="map-overlay" class="overlay">
+    <div class="overlay-content">
+        <button class="close-btn" onclick="closeOverlay('map-overlay')">X</button>
+        <h2>Museum Map - Quick Travel</h2>
+        <p>Click a section to jump directly to that part of the research.</p>
+        
+        <div id="map-gallery">
+            <button class="map-thumbnail" onclick="quickTravel('room-1')">
+                <div class="thumbnail-image" data-room-id="room-1"></div>
+                <div class="thumbnail-title">Background</div>
+            </button>
+            <button class="map-thumbnail" onclick="quickTravel('room-2')">
+                <div class="thumbnail-image" data-room-id="room-2"></div>
+                <div class="thumbnail-title">Role of Design & Objectives</div>
+            </button>
+            <button class="map-thumbnail" onclick="quickTravel('room-3')">
+                <div class="thumbnail-image" data-room-id="room-3"></div>
+                <div class="thumbnail-title">Research Questions</div>
+            </button>
+            <button class="map-thumbnail" onclick="quickTravel('room-4')">
+                <div class="thumbnail-image" data-room-id="room-4"></div>
+                <div class="thumbnail-title">Design Framework & Methodologies</div>
+            </button>
+            <button class="map-thumbnail" onclick="quickTravel('room-5')">
+                <div class="thumbnail-image" data-room-id="room-5"></div>
+                <div class="thumbnail-title">Areas of Research & Theoretical Framework</div>
+            </button>
+            <button class="map-thumbnail" onclick="quickTravel('room-6')">
+                <div class="thumbnail-image" data-room-id="room-6"></div>
+                <div class="thumbnail-title">Audience & Stakeholders</div>
+            </button>
+            <button class="map-thumbnail" onclick="quickTravel('room-7')">
+                <div class="thumbnail-image" data-room-id="room-7"></div>
+                <div class="thumbnail-title">My Findings</div>
+            </button>
+            <button class="map-thumbnail" onclick="quickTravel('room-8')">
+                <div class="thumbnail-image" data-room-id="room-8"></div>
+                <div class="thumbnail-title">Case Studies</div>
+            </button>
+            <button class="map-thumbnail" onclick="quickTravel('room-9')">
+                <div class="thumbnail-image" data-room-id="room-9"></div>
+                <div class="thumbnail-title">Design Briefs & Prototypes</div>
+            </button>
+            <button class="map-thumbnail" onclick="quickTravel('room-10')">
+                <div class="thumbnail-image" data-room-id="room-10"></div>
+                <div class="thumbnail-title">Future Framing</div>
+            </button>
+        </div>
+        </div>
+</div>
+
+    <script>
+        // --- Data Structure (Content for all interactables) ---
+        const museumData = {
+            'item-1a': {
+                type: 'item',
+                title: 'Topic Breakdown Diagram',
+                // CRITICAL: Update this path for the overlay image
+                imagePath: 'items/item_1A.jpg', 
+                text: 'Oral traditions, recognized by UNESCO as a domain of Intangible Cultural Heritage (ICH), play a vital role in transmitting cultural values, memory, and identity across generations.<br><br> At the heart of these traditions is storytelling — a living practice that requires preservation approaches enabling it to evolve and stay relevant to changing cultural contexts.<br><br>This research focuses specifically on folktales — narratives that encode communal wisdom and moral lessons passed from one generation to the next.'
+            },
+            'item-1b': {
+                type: 'item',
+                title: 'Heritage Magazine Issue #4 - Storytelling For Cultural Survival!',
+                // CRITICAL: Update this path for the overlay image
+                imagePath: 'items/item_1B.png', 
+                text: 'Storytelling plays an important role in forming the social foundation of culture—a living practice through which communities build identity, share empathy, and transmit wisdom across generations. Each retelling of a story reshapes its narrative to fit new contexts, reflecting collective creativity and local values. This continual adaptation is what keeps cultural meaning alive. Within Vietnamese narrative traditions, this adaptability often appears through recurring archetypes - transformative journeys, moral tests, and the tension between individual and community. When storytelling becomes detached from its practice, where stories are recorded but no longer retold, the living practice cease to exist. To preserve cultural stories, therefore, one must sustain the practice of telling them.'
+            },
+            'item-1c': {
+                type: 'item',
+                title: 'Vietnam Cultural Beat 2025',
+                // CRITICAL: Update this path for the overlay image
+                imagePath: 'items/item_1C.png', 
+                text: 'In Vietnam, as in many countries, rapid technological advancement has spurred a national movement to digitize cultural heritage. Government agencies, academic institutions, and private organisations have successfully archived tangible artiefacts and even architecture, raising public awareness through exhibitions and conferences. But these digitization efforts remain largely top-down and static. They effectively record cultural data but fail to account for the participatory aspect of living practices which depend on community exchange and reinterpretation.'
+            },
+            'item-1d': {
+                type: 'item',
+                title: 'Digital Media Today!',
+                // CRITICAL: Update this path for the overlay image
+                imagePath: 'items/item_1D.png', 
+                text: 'Meanwhile, shifts in global media habits reveal how audiences increasingly favour interactive, short-form, and user-generated content. Digital technologies now allow users not only to consume stories but to co-create and remix them, mirroring the collaborative dynamics of traditional storytelling. However, this participatory potential is largely channelled into commercial or entertainment platforms, not into sustaining cultural practices. The challenge, then, is to redirect this digital creativity toward cultural participation.'
+            },
+            'item-1e': {
+                type: 'item',
+                title: 'Gamer Insider Issue #17',
+                // CRITICAL: Update this path for the overlay image
+                imagePath: 'items/item_1E.png', 
+                text: 'One potential avenue lies in game-based systems, where interaction and co-creation are already cultivated. Games can act as environments for narrative experimentation, spaces where users collectively generate, adapt, and exchange stories rather than just consume them. By intentionally designing game mechanics and environments that incentivize storytelling, this research explores how web-based games can sustain storytelling as a living cultural practice, transforming preservation from the safeguarding of content to the facilitation of participation.'
+            },
+            'char-1b': {
+                type: 'character',
+                // ADDED: Path to the character's portrait for the dialogue box
+                portraitPath: 'characters/character_placeholder_portrait.png', 
+                dialogue: [
+                    "Ah, a new visitor! Welcome to the reception wing."
+                ]
+            },
+            'item-2a': {
+                type: 'item',
+                title: 'Role of Design',
+                imagePath: 'https://via.placeholder.com/400x300?text=Methodology+Diagram',
+                text: 'The methodology employed in Section 2 is crucial. We used a blend of **Qualitative and Quantitative** analysis, primarily through A/B testing over six months.'
+            },
+
+            'link-to-room-3': {
+                type: 'scene',
+                destinationId: 'room-3b' // Define the room it links to
+            },
+            'external-link-1': {
+                type: 'link',
+                url: 'https://www.google.com/' // Replace with your actual external link
+            }
+        };
+
+        // --- Game State Variables (Unchanged) ---
+        let currentDialogue = [];
+        let dialogueIndex = 0;
+
+        // --- CORE FUNCTION: Scene Transition (Unchanged) ---
+        function goToRoom(roomId) {
+            document.querySelectorAll('.room').forEach(room => {
+                room.style.display = 'none';
+            });
+            const targetRoom = document.getElementById(roomId);
+            if (targetRoom) {
+                targetRoom.style.display = 'block';
+            }
+
+            // Update the bottom display text for the new room
+            const roomTitleElement = targetRoom.querySelector('.room-title');
+            if (roomTitleElement) {
+                document.getElementById('section-title-display').innerText = roomTitleElement.innerText;
+            }
+        }
+
+        // --- CORE FUNCTION: Overlay Control (Unchanged) ---
+        function closeOverlay(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        function showOverlay(id) {
+            document.getElementById(id).style.display = 'flex';
+        }
+
+        // --- HELPER FUNCTION: Launches the game container and travels to room ---
+        function launchGameContainer(roomId) {
+            const gameContainer = document.getElementById('game-container');
+            const introScreen = document.getElementById('intro-screen');
+
+            // CRITICAL FIX: Ensure the game container is visible before navigation.
+            if (gameContainer.style.display === 'none' || introScreen.style.display !== 'none') {
+                introScreen.style.display = 'none';
+                gameContainer.style.display = 'block';
+            }
+            
+            goToRoom(roomId);
+        }
+
+        // --- NEW FUNCTION: Go Home ---
+        function goHome() {
+            document.getElementById('game-container').style.display = 'none';
+            document.getElementById('intro-screen').style.display = 'flex';
+            closeOverlay('map-overlay');
+        }
+
+        // --- GAME START (Uses new helper) ---
+        function startGame() {
+            launchGameContainer('room-1'); 
+        }
+
+        // --- QUICK TRAVEL (Uses new helper and closes map) ---
+        function quickTravel(roomId) {
+            launchGameContainer(roomId);
+            closeOverlay('map-overlay');
+        }
+
+        // --- Item/Info Handler (Unchanged) ---
+        function openItemInfo(itemId) {
+            const data = museumData[itemId];
+            if (data.type !== 'item') return;
+            const overlay = document.getElementById('info-overlay');
+            document.getElementById('info-text').innerHTML = `<h3>${data.title}</h3><p>${data.text}</p>`;
+            const imageDiv = document.getElementById('info-image');
+            imageDiv.style.backgroundImage = `url('${data.imagePath}')`; 
+            showOverlay('info-overlay');
+        }
+
+        // --- Character/Dialogue Handler (UPDATED FOR PORTRAIT) ---
+        // --- Character/Dialogue Handler (UPDATED FOR VISUAL NOVEL STYLE) ---
+        function openCharacterDialogue(itemId) {
+            const data = museumData[itemId];
+            if (data.type !== 'character') return;
+            
+            // 1. Set the dialogue state
+            currentDialogue = data.dialogue;
+            dialogueIndex = 0;
+            
+            // 2. Set the character image as the background of the dialogue box
+            const dialogueBox = document.querySelector('#dialogue-overlay .dialogue-box');
+            if (data.portraitPath) {
+                 // CRITICAL: The portraitPath now holds the full character scene image
+                dialogueBox.style.backgroundImage = `url('${data.portraitPath}')`;
+            } else {
+                dialogueBox.style.backgroundImage = 'none'; // Clear if no image is available
+            }
+            
+            // 3. Set the initial text
+            document.getElementById('dialogue-text').innerText = currentDialogue[dialogueIndex];
+            
+            // 4. Show the overlay
+            showOverlay('dialogue-overlay');
+        }
+        function nextDialogue() {
+            dialogueIndex++;
+            if (dialogueIndex < currentDialogue.length) {
+                document.getElementById('dialogue-text').innerText = currentDialogue[dialogueIndex];
+            } else {
+                closeOverlay('dialogue-overlay');
+            }
+        }
+
+        // --- Initialization & Global Event Listener (UPDATED for External Links) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const startButton = document.getElementById('start-btn');
+            if (startButton) {
+                startButton.addEventListener('click', startGame);
+            }
+
+            document.addEventListener('click', (event) => {
+                const target = event.target;
+
+                // 1. Handle Navigation Arrows
+                if (target.classList.contains('nav-arrow')) {
+                    const targetRoomId = target.getAttribute('data-target');
+                    goToRoom(targetRoomId);
+                    return;
+                }
+
+                // 2. Use .closest() to find the parent .interactable
+                const interactableElement = target.closest('.interactable'); 
+                
+                if (interactableElement) {
+                    const itemId = interactableElement.id; 
+                    const data = museumData[itemId];
+                    const type = data ? data.type : null;
+
+                    if (type === 'item') {
+                        openItemInfo(itemId);
+                    } else if (type === 'character') {
+                        openCharacterDialogue(itemId);
+                    } else if (type === 'scene') {
+                        if (data.destinationId) {
+                            goToRoom(data.destinationId);
+                        }
+                    } else if (type === 'link') { // 💥 NEW LOGIC: Open external link
+                        if (data.url) {
+                            // Opens the URL in a new browser tab/window
+                            window.open(data.url, '_blank'); 
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
