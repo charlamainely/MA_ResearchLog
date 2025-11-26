@@ -309,49 +309,63 @@
     justify-content: center; 
     align-items: center;
 }
-        .overlay-content {
-            background-color: #fefefe;
-            margin: 5% auto;
-            padding: 30px;
-            border-radius: 8px;
-            width: 80%;
-            max-width: 900px;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-            color: #333;
-        }
-        #info-overlay .overlay-content { 
-    /* Ensures the image and text are side-by-side */
-    flex-direction: row; 
-    /* Aligns content to the top */
-    align-items: flex-start; 
+       /* --- Overlays (Modals) --- */
+/* The parent .overlay remains unchanged */
+
+/* --- Overlay Content (The Inner Box) --- */
+.overlay-content {
+    background-color: #fefefe;
+    margin: 0; /* Remove auto margins, centering is handled by the parent .overlay */
+    padding: 30px;
+    border-radius: 8px;
+    
+    /* 💥 CRITICAL: New Sizing */
+    width: 90vw; /* Take 90% of viewport width */
+    height: 90vh; /* Take 90% of viewport height */
+    max-width: none; /* Ignore old max-width */
+    
+    /* Layout for Centering Content */
+    display: flex;
+    flex-direction: column; /* Content is managed in a column */
+    justify-content: center; /* Vertically center content */
+    align-items: center; /* Horizontally center content */
+
+    position: relative;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    color: #333;
+    box-sizing: border-box; /* Include padding/border in the 90vw/90vh total */
 }
-/* --- Info Overlay Image Sizing (40% width) --- */
+
+/* --- Info Overlay Elements (Sizing for Centering) --- */
 #info-overlay .overlay-content #info-image {
-    /* Set image container to take 40% of the modal's width */
-    width: 60%; 
-    min-width: 250px; /* Prevents the image from becoming too small */
+    /* Image takes maximum space but maintains aspect ratio */
+    width: 100%; 
+    height: 100%;
     
-    /* Ensure the container maintains a 4:3 ratio for the image */
-    aspect-ratio: 4/3; 
-    
-    /* CRITICAL: Ensures the background image is visible and scaled to fit */
+    /* Image is centered within the full overlay */
     background-size: contain; 
     background-repeat: no-repeat;
     background-position: center; 
     
-    /* Add space between the image and the text */
-    margin-right: 20px; 
+    /* Ensures the image content container is visible */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    margin: 0; /* Remove old side margins */
+    aspect-ratio: auto; /* Allow image to fill space naturally */
 }
 
-/* --- Info Overlay Text Sizing (40% width) --- */
 #info-overlay .overlay-content #info-text {
-    /* Set text container to take the remaining space */
-    width: 40%; 
-    font-size: 1em;
-    line-height: 1.2em;
+    /* Text container takes maximum space for large content */
+    width: 80%; 
+    max-width: 1000px;
+    
+    /* Ensure text is readable and centered */
+    font-size: clamp(1em, 2vw, 2.5em);
+    line-height: 1.4em;
+    text-align: center;
+    overflow-y: auto; /* Allows scrolling for long text */
 }
         .close-btn { 
             position: absolute; top: 10px; right: 10px; 
@@ -540,9 +554,7 @@
         
         <div class="room" id="room-1">
             <h2 class="room-title" style="display: none;">Background & Context</h2>
-            <div class="interactable item" id="item-1a" style="left: 12%; top: 43%; width: 8%; height: 14%;"">
-                <div class="interactable-image" style="background-image: url('items/item_1A.png');"></div>
-            </div>
+           
             <div class="interactable item" id="item-1b" style="left: 63%; top: 47%; width: 7%; height: 13%;">
                 <div class="interactable-image" style="background-image: url('items/item_1B.png');"></div>
             </div>
@@ -576,7 +588,7 @@
 
 
         <div class="room" id="room-3" style="display: none;">
-            <h2 class="room-title" style="display: none;">Themes & Research Questions</h2>
+            <h2 class="room-title" style="display: none;">Research Questions</h2>
             <div class="interactable scene" id="link-to-room-3" style="left: 5%; top: 20%; width: 15%; height: 20%;">
                 <div class="interactable-image" style="background-image: url('placeholders/doorway.png');"></div>
             </div>
@@ -584,7 +596,7 @@
             <div class="nav-arrow right-arrow" data-target="room-3b">NEXT ></div>
         </div>
         <div class="room" id="room-3b" style="display: none;">
-            <h2 class="room-title" style="display: none;">Themes & Research Questions</h2>
+            <h2 class="room-title" style="display: none;">Research Questions</h2>
             <div class="interactable item" id="item-3a" style="left: 23%; top: 23%; width: 54%; height: 40%;"">
                 <div class="interactable-image" style="background-image: url('items/item_3A.png');"></div>
             </div>
@@ -592,7 +604,7 @@
             <div class="nav-arrow right-arrow" data-target="room-3c">NEXT ></div>
         </div>
          <div class="room" id="room-3c" style="display: none;">
-            <h2 class="room-title" style="display: none;">Themes & Research Questions</h2>
+            <h2 class="room-title" style="display: none;">Research Questions</h2>
             <div class="interactable item" id="item-3b" style="left: 23%; top: 23%; width: 54%; height: 40%;"">
                 <div class="interactable-image" style="background-image: url('items/item_3B.png');"></div>
             </div>
@@ -623,8 +635,8 @@
             <div class="nav-arrow right-arrow" data-target="room-5">NEXT ></div>
         </div>
         <div class="room" id="room-5" style="display: none;">
-            <h2 class="room-title" style="display: none;">Areas of Research & Theoretical Framework</h2>
-            <div class="interactable item" id="item-5a" style="left: 3%; top: 51%; width: 13%; height:18%;"">
+            <h2 class="room-title" style="display: none;">Exercises Archive</h2>
+            <div class="interactable item" id="item-5a" style="left: 4%; top: 51%; width: 13%; height:18%;"">
                 <div class="interactable-image" style="background-image: url('items/item_5A.png');"></div>
             </div>
             <div class="interactable item" id="item-5b" style="left: 18%; top: 20%; width: 32%; height:13%;"">
@@ -636,7 +648,7 @@
             <div class="interactable item" id="item-5d" style="left: 52%; top: 18%; width: 19%; height:17%;"">
                 <div class="interactable-image" style="background-image: url('items/item_5D.png');"></div>
             </div>
-            <div class="interactable item" id="item-5e" style="left: 48%; top: 36%; width: 19%; height:17%;"">
+            <div class="interactable item" id="item-5e" style="left: 53%; top: 36%; width: 19%; height:17%;"">
                 <div class="interactable-image" style="background-image: url('items/item_5E.png');"></div>
             </div>
             <div class="interactable item" id="item-5f" style="left: 73%; top: 20%; width: 10%; height:26%;"">
@@ -650,7 +662,7 @@
         </div>
         <div class="room" id="room-6" style="display: none;">
             <h2 class="room-title" style="display: none;">Audience & Stakeholders</h2>
-            <div class="interactable character" id="char-6a" style="left: 23%; top: 36%; width: 10%; height: 43%">
+            <div class="interactable character" id="item-6a" style="left: 23%; top: 36%; width: 10%; height: 43%">
                 <div class="interactable-image" style="background-image: url('characters/char_6A.png');"></div>
             </div>
             <div class="interactable character" id="char-6b" style="left: 45%; top: 36%; width: 10%; height: 43%">
@@ -664,7 +676,7 @@
         </div>
         <div class="room" id="room-7" style="display: none;">
             <h2 class="room-title" style="display: none;">My Findings</h2>
-            <div class="interactable item" id="item-7a" style="left: 16%; top: 22%; width: 28%; height:12%;"">
+            <div class="interactable item" id="item-7a" style="left: 16%; top: 24%; width: 28%; height:12%;"">
                 <div class="interactable-image" style="background-image: url('items/item_7A.png');"></div>
             </div>
             <div class="interactable item" id="item-7b" style="left: 16%; top: 39%; width: 28%; height:20%;"">
@@ -676,9 +688,7 @@
             <div class="interactable item" id="item-7d" style="left: 56%; top: 19%; width: 28%; height:28%;"">
                 <div class="interactable-image" style="background-image: url('items/item_7D.png');"></div>
             </div>
-            <div class="interactable item" id="item-7e" style="left: 53%; top: 52%; width: 35%; height:14%;"">
-                <div class="interactable-image" style="background-image: url('items/item_7E.png');"></div>
-            </div>
+           
             
             <div class="nav-arrow left-arrow" data-target="room-6">< PREV</div>
             <div class="nav-arrow right-arrow" data-target="room-8">NEXT ></div>
@@ -712,16 +722,16 @@
             <div class="interactable item" id="item-9a" style="left: 13%; top: 44%; width: 41%; height:14%;"">
                 <div class="interactable-image" style="background-image: url('items/item_9A.png');"></div>
             </div>
-            <div class="interactable item" id="item-9b" style="left: 13%; top: 59%; width: 41%; height:14%;"">
-                <div class="interactable-image" style="background-image: url('items/item_: 9B;.png');"></div>
+            <div class="interactable item" id="item-9b" style="left: 13%; top: 57%; width: 41%; height:14%;"">
+                <div class="interactable-image" style="background-image: url('items/item_9B.png');"></div>
             </div>
-            <div class="interactable item" id="item-9c" style="left: 72%; top: 39%; width: 14%; height:18%;"">
+            <div class="interactable item" id="item-9c" style="left: 72%; top: 42%; width: 14%; height:18%;"">
                 <div class="interactable-image" style="background-image: url('items/item_9C.png');"></div>
             </div>
             <div class="interactable item" id="item-9d" style="left: 86%; top: 18%; width: 10%; height:27%;"">
                 <div class="interactable-image" style="background-image: url('items/item_9D.png');"></div>
             </div>
-            <div class="interactable item" id="item-9e" style="left: 40%; top: 16%; width: 20%; height:18%;"">
+            <div class="interactable item" id="item-9e" style="left: 40%; top: 17%; width: 20%; height:18%;"">
                 <div class="interactable-image" style="background-image: url('items/item_9E.png');"></div>
             </div>
             <div class="nav-arrow left-arrow" data-target="room-8">< PREV</div>
@@ -829,48 +839,41 @@
                 title: 'Topic Breakdown Diagram',
                 // CRITICAL: Update this path for the overlay image
                 imagePath: 'items/item_1A.png', 
-                text: 'Oral traditions, recognized by UNESCO as a domain of Intangible Cultural Heritage (ICH), play a vital role in transmitting cultural values, memory, and identity across generations.<br><br> At the heart of these traditions is storytelling — a living practice that requires preservation approaches enabling it to evolve and stay relevant to changing cultural contexts.<br><br>This research focuses specifically on folktales — narratives that encode communal wisdom and moral lessons passed from one generation to the next.'
-            },
+                text: ''},
             'item-1b': {
                 type: 'item',
                 title: 'Heritage Magazine Issue #4 - Storytelling For Cultural Survival!',
                 // CRITICAL: Update this path for the overlay image
-                imagePath: 'items/item_1B.png', 
-                text: 'Storytelling plays an important role in forming the social foundation of culture—a living practice through which communities build identity, share empathy, and transmit wisdom across generations. Each retelling of a story reshapes its narrative to fit new contexts, reflecting collective creativity and local values. This continual adaptation is what keeps cultural meaning alive. Within Vietnamese narrative traditions, this adaptability often appears through recurring archetypes - transformative journeys, moral tests, and the tension between individual and community. When storytelling becomes detached from its practice, where stories are recorded but no longer retold, the living practice cease to exist. To preserve cultural stories, therefore, one must sustain the practice of telling them.'
-            },
+                text: 'Storytelling plays an important role in forming the social foundation of culture, a living practice  through which communities build identity, share empathy, and transmit wisdom across generations.<br>So, when storytelling becomes detached from its practice, where stories are recorded but no longer retold, the living practice cease to exist.'},
             'item-1c': {
                 type: 'item',
-                title: 'Vietnam Cultural Beat 2025',
+                title: 'Vietnam Family Cultural Beat 2025',
                 // CRITICAL: Update this path for the overlay image
-                imagePath: 'items/item_1C.png', 
-                text: 'In Vietnam, as in many countries, rapid technological advancement has spurred a national movement to digitize cultural heritage. Government agencies, academic institutions, and private organisations have successfully archived tangible artiefacts and even architecture, raising public awareness through exhibitions and conferences. But these digitization efforts remain largely top-down and static. They effectively record cultural data but fail to account for the participatory aspect of living practices which depend on community exchange and reinterpretation.'
+                text: 'In the Vietnamese family home, storytelling has always been a staple activity between family members, where memories are encoded into stories and shared intergenerationally.<br>However, as Vietnam rapidly modernises, family structures are changing to adapt in the modern context.<br>This changes how storytelling can be practiced in the family space and often decreased altogether.'
             },
             'item-1d': {
                 type: 'item',
                 title: 'Digital Media Today!',
                 // CRITICAL: Update this path for the overlay image
-                imagePath: 'items/item_1D.png', 
-                text: 'Meanwhile, shifts in global media habits reveal how audiences increasingly favour interactive, short-form, and user-generated content. Digital technologies now allow users not only to consume stories but to co-create and remix them, mirroring the collaborative dynamics of traditional storytelling. However, this participatory potential is largely channelled into commercial or entertainment platforms, not into sustaining cultural practices. The challenge, then, is to redirect this digital creativity toward cultural participation.'
+                text: 'In Vietnam, as in many countries, rapid technological advancement has spurred national efforts to digitize cultural heritage. These initiatives often treat intangible cultural heritage  as static data, overlooking its performative and participatory essence.<br>Meanwhile, global shifts in media habits show that audiences increasingly favour interactive, user-generated forms of content creation, activities that mirror the improvisational spirit of traditional storytelling.'
             },
             'item-1e': {
                 type: 'item',
                 title: 'Gamer Insider Issue #17',
                 // CRITICAL: Update this path for the overlay image
-                imagePath: 'items/item_1E.png', 
-                text: 'One potential avenue lies in game-based systems, where interaction and co-creation are already cultivated. Games can act as environments for narrative experimentation, spaces where users collectively generate, adapt, and exchange stories rather than just consume them. By intentionally designing game mechanics and environments that incentivize storytelling, this research explores how web-based games can sustain storytelling as a living cultural practice, transforming preservation from the safeguarding of content to the facilitation of participation.'
+                text: 'By channelling this participatory potential toward cultural expression, game-based systems offer a powerful avenue for sustaining storytelling as a living practice. Games invite players to perform, interpret, and collaborate, creating shared meaning through play.<br>This research will explore how play can facilitate communal sense-making, enabling ordinary participants to engage in the creative and reflective practice of storytelling.'
             },
             'char-1b': {
                 type: 'character',
                 // ADDED: Path to the character's portrait for the dialogue box
-                portraitPath: 'characters/character_placeholder_portrait.png', 
                 dialogue: [
-                    "Ah, a new visitor! Welcome to the reception wing."
+                    "Ah, a new visitor! Welcome to the reception wing.","My name is Han, I'll be your guide for this exhibition. So if you have any questions please feel free to ask me.","The physical version of me, I mean."
                 ]
             },
             'item-2a': {
                 type: 'item',
                 title: 'Role of Design',
-                imagePath: 'items/item_1E.png',
+                imagePath: 'items/item_2A.png',
                 text: ''},
 
             'link-to-room-3': {
@@ -885,9 +888,112 @@
             },
             'external-link-1': {
                 type: 'link',
-                url: 'https://www.google.com/' // Replace with your actual external link
-            }
-        };
+                //url: 'https://www.google.com/' // Replace with your actual external link
+                internalPath: '../../exercises/context_mapping.jpeg'
+            },
+            'item-4a': {
+                type: 'link',
+                //url: 'https://www.google.com/' // Replace with your actual external link
+                internalPath: '../../exercises/design_framework/exploration.pdf'
+            },
+            'item-4b': {
+                type: 'link',
+                //url: 'https://www.google.com/' // Replace with your actual external link
+                internalPath: '../../exercises/design_framework/design.pdf'
+            },
+            'item-4c': {
+                type: 'link',
+                //url: 'https://www.google.com/' // Replace with your actual external link
+                internalPath: '../../exercises/design_framework/evaluation.pdf'
+            },
+            'item-4d': {
+                type: 'link',
+                //url: 'https://www.google.com/' // Replace with your actual external link
+                internalPath: '../../exercises/design_framework/primary.pdf'
+            },
+            'item-4e': {
+                type: 'link',
+                //url: 'https://www.google.com/' // Replace with your actual external link
+                internalPath: '../../exercises/design_framework/secondary.pdf'
+            },
+            'item-4f': {
+                type: 'item',
+                title: 'Approach',
+                //url: 'https://www.google.com/' // Replace with your actual external link
+                text: 'The project follows a Research-through-Design (RtD) (Frayling) approach informed by Human-Centered Design (HCD) (Norman) and Design Thinking principles (IDEO Design Thinking).<br>The process iterates through Exploration, Design, and Evaluation, each cycle informed by reflection (Schön).'
+            },
+            'item-5a': {
+                type: 'link',
+                //Micro Macro Missing
+                internalPath: '../../exercises/design_framework/secondary.pdf'
+            },
+            'item-5b': {
+                type: 'link',
+                //MMM
+                internalPath: '../../exercises/LyDuKhanhHan_MicroMesoMacroAnalysis_V02.pdf'
+            },
+            'item-5c': {
+                type: 'link',
+                //glossary 
+                internalPath: '../../exercises/glossary.html'
+            },
+            'item-5d': {
+                type: 'link',
+                //Empathy Map
+                internalPath: '../../exercises/empathy_map.pdf'
+            },
+            'item-5e': {
+                type: 'link',
+                //User Journey
+                internalPath: '../../exercises/empathy_map.pdf'
+            },
+            'item-5f': {
+                type: 'link',
+                //Crazy 8
+                internalPath: '../../exercises/design_framework/secondary.pdf'
+            },
+            'item-5g': {
+                type: 'item',
+                title: 'Haiku',
+                //url: 'https://www.google.com/' // Replace with your actual external link
+                text: 'Stories stuck in book<br>But made into games online<br>All can join and play'
+            },
+            'item-6a': {
+                type: 'link',
+                //User Journey
+                internalPath: '../../exercises/profile.html'
+            },
+            'char-6b': {
+                type: 'character',
+                // ADDED: Path to the character's portrait for the dialogue box
+                dialogue: [
+                    "This painting reminds me of my childhood home...","I wish I could tell my grandchildren all the stories about the peaceful life we had there. And the games we used to play!","But they visit me so rarely, and they're so shy around me..."
+                ]
+            },
+            'char-6c': {
+                type: 'character',
+                // ADDED: Path to the character's portrait for the dialogue box
+                dialogue: [
+                    "I'm examining our visitor's responses of the display today, but they hardly do anything interesting to note.","We want them to engage more than just looking. But I'm struggling to find out how we can do that!","Any ideas?"
+                ]
+            },
+            'item-7a': {
+                type: 'link',
+                //Literature review
+                internalPath: '../../literature/index.html'
+            },
+            'item-7b': {
+                type: 'link',
+                //Field work
+                internalPath: '../../fieldwork/index.html'
+            },
+            'item-7c': {
+                type: 'link',
+                //Prototype
+                internalPath: '../../prototypes/mala_quiz/proto_mala_quiz.html'
+            },
+            
+    };
 
         // --- Game State Variables (Unchanged) ---
         let currentDialogue = [];
@@ -952,13 +1058,35 @@
         }
 
         // --- Item/Info Handler (Unchanged) ---
+        // --- Item/Info Handler (UPDATED FOR EXCLUSIVE CONTENT) ---
         function openItemInfo(itemId) {
             const data = museumData[itemId];
             if (data.type !== 'item') return;
-            const overlay = document.getElementById('info-overlay');
-            document.getElementById('info-text').innerHTML = `<h3>${data.title}</h3><p>${data.text}</p>`;
+
             const imageDiv = document.getElementById('info-image');
-            imageDiv.style.backgroundImage = `url('${data.imagePath}')`; 
+            const textDiv = document.getElementById('info-text');
+
+            // 1. Reset/Hide Both Containers
+            imageDiv.style.display = 'none';
+            textDiv.style.display = 'none';
+
+            const hasImage = data.imagePath && data.imagePath.length > 0;
+            const hasText = data.text && data.text.length > 0;
+
+            if (hasImage) {
+                // Show only the Image
+                imageDiv.style.backgroundImage = `url('${data.imagePath}')`; 
+                imageDiv.style.display = 'flex'; // Use flex to center the background image (as set in CSS)
+            } else if (hasText) {
+                // Show only the Text
+                textDiv.innerHTML = `<h3>${data.title}</h3><p>${data.text}</p>`;
+                textDiv.style.display = 'block';
+            } else {
+                // Fallback if item has neither
+                textDiv.innerHTML = `<h3>No Content Available</h3><p>This exhibit is currently empty.</p>`;
+                textDiv.style.display = 'block';
+            }
+
             showOverlay('info-overlay');
         }
 
@@ -1034,6 +1162,10 @@
                             // Opens the URL in a new browser tab/window
                             window.open(data.url, '_blank'); 
                         }
+                        else if (data.internalPath) {
+                        
+                        window.open(data.internalPath, '_blank'); 
+                    } 
                     }
                 }
             });
