@@ -24,13 +24,13 @@
             padding: 10px 15px;
             border: none;
             border-radius: 5px;
-            background-color: #007bff;
+            background-color: #cc1717;
             color: white;
             transition: background-color 0.2s;
             font-size: 1em;
         }
         button:hover {
-            background-color: #0056b3;
+            background-color: #116c34;
         }
         
         #intro-screen {
@@ -544,10 +544,10 @@
     <div id="intro-screen">
 
         <h1>Tell It Your Way</h1>
-        <h2>Engaging Community in Preserving Vietnamese<br>Folktales with Narrative Web-based Game</h2>
+        <h2>Sustaining Communal Storytelling as Living<br>Cultural Practices Through Play</h2>
         <button id="start-btn">Start Tour</button>
         <button onclick="showOverlay('instructions-overlay')">Instructions & Help</button>
-        <button onclick="showOverlay('map-overlay')">Museum Map (Quick Travel)</button>
+        <button onclick="showOverlay('map-overlay')">Museum Map</button>
     </div>
 
     <div id="game-container" style="display: none;"> 
@@ -924,14 +924,14 @@
                 text: 'The project follows a Research-through-Design (RtD) (Frayling) approach informed by Human-Centered Design (HCD) (Norman) and Design Thinking principles (IDEO Design Thinking).<br>The process iterates through Exploration, Design, and Evaluation, each cycle informed by reflection (Schön).'
             },
             'item-5a': {
-                type: 'link',
+                type: 'item',
                 //Micro Macro Missing
-                internalPath: '../../exercises/design_framework/secondary.pdf'
+                imagePath: '../../exercises/MMAnalysis.jpg'
             },
             'item-5b': {
-                type: 'link',
-                //MMM
-                internalPath: '../../exercises/LyDuKhanhHan_MicroMesoMacroAnalysis_V02.pdf'
+                type: 'item',
+                //Micro Macro Missing
+                imagePath: '../../exercises/MMMAnalysis.jpg'
             },
             'item-5c': {
                 type: 'link',
@@ -993,11 +993,43 @@
                 //Prototype
                 internalPath: '../../prototypes/mala_quiz/proto_mala_quiz.html'
             },
+            'item-9a': {
+                type: 'item',
+                title: 'Design Brief 1',
+                text: 'Design a game system that enables intergenerational storytelling and facilitate for the story to continue. The solution should create conditions in which stories surface naturally and honestly.'
+            },
+            'item-9a': {
+                type: 'item',
+                title: 'Design Brief 1',
+                text: 'Design a game system that employs playful interactions, structured prompts, or situational cues to enable intergenerational storytelling. The solution should create conditions in which stories surface naturally and honestly.'
+            },
+            'item-9b': {
+                type: 'item',
+                title: 'Approach to Design Brief 1',
+                text: 'This brief explore play-based mechanisms that can lower formal conversational barriers and invite spontaneous exchange. Consider how rules, prompts, physical or digital materials and objects, or interaction formats can gently guide participants into conversations without pre-determining outcomes. Prioritise approaches that allow stories to emerge organically and faciliate for it to keep going.'
+            },
+            'item-9c': {
+                type: 'item',
+                title: 'Approach to Design Brief 2',
+                text: 'Develop a method for gathering, interpreting, and presenting community-generated stories in a public format. The outcome should make visible the variety of lived experiences and demonstrate how collective memory can be expressed, shared, and reimagined through contemporary media or experiential forms.'
+            },
+            'item-9d': {
+                type: 'item',
+                title: 'Approach to Design Brief 2',
+                text: 'Investigate creative and responsible ways of collecting and organising narrative contributions while respecting privacy, diversity and variation. Consider design strategies that can translate stories into accessible, engaging formats for the mass audience without imposing a single authoritative voice. Emphasise modes of presentation that highlight multiplicity, participation, and cultural resonance.'
+            },
+            'item-9e': {
+                type: 'item',
+                //User Journey
+                imagePath: '../../exercises/paper_proto.jpg'
+            },
+
+
             'item-10a': {
                 type: 'item',
                 title: 'Conclusion',
                 imagePath: 'items/item_10A.png',
-                text: ''},
+                text: ''}
             
             
     };
