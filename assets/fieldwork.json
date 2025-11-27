@@ -4,5 +4,17 @@
     "path": "fw-1.html",
     "thumb": "../icons/fieldwork_icon.jpg",
     "meta": "2025-08-16 · Singapore · Investigation"
+  },
+  {
+    "title": "Interview with Andy Ho",
+    "path": "fw-3.html",
+    "thumb": "../icons/fieldwork_icon.jpg",
+    "meta": "2025-08-21 · Singapore · Interview"
+  },
+  {
+    "title": "Board Game Session Auto-ethnographic Observation",
+    "path": "fw-2.html",
+    "thumb": "../icons/fieldwork_icon.jpg",
+    "meta": "2025-11-23 · Singapore · Observation"
   }
 ]
