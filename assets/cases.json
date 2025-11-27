@@ -16,5 +16,35 @@
     "path": "case-03.html",
     "thumb": "../icons/case_study_icon.jpg",
     "meta": "website"
+  },
+  {
+    "title": "Never Alone",
+    "path": "case-04.html",
+    "thumb": "../icons/case_study_icon.jpg",
+    "meta": "game"
+  },
+  {
+    "title": "Storyteller",
+    "path": "case-05.html",
+    "thumb": "../icons/case_study_icon.jpg",
+    "meta": "game"
+  },
+  {
+    "title": "Awkward or Cute",
+    "path": "case-06.html",
+    "thumb": "../icons/case_study_icon.jpg",
+    "meta": "social media"
+  },
+  {
+    "title": "The Forever Labyrinth",
+    "path": "case-07.html",
+    "thumb": "../icons/case_study_icon.jpg",
+    "meta": "game"
+  },
+  {
+    "title": "Movie Star Planet",
+    "path": "case-08.html",
+    "thumb": "../icons/case_study_icon.jpg",
+    "meta": "online game"
   }
 ]
