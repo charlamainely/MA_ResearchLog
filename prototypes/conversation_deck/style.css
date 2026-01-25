@@ -267,11 +267,83 @@ button.primary {
   justify-content: center;
 }
 
-.card-stack {
+.card-carousel {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: min(1100px, 100%);
+}
+
+.carousel-arrow {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(29, 26, 22, 0.2);
+  background: #fff;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.carousel-arrow:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.card-grid {
+  width: min(980px, 100%);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  align-items: stretch;
+  flex: 1;
+}
+
+.card-track {
+  display: contents;
+}
+
+.card-choice {
   position: relative;
-  width: min(420px, 90vw);
   height: 520px;
+  padding: 0;
+  border: none;
+  border-radius: 24px;
+  background: transparent;
+  box-shadow: none;
+  cursor: pointer;
   perspective: 1200px;
+  transition: transform 0.2s ease;
+  z-index: 0;
+}
+
+.card-choice:hover {
+  transform: translateY(-4px);
+  box-shadow: none;
+}
+
+.card-choice.is-disabled {
+  pointer-events: none;
+  opacity: 0.6;
+  transform: none;
+}
+
+.card-choice.is-muted {
+  opacity: 0.25;
+  transform: none;
+}
+
+.card-choice.is-selected {
+  transform: translateY(-8px);
+  z-index: 2;
+}
+
+.card-choice.is-hidden {
+  display: none;
 }
 
 .card-motion {
@@ -340,6 +412,14 @@ button.primary {
   transform: rotateY(180deg);
 }
 
+.option-label {
+  align-self: flex-start;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(29, 26, 22, 0.55);
+}
+
 .card-front::after {
   content: "";
   position: absolute;
@@ -404,11 +484,62 @@ button.primary {
   gap: 12px;
 }
 
-.followup {
+.round-panel {
+  height: 100%;
+  min-height: 520px;
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(29, 26, 22, 0.12);
+  background: rgba(255, 255, 255, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.round-panel.hidden {
+  display: none;
+}
+
+.round-panel.in-grid {
+  grid-column: 2 / span 2;
+  grid-row: 1;
+  align-self: stretch;
+}
+
+
+.round-panel.is-complete {
+  border-color: rgba(47, 111, 109, 0.4);
+  background: rgba(47, 111, 109, 0.08);
+}
+
+.round-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.checklist {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.answer-item {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 0.95rem;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(197, 103, 58, 0.12);
+  font-weight: 600;
+}
+
+.answer-item input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
 }
 
 @keyframes shuffleA {
@@ -483,8 +614,129 @@ button.primary {
     margin: 0 auto;
   }
 
-  .card-stack {
-    height: 470px;
+  .card-grid {
+    gap: 14px;
+  }
+
+  .card-choice {
+    height: 440px;
+  }
+
+  .round-panel {
+    min-height: 440px;
+  }
+
+  .card-front {
+    padding: 20px;
+    gap: 12px;
+  }
+
+  .category {
+    font-size: 0.68rem;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+  }
+
+  .question {
+    font-size: 1.05rem;
+  }
+
+  .translation {
+    font-size: 0.85rem;
+  }
+
+  .card-back {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .card-carousel {
+    gap: 10px;
+  }
+
+  .carousel-arrow {
+    display: inline-flex;
+  }
+
+  .card-grid {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .card-track {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 380px;
+    margin-bottom: 16px;
+    transition: transform 0.35s ease;
+    touch-action: pan-y;
+  }
+
+  .card-choice {
+    position: relative;
+    flex: 0 0 100%;
+    height: 100%;
+    transform: none;
+  }
+
+  .card-choice:hover {
+    transform: none;
+  }
+
+  .card-choice.is-selected {
+    transform: none;
+  }
+
+  .round-panel {
+    min-height: unset;
+    padding: 12px;
+    height: auto;
+  }
+
+  .round-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .card-front {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .category {
+    font-size: 0.6rem;
+    padding: 4px 8px;
+  }
+
+  .subtitle {
+    font-size: 0.75rem;
+  }
+
+  .question {
+    font-size: 0.9rem;
+  }
+
+  .translation {
+    font-size: 0.75rem;
+  }
+
+  .card-back {
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+  }
+
+  .checklist {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+
+  .answer-item {
+    padding: 8px 10px;
+    font-size: 0.85rem;
   }
 }
 

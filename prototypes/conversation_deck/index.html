@@ -12,8 +12,8 @@
         <div>
           <h1>Conversation Deck</h1>
           <p>
-            A tactile, shared prompt ritual for small groups. Build the player list, shuffle
-            the deck, and let the table guide the flow.
+            A tactile, shared prompt ritual for small groups. Deal three cards, choose one,
+            and answer together before the turn passes.
           </p>
         </div>
       </header>
@@ -35,49 +35,101 @@
             <span class="label">Current turn</span>
             <h2 id="current-player">--</h2>
           </div>
-          <div class="phase" id="phase-label">Shuffle to draw a card</div>
+          <div class="phase" id="phase-label">Shuffle to deal three cards</div>
         </div>
 
         <div class="table">
           <div class="deck-area">
-            <button class="deck" id="deck" type="button" aria-label="Shuffle and draw">
+            <button class="deck" id="deck" type="button" aria-label="Shuffle and deal">
               <div class="deck-card"></div>
               <div class="deck-card"></div>
               <div class="deck-card"></div>
               <div class="deck-card top"></div>
             </button>
-            <div class="deck-hint">Click the deck to shuffle and draw</div>
+            <div class="deck-hint">Click the deck to deal three cards</div>
           </div>
 
           <div class="card-area">
-            <div class="card-stack">
-              <div class="card-motion" id="card-motion">
-                <div class="card" id="question-card" data-category="starter">
-                  <div class="card-face card-front">
-                    <div class="category" id="card-category">Starter</div>
-                    <h3 id="card-title-vi">Tieu de (VI)</h3>
-                    <p class="subtitle" id="card-title-en">Title (EN)</p>
-                    <div class="question" id="card-question-vi">Cau hoi (VI)</div>
-                    <div class="translation" id="card-question-en">Question (EN)</div>
+            <div class="card-carousel">
+              <button
+                class="carousel-arrow"
+                id="carousel-prev"
+                type="button"
+                aria-label="Previous card"
+              >
+                &larr;
+              </button>
+              <div class="card-grid" id="card-grid">
+                <div class="card-track" id="card-track">
+                  <button class="card-choice" data-index="0" type="button" aria-label="Card option 1">
+                    <div class="card-motion">
+                      <div class="card" data-category="starter">
+                        <div class="card-face card-front">
+                          <div class="option-label">Option 1</div>
+                          <div class="category">Starter</div>
+                          <h3 class="card-title-vi">Tieu de (VI)</h3>
+                          <p class="subtitle card-title-en">Title (EN)</p>
+                          <div class="question card-question-vi">Cau hoi (VI)</div>
+                          <div class="translation card-question-en">Question (EN)</div>
+                        </div>
+                        <div class="card-face card-back">
+                          <div class="back-text">Conversation Deck</div>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                  <button class="card-choice" data-index="1" type="button" aria-label="Card option 2">
+                    <div class="card-motion">
+                      <div class="card" data-category="starter">
+                        <div class="card-face card-front">
+                          <div class="option-label">Option 2</div>
+                          <div class="category">Starter</div>
+                          <h3 class="card-title-vi">Tieu de (VI)</h3>
+                          <p class="subtitle card-title-en">Title (EN)</p>
+                          <div class="question card-question-vi">Cau hoi (VI)</div>
+                          <div class="translation card-question-en">Question (EN)</div>
+                        </div>
+                        <div class="card-face card-back">
+                          <div class="back-text">Conversation Deck</div>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                  <button class="card-choice" data-index="2" type="button" aria-label="Card option 3">
+                    <div class="card-motion">
+                      <div class="card" data-category="starter">
+                        <div class="card-face card-front">
+                          <div class="option-label">Option 3</div>
+                          <div class="category">Starter</div>
+                          <h3 class="card-title-vi">Tieu de (VI)</h3>
+                          <p class="subtitle card-title-en">Title (EN)</p>
+                          <div class="question card-question-vi">Cau hoi (VI)</div>
+                          <div class="translation card-question-en">Question (EN)</div>
+                        </div>
+                        <div class="card-face card-back">
+                          <div class="back-text">Conversation Deck</div>
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                </div>
+                <div class="round-panel hidden" id="round-panel">
+                  <div class="round-header">
+                    <span class="label">Everyone answers</span>
+                    <span id="round-status">0/0 answered</span>
                   </div>
-                  <div class="card-face card-back">
-                    <div class="back-text">Conversation Deck</div>
-                  </div>
+                  <div class="checklist" id="answer-list"></div>
                 </div>
               </div>
+              <button class="carousel-arrow" id="carousel-next" type="button" aria-label="Next card">
+                &rarr;
+              </button>
             </div>
           </div>
         </div>
 
         <div class="controls">
-          <button id="skip-btn" type="button" disabled>Skip</button>
-          <button id="answered-btn" type="button" disabled>Answered</button>
           <button id="next-turn-btn" type="button" class="primary" disabled>Next turn</button>
-        </div>
-
-        <div class="followup">
-          <span class="label">Follow-up player</span>
-          <span id="followup-player">--</span>
         </div>
       </section>
     </div>
