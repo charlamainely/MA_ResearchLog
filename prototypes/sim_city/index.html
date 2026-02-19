@@ -518,6 +518,7 @@
         }
 
         const collisionZ = 24;
+        const despawnZ = -40;
         const remaining = [];
         for (const obs of state.obstacles) {
           const laneValue = getObstacleLane(obs);
@@ -530,7 +531,7 @@
             gameOver(obs.kind);
           }
 
-          if (obs.z > -200) remaining.push(obs);
+          if (obs.z > despawnZ) remaining.push(obs);
         }
         state.obstacles = remaining;
 
@@ -542,7 +543,7 @@
             state.multiplierTimer = 4.2;
             state.bonusScore += 150;
             powerEl.textContent = pow.type.label + ' x2';
-          } else if (pow.z > -120) {
+          } else if (pow.z > despawnZ) {
             remainingPower.push(pow);
           }
         }
@@ -657,6 +658,7 @@
 
         for (const item of all) {
           const obj = item.obj;
+          if (item.z < 8) continue;
           if (obj.kind === 'power') {
             drawPowerup(obj, curveShift);
           } else if (obj.kind === 'long') {
