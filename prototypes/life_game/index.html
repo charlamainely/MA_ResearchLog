@@ -1,0 +1,2209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LIFE LAYERS</title>
+  <style>
+    :root {
+      --bg-1: #f7efe2;
+      --bg-2: #d8e8ef;
+      --bg-3: #1e2a3b;
+      --ink: #102033;
+      --panel: #fefcf9;
+      --panel-alt: #edf4f8;
+      --line: #d1dbe3;
+      --brand: #ef8b4a;
+      --brand-deep: #d96b28;
+      --accent: #2b88b6;
+      --good: #1e9d72;
+      --bad: #c34747;
+      --muted: #5a6a79;
+      --shadow: 0 16px 42px rgba(16, 32, 51, 0.16);
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-sm: 9px;
+      --trans-fast: 160ms ease;
+      --trans-med: 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      font-family: "Avenir Next", "Segoe UI", "Trebuchet MS", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(1000px 500px at 10% -10%, rgba(250, 181, 126, 0.5), transparent 65%),
+        radial-gradient(900px 480px at 95% 5%, rgba(84, 172, 211, 0.42), transparent 60%),
+        linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 38%, #e4edf3 62%, #edf5f8 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.25;
+      background-image:
+        linear-gradient(transparent 31px, rgba(16, 32, 51, 0.06) 32px),
+        linear-gradient(90deg, transparent 31px, rgba(16, 32, 51, 0.06) 32px);
+      background-size: 32px 32px;
+      mask-image: linear-gradient(to bottom, black 15%, transparent 95%);
+      z-index: -1;
+    }
+
+    .shell {
+      width: min(1240px, 96vw);
+      margin: 18px auto 26px;
+      animation: fadeRise 0.5s var(--trans-med) both;
+    }
+
+    .title-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .app-title {
+      margin: 0;
+      letter-spacing: 0.08em;
+      font-weight: 800;
+      font-size: clamp(1.35rem, 2vw, 2.1rem);
+      text-transform: uppercase;
+    }
+
+    .sub {
+      color: var(--muted);
+      font-size: 0.92rem;
+      margin-top: 4px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 0.34rem 0.66rem;
+      border: 1px solid var(--line);
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.68);
+    }
+
+    .panel {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), var(--panel));
+      border: 1px solid rgba(209, 219, 227, 0.9);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .setup-screen {
+      padding: clamp(18px, 3vw, 26px);
+      display: grid;
+      gap: 18px;
+      grid-template-columns: 1fr;
+      animation: panelIn 420ms var(--trans-med) both;
+    }
+
+    .setup-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 16px;
+    }
+
+    .setup-card {
+      background: var(--panel-alt);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 16px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    input,
+    select,
+    button {
+      font: inherit;
+    }
+
+    input,
+    select {
+      width: 100%;
+      border-radius: var(--radius-sm);
+      border: 1px solid #b8c7d3;
+      padding: 0.68rem 0.72rem;
+      background: white;
+      color: var(--ink);
+      transition: border-color var(--trans-fast), box-shadow var(--trans-fast);
+    }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(43, 136, 182, 0.18);
+    }
+
+    button {
+      border: 0;
+      border-radius: var(--radius-sm);
+      padding: 0.68rem 0.95rem;
+      cursor: pointer;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand), var(--brand-deep));
+      transition: transform var(--trans-fast), filter var(--trans-fast), box-shadow var(--trans-fast);
+      box-shadow: 0 6px 16px rgba(217, 107, 40, 0.3);
+    }
+
+    button:hover:not(:disabled) {
+      transform: translateY(-1px);
+      filter: saturate(1.04);
+    }
+
+    button:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    button:disabled {
+      opacity: 0.46;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .button-muted {
+      background: linear-gradient(135deg, #6f8aa0, #506676);
+      box-shadow: 0 5px 14px rgba(80, 102, 118, 0.28);
+    }
+
+    .button-accent {
+      background: linear-gradient(135deg, #3d99c7, #2a7599);
+      box-shadow: 0 5px 14px rgba(42, 117, 153, 0.3);
+    }
+
+    .player-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+      max-height: 230px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .player-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 9px 10px;
+      border-radius: 10px;
+      background: #fff;
+      border: 1px solid var(--line);
+      animation: slideIn 250ms var(--trans-med) both;
+    }
+
+    .player-row small {
+      color: var(--muted);
+    }
+
+    .remove-btn {
+      color: #8a2d2d;
+      border: 1px solid #e4b6b6;
+      background: #fff3f3;
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-size: 0.72rem;
+      cursor: pointer;
+      box-shadow: none;
+    }
+
+    .game-screen {
+      display: grid;
+      grid-template-columns: minmax(320px, 30%) minmax(380px, 39%) minmax(300px, 31%);
+      gap: 14px;
+      min-height: 72vh;
+    }
+
+    .column {
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+      align-content: start;
+    }
+
+    .player-card {
+      background: var(--panel-alt);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: 14px;
+    }
+
+    .player-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .player-name {
+      margin: 0;
+      font-size: 1.25rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+    .stat-pill {
+      position: relative;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid var(--line);
+      padding: 10px 8px;
+      min-height: 66px;
+      overflow: hidden;
+      transform-origin: center;
+    }
+
+    .stat-pill.pulse {
+      animation: pulseStat 520ms ease;
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-value {
+      margin-top: 2px;
+      font-size: 1.5rem;
+      font-weight: 800;
+      line-height: 1.08;
+    }
+
+    .float-badge {
+      position: absolute;
+      right: 8px;
+      top: 8px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      animation: floatOut 700ms ease forwards;
+      pointer-events: none;
+    }
+
+    .float-badge.good {
+      color: var(--good);
+    }
+
+    .float-badge.bad {
+      color: var(--bad);
+    }
+
+    .status-grid {
+      display: grid;
+      gap: 6px;
+      margin-top: 9px;
+    }
+
+    .status-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.86rem;
+      border-bottom: 1px dashed #d3dce4;
+      padding-bottom: 4px;
+    }
+
+    .tag-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .tag {
+      font-size: 0.72rem;
+      border-radius: 999px;
+      padding: 0.3rem 0.56rem;
+      border: 1px solid;
+    }
+
+    .tag.good {
+      color: #116a4b;
+      background: #e6f6f0;
+      border-color: #b5e2d3;
+    }
+
+    .tag.bad {
+      color: #8d3434;
+      background: #fdeeee;
+      border-color: #efc3c3;
+    }
+
+    .tag.neutral {
+      color: #415566;
+      background: #eef3f8;
+      border-color: #d1dce7;
+    }
+
+    .turn-panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: linear-gradient(165deg, #f0f8fc, #eef5f9 45%, #f8f9fa);
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .turn-panel h3,
+    .map-panel h3,
+    .timeline-panel h3 {
+      margin: 0;
+      font-size: 0.98rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #2e4152;
+    }
+
+    .turn-input {
+      display: grid;
+      grid-template-columns: minmax(0, 80px) 1fr;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .turn-actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .turn-hint {
+      font-size: 0.78rem;
+      color: var(--muted);
+      min-height: 18px;
+    }
+
+    .map-panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: #f8fbfd;
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .space-card {
+      border: 1px solid #d4e1eb;
+      border-radius: 14px;
+      background: linear-gradient(152deg, #ffffff 0%, #f2f7fb 62%, #eaf3f9 100%);
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+      min-height: 225px;
+    }
+
+    .space-kicker {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #4a677e;
+      font-weight: 700;
+    }
+
+    .space-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .space-title {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .space-node-id {
+      border-radius: 999px;
+      font-size: 0.72rem;
+      padding: 0.28rem 0.6rem;
+      border: 1px solid #b6ccdc;
+      color: #35506a;
+      background: #edf5fa;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+    }
+
+    .space-description {
+      margin: 0;
+      color: #365269;
+      line-height: 1.45;
+      font-size: 0.92rem;
+    }
+
+    .space-meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 4px;
+    }
+
+    .space-meta-pill {
+      border-radius: 999px;
+      border: 1px solid #c5d7e5;
+      background: #fff;
+      color: #3e5a70;
+      padding: 0.32rem 0.62rem;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-weight: 700;
+    }
+
+    .space-action {
+      margin-top: 2px;
+      border-top: 1px dashed #cad8e4;
+      padding-top: 8px;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    .timeline-panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: #fafcfe;
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+      height: calc(72vh - 16px);
+    }
+
+    .timeline-list {
+      overflow: auto;
+      display: grid;
+      gap: 7px;
+      padding-right: 4px;
+    }
+
+    .roster-card {
+      border-radius: 10px;
+      border: 1px solid #d8e3ec;
+      background: #fff;
+      padding: 9px 10px;
+      animation: fadeRise 240ms var(--trans-med) both;
+    }
+
+    .roster-card.active {
+      border-color: #76afd0;
+      box-shadow: 0 0 0 3px rgba(43, 136, 182, 0.14);
+    }
+
+    .roster-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: baseline;
+    }
+
+    .roster-name {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #1f3a53;
+      margin: 0;
+    }
+
+    .roster-gen {
+      font-size: 0.71rem;
+      color: #587185;
+      text-transform: uppercase;
+      letter-spacing: 0.045em;
+    }
+
+    .roster-stats {
+      margin-top: 7px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 5px;
+    }
+
+    .roster-stat {
+      border: 1px solid #dbe6ef;
+      border-radius: 8px;
+      padding: 4px 5px;
+      background: #f8fbfd;
+      font-size: 0.74rem;
+    }
+
+    .roster-stat strong {
+      font-size: 0.86rem;
+      color: #19354d;
+    }
+
+    .roster-status {
+      margin-top: 4px;
+      font-size: 0.76rem;
+      color: #4f677b;
+      line-height: 1.4;
+    }
+
+    .draw-select-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .draw-card {
+      border: 1px solid #c9d8e4;
+      border-radius: 13px;
+      padding: 0;
+      aspect-ratio: 2.8 / 4;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transform: translateY(0) scale(1);
+      transition: transform 220ms ease, filter 220ms ease, opacity 220ms ease;
+      background:
+        radial-gradient(circle at 75% 18%, rgba(255, 255, 255, 0.34), transparent 45%),
+        linear-gradient(150deg, #2f516a 0%, #224158 48%, #162d40 100%);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14), 0 10px 22px rgba(10, 23, 35, 0.25);
+    }
+
+    .draw-card::before {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border-radius: 9px;
+      border: 1px dashed rgba(226, 237, 245, 0.52);
+    }
+
+    .draw-card:hover {
+      transform: translateY(-3px) scale(1.01);
+      filter: saturate(1.08);
+    }
+
+    .draw-card.selected {
+      animation: pickBounce 420ms ease forwards;
+      z-index: 2;
+    }
+
+    .draw-card.faded {
+      opacity: 0.15;
+      transform: scale(0.95);
+      pointer-events: none;
+    }
+
+    .draw-deck-label {
+      position: absolute;
+      left: 10px;
+      bottom: 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(229, 240, 246, 0.42);
+      color: #eef7fb;
+      font-size: 0.64rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.2rem 0.45rem;
+      background: rgba(8, 23, 35, 0.46);
+      font-weight: 700;
+    }
+
+    .actual-card {
+      border-radius: 16px;
+      border: 1px solid #cfdeea;
+      background: linear-gradient(158deg, #ffffff 0%, #f6fbff 48%, #eef6fc 100%);
+      box-shadow: 0 14px 34px rgba(14, 34, 52, 0.18);
+      padding: 14px;
+      animation: revealCard 420ms var(--trans-med) both;
+    }
+
+    .actual-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 9px;
+    }
+
+    .actual-card-title {
+      margin: 0;
+      font-size: 1.16rem;
+      color: #18334b;
+    }
+
+    .actual-card-deck {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #4b677f;
+      border: 1px solid #c0d2e1;
+      border-radius: 999px;
+      padding: 0.24rem 0.52rem;
+      font-weight: 700;
+    }
+
+    .actual-card-body {
+      margin: 0;
+      font-size: 0.93rem;
+      line-height: 1.45;
+      color: #2d4a62;
+    }
+
+    .actual-card-impact {
+      margin-top: 10px;
+      border: 1px solid #d2e0ea;
+      border-radius: 10px;
+      background: #f6fbff;
+      padding: 8px 9px;
+      font-size: 0.82rem;
+      color: #294761;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(18, 31, 44, 0.46);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 90;
+    }
+
+    .modal-backdrop.show {
+      display: flex;
+      animation: fadeIn 180ms ease both;
+    }
+
+    .modal-card {
+      width: min(680px, 94vw);
+      max-height: 90vh;
+      overflow: auto;
+      border-radius: 16px;
+      border: 1px solid #d4e0ea;
+      box-shadow: 0 24px 60px rgba(11, 23, 34, 0.34);
+      background: #fff;
+      padding: 16px;
+      transform-origin: center;
+      animation: popIn 220ms var(--trans-med) both;
+    }
+
+    .modal-card.flip {
+      animation: cardFlip 360ms var(--trans-med) both;
+      transform-style: preserve-3d;
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    .modal-head h4 {
+      margin: 0;
+      font-size: 1.16rem;
+    }
+
+    .modal-sub {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .option-grid {
+      display: grid;
+      gap: 9px;
+      margin-top: 10px;
+    }
+
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      border: 1px solid #cfdae5;
+      background: linear-gradient(165deg, #f9fcff, #f1f7fb);
+      color: #173149;
+      border-radius: 12px;
+      padding: 10px;
+      font-weight: 700;
+      box-shadow: none;
+    }
+
+    .option-btn .preview {
+      margin-top: 4px;
+      color: #476176;
+      font-size: 0.8rem;
+      font-weight: 500;
+      line-height: 1.35;
+    }
+
+    .option-btn .impact {
+      margin-top: 7px;
+      color: #2f495e;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .stop-banner {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+      z-index: 95;
+      opacity: 0;
+      transition: opacity 180ms ease;
+    }
+
+    .stop-banner.show {
+      opacity: 1;
+    }
+
+    .stop-pill {
+      background: linear-gradient(135deg, #e9654f, #d34838);
+      color: #fff;
+      border-radius: 999px;
+      border: 2px solid rgba(255, 255, 255, 0.6);
+      padding: 0.72rem 1.2rem;
+      font-size: clamp(1rem, 2.4vw, 1.5rem);
+      letter-spacing: 0.08em;
+      font-weight: 800;
+      text-transform: uppercase;
+      box-shadow: 0 16px 34px rgba(56, 10, 10, 0.38);
+      animation: stopPulse 680ms ease;
+    }
+
+    .summary {
+      display: grid;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .summary-item {
+      border-radius: 10px;
+      border: 1px solid #d7e2ec;
+      background: #f6fafd;
+      padding: 8px 9px;
+      font-size: 0.88rem;
+    }
+
+    @keyframes pulseStat {
+      0% { transform: scale(1); }
+      35% { transform: scale(1.03); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes floatOut {
+      from { opacity: 0; transform: translateY(6px); }
+      15% { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(-14px); }
+    }
+
+    @keyframes cardFlip {
+      from { transform: rotateY(-74deg) scale(0.95); opacity: 0.2; }
+      to { transform: rotateY(0deg) scale(1); opacity: 1; }
+    }
+
+    @keyframes pickBounce {
+      0% { transform: translateY(0) scale(1); }
+      45% { transform: translateY(-9px) scale(1.03); }
+      100% { transform: translateY(-4px) scale(1.01); }
+    }
+
+    @keyframes revealCard {
+      from { opacity: 0; transform: rotateY(-60deg) scale(0.95); }
+      to { opacity: 1; transform: rotateY(0deg) scale(1); }
+    }
+
+    @keyframes stopPulse {
+      0% { transform: scale(0.86); opacity: 0; }
+      45% { transform: scale(1.03); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes popIn {
+      from { transform: translateY(8px) scale(0.97); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    @keyframes fadeRise {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes panelIn {
+      from { opacity: 0; transform: scale(0.985); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @media (max-width: 1080px) {
+      .game-screen {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline-panel {
+        height: 42vh;
+      }
+
+      .setup-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .turn-actions {
+        grid-template-columns: 1fr;
+      }
+
+      .draw-select-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .roster-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="title-bar">
+      <div>
+        <h1 class="app-title">LIFE LAYERS</h1>
+        <div class="sub">Hybrid boardgame portal for local multiplayer turn tracking</div>
+      </div>
+      <div class="chip" id="roundChip">Setup</div>
+    </header>
+
+    <section id="setupScreen" class="panel setup-screen">
+      <div class="setup-grid">
+        <article class="setup-card">
+          <strong>Session Setup</strong>
+          <p class="sub">Add players on one device, then rotate turns around your physical board.</p>
+          <div class="form-row">
+            <input id="playerNameInput" type="text" maxlength="24" placeholder="Player name" />
+            <select id="generationSelect"></select>
+            <button id="addPlayerBtn" type="button">Add Player</button>
+          </div>
+          <div id="playerList" class="player-list"></div>
+        </article>
+        <article class="setup-card">
+          <strong>Core Flow</strong>
+          <p class="sub">
+            Start Turn -> Upkeep -> Income -> Move 1–3 steps -> Gate interrupt decisions -> Node resolve -> End Turn.
+          </p>
+          <p class="sub">Gates cannot be skipped. If your move reaches a gate/checkpoint, decision modal interrupts immediately.</p>
+          <button id="startGameBtn" class="button-accent" type="button" disabled>Start LIFE LAYERS</button>
+        </article>
+      </div>
+    </section>
+
+    <section id="gameScreen" class="game-screen hidden">
+      <aside class="panel column">
+        <article class="player-card">
+          <div class="player-header">
+            <h2 id="activePlayerName" class="player-name">-</h2>
+            <span id="activePlayerGen" class="chip">-</span>
+          </div>
+          <div id="statsGrid" class="stats-grid"></div>
+          <div id="statusGrid" class="status-grid"></div>
+          <div id="tagWrap" class="tag-wrap"></div>
+        </article>
+        <article class="turn-panel">
+          <h3>Turn Controls</h3>
+          <div id="turnMeta" class="sub">Round 1 · Turn pending</div>
+          <div class="turn-input">
+            <label for="stepsInput">Steps (1-3)</label>
+            <input id="stepsInput" min="1" max="3" step="1" type="number" value="1" />
+          </div>
+          <div class="turn-actions">
+            <button id="startTurnBtn" type="button">Start Turn</button>
+            <button id="moveBtn" class="button-accent" type="button" disabled>Resolve Move</button>
+            <button id="endTurnBtn" class="button-muted" type="button" disabled>End Turn</button>
+          </div>
+          <div id="turnHint" class="turn-hint"></div>
+        </article>
+      </aside>
+
+      <section class="panel column">
+        <article class="map-panel">
+          <h3>Current Space</h3>
+          <div class="sub">Focus only on where the active player has landed and what it means.</div>
+          <div id="spaceCard" class="space-card"></div>
+        </article>
+      </section>
+
+      <aside class="panel column">
+        <article class="timeline-panel">
+          <h3>Players Snapshot</h3>
+          <div id="timelineList" class="timeline-list"></div>
+        </article>
+      </aside>
+    </section>
+  </main>
+
+  <div id="stopBanner" class="stop-banner">
+    <div class="stop-pill">STOP: Decision Point</div>
+  </div>
+
+  <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
+    <div id="modalCard" class="modal-card"></div>
+  </div>
+
+  <script src="gameData.js"></script>
+  <script>
+    (function () {
+      "use strict";
+
+      const DATA = window.LIFE_LAYERS_DATA;
+      const STAT_ORDER = ["happiness", "health", "time", "money", "experience", "education"];
+      const STAT_LABELS = {
+        happiness: "Happiness",
+        health: "Health",
+        time: "Time",
+        money: "Money",
+        experience: "Experience",
+        education: "Education"
+      };
+
+      const state = {
+        players: [],
+        round: 1,
+        currentPlayerIndex: 0,
+        phase: "setup",
+        timeline: [],
+        logIndex: 1,
+        deckState: {
+          era: [],
+          life: []
+        },
+        gateResolver: null
+      };
+
+      const refs = {
+        setupScreen: document.getElementById("setupScreen"),
+        gameScreen: document.getElementById("gameScreen"),
+        roundChip: document.getElementById("roundChip"),
+        playerNameInput: document.getElementById("playerNameInput"),
+        generationSelect: document.getElementById("generationSelect"),
+        addPlayerBtn: document.getElementById("addPlayerBtn"),
+        playerList: document.getElementById("playerList"),
+        startGameBtn: document.getElementById("startGameBtn"),
+        activePlayerName: document.getElementById("activePlayerName"),
+        activePlayerGen: document.getElementById("activePlayerGen"),
+        statsGrid: document.getElementById("statsGrid"),
+        statusGrid: document.getElementById("statusGrid"),
+        tagWrap: document.getElementById("tagWrap"),
+        turnMeta: document.getElementById("turnMeta"),
+        stepsInput: document.getElementById("stepsInput"),
+        startTurnBtn: document.getElementById("startTurnBtn"),
+        moveBtn: document.getElementById("moveBtn"),
+        endTurnBtn: document.getElementById("endTurnBtn"),
+        turnHint: document.getElementById("turnHint"),
+        spaceCard: document.getElementById("spaceCard"),
+        timelineList: document.getElementById("timelineList"),
+        stopBanner: document.getElementById("stopBanner"),
+        modalBackdrop: document.getElementById("modalBackdrop"),
+        modalCard: document.getElementById("modalCard")
+      };
+
+      function cloneObject(value) {
+        return JSON.parse(JSON.stringify(value));
+      }
+
+      function randomShuffle(list) {
+        const arr = list.slice();
+        for (let i = arr.length - 1; i > 0; i -= 1) {
+          const j = Math.floor(Math.random() * (i + 1));
+          const t = arr[i];
+          arr[i] = arr[j];
+          arr[j] = t;
+        }
+        return arr;
+      }
+
+      function sleep(ms) {
+        return new Promise((resolve) => {
+          setTimeout(resolve, ms);
+        });
+      }
+
+      function activePlayer() {
+        return state.players[state.currentPlayerIndex] || null;
+      }
+
+      function getNode(nodeId) {
+        return DATA.board.nodes[nodeId] || null;
+      }
+
+      function formatNodeLabel(label) {
+        return String(label || "")
+          .replace(/_/g, " ")
+          .toLowerCase()
+          .replace(/\b\w/g, function (char) {
+            return char.toUpperCase();
+          });
+      }
+
+      function getSpaceMeta(node) {
+        if (!node) {
+          return {
+            title: "Unknown Space",
+            description: "No details available for this space."
+          };
+        }
+
+        const customMeta = (DATA.board.spaceMeta && DATA.board.spaceMeta[node.id]) || {};
+        const fallbackByType = {
+          gate: "A forced decision space. Movement pauses until you choose a branch.",
+          checkpoint: "A mandatory checkpoint where the turn pauses for a decision.",
+          draw: "Draw and resolve a card effect before ending your movement.",
+          choice: "Pick one option to shape your stats and trajectory.",
+          effect: "Resolve built-in effects tied to this life layer.",
+          hub: "A transition space linking to the next major life layer.",
+          finish: "End of the journey. Compare outcomes across players.",
+          start: "Beginning of the life-course board."
+        };
+
+        return {
+          title: customMeta.title || formatNodeLabel(node.label),
+          description: customMeta.description || fallbackByType[node.type] || "Continue forward and resolve this space."
+        };
+      }
+
+      function logEntry(type, text) {
+        state.logIndex += 1;
+        renderTimeline();
+      }
+
+      function clampStat(stat, value) {
+        if (DATA.statLimits[stat]) {
+          const lim = DATA.statLimits[stat];
+          return Math.max(lim.min, Math.min(lim.max, value));
+        }
+        return Math.trunc(value);
+      }
+
+      function statPillElement(stat) {
+        return refs.statsGrid.querySelector('[data-stat="' + stat + '"]');
+      }
+
+      async function animateStatChange(stat, fromValue, toValue) {
+        const pill = statPillElement(stat);
+        if (!pill) {
+          return;
+        }
+        const valueEl = pill.querySelector(".stat-value");
+        if (!valueEl) {
+          return;
+        }
+        const delta = toValue - fromValue;
+        if (delta === 0) {
+          valueEl.textContent = String(toValue);
+          return;
+        }
+
+        pill.classList.remove("pulse");
+        void pill.offsetWidth;
+        pill.classList.add("pulse");
+
+        const badge = document.createElement("span");
+        badge.className = "float-badge " + (delta > 0 ? "good" : "bad");
+        badge.textContent = (delta > 0 ? "+" : "") + String(delta);
+        pill.appendChild(badge);
+        setTimeout(function () {
+          badge.remove();
+        }, 720);
+
+        const duration = 500;
+        const start = performance.now();
+
+        function tick(now) {
+          const t = Math.min(1, (now - start) / duration);
+          const eased = 1 - Math.pow(1 - t, 3);
+          const value = fromValue + (toValue - fromValue) * eased;
+          valueEl.textContent = String(Math.round(value));
+          if (t < 1) {
+            requestAnimationFrame(tick);
+          }
+        }
+
+        requestAnimationFrame(tick);
+        await sleep(530);
+      }
+
+      async function adjustStat(player, stat, amount, note) {
+        if (!amount) {
+          return;
+        }
+        const before = player.stats[stat] || 0;
+        const after = clampStat(stat, before + amount);
+        player.stats[stat] = after;
+        const sign = amount > 0 ? "+" : "";
+        logEntry("Effect", STAT_LABELS[stat] + " " + sign + amount + (note ? " · " + note : ""));
+        if (player === activePlayer()) {
+          await animateStatChange(stat, before, after);
+        }
+      }
+
+      function moveToNode(player, nodeId, reason) {
+        if (!getNode(nodeId)) {
+          return;
+        }
+        player.currentNode = nodeId;
+        player.pathHistory.push(nodeId);
+        logEntry("Move", player.name + " -> " + nodeId + " " + (reason || ""));
+      }
+
+      function moveBackSteps(player, steps) {
+        let moved = 0;
+        const count = Math.max(0, Number(steps) || 0);
+        while (moved < count && player.pathHistory.length > 1) {
+          player.pathHistory.pop();
+          moved += 1;
+        }
+        player.currentNode = player.pathHistory[player.pathHistory.length - 1];
+        logEntry("Effect", "Moved back " + moved + " step(s) to " + player.currentNode + ".");
+      }
+
+      function effectSummary(effect) {
+        if (!effect || !effect.type) {
+          return "";
+        }
+        if (effect.type === "adjustStat") {
+          const sign = effect.amount > 0 ? "+" : "";
+          return STAT_LABELS[effect.stat] + " " + sign + effect.amount;
+        }
+        if (effect.type === "setOccupation") {
+          const occ = DATA.occupations[effect.occupation];
+          return "Occupation: " + (occ ? occ.label : effect.occupation);
+        }
+        if (effect.type === "setHousing") {
+          const pay = effect.payment !== undefined ? " (upkeep " + effect.payment + ")" : "";
+          return "Housing: " + effect.housingStatus + pay;
+        }
+        if (effect.type === "setFamilyStatus") {
+          return "Family: " + effect.familyStatus;
+        }
+        if (effect.type === "moveToNode") {
+          return "Move to " + effect.nodeId;
+        }
+        if (effect.type === "moveBackSteps") {
+          return "Move back " + effect.steps;
+        }
+        if (effect.type === "drawCard") {
+          return "Draw " + effect.deck + " card";
+        }
+        return "";
+      }
+
+      function summarizeEffects(effects) {
+        const summaries = (effects || [])
+          .map(effectSummary)
+          .filter(Boolean);
+        return summaries.length ? summaries.join(" · ") : "No direct stat change";
+      }
+
+      function showStopBanner() {
+        refs.stopBanner.classList.add("show");
+        return sleep(760).then(function () {
+          refs.stopBanner.classList.remove("show");
+        });
+      }
+
+      function openModal(contentHtml, className) {
+        refs.modalCard.className = "modal-card" + (className ? " " + className : "");
+        refs.modalCard.innerHTML = contentHtml;
+        refs.modalBackdrop.classList.add("show");
+        refs.modalBackdrop.setAttribute("aria-hidden", "false");
+      }
+
+      function closeModal() {
+        refs.modalBackdrop.classList.remove("show");
+        refs.modalBackdrop.setAttribute("aria-hidden", "true");
+        refs.modalCard.innerHTML = "";
+      }
+
+      function chooseOptionModal(config) {
+        return new Promise(function (resolve) {
+          const optionHtml = config.options
+            .map(function (option, idx) {
+              const impact = option.impact || "";
+              return (
+                '<button class="option-btn" data-option-index="' +
+                idx +
+                '">' +
+                '<div>' +
+                option.label +
+                "</div>" +
+                '<div class="preview">' +
+                (option.preview || "") +
+                "</div>" +
+                '<div class="impact">' +
+                impact +
+                "</div>" +
+                "</button>"
+              );
+            })
+            .join("");
+
+          openModal(
+            '<div class="modal-head">' +
+              "<div>" +
+              "<h4>" +
+              config.title +
+              "</h4>" +
+              '<div class="modal-sub">' +
+              (config.subtitle || "") +
+              "</div>" +
+              "</div>" +
+              "</div>" +
+              '<div class="sub">' +
+              (config.prompt || "") +
+              "</div>" +
+              '<div class="option-grid">' +
+              optionHtml +
+              "</div>",
+            config.modalClass || ""
+          );
+
+          const buttons = refs.modalCard.querySelectorAll(".option-btn");
+          buttons.forEach(function (button) {
+            button.addEventListener("click", function () {
+              const idx = Number(button.getAttribute("data-option-index"));
+              const selected = config.options[idx];
+              closeModal();
+              resolve(selected);
+            });
+          });
+        });
+      }
+
+      async function showDeckSelectionAndReveal(deckName) {
+        return new Promise(function (resolve) {
+          openModal(
+            '<div class="modal-head">' +
+              "<div>" +
+              "<h4>Draw a Card</h4>" +
+              '<div class="modal-sub">' +
+              deckName.toUpperCase() +
+              " Deck" +
+              "</div>" +
+              "</div>" +
+              "</div>" +
+              '<div class="sub">Pick one card to reveal your event.</div>' +
+              '<div class="draw-select-grid">' +
+              '<button class="draw-card" data-pick-index="0" type="button"><span class="draw-deck-label">' +
+              deckName.toUpperCase() +
+              "</span></button>" +
+              '<button class="draw-card" data-pick-index="1" type="button"><span class="draw-deck-label">' +
+              deckName.toUpperCase() +
+              "</span></button>" +
+              '<button class="draw-card" data-pick-index="2" type="button"><span class="draw-deck-label">' +
+              deckName.toUpperCase() +
+              "</span></button>" +
+              "</div>"
+          );
+
+          const picks = refs.modalCard.querySelectorAll(".draw-card");
+          let picked = false;
+
+          picks.forEach(function (pick) {
+            pick.addEventListener("click", async function () {
+              if (picked) {
+                return;
+              }
+              picked = true;
+
+              picks.forEach(function (other) {
+                if (other === pick) {
+                  other.classList.add("selected");
+                } else {
+                  other.classList.add("faded");
+                }
+              });
+
+              await sleep(440);
+              const card = drawCard(deckName);
+              if (!card) {
+                closeModal();
+                resolve(null);
+                return;
+              }
+
+              refs.modalCard.className = "modal-card flip";
+              refs.modalCard.innerHTML =
+                '<div class="actual-card">' +
+                '<div class="actual-card-head">' +
+                '<h4 class="actual-card-title">' +
+                card.title +
+                "</h4>" +
+                '<span class="actual-card-deck">' +
+                deckName.toUpperCase() +
+                " Card</span>" +
+                "</div>" +
+                '<p class="actual-card-body">' +
+                card.text +
+                "</p>" +
+                '<div class="actual-card-impact">Impact: ' +
+                summarizeEffects(card.effects) +
+                "</div>" +
+                '<div style="margin-top:12px; display:flex; justify-content:flex-end;">' +
+                '<button id="applyCardBtn" type="button">Apply Card</button>' +
+                "</div>" +
+                "</div>";
+
+              const button = document.getElementById("applyCardBtn");
+              button.addEventListener("click", function () {
+                closeModal();
+                resolve(card);
+              });
+            });
+          });
+        });
+      }
+
+      async function showCardAndResolve(player, deckName) {
+        const card = await showDeckSelectionAndReveal(deckName);
+        if (!card) {
+          return;
+        }
+        logEntry("Card", "Drew " + deckName.toUpperCase() + ": " + card.title + ".");
+        await applyEffects(player, card.effects, "Card");
+      }
+
+      function drawCard(deckName) {
+        if (!state.deckState[deckName] || !state.deckState[deckName].length) {
+          state.deckState[deckName] = randomShuffle(DATA.decks[deckName] || []);
+        }
+        return state.deckState[deckName].shift() || null;
+      }
+
+      async function applyEffects(player, effects, sourceLabel) {
+        const list = effects || [];
+        for (let i = 0; i < list.length; i += 1) {
+          await applyEffect(player, list[i], sourceLabel);
+          renderPlayerCard();
+          renderMap();
+        }
+      }
+
+      async function applyEffect(player, effect, sourceLabel) {
+        if (!effect || !effect.type) {
+          return;
+        }
+
+        switch (effect.type) {
+          case "adjustStat":
+            await adjustStat(player, effect.stat, effect.amount, sourceLabel || effect.note || "Effect");
+            break;
+          case "choice": {
+            const options = effect.options || [];
+            const picked = await chooseOptionModal({
+              title: "Choice",
+              subtitle: sourceLabel || "Decision",
+              prompt: effect.prompt || "Pick one option.",
+              options: options.map(function (option) {
+                return {
+                  id: option.id,
+                  label: option.label,
+                  preview: option.preview,
+                  impact: summarizeEffects(option.effects)
+                };
+              })
+            });
+            const selected = options.find(function (option) {
+              return option.id === picked.id;
+            });
+            logEntry("Choice", "Selected: " + picked.label + ".");
+            if (selected) {
+              await applyEffects(player, selected.effects, "Choice");
+            }
+            break;
+          }
+          case "drawCard":
+            await showCardAndResolve(player, effect.deck);
+            break;
+          case "setOccupation": {
+            player.statuses.occupation = effect.occupation;
+            const occupation = DATA.occupations[effect.occupation];
+            logEntry("Status", "Occupation set to " + (occupation ? occupation.label : effect.occupation) + ".");
+            break;
+          }
+          case "setHousing":
+            if (effect.housingStatus) {
+              player.statuses.housingStatus = effect.housingStatus;
+            }
+            if (typeof effect.payment === "number") {
+              player.statuses.housingPayment = effect.payment;
+            }
+            if (typeof effect.mortgageActive === "boolean") {
+              player.statuses.mortgageActive = effect.mortgageActive;
+            }
+            logEntry(
+              "Status",
+              "Housing: " +
+                player.statuses.housingStatus +
+                " (upkeep " +
+                player.statuses.housingPayment +
+                ")" +
+                (player.statuses.mortgageActive ? " mortgage active" : "") +
+                "."
+            );
+            break;
+          case "setFamilyStatus":
+            player.statuses.familyStatus = effect.familyStatus;
+            logEntry("Status", "Family status: " + effect.familyStatus + ".");
+            break;
+          case "moveToNode":
+            moveToNode(player, effect.nodeId, "via effect");
+            {
+              const node = getNode(player.currentNode);
+              if (node && (node.type === "gate" || node.type === "checkpoint")) {
+                await resolveGateInterrupt(player, node);
+              }
+            }
+            break;
+          case "moveBackSteps":
+            moveBackSteps(player, effect.steps);
+            {
+              const nodeAfter = getNode(player.currentNode);
+              if (nodeAfter && (nodeAfter.type === "gate" || nodeAfter.type === "checkpoint")) {
+                await resolveGateInterrupt(player, nodeAfter);
+              }
+            }
+            break;
+          case "log":
+            logEntry("Info", effect.message || "Event");
+            break;
+          default:
+            logEntry("Info", "Unhandled effect: " + effect.type + ".");
+        }
+      }
+
+      function getNextNodeFrom(player, nodeId) {
+        const node = getNode(nodeId);
+        if (!node) {
+          return null;
+        }
+        if (node.type === "gate" || node.type === "checkpoint") {
+          const chosen = player.gateRoutes[nodeId];
+          if (!chosen) {
+            return null;
+          }
+          const option = node.options.find(function (opt) {
+            return opt.id === chosen;
+          });
+          delete player.gateRoutes[nodeId];
+          return option ? option.next : null;
+        }
+        return node.next || null;
+      }
+
+      async function resolveGateInterrupt(player, node) {
+        await showStopBanner();
+
+        const generation = player.generation;
+        const options = (node.options || []).map(function (option) {
+          const generationEffects = (option.generationEffects && option.generationEffects[generation]) || [];
+          const baseEffects = option.effects || [];
+          return {
+            id: option.id,
+            label: option.label,
+            preview: option.preview,
+            impact: summarizeEffects(baseEffects.concat(generationEffects))
+          };
+        });
+
+        const selected = await chooseOptionModal({
+          title: node.gateLabel || "Decision Point",
+          subtitle: DATA.generations[generation].label + " impact",
+          prompt: "Choose your path. Gate decisions are mandatory and cannot be skipped.",
+          options
+        });
+
+        player.gateRoutes[node.id] = selected.id;
+        logEntry("Gate", node.label + " -> " + selected.label + ".");
+
+        const source = node.gateLabel || node.label;
+        const fullOption = node.options.find(function (option) {
+          return option.id === selected.id;
+        });
+        if (!fullOption) {
+          return;
+        }
+
+        const generationEffects = (fullOption.generationEffects && fullOption.generationEffects[generation]) || [];
+        await applyEffects(player, (fullOption.effects || []).concat(generationEffects), source);
+      }
+
+      async function resolveLandingNode(player, node) {
+        if (!node) {
+          return;
+        }
+        if (node.type === "start" || node.type === "hub") {
+          return;
+        }
+        if (node.type === "finish") {
+          return;
+        }
+
+        logEntry("Node", "Resolving " + node.label + ".");
+
+        if (node.type === "draw") {
+          await applyEffect(player, { type: "drawCard", deck: node.deck }, "Node");
+          return;
+        }
+
+        if (node.type === "choice") {
+          await applyEffect(
+            player,
+            {
+              type: "choice",
+              prompt: node.choice.prompt,
+              options: node.choice.options
+            },
+            node.label
+          );
+          return;
+        }
+
+        if (node.effects && node.effects.length) {
+          await applyEffects(player, node.effects, node.label);
+        }
+      }
+
+      async function resolveMovement(player, steps) {
+        const total = Math.max(1, Math.min(3, Number(steps) || 1));
+        logEntry("Move", "Advance " + total + " step(s) from " + player.currentNode + ".");
+
+        for (let i = 0; i < total; i += 1) {
+          if (player.currentNode === DATA.board.finishNode) {
+            break;
+          }
+
+          const nextNodeId = getNextNodeFrom(player, player.currentNode);
+          if (!nextNodeId) {
+            logEntry("Move", "No route from node " + player.currentNode + ".");
+            break;
+          }
+
+          moveToNode(player, nextNodeId, "(step " + (i + 1) + "/" + total + ")");
+          renderMap();
+
+          const landedNode = getNode(nextNodeId);
+          if (landedNode && (landedNode.type === "gate" || landedNode.type === "checkpoint")) {
+            await resolveGateInterrupt(player, landedNode);
+            renderMap();
+          }
+
+          await sleep(130);
+        }
+
+        const finalNode = getNode(player.currentNode);
+        if (finalNode && finalNode.type !== "gate" && finalNode.type !== "checkpoint") {
+          await resolveLandingNode(player, finalNode);
+        }
+
+        if (player.currentNode === DATA.board.finishNode) {
+          player.finished = true;
+          player.finishedRound = state.round;
+          logEntry("Finish", player.name + " reached FINISH.");
+          await showResultsIfNeeded();
+        }
+      }
+
+      async function applyTurnUpkeep(player) {
+        logEntry("Upkeep", "Applying recurring costs.");
+        const effects = [];
+
+        if (player.statuses.housingPayment > 0) {
+          effects.push({
+            type: "adjustStat",
+            stat: "money",
+            amount: -player.statuses.housingPayment,
+            note: "Housing upkeep"
+          });
+        }
+
+        if (player.statuses.familyStatus === "kids") {
+          effects.push({ type: "adjustStat", stat: "money", amount: -2, note: "Childcare" });
+          effects.push({ type: "adjustStat", stat: "time", amount: -2, note: "Childcare" });
+        }
+
+        if (player.statuses.familyStatus === "caregiving") {
+          effects.push({ type: "adjustStat", stat: "money", amount: -1, note: "Care support" });
+          effects.push({ type: "adjustStat", stat: "time", amount: -2, note: "Care support" });
+        }
+
+        if ((player.stats.money || 0) < 0) {
+          effects.push({ type: "adjustStat", stat: "money", amount: -1, note: "Loan interest" });
+          effects.push({ type: "adjustStat", stat: "happiness", amount: -1, note: "Debt stress" });
+        }
+
+        await applyEffects(player, effects, "Upkeep");
+      }
+
+      async function applyTurnIncome(player) {
+        const job = DATA.occupations[player.statuses.occupation] || DATA.occupations.unemployed;
+        logEntry("Income", "Occupation: " + job.label + ".");
+
+        const effects = [
+          { type: "adjustStat", stat: "money", amount: job.income, note: "Income" },
+          { type: "adjustStat", stat: "time", amount: job.timeDelta, note: "Time load" },
+          { type: "adjustStat", stat: "experience", amount: job.expDelta, note: "Work growth" }
+        ];
+
+        if (player.statuses.familyStatus === "dating") {
+          effects.push({ type: "adjustStat", stat: "happiness", amount: 1, note: "Partner support" });
+        }
+
+        await applyEffects(player, effects, "Income");
+      }
+
+      async function startTurnFlow() {
+        if (state.phase !== "await_start") {
+          return;
+        }
+        const player = activePlayer();
+        if (!player) {
+          return;
+        }
+
+        state.phase = "resolving";
+        updateControls();
+
+        logEntry("Turn", player.name + " starts turn.");
+        await applyTurnUpkeep(player);
+        await applyTurnIncome(player);
+
+        state.phase = "await_steps";
+        updateControls();
+        refs.turnHint.textContent = "Enter physical roll (1-3), then resolve movement.";
+      }
+
+      async function resolveMoveFlow() {
+        if (state.phase !== "await_steps") {
+          return;
+        }
+        const player = activePlayer();
+        if (!player) {
+          return;
+        }
+
+        const steps = Number(refs.stepsInput.value);
+        if (!Number.isFinite(steps) || steps < 1 || steps > 3) {
+          refs.turnHint.textContent = "Steps must be 1, 2, or 3.";
+          return;
+        }
+
+        state.phase = "resolving";
+        updateControls();
+        await resolveMovement(player, steps);
+        renderPlayerCard();
+        renderMap();
+
+        if (state.phase !== "game_over") {
+          state.phase = "await_end";
+          updateControls();
+          refs.turnHint.textContent = "Movement and node resolution complete. End turn to rotate player.";
+          logEntry("Turn", player.name + " completed turn flow.");
+        }
+      }
+
+      function nextActivePlayerIndex() {
+        if (!state.players.length) {
+          return -1;
+        }
+        const start = state.currentPlayerIndex;
+        let index = start;
+
+        do {
+          index = (index + 1) % state.players.length;
+          if (!state.players[index].finished) {
+            return index;
+          }
+        } while (index !== start);
+
+        return -1;
+      }
+
+      async function endTurnFlow() {
+        if (state.phase !== "await_end") {
+          return;
+        }
+
+        const player = activePlayer();
+        if (player) {
+          logEntry("Turn", player.name + " ends turn.");
+        }
+
+        const nextIndex = nextActivePlayerIndex();
+        if (nextIndex === -1) {
+          state.phase = "game_over";
+          updateControls();
+          await showResultsIfNeeded();
+          return;
+        }
+
+        if (nextIndex <= state.currentPlayerIndex) {
+          state.round += 1;
+        }
+
+        state.currentPlayerIndex = nextIndex;
+        state.phase = "await_start";
+        refs.turnHint.textContent = "Start turn to apply upkeep and income.";
+        renderAll();
+        updateControls();
+      }
+
+      function computeTags(player) {
+        const tags = [];
+        const occupation = DATA.occupations[player.statuses.occupation];
+        if (occupation) {
+          occupation.tags.forEach(function (label) {
+            tags.push({
+              text: label,
+              tone: label === "Stable" || label === "Flexible" ? "good" : "neutral"
+            });
+          });
+        }
+
+        if (player.statuses.housingStatus === "buy" && player.statuses.mortgageActive) {
+          tags.push({ text: "Mortgage Active", tone: "neutral" });
+        }
+        if (player.statuses.housingStatus === "rent" && player.statuses.housingPayment >= 3) {
+          tags.push({ text: "High Rent Drain", tone: "bad" });
+        }
+        if (player.stats.money >= 12) {
+          tags.push({ text: "Cash Buffer", tone: "good" });
+        }
+        if (player.stats.money < 0) {
+          tags.push({ text: "Debt Pressure", tone: "bad" });
+        }
+        if (player.stats.health <= 3) {
+          tags.push({ text: "Burnout Risk", tone: "bad" });
+        }
+        if (player.stats.education >= 7) {
+          tags.push({ text: "Credential Edge", tone: "good" });
+        }
+
+        return tags;
+      }
+
+      function renderPlayerCard() {
+        const player = activePlayer();
+        if (!player) {
+          return;
+        }
+
+        const generation = DATA.generations[player.generation];
+        refs.activePlayerName.textContent = player.name + (player.finished ? " (Finished)" : "");
+        refs.activePlayerGen.textContent = generation.label;
+        refs.activePlayerGen.style.borderColor = generation.accent;
+
+        refs.statsGrid.innerHTML = STAT_ORDER
+          .map(function (stat) {
+            const value = player.stats[stat] || 0;
+            return (
+              '<div class="stat-pill" data-stat="' +
+              stat +
+              '">' +
+              '<div class="stat-label">' +
+              STAT_LABELS[stat] +
+              "</div>" +
+              '<div class="stat-value">' +
+              value +
+              "</div>" +
+              "</div>"
+            );
+          })
+          .join("");
+
+        refs.statusGrid.innerHTML =
+          '<div class="status-item"><span>Occupation</span><strong>' +
+          (DATA.occupations[player.statuses.occupation] ? DATA.occupations[player.statuses.occupation].label : "-") +
+          "</strong></div>" +
+          '<div class="status-item"><span>Housing</span><strong>' +
+          player.statuses.housingStatus +
+          " (" +
+          player.statuses.housingPayment +
+          "/turn)</strong></div>" +
+          '<div class="status-item"><span>Family</span><strong>' +
+          player.statuses.familyStatus +
+          "</strong></div>";
+
+        const tags = computeTags(player);
+        refs.tagWrap.innerHTML = tags
+          .map(function (tag) {
+            return '<span class="tag ' + tag.tone + '">' + tag.text + "</span>";
+          })
+          .join("");
+
+        refs.turnMeta.textContent =
+          "Round " +
+          state.round +
+          " · Active Node " +
+          player.currentNode +
+          " · " +
+          DATA.generations[player.generation].short;
+
+        refs.roundChip.textContent = "Round " + state.round + " · " + player.name;
+      }
+
+      function renderMap() {
+        const player = activePlayer();
+        if (!player) {
+          return;
+        }
+
+        const node = getNode(player.currentNode);
+        if (!node) {
+          refs.spaceCard.innerHTML = '<div class="space-description">Space data unavailable.</div>';
+          return;
+        }
+
+        const meta = getSpaceMeta(node);
+        const gateTag = (node.type === "gate" || node.type === "checkpoint") ? "Decision Required" : "Resolve Then Continue";
+        const actionByType = {
+          draw: "Landing here triggers a card draw and card resolution.",
+          choice: "Landing here opens a choice modal with branching effects.",
+          gate: "Movement pauses here. You must pick one branch before remaining steps continue.",
+          checkpoint: "Checkpoint interrupt: choose before continuing movement.",
+          effect: "Immediate space effect applies on landing.",
+          hub: "Connector space. Next movement leaves toward the next gate.",
+          start: "Starting position for this player's journey.",
+          finish: "Journey complete for this player."
+        };
+
+        refs.spaceCard.innerHTML =
+          '<div class="space-kicker">Active Landing Space</div>' +
+          '<div class="space-title-row">' +
+          '<h4 class="space-title">' +
+          meta.title +
+          "</h4>" +
+          '<span class="space-node-id">Node ' +
+          node.id +
+          "</span>" +
+          "</div>" +
+          '<p class="space-description">' +
+          meta.description +
+          "</p>" +
+          '<div class="space-meta-row">' +
+          '<span class="space-meta-pill">' +
+          String(node.type).toUpperCase() +
+          "</span>" +
+          '<span class="space-meta-pill">' +
+          gateTag +
+          "</span>" +
+          '<span class="space-meta-pill">Visited ' +
+          player.pathHistory.length +
+          " spaces</span>" +
+          "</div>" +
+          '<div class="space-action">' +
+          (actionByType[node.type] || "Resolve this space based on game effects.") +
+          "</div>";
+      }
+
+      function renderTimeline() {
+        refs.timelineList.innerHTML = state.players
+          .map(function (item) {
+            const generation = DATA.generations[item.generation];
+            const classes = ["roster-card"];
+            if (state.players[state.currentPlayerIndex] && state.players[state.currentPlayerIndex].id === item.id) {
+              classes.push("active");
+            }
+            return (
+              '<div class="' +
+              classes.join(" ") +
+              '">' +
+              '<div class="roster-head"><h4 class="roster-name">' +
+              item.name +
+              (item.finished ? " (Finished)" : "") +
+              '</h4><span class="roster-gen">' +
+              generation.label +
+              "</span></div>" +
+              '<div class="roster-stats">' +
+              '<div class="roster-stat">Hap <strong>' +
+              item.stats.happiness +
+              "</strong></div>" +
+              '<div class="roster-stat">Health <strong>' +
+              item.stats.health +
+              "</strong></div>" +
+              '<div class="roster-stat">Time <strong>' +
+              item.stats.time +
+              "</strong></div>" +
+              '<div class="roster-stat">Money <strong>' +
+              item.stats.money +
+              "</strong></div>" +
+              '<div class="roster-stat">Exp <strong>' +
+              item.stats.experience +
+              "</strong></div>" +
+              '<div class="roster-stat">Edu <strong>' +
+              item.stats.education +
+              "</strong></div>" +
+              "</div>" +
+              '<div class="roster-status">Occ: ' +
+              (DATA.occupations[item.statuses.occupation] ? DATA.occupations[item.statuses.occupation].label : item.statuses.occupation) +
+              " · Housing: " +
+              item.statuses.housingStatus +
+              " (" +
+              item.statuses.housingPayment +
+              "/turn) · Family: " +
+              item.statuses.familyStatus +
+              "</div>" +
+              '<div class="roster-status">Current node: ' +
+              item.currentNode +
+              " · Round reached: " +
+              (item.finishedRound || "-") +
+              "</div>" +
+              "</div>"
+            );
+          })
+          .join("");
+      }
+
+      function renderSetupPlayers() {
+        refs.playerList.innerHTML = state.players
+          .map(function (player, index) {
+            return (
+              '<div class="player-row">' +
+              "<div><strong>" +
+              player.name +
+              "</strong><br/><small>" +
+              DATA.generations[player.generation].label +
+              "</small></div>" +
+              '<button class="remove-btn" type="button" data-remove-index="' +
+              index +
+              '">Remove</button>' +
+              "</div>"
+            );
+          })
+          .join("");
+
+        refs.startGameBtn.disabled = state.players.length < 1;
+
+        const removeButtons = refs.playerList.querySelectorAll("[data-remove-index]");
+        removeButtons.forEach(function (button) {
+          button.addEventListener("click", function () {
+            const idx = Number(button.getAttribute("data-remove-index"));
+            state.players.splice(idx, 1);
+            renderSetupPlayers();
+          });
+        });
+      }
+
+      function renderAll() {
+        renderPlayerCard();
+        renderMap();
+        renderTimeline();
+      }
+
+      function updateControls() {
+        refs.startTurnBtn.disabled = state.phase !== "await_start";
+        refs.moveBtn.disabled = state.phase !== "await_steps";
+        refs.endTurnBtn.disabled = state.phase !== "await_end";
+        refs.stepsInput.disabled = state.phase !== "await_steps";
+
+        if (state.phase === "await_start") {
+          refs.turnHint.textContent = "Start turn to run upkeep and income.";
+        }
+        if (state.phase === "resolving") {
+          refs.turnHint.textContent = "Resolving effects...";
+        }
+        if (state.phase === "game_over") {
+          refs.turnHint.textContent = "Session complete.";
+          refs.startTurnBtn.disabled = true;
+          refs.moveBtn.disabled = true;
+          refs.endTurnBtn.disabled = true;
+          refs.stepsInput.disabled = true;
+        }
+      }
+
+      async function showResultsIfNeeded() {
+        const unfinished = state.players.some(function (p) {
+          return !p.finished;
+        });
+        if (unfinished) {
+          return;
+        }
+
+        state.phase = "game_over";
+        updateControls();
+
+        const ranking = state.players
+          .slice()
+          .sort(function (a, b) {
+            if (a.finishedRound === b.finishedRound) {
+              return b.stats.happiness - a.stats.happiness;
+            }
+            return a.finishedRound - b.finishedRound;
+          })
+          .map(function (player, idx) {
+            return (
+              '<div class="summary-item">' +
+              (idx + 1) +
+              ". " +
+              player.name +
+              " · Round " +
+              player.finishedRound +
+              " · Happiness " +
+              player.stats.happiness +
+              " · Money " +
+              player.stats.money +
+              "</div>"
+            );
+          })
+          .join("");
+
+        await new Promise(function (resolve) {
+          openModal(
+            '<div class="modal-head"><div><h4>All Players Reached FINISH</h4><div class="modal-sub">Session Summary</div></div></div>' +
+              '<div class="summary">' +
+              ranking +
+              "</div>" +
+              '<div style="margin-top:12px; display:flex; justify-content:flex-end;">' +
+              '<button id="closeSummaryBtn" type="button">Close</button>' +
+              "</div>"
+          );
+          document.getElementById("closeSummaryBtn").addEventListener("click", function () {
+            closeModal();
+            resolve();
+          });
+        });
+      }
+
+      function createPlayer(name, generation) {
+        return {
+          id: "P" + Math.random().toString(36).slice(2, 9),
+          name,
+          generation,
+          stats: cloneObject(DATA.baseStats),
+          statuses: {
+            occupation: "unemployed",
+            housingStatus: "rent",
+            housingPayment: 1,
+            mortgageActive: false,
+            familyStatus: "solo"
+          },
+          currentNode: DATA.board.startNode,
+          pathHistory: [DATA.board.startNode],
+          gateRoutes: {},
+          finished: false,
+          finishedRound: null
+        };
+      }
+
+      function initializeDecks() {
+        state.deckState.era = randomShuffle(DATA.decks.era || []);
+        state.deckState.life = randomShuffle(DATA.decks.life || []);
+      }
+
+      function startGameSession() {
+        initializeDecks();
+        state.round = 1;
+        state.currentPlayerIndex = 0;
+        state.phase = "await_start";
+        state.timeline = [];
+        state.logIndex = 1;
+
+        refs.setupScreen.classList.add("hidden");
+        refs.gameScreen.classList.remove("hidden");
+        renderAll();
+        updateControls();
+
+        logEntry("System", "Session started with " + state.players.length + " player(s).");
+      }
+
+      function initSetupForm() {
+        const generationOptions = Object.keys(DATA.generations)
+          .map(function (key) {
+            return '<option value="' + key + '">' + DATA.generations[key].label + "</option>";
+          })
+          .join("");
+        refs.generationSelect.innerHTML = generationOptions;
+
+        refs.addPlayerBtn.addEventListener("click", function () {
+          const name = refs.playerNameInput.value.trim();
+          const generation = refs.generationSelect.value;
+          if (!name) {
+            refs.playerNameInput.focus();
+            return;
+          }
+          state.players.push(createPlayer(name, generation));
+          refs.playerNameInput.value = "";
+          refs.playerNameInput.focus();
+          renderSetupPlayers();
+        });
+
+        refs.playerNameInput.addEventListener("keydown", function (event) {
+          if (event.key === "Enter") {
+            refs.addPlayerBtn.click();
+          }
+        });
+
+        refs.startGameBtn.addEventListener("click", function () {
+          if (!state.players.length) {
+            return;
+          }
+          startGameSession();
+        });
+
+        refs.startTurnBtn.addEventListener("click", function () {
+          startTurnFlow();
+        });
+        refs.moveBtn.addEventListener("click", function () {
+          resolveMoveFlow();
+        });
+        refs.endTurnBtn.addEventListener("click", function () {
+          endTurnFlow();
+        });
+
+        renderSetupPlayers();
+      }
+
+      initSetupForm();
+    })();
+  </script>
+</body>
+</html>
