@@ -272,8 +272,8 @@ a{ color: inherit; text-decoration: underline; text-underline-offset: 2px; }
   background: none;
   color: #8d8d8d;
   padding: 8px;
-  font-size: 1.2rem;
-  line-height: 1.5rem;
+  font-size: 1rem;
+  line-height: 1.2rem;
   text-align: center;
   z-index: 2; /* Ensures it's above the image */
 }

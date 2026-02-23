@@ -11,5 +11,12 @@
   { "title": "Week 10", "path": "week-10.html" },
   { "title": "Week 11", "path": "week-11.html" },
   { "title": "Week 12", "path": "week-12.html" },
-  { "title": "Week 13", "path": "week-13.html" }
+  { "title": "Week 13", "path": "week-13.html" },
+  { "title": "Semester 2 - Week 01", "path": "s2-week-01.html" },
+  { "title": "Semester 2 - Week 02", "path": "s2-week-02.html" },
+  { "title": "Semester 2 - Week 03", "path": "s2-week-03.html" },
+  { "title": "Semester 2 - Week 04", "path": "s2-week-04.html" },
+  { "title": "Semester 2 - Week 05", "path": "s2-week-05.html" },
+  { "title": "Semester 2 - Week 06", "path": "s2-week-06.html" }
+
 ]
