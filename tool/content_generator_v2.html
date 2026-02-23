@@ -1,0 +1,1281 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Research Content Generator v2</title>
+  <style>
+    :root {
+      --bg: #f2f5f7;
+      --panel: #ffffff;
+      --line: #d5dee6;
+      --text: #1f2b36;
+      --muted: #5f6e7c;
+      --accent: #0a6a5d;
+      --accent2: #1f5e99;
+      --danger: #8d3427;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(1000px 380px at 100% -10%, #dbe8f8 0, transparent 60%),
+                  radial-gradient(900px 350px at 0 -10%, #dcefe9 0, transparent 60%),
+                  var(--bg);
+      color: var(--text);
+      font-family: "Avenir Next", "Segoe UI", sans-serif;
+    }
+    .app {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: minmax(300px, 1fr) minmax(650px, 2.4fr) minmax(260px, 0.9fr);
+      gap: 14px;
+      align-items: start;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 0 14px 32px rgba(20, 42, 60, 0.1);
+      padding: 14px;
+    }
+    h1 { margin: 0 0 8px; font-size: 1.35rem; }
+    h2 { margin: 0 0 8px; font-size: 1rem; }
+    .sub { color: var(--muted); margin: 0 0 12px; font-size: 0.9rem; }
+    .field { margin: 10px 0; }
+    label { display: block; margin-bottom: 6px; font-size: 0.87rem; font-weight: 700; }
+    input[type="text"], input[type="date"], select, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      font: inherit;
+      color: var(--text);
+      background: #fff;
+    }
+    textarea { min-height: 98px; resize: vertical; }
+    .row2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .group {
+      display: none;
+      border: 1px solid #dce6ee;
+      border-radius: 10px;
+      padding: 10px;
+      background: #fbfdff;
+      margin-top: 8px;
+    }
+    .group.active { display: block; }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0;
+    }
+    button {
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 8px 13px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.84rem;
+    }
+    .btn-main { background: var(--accent); color: #fff; }
+    .btn-alt { background: #ecf5f3; color: #175a50; border-color: #c5ddd8; }
+    .btn-link { background: #edf4fb; color: #1d4f7e; border-color: #ccdeef; }
+    .btn-danger { background: #fbeeed; color: var(--danger); border-color: #efccc7; }
+    .disabled { opacity: 0.5; cursor: not-allowed; }
+    .status {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #c6daec;
+      background: #edf5fd;
+      font-size: 0.84rem;
+      color: #2d4f72;
+      min-height: 38px;
+    }
+    .status.warn { border-color: #efcfb6; background: #fff5ec; color: #934f19; }
+    .status.ok { border-color: #c8e4ce; background: #eff9f1; color: #256639; }
+    .tiny { font-size: 0.78rem; color: var(--muted); }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .out {
+      width: 100%;
+      min-height: 250px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #f5f8fb;
+      padding: 10px;
+      font-size: 0.8rem;
+      line-height: 1.45;
+    }
+    .preview {
+      margin-top: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+    }
+    #previewFrame {
+      width: 100%;
+      min-height: 360px;
+      border: 0;
+      display: block;
+    }
+    details { margin-top: 8px; }
+    summary { cursor: pointer; font-size: 0.86rem; font-weight: 700; }
+    .example {
+      border: 1px solid #d8e1e9;
+      border-radius: 8px;
+      background: #f8fafc;
+      padding: 8px;
+      margin: 8px 0;
+    }
+    .copy-snippet {
+      width: 100%;
+      text-align: left;
+      border: 1px solid #d2dce5;
+      border-radius: 6px;
+      background: #fff;
+      color: #2a3a48;
+      font-size: 0.75rem;
+      line-height: 1.35;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      white-space: pre-wrap;
+      padding: 8px;
+    }
+    @media (max-width: 1220px) {
+      .app { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <section class="panel">
+      <h1>Research Content Generator v2</h1>
+      <p class="sub">Write naturally in each section. Generator converts text into clean HTML matching your site patterns.</p>
+
+      <div class="field">
+        <label for="templateSelector">Template</label>
+        <select id="templateSelector">
+          <option value="weekly_log.html">1) weekly_log.html (Full Page)</option>
+          <option value="literature_review.html">2) literature_review.html (Full Page)</option>
+          <option value="fieldwork_log.html">3) fieldwork_log.html (Full Page)</option>
+          <option value="case_study.html">4) case_study.html (Full Page)</option>
+          <option value="peer_block">5) peer_block (HTML Block)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label><input type="checkbox" id="allowRawHtml"> Allow raw HTML (default off)</label>
+        <div class="tiny">Links still enforce http/https.</div>
+      </div>
+
+      <details>
+        <summary>Template Loader (Fetch, Upload, Embedded Fallback)</summary>
+        <div class="field"><label for="uploadWeekly">Upload weekly_log.html</label><input id="uploadWeekly" type="file" data-template="weekly_log.html" accept=".html,text/html"></div>
+        <div class="field"><label for="uploadLiterature">Upload literature_review.html</label><input id="uploadLiterature" type="file" data-template="literature_review.html" accept=".html,text/html"></div>
+        <div class="field"><label for="uploadFieldwork">Upload fieldwork_log.html</label><input id="uploadFieldwork" type="file" data-template="fieldwork_log.html" accept=".html,text/html"></div>
+        <div class="field"><label for="uploadCase">Upload case_study.html</label><input id="uploadCase" type="file" data-template="case_study.html" accept=".html,text/html"></div>
+      </details>
+
+      <div id="statusBox" class="status">Ready.</div>
+    </section>
+
+    <section class="panel">
+      <div id="weeklyFields" class="group">
+        <div class="field"><label for="weekTitle">weekTitle</label><input id="weekTitle" type="text"></div>
+        <div class="field"><label for="dates">dates</label><input id="dates" type="text"></div>
+        <div class="field"><label for="activities">activities</label><textarea id="activities"></textarea></div>
+        <div class="field"><label for="reflection">reflection</label><textarea id="reflection"></textarea></div>
+        <div class="field"><label for="literature">literature</label><textarea id="literature"></textarea></div>
+        <div class="field"><label for="tasks">tasks</label><textarea id="tasks"></textarea></div>
+        <div class="field"><label for="links">links</label><textarea id="links"></textarea></div>
+        <div class="field"><label for="toDo">toDo</label><textarea id="toDo"></textarea></div>
+        <div class="field"><label for="researchQuestion">researchQuestion</label><textarea id="researchQuestion"></textarea></div>
+      </div>
+
+      <div id="literatureFields" class="group">
+        <div class="field"><label for="litTitle">litTitle</label><input id="litTitle" type="text"></div>
+        <div class="field"><label for="litAuthor">litAuthor</label><input id="litAuthor" type="text"></div>
+        <div class="field"><label for="litKeyConcepts">litKeyConcepts (comma-separated)</label><input id="litKeyConcepts" type="text"></div>
+        <div class="field"><label for="litCoverImage">litCoverImage</label><input id="litCoverImage" type="text"></div>
+        <div class="field"><label for="litCoverCaption">litCoverCaption</label><input id="litCoverCaption" type="text"></div>
+        <div class="field"><label for="litWork">litWork</label><textarea id="litWork"></textarea></div>
+        <div class="field"><label for="litTakeaways">litTakeaways</label><textarea id="litTakeaways"></textarea></div>
+        <div class="field"><label for="litReflections">litReflections</label><textarea id="litReflections"></textarea></div>
+        <div class="field"><label for="litReferences">litReferences</label><textarea id="litReferences"></textarea></div>
+        <div class="field"><label for="litTags">litTags (comma-separated)</label><input id="litTags" type="text"></div>
+      </div>
+
+      <div id="fieldworkFields" class="group">
+        <div class="field"><label for="fwTitle">fwTitle</label><input id="fwTitle" type="text"></div>
+        <div class="row2">
+          <div class="field"><label for="fwLocation">fwLocation</label><input id="fwLocation" type="text"></div>
+          <div class="field"><label for="fwDate">fwDate</label><input id="fwDate" type="text"></div>
+        </div>
+        <div class="field"><label for="fwSummary">fwSummary</label><textarea id="fwSummary"></textarea></div>
+        <div class="field"><label for="fwObservations">fwObservations</label><textarea id="fwObservations"></textarea></div>
+        <div class="field"><label for="fwPhotos">fwPhotos</label><textarea id="fwPhotos"></textarea></div>
+        <div class="field"><label for="fwChallenges">fwChallenges</label><textarea id="fwChallenges"></textarea></div>
+        <div class="field"><label for="fwNextSteps">fwNextSteps</label><textarea id="fwNextSteps"></textarea></div>
+      </div>
+
+      <div id="caseFields" class="group">
+        <div class="field"><label for="caseTitle">caseTitle</label><input id="caseTitle" type="text"></div>
+        <div class="row2">
+          <div class="field"><label for="caseCreator">caseCreator</label><input id="caseCreator" type="text"></div>
+          <div class="field"><label for="caseYear">caseYear</label><input id="caseYear" type="text"></div>
+        </div>
+        <div class="field"><label for="caseType">caseType (comma-separated)</label><input id="caseType" type="text"></div>
+        <div class="field"><label for="caseWhy">caseWhy</label><input id="caseWhy" type="text"></div>
+        <div class="field"><label for="caseCoverImage">caseCoverImage</label><input id="caseCoverImage" type="text"></div>
+        <div class="field"><label for="caseCoverCaption">caseCoverCaption</label><input id="caseCoverCaption" type="text"></div>
+        <div class="field"><label for="caseContext">caseContext</label><textarea id="caseContext"></textarea></div>
+        <div class="field"><label for="caseAnalysis">caseAnalysis</label><textarea id="caseAnalysis"></textarea></div>
+        <div class="field"><label for="caseTakeaways">caseTakeaways</label><textarea id="caseTakeaways"></textarea></div>
+        <div class="field"><label for="caseReflection">caseReflection</label><textarea id="caseReflection"></textarea></div>
+        <div class="field"><label for="caseReferences">caseReferences</label><textarea id="caseReferences"></textarea></div>
+        <div class="field"><label for="caseTags">caseTags (comma-separated)</label><input id="caseTags" type="text"></div>
+      </div>
+
+      <div id="peerFields" class="group">
+        <div class="row2">
+          <div class="field"><label for="pbDate">pbDate</label><input id="pbDate" type="date"></div>
+          <div class="field"><label for="pbID">pbID</label><input id="pbID" type="text"></div>
+        </div>
+        <div class="field"><button id="pbIdFromTitle" class="btn-alt" type="button">Generate ID from Title</button></div>
+        <div class="field"><label for="pbTitle">pbTitle</label><input id="pbTitle" type="text"></div>
+        <div class="field"><label for="pbPeople">pbPeople (comma-separated)</label><input id="pbPeople" type="text"></div>
+        <div class="field"><label for="pbTags">pbTags (comma-separated)</label><input id="pbTags" type="text"></div>
+        <div class="field"><label for="pbContext">pbContext</label><textarea id="pbContext"></textarea></div>
+        <div class="field"><label for="pbDiscussion">pbDiscussion</label><textarea id="pbDiscussion"></textarea></div>
+        <div class="field"><label for="pbReflection">pbReflection</label><textarea id="pbReflection"></textarea></div>
+      </div>
+
+      <div class="controls">
+        <button class="btn-main" id="generateBtn" type="button">Generate HTML</button>
+        <button class="btn-alt" id="copyBtn" type="button">Copy Code</button>
+        <button class="btn-link" id="downloadBtn" type="button">Download .html</button>
+        <button class="btn-danger" id="resetBtn" type="button">Reset Fields</button>
+      </div>
+
+      <div class="tiny">Template source: <span id="sourceBadge">-</span></div>
+      <textarea id="outputCode" class="out mono" readonly></textarea>
+
+      <div class="preview">
+        <iframe id="previewFrame" title="Preview"></iframe>
+      </div>
+    </section>
+
+    <aside class="panel">
+      <h2>Syntax Guide</h2>
+      <p class="sub">Click any example to copy.</p>
+
+      <div class="example"><strong class="tiny">Headings</strong><button type="button" class="copy-snippet"># Main\n## Section\n### Subsection</button></div>
+      <div class="example"><strong class="tiny">Lists + Nested</strong><button type="button" class="copy-snippet">* item\n  * nested\n1. step one\n2. step two\n  1. nested step</button></div>
+      <div class="example"><strong class="tiny">Standalone image</strong><button type="button" class="copy-snippet">![Caption](path/to/image.jpg)</button></div>
+      <div class="example"><strong class="tiny">Inline image</strong><button type="button" class="copy-snippet">{{inline:path/to/image.jpg}}</button></div>
+      <div class="example"><strong class="tiny">Side-by-side</strong><button type="button" class="copy-snippet">[[side-by-side:![A](a.jpg), ![B](b.jpg)]]</button></div>
+      <div class="example"><strong class="tiny">Inline format + code</strong><button type="button" class="copy-snippet">Use [link](https://example.com), **bold**, *italic*, and `code`.\n\n```js\nconst x = 1;\n```</button></div>
+
+      <div class="field"><button type="button" id="runTestsBtn" class="btn-alt">Dev: Run Parser Tests</button></div>
+    </aside>
+  </div>
+
+  <template id="fallback-weekly">
+<header class="page-head">
+  <div class="container">
+    <div class="kicker">Weekly Log</div>
+    <h1 class="h1">${weekTitle}</h1>
+    <div class="page-meta">
+      <span class="badge">Dates: ${dates}</span>
+    </div>
+  </div>
+</header>
+
+<main class="container" style="padding-top:20px">
+  <div class="grid">
+    <article class="span-8 measure stack order-1">
+      <section id="actual">
+        <h2 class="h2">Activities</h2>
+        <ul>${activitiesHtml}</ul>
+      </section>
+      <section id="reflection">
+        <h2 class="h2">Reflection</h2>
+        ${reflectionHtml}
+      </section>
+      <section id="literature">
+        <h2 class="h2">Literature This Week</h2>
+        <ul class="meta-list">${literatureHtml}</ul>
+      </section>
+      <section id="decisions">
+        <h2 class="h2">Tasks</h2>
+        <ul>${tasksHtml}</ul>
+      </section>
+      <section id="resources">
+        <h2 class="h2">Links</h2>
+        <ul class="meta-list">${linksHtml}</ul>
+      </section>
+    </article>
+
+    <aside class="span-4 stack">
+      <section class="card">
+        <h2 class="h2">To Do</h2>
+        <ul class="meta-list">${toDoHtml}</ul>
+      </section>
+      <section class="card">
+        <h2 class="h2">Research Question</h2>
+        ${researchQuestionHtml}
+      </section>
+      <section class="card">
+        <h2 class="h2">Navigation</h2>
+        <ul class="meta-list" data-prevnext data-json="../assets/weeks.json"></ul>
+      </section>
+    </aside>
+  </div>
+</main>
+  </template>
+
+  <template id="fallback-literature">
+<header class="page-head">
+  <div class="container">
+    <div class="kicker">Literature</div>
+    <h1 class="h1">${title}</h1>
+    <div class="page-meta">
+      <span>${author}</span>
+      <span>Key concepts: ${keyConcepts}</span>
+    </div>
+  </div>
+</header>
+
+<main class="container" style="padding-top:20px">
+  <div class="grid">
+    <article class="span-8 stack measure order-1">
+      <section class="card">
+        <h2 class="h2">Work</h2>
+        <p>${work}</p>
+      </section>
+      <section>
+        <h2 class="h2">Key Takeaways</h2>
+        <ul>${takeawaysHtml}</ul>
+      </section>
+      <section class="card">
+        <h2 class="h2">Reflections / Critical Notes</h2>
+        ${reflectionsHtml}
+      </section>
+      <section>
+        <h2 class="h2">Links & References</h2>
+        <ul class="meta-list">${referencesHtml}</ul>
+      </section>
+    </article>
+
+    <aside class="span-4 order-2 stack">
+      ${coverImageHtml}
+      <section class="card">
+        <h2 class="h2">Tags</h2>
+        <p>${tagsHtml}</p>
+      </section>
+      <section class="card">
+        <h2 class="h2">Navigation</h2>
+        <ul class="meta-list" data-prevnext data-json="../assets/literature.json"></ul>
+      </section>
+    </aside>
+  </div>
+</main>
+  </template>
+
+  <template id="fallback-fieldwork">
+<header class="page-head">
+  <div class="container">
+    <div class="kicker">Fieldwork</div>
+    <h1 class="h1">${title}</h1>
+    <div class="page-meta">
+      <span><strong>Date:</strong> ${date}</span>
+      <span><strong>Location:</strong> ${location}</span>
+    </div>
+  </div>
+</header>
+
+<main class="container" style="padding-top:20px">
+  <div class="grid">
+    <article class="span-8 stack measure order-1">
+      <section class="card"><h2 class="h2">Summary</h2>${summaryHtml}</section>
+      <section><h2 class="h2">Observations</h2><ul>${observationsHtml}</ul></section>
+      <section><h2 class="h2">Photos & Visuals</h2>${photosHtml}</section>
+      <section><h2 class="h2">Challenges & Reflections</h2>${challengesHtml}</section>
+      <section><h2 class="h2">Next Steps</h2><ul>${next_stepsHtml}</ul></section>
+    </article>
+    <aside class="span-4 order-2 stack">
+      <section class="card">
+        <h2 class="h2">Navigation</h2>
+        <ul class="meta-list" data-prevnext data-json="../assets/fieldwork.json"></ul>
+      </section>
+    </aside>
+  </div>
+</main>
+  </template>
+
+  <template id="fallback-case">
+<header class="page-head">
+  <div class="container">
+    <div class="kicker">Case Study</div>
+    <h1 class="h1">${title}</h1>
+    <div class="page-meta">
+      <span><strong>Creator/Organization:</strong> ${creator}</span>
+      <span><strong>Year:</strong> ${year}</span>
+      <span><strong>Type:</strong> ${type}</span>
+      <span><strong>Why selected:</strong> ${why}</span>
+    </div>
+  </div>
+</header>
+
+<main class="container" style="padding-top:20px">
+  <div class="grid">
+    <article class="span-8 stack measure order-1">
+      <section class="card"><h2 class="h2">Context & Objective</h2>${contextHtml}</section>
+      <section><h2 class="h2">Images</h2>${analysisHtml}</section>
+      <section class="card"><h2 class="h2">Key Takeaways</h2><ul>${takeawaysHtml}</ul></section>
+      <section><h2 class="h2">Reflection</h2>${reflectionHtml}</section>
+      <section><h2 class="h2">Links & References</h2><ul class="meta-list">${referencesHtml}</ul></section>
+    </article>
+    <aside class="span-4 order-2 stack">
+      ${coverImageHtml}
+      <section class="card"><h2 class="h2">Tags</h2><p>${tagsHtml}</p></section>
+      <section class="card"><h2 class="h2">Navigation</h2><ul class="meta-list" data-prevnext data-json="../assets/cases.json"></ul></section>
+    </aside>
+  </div>
+</main>
+  </template>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var STORAGE_PREFIX = 'content_generator_v2';
+      var uploadedTemplates = {};
+      var fetchCache = {};
+
+      var FIELD_MAP = {
+        'weekly_log.html': ['weekTitle', 'dates', 'activities', 'reflection', 'literature', 'tasks', 'links', 'toDo', 'researchQuestion'],
+        'literature_review.html': ['litTitle', 'litAuthor', 'litKeyConcepts', 'litCoverImage', 'litCoverCaption', 'litWork', 'litTakeaways', 'litReflections', 'litReferences', 'litTags'],
+        'fieldwork_log.html': ['fwTitle', 'fwLocation', 'fwDate', 'fwSummary', 'fwObservations', 'fwPhotos', 'fwChallenges', 'fwNextSteps'],
+        'case_study.html': ['caseTitle', 'caseCreator', 'caseYear', 'caseType', 'caseWhy', 'caseCoverImage', 'caseCoverCaption', 'caseContext', 'caseAnalysis', 'caseTakeaways', 'caseReflection', 'caseReferences', 'caseTags'],
+        'peer_block': ['pbID', 'pbDate', 'pbTitle', 'pbPeople', 'pbTags', 'pbContext', 'pbDiscussion', 'pbReflection']
+      };
+
+      var GROUP_MAP = {
+        'weekly_log.html': 'weeklyFields',
+        'literature_review.html': 'literatureFields',
+        'fieldwork_log.html': 'fieldworkFields',
+        'case_study.html': 'caseFields',
+        'peer_block': 'peerFields'
+      };
+
+      var state = {
+        template: 'weekly_log.html',
+        source: '-',
+        output: ''
+      };
+
+      function $(id) { return document.getElementById(id); }
+
+      function escapeHtml(s) {
+        return String(s || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function escapeAttr(s) {
+        return escapeHtml(s).replace(/`/g, '&#96;');
+      }
+
+      function setStatus(msg, kind) {
+        var box = $('statusBox');
+        box.textContent = msg;
+        box.className = 'status' + (kind ? ' ' + kind : '');
+      }
+
+      function normalize(text) {
+        return String(text || '').replace(/\r\n?/g, '\n');
+      }
+
+      function csvItems(text) {
+        return String(text || '').split(',').map(function (x) { return x.trim(); }).filter(Boolean);
+      }
+
+      function slugify(text) {
+        return String(text || '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').replace(/-{2,}/g, '-');
+      }
+
+      function copyText(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          return navigator.clipboard.writeText(text).then(function () { return true; }).catch(function () { return fallbackCopy(text); });
+        }
+        return Promise.resolve(fallbackCopy(text));
+      }
+
+      function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand('copy'); } catch (_) { ok = false; }
+        ta.remove();
+        return ok;
+      }
+
+      function parserOptions() {
+        return { allowRawHtml: $('allowRawHtml').checked };
+      }
+
+      function parseInline(text, opts) {
+        var allowRaw = !!(opts && opts.allowRawHtml);
+        var working = String(text || '');
+        var tokens = [];
+
+        function stash(html) {
+          var key = '\u0000TK' + tokens.length + '\u0000';
+          tokens.push(html);
+          return key;
+        }
+
+        working = working.replace(/`([^`\n]+)`/g, function (_, code) {
+          return stash('<code>' + escapeHtml(code) + '</code>');
+        });
+
+        working = working.replace(/\{\{inline:([^}]+)\}\}/g, function (_, path) {
+          return stash('<img class="inline-img" src="' + escapeAttr(path.trim()) + '" alt=""/>');
+        });
+
+        working = working.replace(/\[([^\]]+)\]\(([^)]+)\)/g, function (m, label, href) {
+          var url = String(href || '').trim();
+          if (!/^https?:\/\//i.test(url)) { return m; }
+          var safeLabel = allowRaw ? label : escapeHtml(label);
+          return stash('<a href="' + escapeAttr(url) + '" target="_blank" rel="noopener">' + safeLabel + '</a>');
+        });
+
+        if (!allowRaw) {
+          working = escapeHtml(working);
+        }
+
+        working = working
+          .replace(/\*\*([^\n*]+)\*\*/g, '<strong>$1</strong>')
+          .replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g, '$1<em>$2</em>');
+
+        working = working.replace(/\u0000TK(\d+)\u0000/g, function (_, i) {
+          return tokens[Number(i)] || '';
+        });
+
+        return working;
+      }
+
+      function countIndentUnits(line) {
+        var spaces = 0;
+        for (var i = 0; i < line.length; i += 1) {
+          var c = line.charAt(i);
+          if (c === ' ') spaces += 1;
+          else if (c === '\t') spaces += 2;
+          else break;
+        }
+        return Math.floor(spaces / 2);
+      }
+
+      function parseListLine(line) {
+        var m1 = line.match(/^([ \t]*)([*-])\s+(.*)$/);
+        if (m1) {
+          return { indent: countIndentUnits(m1[1]), type: 'ul', content: m1[3] };
+        }
+        var m2 = line.match(/^([ \t]*)(\d+)\.\s+(.*)$/);
+        if (m2) {
+          return { indent: countIndentUnits(m2[1]), type: 'ol', content: m2[3] };
+        }
+        return null;
+      }
+
+      function renderFigure(path, caption, allowRaw) {
+        var cap = allowRaw ? caption : escapeHtml(caption);
+        return '<figure class="figure">\n  <img src="' + escapeAttr(path.trim()) + '" alt="' + escapeAttr(caption) + '"/>\n  <figcaption class="figcap">' + cap + '</figcaption>\n</figure>';
+      }
+
+      function renderSideBySide(content, allowRaw) {
+        var rx = /!\[([^\]]*)\]\(([^)]+)\)/g;
+        var imgs = [];
+        var m;
+        while ((m = rx.exec(content)) !== null) {
+          imgs.push({ caption: m[1], path: m[2] });
+        }
+        if (imgs.length < 2 || imgs.length > 4) return null;
+        var figures = imgs.map(function (it) { return renderFigure(it.path, it.caption, allowRaw); });
+        return '<div class="side-by-side">\n' + figures.join('\n') + '\n</div>';
+      }
+
+      function parseCodeBlock(lines, start) {
+        var first = lines[start];
+        var langMatch = first.match(/^\s*```([A-Za-z0-9_-]+)?\s*$/);
+        var lang = (langMatch && langMatch[1]) ? langMatch[1] : '';
+        var i = start + 1;
+        var code = [];
+        while (i < lines.length && !/^\s*```\s*$/.test(lines[i])) {
+          code.push(lines[i]);
+          i += 1;
+        }
+        if (i < lines.length) i += 1;
+        var cls = lang ? ' class="language-' + escapeAttr(lang) + '"' : '';
+        return { html: '<pre><code' + cls + '>' + escapeHtml(code.join('\n')) + '</code></pre>', next: i };
+      }
+
+      function parseListBlock(lines, start, opts) {
+        var root = [];
+        var stack = [];
+        var i = start;
+        var first = parseListLine(lines[start]);
+        var firstIndent = first ? first.indent : 0;
+
+        function addList(type, indent, parentItem) {
+          var node = { type: type, indent: indent, items: [] };
+          if (parentItem) parentItem.children.push(node);
+          else root.push(node);
+          stack.push({ list: node, indent: indent });
+        }
+
+        while (i < lines.length) {
+          var line = lines[i];
+          var meta = parseListLine(line);
+          if (!meta) {
+            if (!line.trim()) { i += 1; continue; }
+            if (!stack.length) break;
+            var top = stack[stack.length - 1];
+            var last = top.list.items[top.list.items.length - 1];
+            if (!last) break;
+            if (countIndentUnits(line) > top.indent) {
+              last.parts.push(line.trim());
+              i += 1;
+              continue;
+            }
+            break;
+          }
+
+          if (meta.indent < firstIndent) break;
+
+          while (stack.length && meta.indent < stack[stack.length - 1].indent) stack.pop();
+
+          if (!stack.length) {
+            addList(meta.type, meta.indent, null);
+          } else if (meta.indent > stack[stack.length - 1].indent) {
+            var pList = stack[stack.length - 1].list;
+            var pItem = pList.items[pList.items.length - 1];
+            addList(meta.type, meta.indent, pItem || null);
+          } else if (meta.type !== stack[stack.length - 1].list.type) {
+            stack.pop();
+            if (!stack.length) addList(meta.type, meta.indent, null);
+            else {
+              var ppList = stack[stack.length - 1].list;
+              var ppItem = ppList.items[ppList.items.length - 1];
+              addList(meta.type, meta.indent, ppItem || null);
+            }
+          }
+
+          var cur = stack[stack.length - 1];
+          cur.list.items.push({ parts: [meta.content.trim()], children: [] });
+          i += 1;
+        }
+
+        function renderList(list, depth) {
+          var pad = Array(depth + 1).join('  ');
+          var out = [];
+          out.push(pad + '<' + list.type + '>');
+          list.items.forEach(function (item) {
+            out.push(pad + '  <li>');
+            var main = item.parts.join(' ').trim();
+            if (main) out.push(pad + '    ' + parseInline(main, opts));
+            item.children.forEach(function (child) { out.push(renderList(child, depth + 2)); });
+            out.push(pad + '  </li>');
+          });
+          out.push(pad + '</' + list.type + '>');
+          return out.join('\n');
+        }
+
+        return { html: root.map(function (x) { return renderList(x, 0); }).join('\n'), lists: root, next: i };
+      }
+
+      function parseBlocks(text, opts) {
+        var src = normalize(text);
+        if (!src.trim()) return '';
+        var lines = src.split('\n');
+        var i = 0;
+        var blocks = [];
+
+        while (i < lines.length) {
+          var line = lines[i];
+          if (!line.trim()) { i += 1; continue; }
+
+          if (/^\s*```/.test(line)) {
+            var cb = parseCodeBlock(lines, i);
+            blocks.push(cb.html);
+            i = cb.next;
+            continue;
+          }
+
+          var side = line.match(/^\s*\[\[side-by-side:([\s\S]+)\]\]\s*$/);
+          if (side) {
+            var sideHtml = renderSideBySide(side[1], !!(opts && opts.allowRawHtml));
+            if (sideHtml) { blocks.push(sideHtml); i += 1; continue; }
+          }
+
+          var img = line.match(/^\s*!\[([^\]]*)\]\(([^)]+)\)\s*$/);
+          if (img) {
+            blocks.push(renderFigure(img[2], img[1], !!(opts && opts.allowRawHtml)));
+            i += 1;
+            continue;
+          }
+
+          var heading = line.match(/^\s{0,3}(#{1,6})\s+(.+)$/);
+          if (heading) {
+            var tag = heading[1].length <= 2 ? 'h2' : 'h3';
+            var cls = heading[1].length <= 2 ? 'h2' : 'h3';
+            blocks.push('<' + tag + ' class="' + cls + '">' + parseInline(heading[2].trim(), opts) + '</' + tag + '>');
+            i += 1;
+            continue;
+          }
+
+          if (parseListLine(line)) {
+            var lb = parseListBlock(lines, i, opts || {});
+            blocks.push(lb.html);
+            i = lb.next;
+            continue;
+          }
+
+          var p = [line.trim()];
+          i += 1;
+          while (i < lines.length) {
+            var nxt = lines[i];
+            if (!nxt.trim() || /^\s*```/.test(nxt) || /^\s{0,3}#{1,6}\s+/.test(nxt) || parseListLine(nxt) || /^\s*\[\[side-by-side:/.test(nxt) || /^\s*!\[[^\]]*\]\([^)]+\)\s*$/.test(nxt)) {
+              break;
+            }
+            p.push(nxt.trim());
+            i += 1;
+          }
+          blocks.push('<p class="measure">' + parseInline(p.join(' '), opts) + '</p>');
+        }
+
+        return blocks.join('\n\n');
+      }
+
+      function listItemsFromText(text, opts) {
+        var src = normalize(text);
+        if (!src.trim()) return '';
+        var lines = src.split('\n');
+        var first = -1;
+        for (var i = 0; i < lines.length; i += 1) {
+          if (lines[i].trim()) { first = i; break; }
+        }
+        if (first === -1) return '';
+
+        var meta = parseListLine(lines[first]);
+        if (meta) {
+          var parsed = parseListBlock(lines, first, opts || {});
+          var rest = lines.slice(parsed.next).filter(function (x) { return x.trim(); });
+          if (rest.length === 0) {
+            var out = [];
+            parsed.lists.forEach(function (list) {
+              list.items.forEach(function (item, idx) {
+                var textMain = item.parts.join(' ').trim();
+                var prefix = list.type === 'ol' ? escapeHtml(String(idx + 1) + '. ') : '';
+                var li = '<li>\n  ' + prefix + parseInline(textMain, opts || {}) + '\n';
+                item.children.forEach(function (child) {
+                  li += parseListChild(child, opts || {}, 1) + '\n';
+                });
+                li += '</li>';
+                out.push(li);
+              });
+            });
+            return out.join('\n');
+          }
+        }
+
+        var paragraphs = src.split(/\n\s*\n/).map(function (chunk) {
+          return chunk.split('\n').map(function (x) { return x.trim(); }).filter(Boolean).join(' ').trim();
+        }).filter(Boolean);
+
+        var items = [];
+        if (paragraphs.length > 1) items = paragraphs;
+        else {
+          var nonBlank = src.split('\n').map(function (x) { return x.trim(); }).filter(Boolean);
+          items = nonBlank.length ? nonBlank : [];
+        }
+
+        return items.map(function (it) {
+          return '<li>\n  ' + parseInline(it, opts || {}) + '\n</li>';
+        }).join('\n');
+      }
+
+      function parseListChild(list, opts, depth) {
+        var pad = Array(depth + 1).join('  ');
+        var out = [];
+        out.push(pad + '<' + list.type + '>');
+        list.items.forEach(function (item, idx) {
+          var prefix = list.type === 'ol' ? escapeHtml(String(idx + 1) + '. ') : '';
+          out.push(pad + '  <li>');
+          out.push(pad + '    ' + prefix + parseInline(item.parts.join(' ').trim(), opts));
+          item.children.forEach(function (c) { out.push(parseListChild(c, opts, depth + 2)); });
+          out.push(pad + '  </li>');
+        });
+        out.push(pad + '</' + list.type + '>');
+        return out.join('\n');
+      }
+
+      function replaceAllPlaceholders(template, map) {
+        var out = template;
+        Object.keys(map).forEach(function (key) {
+          var token = '${' + key + '}';
+          out = out.split(token).join(map[key]);
+        });
+        return out;
+      }
+
+      function asBadges(list) {
+        return list.map(function (x) { return '<span class="badge">' + escapeHtml(x) + '</span>'; }).join(' ');
+      }
+
+      function getValue(id) { return ($(id) && $(id).value) ? $(id).value : ''; }
+      function setValue(id, v) { if ($(id)) $(id).value = v || ''; }
+
+      function getToday() {
+        var d = new Date();
+        var y = d.getFullYear();
+        var m = String(d.getMonth() + 1).padStart(2, '0');
+        var day = String(d.getDate()).padStart(2, '0');
+        return y + '-' + m + '-' + day;
+      }
+
+      function ensurePeerDefaults(force) {
+        var today = getToday();
+        if (force || !getValue('pbDate')) setValue('pbDate', today);
+        if (force || !getValue('pbID')) setValue('pbID', 'block-' + getValue('pbDate'));
+      }
+
+      function coverImageHtml(path, caption, fallbackAlt) {
+        var p = String(path || '').trim();
+        if (!p) return '';
+        var cap = String(caption || '').trim();
+        var alt = cap || fallbackAlt || '';
+        return '<figure class="figure">\n  <img src="' + escapeAttr(p) + '" alt="' + escapeAttr(alt) + '"/>\n  <figcaption class="figcap">' + escapeHtml(cap) + '</figcaption>\n</figure>';
+      }
+
+      function indentHtml(html, spaces) {
+        var pad = Array(spaces + 1).join(' ');
+        if (!html) return pad + '<p class="measure"></p>';
+        return String(html).split('\n').map(function (line) { return pad + line; }).join('\n');
+      }
+
+      function generateWeekly(template) {
+        var opts = parserOptions();
+        var cleaned = template.replace(/<p class="measure">\s*\$\{researchQuestionHtml\}\s*<\/p>/m, '${researchQuestionHtml}');
+        return replaceAllPlaceholders(cleaned, {
+          weekTitle: escapeHtml(getValue('weekTitle')),
+          dates: escapeHtml(getValue('dates')),
+          activitiesHtml: listItemsFromText(getValue('activities'), opts),
+          reflectionHtml: parseBlocks(getValue('reflection'), opts),
+          literatureHtml: listItemsFromText(getValue('literature'), opts),
+          tasksHtml: listItemsFromText(getValue('tasks'), opts),
+          linksHtml: listItemsFromText(getValue('links'), opts),
+          toDoHtml: listItemsFromText(getValue('toDo'), opts),
+          researchQuestionHtml: parseBlocks(getValue('researchQuestion'), opts)
+        });
+      }
+
+      function generateLiterature(template) {
+        var opts = parserOptions();
+        return replaceAllPlaceholders(template, {
+          title: escapeHtml(getValue('litTitle')),
+          author: escapeHtml(getValue('litAuthor')),
+          keyConcepts: escapeHtml(getValue('litKeyConcepts')),
+          coverImageHtml: coverImageHtml(getValue('litCoverImage'), getValue('litCoverCaption'), 'Book cover'),
+          work: escapeHtml(getValue('litWork')),
+          takeawaysHtml: listItemsFromText(getValue('litTakeaways'), opts),
+          reflectionsHtml: parseBlocks(getValue('litReflections'), opts),
+          referencesHtml: listItemsFromText(getValue('litReferences'), opts),
+          tagsHtml: asBadges(csvItems(getValue('litTags')))
+        });
+      }
+
+      function generateFieldwork(template) {
+        var opts = parserOptions();
+        return replaceAllPlaceholders(template, {
+          title: escapeHtml(getValue('fwTitle')),
+          location: escapeHtml(getValue('fwLocation')),
+          date: escapeHtml(getValue('fwDate')),
+          summaryHtml: parseBlocks(getValue('fwSummary'), opts),
+          observationsHtml: listItemsFromText(getValue('fwObservations'), opts),
+          photosHtml: parseBlocks(getValue('fwPhotos'), opts),
+          challengesHtml: parseBlocks(getValue('fwChallenges'), opts),
+          next_stepsHtml: listItemsFromText(getValue('fwNextSteps'), opts)
+        });
+      }
+
+      function generateCase(template) {
+        var opts = parserOptions();
+        return replaceAllPlaceholders(template, {
+          title: escapeHtml(getValue('caseTitle')),
+          creator: escapeHtml(getValue('caseCreator')),
+          year: escapeHtml(getValue('caseYear')),
+          type: escapeHtml(getValue('caseType')),
+          why: escapeHtml(getValue('caseWhy')),
+          coverImageHtml: coverImageHtml(getValue('caseCoverImage'), getValue('caseCoverCaption'), 'Case image'),
+          contextHtml: parseBlocks(getValue('caseContext'), opts),
+          analysisHtml: parseBlocks(getValue('caseAnalysis'), opts),
+          takeawaysHtml: listItemsFromText(getValue('caseTakeaways'), opts),
+          reflectionHtml: parseBlocks(getValue('caseReflection'), opts),
+          referencesHtml: listItemsFromText(getValue('caseReferences'), opts),
+          tagsHtml: asBadges(csvItems(getValue('caseTags')))
+        });
+      }
+
+      function generatePeerBlock() {
+        ensurePeerDefaults(false);
+        var opts = parserOptions();
+        var date = getValue('pbDate') || getToday();
+        var id = getValue('pbID') || ('block-' + date);
+        var title = getValue('pbTitle');
+        var people = csvItems(getValue('pbPeople'));
+        var tags = csvItems(getValue('pbTags'));
+
+        return [
+          '<article class="card block" data-date="' + escapeAttr(date) + '" id="' + escapeAttr(id) + '" tabindex="-1" data-people="' + escapeAttr(people.join(', ')) + '" data-tags="' + escapeAttr(tags.join(', ')) + '">',
+          '  <h2 class="h2"><a href="#' + escapeAttr(id) + '">' + escapeHtml(title) + '</a></h2>',
+          '  <div class="block-meta">',
+          '    <span>' + escapeHtml(date) + '</span><br>',
+          '    <span>People: ' + asBadges(people) + '</span><br>',
+          '    <div class="meta-tags">Tags: ' + asBadges(tags) + '</div>',
+          '  </div>',
+          '  <section>',
+          '    <h3 class="h3">Context</h3>',
+          indentHtml(parseBlocks(getValue('pbContext'), opts), 4),
+          '  </section>',
+          '  <section>',
+          '    <h3 class="h3">Discussion & Insights</h3>',
+          indentHtml(parseBlocks(getValue('pbDiscussion'), opts), 4),
+          '  </section>',
+          '  <section>',
+          '    <h3 class="h3">Reflection & Next Steps</h3>',
+          indentHtml(parseBlocks(getValue('pbReflection'), opts), 4),
+          '  </section>',
+          '</article>'
+        ].join('\n');
+      }
+
+      function wrapAsFullHtml(title, bodyHtml) {
+        var t = escapeHtml(title || 'Research Entry');
+        return [
+          '<!doctype html>',
+          '<html lang="en">',
+          '<head>',
+          '  <meta charset="utf-8"/>',
+          '  <meta name="viewport" content="width=device-width, initial-scale=1"/>',
+          '  <title>' + t + '</title>',
+          '  <link rel="stylesheet" href="../assets/styles.css"/>',
+          '  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">',
+          '</head>',
+          '<body>',
+          bodyHtml,
+          '</' + 'body>',
+          '</' + 'html>'
+        ].join('\n');
+      }
+
+      function previewShell(bodyHtml) {
+        return [
+          '<!doctype html>',
+          '<html lang="en">',
+          '<head>',
+          '  <meta charset="utf-8"/>',
+          '  <meta name="viewport" content="width=device-width, initial-scale=1"/>',
+          '  <link rel="stylesheet" href="../assets/styles.css"/>',
+          '  <style>body{padding:16px;font-family:Segoe UI,sans-serif}.inline-img{max-height:1.4em;vertical-align:middle}.side-by-side{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}.figure img{max-width:100%;height:auto;display:block}.figcap{font-size:.85rem;color:#556}</style>',
+          '</head>',
+          '<body>',
+          bodyHtml,
+          '</' + 'body>',
+          '</' + 'html>'
+        ].join('\n');
+      }
+
+      function fallbackTemplateByName(name) {
+        if (name === 'weekly_log.html') return $('fallback-weekly').innerHTML.trim();
+        if (name === 'literature_review.html') return $('fallback-literature').innerHTML.trim();
+        if (name === 'fieldwork_log.html') return $('fallback-fieldwork').innerHTML.trim();
+        if (name === 'case_study.html') return $('fallback-case').innerHTML.trim();
+        return '';
+      }
+
+      function getTemplate(name) {
+        if (uploadedTemplates[name]) {
+          return Promise.resolve({ source: 'uploaded', template: uploadedTemplates[name], warning: '' });
+        }
+
+        if (Object.prototype.hasOwnProperty.call(fetchCache, name)) {
+          if (fetchCache[name]) return Promise.resolve({ source: 'fetch', template: fetchCache[name], warning: '' });
+          return Promise.resolve({ source: 'embedded', template: fallbackTemplateByName(name), warning: 'Fetch failed for ' + name + '. Using embedded fallback.' });
+        }
+
+        return fetch(name, { cache: 'no-store' })
+          .then(function (res) {
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            return res.text();
+          })
+          .then(function (txt) {
+            fetchCache[name] = txt;
+            return { source: 'fetch', template: txt, warning: '' };
+          })
+          .catch(function () {
+            fetchCache[name] = null;
+            return { source: 'embedded', template: fallbackTemplateByName(name), warning: 'Fetch failed for ' + name + '. Using embedded fallback.' };
+          });
+      }
+
+      function saveTemplateState(name) {
+        var ids = FIELD_MAP[name] || [];
+        var payload = {};
+        ids.forEach(function (id) { payload[id] = getValue(id); });
+        localStorage.setItem(STORAGE_PREFIX + ':state:' + name, JSON.stringify(payload));
+      }
+
+      function restoreTemplateState(name) {
+        var raw = localStorage.getItem(STORAGE_PREFIX + ':state:' + name);
+        if (raw) {
+          try {
+            var data = JSON.parse(raw);
+            Object.keys(data).forEach(function (id) { setValue(id, data[id]); });
+          } catch (err) {}
+        }
+        if (name === 'peer_block') ensurePeerDefaults(false);
+      }
+
+      function saveGlobalState() {
+        localStorage.setItem(STORAGE_PREFIX + ':template', state.template);
+        localStorage.setItem(STORAGE_PREFIX + ':allowRaw', $('allowRawHtml').checked ? '1' : '0');
+      }
+
+      function restoreGlobalState() {
+        var tpl = localStorage.getItem(STORAGE_PREFIX + ':template');
+        var raw = localStorage.getItem(STORAGE_PREFIX + ':allowRaw');
+        if (tpl && FIELD_MAP[tpl]) {
+          state.template = tpl;
+          $('templateSelector').value = tpl;
+        }
+        $('allowRawHtml').checked = raw === '1';
+      }
+
+      function showFields(templateName) {
+        Object.keys(GROUP_MAP).forEach(function (name) {
+          var el = $(GROUP_MAP[name]);
+          if (el) el.classList.toggle('active', name === templateName);
+        });
+        var full = templateName !== 'peer_block';
+        $('downloadBtn').disabled = !full;
+        $('downloadBtn').classList.toggle('disabled', !full);
+      }
+
+      function onTemplateChange() {
+        saveTemplateState(state.template);
+        state.template = $('templateSelector').value;
+        restoreTemplateState(state.template);
+        showFields(state.template);
+        saveGlobalState();
+        $('sourceBadge').textContent = '-';
+        setStatus('Switched to ' + state.template + '.', 'ok');
+      }
+
+      function onUploadChange(ev) {
+        var input = ev.target;
+        var name = input.getAttribute('data-template');
+        var file = input.files && input.files[0];
+        if (!name || !file) return;
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          uploadedTemplates[name] = String(e.target.result || '');
+          setStatus('Uploaded template for ' + name + ' (' + file.name + ').', 'ok');
+        };
+        reader.onerror = function () {
+          setStatus('Failed to read uploaded file for ' + name + '.', 'warn');
+        };
+        reader.readAsText(file);
+      }
+
+      function outputFilename() {
+        if (state.template === 'weekly_log.html') return (slugify(getValue('weekTitle')) || 'weekly-log') + '-' + (slugify(getValue('dates')) || 'entry') + '.html';
+        if (state.template === 'literature_review.html') return (slugify(getValue('litTitle')) || 'literature-review') + '.html';
+        if (state.template === 'fieldwork_log.html') return (slugify(getValue('fwTitle')) || 'fieldwork-log') + '-' + (slugify(getValue('fwDate')) || 'entry') + '.html';
+        if (state.template === 'case_study.html') return (slugify(getValue('caseTitle')) || 'case-study') + '.html';
+        return 'peer-block.html';
+      }
+
+      function generateOutput() {
+        saveTemplateState(state.template);
+        saveGlobalState();
+
+        if (state.template === 'peer_block') {
+          state.output = generatePeerBlock();
+          state.source = 'generated block';
+          $('sourceBadge').textContent = state.source;
+          $('outputCode').value = state.output;
+          $('previewFrame').srcdoc = previewShell(state.output);
+          setStatus('Generated peer block.', 'ok');
+          return;
+        }
+
+        getTemplate(state.template).then(function (resolved) {
+          var tpl = resolved.template;
+          var html = '';
+          if (state.template === 'weekly_log.html') html = generateWeekly(tpl);
+          if (state.template === 'literature_review.html') html = generateLiterature(tpl);
+          if (state.template === 'fieldwork_log.html') html = generateFieldwork(tpl);
+          if (state.template === 'case_study.html') html = generateCase(tpl);
+
+          if (!/<html[\s>]/i.test(html)) {
+            var title = getValue('weekTitle') || getValue('litTitle') || getValue('fwTitle') || getValue('caseTitle') || 'Research Entry';
+            html = wrapAsFullHtml(title, html);
+          }
+
+          state.output = html.trim();
+          state.source = resolved.source;
+          $('sourceBadge').textContent = state.source;
+          $('outputCode').value = state.output;
+          $('previewFrame').srcdoc = state.output;
+
+          if (resolved.warning) setStatus(resolved.warning, 'warn');
+          else setStatus('Generated output using ' + resolved.source + ' template.', 'ok');
+        });
+      }
+
+      function copyOutput() {
+        var txt = $('outputCode').value;
+        if (!txt) { setStatus('Nothing to copy. Generate first.', 'warn'); return; }
+        copyText(txt).then(function (ok) {
+          setStatus(ok ? 'Copied HTML to clipboard.' : 'Copy failed.', ok ? 'ok' : 'warn');
+        });
+      }
+
+      function downloadOutput() {
+        if (state.template === 'peer_block') {
+          setStatus('Download is for full-page templates only.', 'warn');
+          return;
+        }
+        var txt = $('outputCode').value;
+        if (!txt) { setStatus('Nothing to download. Generate first.', 'warn'); return; }
+        var blob = new Blob([txt], { type: 'text/html;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = outputFilename();
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+        setStatus('Downloaded ' + outputFilename() + '.', 'ok');
+      }
+
+      function resetCurrentFields() {
+        (FIELD_MAP[state.template] || []).forEach(function (id) { setValue(id, ''); });
+        localStorage.removeItem(STORAGE_PREFIX + ':state:' + state.template);
+        if (state.template === 'peer_block') ensurePeerDefaults(true);
+        setStatus('Reset fields for ' + state.template + '.', 'ok');
+      }
+
+      function bindAutosave() {
+        document.body.addEventListener('input', function (ev) {
+          var t = ev.target;
+          if (t && t.id) {
+            if (t.id === 'allowRawHtml') saveGlobalState();
+            else saveTemplateState(state.template);
+          }
+        });
+      }
+
+      function bindSyntaxCopy() {
+        Array.prototype.slice.call(document.querySelectorAll('.copy-snippet')).forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            copyText(btn.textContent || '').then(function (ok) {
+              setStatus(ok ? 'Copied syntax snippet.' : 'Could not copy snippet.', ok ? 'ok' : 'warn');
+            });
+          });
+        });
+      }
+
+      function generatePeerIdFromTitle() {
+        var date = getValue('pbDate') || getToday();
+        var titleSlug = slugify(getValue('pbTitle')) || 'entry';
+        setValue('pbID', 'block-' + date + '-' + titleSlug);
+        saveTemplateState('peer_block');
+        setStatus('Generated block ID from title/date.', 'ok');
+      }
+
+      function runTests() {
+        var opts = { allowRawHtml: false };
+        var pass = 0;
+        var fail = 0;
+
+        function assert(name, condition, detail) {
+          if (condition) { pass += 1; console.log('[PASS] ' + name); }
+          else { fail += 1; console.error('[FAIL] ' + name, detail || ''); }
+        }
+
+        var t1 = parseBlocks('# Heading\n\nLine one\nline two', opts);
+        assert('heading + paragraph', t1.indexOf('<h2 class="h2">Heading</h2>') !== -1 && t1.indexOf('<p class="measure">Line one line two</p>') !== -1, t1);
+
+        var t2 = listItemsFromText('* alpha\n* beta', opts);
+        assert('bullet list', /alpha/.test(t2) && /beta/.test(t2), t2);
+
+        var t3 = parseBlocks('1. one\n  1. one-a\n2. two', opts);
+        assert('numbered nested', t3.indexOf('<ol>') !== -1 && t3.indexOf('one-a') !== -1, t3);
+
+        var t4 = parseBlocks('[[side-by-side:![A](a.jpg), ![B](b.jpg)]]', opts);
+        assert('side by side', t4.indexOf('side-by-side') !== -1 && t4.indexOf('a.jpg') !== -1 && t4.indexOf('b.jpg') !== -1, t4);
+
+        var t5 = parseBlocks('Use [link](https://example.com), **bold**, *italic*, and `code`.\n\n```js\nconst x = 1;\n```', opts);
+        assert('inline + codeblock', t5.indexOf('target="_blank"') !== -1 && t5.indexOf('<strong>bold</strong>') !== -1 && t5.indexOf('<em>italic</em>') !== -1 && t5.indexOf('<pre><code class="language-js">const x = 1;') !== -1, t5);
+
+        console.log('Tests complete: ' + pass + ' PASS, ' + fail + ' FAIL');
+        return { pass: pass, fail: fail };
+      }
+
+      function init() {
+        restoreGlobalState();
+        restoreTemplateState(state.template);
+        showFields(state.template);
+        ensurePeerDefaults(false);
+
+        $('templateSelector').addEventListener('change', onTemplateChange);
+        $('generateBtn').addEventListener('click', generateOutput);
+        $('copyBtn').addEventListener('click', copyOutput);
+        $('downloadBtn').addEventListener('click', downloadOutput);
+        $('resetBtn').addEventListener('click', resetCurrentFields);
+        $('pbIdFromTitle').addEventListener('click', generatePeerIdFromTitle);
+        $('runTestsBtn').addEventListener('click', runTests);
+
+        ['uploadWeekly', 'uploadLiterature', 'uploadFieldwork', 'uploadCase'].forEach(function (id) {
+          $(id).addEventListener('change', onUploadChange);
+        });
+
+        bindAutosave();
+        bindSyntaxCopy();
+        window.runTests = runTests;
+        setStatus('Ready. Fill fields and click Generate HTML.', 'ok');
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
