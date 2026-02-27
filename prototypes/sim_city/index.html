@@ -560,6 +560,11 @@
         drawAssetLabel(asset, width, height, scale);
       }
 
+      function obstacleViewportScale() {
+        // Keep desktop look, shrink obstacles on smaller viewports.
+        return clamp(Math.min(W / 1280, H / 820), 0.62, 1);
+      }
+
       function loadHighScore() {
         try {
           const raw = sessionStorage.getItem(HI_SCORE_KEY);
@@ -981,8 +986,9 @@
         const laneValue = getObstacleLane(obs);
         const p = project(laneValue, obs.z, curveShift);
         const asset = resolveAsset(obs.assetKey);
-        const width = (asset.width || 44) * p.scale * 2;
-        const height = (asset.height || 60) * p.scale * 2;
+        const responsiveScale = obstacleViewportScale();
+        const width = (asset.width || 44) * p.scale * 2 * responsiveScale;
+        const height = (asset.height || 60) * p.scale * 2 * responsiveScale;
 
         ctx.save();
         ctx.translate(p.x, p.y);
@@ -1005,13 +1011,14 @@
         const laneValue = obs.lane;
         const asset = resolveAsset(obs.assetKey);
         const image = getAssetImage(asset);
+        const responsiveScale = obstacleViewportScale();
 
         if (image) {
           for (let z = obs.z; z <= obs.z + obs.length; z += 52) {
             if (z < 8 || z > road.maxZ + 200) continue;
             const p = project(laneValue, z, curveShift);
-            const w = (asset.width || 50) * p.scale;
-            const h = (asset.height || 46) * p.scale;
+            const w = (asset.width || 50) * p.scale * responsiveScale;
+            const h = (asset.height || 46) * p.scale * responsiveScale;
             ctx.drawImage(image, p.x - w * 0.5, p.y - h, w, h);
           }
           return;
@@ -1021,8 +1028,8 @@
         const p2 = project(laneValue, obs.z + obs.length, curveShift);
         const nearBase = obs.variant === 'divider' ? 44 : 62;
         const farBase = obs.variant === 'divider' ? 34 : 50;
-        const width1 = nearBase * p1.scale;
-        const width2 = farBase * p2.scale;
+        const width1 = nearBase * p1.scale * responsiveScale;
+        const width2 = farBase * p2.scale * responsiveScale;
 
         ctx.fillStyle = asset.body || '#f65a4b';
         ctx.beginPath();
@@ -1046,7 +1053,7 @@
         ctx.lineWidth = 1.2;
         for (let z = obs.z + 20; z < obs.z + obs.length; z += 42) {
           const p = project(laneValue, z, curveShift);
-          const w = (obs.variant === 'divider' ? 28 : 40) * p.scale;
+          const w = (obs.variant === 'divider' ? 28 : 40) * p.scale * responsiveScale;
           ctx.beginPath();
           ctx.moveTo(p.x - w * 0.5, p.y);
           ctx.lineTo(p.x + w * 0.5, p.y);
