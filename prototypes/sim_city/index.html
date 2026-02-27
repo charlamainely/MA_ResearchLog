@@ -260,6 +260,7 @@
       <div class="stats">
         <div>Distance</div><span id="distance">0</span>
         <div>Score</div><span id="score">0</span>
+        <div>Top score</div><span id="highscore">0</span>
       </div>
       <div class="tipline">Weave lanes like a local. Avoid sudden merges.</div>
     </div>
@@ -289,6 +290,7 @@
       const ctx = canvas.getContext('2d');
       const distanceEl = document.getElementById('distance');
       const scoreEl = document.getElementById('score');
+      const highScoreEl = document.getElementById('highscore');
       const speedEl = document.getElementById('speed');
       const powerEl = document.getElementById('power');
       const bannerEl = document.getElementById('banner');
@@ -314,18 +316,21 @@
         laneFactor: 0.56
       };
 
+      const HI_SCORE_KEY = 'saigon_street_sprint_hi_score';
+
       const state = {
         mode: 'ready',
-        speed: 240,
+        speed: 190,
         distance: 0,
         score: 0,
+        highScore: 0,
         bonusScore: 0,
         multiplier: 1,
         multiplierTimer: 0,
         lane: 0,
         targetLane: 0,
         laneVelocity: 0,
-        spawnTimer: 0.8,
+        spawnTimer: 1.6,
         obstacles: [],
         powerups: [],
         lastTip: 'Tip: Keep distance from parked buses. They hide door swings.',
@@ -334,10 +339,108 @@
 
       const tips = {
         static: 'Tip: Glide early into the open lane. Static hazards stay put.',
-        long: 'Tip: Long barricades demand a full lane change. Commit early.',
-        crossing: 'Tip: Watch for crossing scooters. Slow lane changes beat panic swerves.',
-        switcher: 'Tip: If a bike signals, assume it will merge. Leave them space.'
+        dividerLong: 'Tip: Divider barriers stay in the middle. Clear center lane early.',
+        constructionLong: 'Tip: Long roadwork blocks one lane for a while. Commit to another lane.',
+        crossingFast: 'Tip: Fast crossers are small but sudden. Predict, do not react late.',
+        crossingHeavy: 'Tip: Big crossers move slower but occupy more width. Give them a full lane.',
+        switcher: 'Tip: If a bike signals, assume it will merge. Leave it space before the switch.'
       };
+
+      const laneChoices = [-1, 0, 1];
+      const imageCache = new Map();
+
+      // Asset placeholders by mechanic.
+      // Replace placeholder art by setting image, e.g. image: 'assets/obstacles/scooter.png'.
+      // Keep width/height tuned to your sprite proportions for correct perspective/collision feel.
+      // To reuse mechanics with multiple visuals, add more keys in obstacleMechanics.*.assets.
+      const obstacleAssets = {
+        parkedScooter: { template: 'bike', width: 46, height: 62, body: '#f65a4b', trim: '#1b232c', detail: '#ffd977', label: 'Scooter', image: '' },
+        plasticCrate: { template: 'crate', width: 42, height: 56, body: '#ef7249', trim: '#1b232c', detail: '#ffd977', label: 'Crate', image: '' },
+        streetBin: { template: 'bin', width: 44, height: 64, body: '#5aa0d5', trim: '#1b232c', detail: '#dff2ff', label: 'Bin', image: '' },
+        medianBlocks: { template: 'divider', body: '#f3c056', trim: '#25313f', detail: '#fff5d9', label: 'Divider', image: '' },
+        medianFence: { template: 'dividerAlt', body: '#f7a94c', trim: '#25313f', detail: '#fff5d9', label: 'Fence', image: '' },
+        constructionBarrier: { template: 'construction', body: '#f65a4b', trim: '#ffd68f', detail: '#1f2a34', label: 'Roadwork', image: '' },
+        pipeStack: { template: 'constructionAlt', body: '#f18d4b', trim: '#21303c', detail: '#f9d8a7', label: 'Pipes', image: '' },
+        fastBike: { template: 'crosserFast', width: 40, height: 52, body: '#6fe2c8', trim: '#1b232c', detail: '#d5fff6', label: 'Bike', image: '' },
+        strayDog: { template: 'crosserFastAlt', width: 38, height: 48, body: '#8ed38a', trim: '#21322b', detail: '#f2ffe9', label: 'Dog', image: '' },
+        deliveryCart: { template: 'crosserHeavy', width: 68, height: 72, body: '#57a0d4', trim: '#1b232c', detail: '#e7f6ff', label: 'Cart', image: '' },
+        miniTruck: { template: 'crosserHeavyAlt', width: 76, height: 78, body: '#f1b84c', trim: '#1b232c', detail: '#fff4cc', label: 'Truck', image: '' },
+        commuterBike: { template: 'switcherBike', width: 44, height: 60, body: '#f1b84c', trim: '#1b232c', detail: '#ffe7af', label: 'Bike', image: '' },
+        taxiBike: { template: 'switcherBike', width: 46, height: 62, body: '#ffc75b', trim: '#1b232c', detail: '#fff2ca', label: 'Taxi', image: '' },
+        deliveryBike: { template: 'switcherBike', width: 44, height: 60, body: '#f08f4d', trim: '#1b232c', detail: '#ffe5c2', label: 'Delivery', image: '' },
+        fallback: { template: 'crate', width: 44, height: 60, body: '#f65a4b', trim: '#1b232c', detail: '#ffe2bd', label: 'Obstacle', image: '' }
+      };
+
+      // Each mechanic controls behavior; the assets list controls which visuals can spawn for that behavior.
+      const obstacleMechanics = {
+        static: {
+          kind: 'static',
+          weight: 30,
+          tipKey: 'static',
+          spawnZ: [80, 180],
+          laneRule: 'any',
+          hitWidth: 0.33,
+          assets: ['parkedScooter', 'plasticCrate', 'streetBin']
+        },
+        dividerLong: {
+          kind: 'long',
+          variant: 'divider',
+          weight: 14,
+          tipKey: 'dividerLong',
+          spawnZ: [90, 180],
+          laneRule: 'center',
+          hitWidth: 0.27,
+          length: [240, 340],
+          assets: ['medianBlocks', 'medianFence']
+        },
+        constructionLong: {
+          kind: 'long',
+          variant: 'construction',
+          weight: 16,
+          tipKey: 'constructionLong',
+          spawnZ: [80, 170],
+          laneRule: 'any',
+          hitWidth: 0.36,
+          length: [170, 260],
+          assets: ['constructionBarrier', 'pipeStack']
+        },
+        crossingFast: {
+          kind: 'crossing',
+          variant: 'fast',
+          weight: 14,
+          tipKey: 'crossingFast',
+          spawnZ: [80, 160],
+          speed: [0.72, 1.0],
+          hitWidth: 0.24,
+          startSpread: 1.52,
+          assets: ['fastBike', 'strayDog']
+        },
+        crossingHeavy: {
+          kind: 'crossing',
+          variant: 'heavy',
+          weight: 10,
+          tipKey: 'crossingHeavy',
+          spawnZ: [80, 160],
+          speed: [0.24, 0.38],
+          hitWidth: 0.44,
+          startSpread: 1.44,
+          assets: ['deliveryCart', 'miniTruck']
+        },
+        switcher: {
+          kind: 'switcher',
+          weight: 16,
+          tipKey: 'switcher',
+          spawnZ: [80, 170],
+          laneRule: 'any',
+          hitWidth: 0.33,
+          signalStartZ: [250, 390],
+          signalDuration: [0.45, 0.9],
+          switchDuration: [0.35, 0.65],
+          assets: ['commuterBike', 'taxiBike', 'deliveryBike']
+        }
+      };
+
+      const mechanicWeights = Object.entries(obstacleMechanics).map(([key, cfg]) => ({ key, weight: cfg.weight }));
 
       const powerupTypes = [
         { name: 'coffee', label: 'Ca phe boost', color: '#6fe2c8' },
@@ -390,6 +493,180 @@
         ctx.closePath();
       }
 
+      function pickOne(list) {
+        return list[Math.floor(Math.random() * list.length)];
+      }
+
+      function pickWeighted(items) {
+        let total = 0;
+        for (const item of items) total += item.weight;
+        let cursor = Math.random() * total;
+        for (const item of items) {
+          cursor -= item.weight;
+          if (cursor <= 0) return item.key;
+        }
+        return items[items.length - 1].key;
+      }
+
+      function randomLane() {
+        return pickOne(laneChoices);
+      }
+
+      function randomAdjacentLane(lane) {
+        const options = [];
+        if (lane > -1) options.push(lane - 1);
+        if (lane < 1) options.push(lane + 1);
+        return pickOne(options);
+      }
+
+      function rangeVal(range) {
+        return rand(range[0], range[1]);
+      }
+
+      function resolveAsset(assetKey) {
+        return obstacleAssets[assetKey] || obstacleAssets.fallback;
+      }
+
+      function getAssetImage(asset) {
+        if (!asset.image) return null;
+        if (!imageCache.has(asset.image)) {
+          const img = new Image();
+          img.src = asset.image;
+          imageCache.set(asset.image, img);
+        }
+        const cached = imageCache.get(asset.image);
+        return cached.complete ? cached : null;
+      }
+
+      function drawAssetLabel(asset, w, h, scale) {
+        if (!asset.label || scale < 0.35) return;
+        ctx.fillStyle = 'rgba(14, 20, 28, 0.78)';
+        roundRectPath(-w * 0.28, -h * 0.52, w * 0.56, h * 0.24, 4 * scale);
+        ctx.fill();
+        ctx.fillStyle = 'rgba(255, 247, 228, 0.95)';
+        ctx.font = `${Math.max(8, 11 * scale)}px "Space Grotesk", sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(asset.label, 0, -h * 0.4);
+      }
+
+      function drawAssetSprite(asset, width, height, scale, fallbackDraw) {
+        const img = getAssetImage(asset);
+        if (img) {
+          ctx.drawImage(img, -width * 0.5, -height, width, height);
+          return;
+        }
+        fallbackDraw();
+        drawAssetLabel(asset, width, height, scale);
+      }
+
+      function loadHighScore() {
+        try {
+          const raw = sessionStorage.getItem(HI_SCORE_KEY);
+          const parsed = Number.parseInt(raw || '0', 10);
+          return Number.isFinite(parsed) ? Math.max(0, parsed) : 0;
+        } catch (_) {
+          return 0;
+        }
+      }
+
+      function saveHighScore(value) {
+        try {
+          sessionStorage.setItem(HI_SCORE_KEY, String(value));
+        } catch (_) {
+          // Ignore storage errors; game still functions without persistence.
+        }
+      }
+
+      function getDifficultyProfile(distance) {
+        const progress = clamp(distance / 3600, 0, 1);
+        return {
+          progress,
+          spawnMin: lerp(1.38, 0.5, progress),
+          spawnMax: lerp(1.95, 0.9, progress),
+          speedFactor: lerp(0.84, 1.48, progress),
+          overlapGap: lerp(220, 125, progress)
+        };
+      }
+
+      function mechanicWeightScale(mechanicKey, progress) {
+        if (mechanicKey === 'static') return lerp(1.45, 0.85, progress);
+        if (mechanicKey === 'dividerLong') return lerp(1.1, 0.9, progress);
+        if (mechanicKey === 'constructionLong') return lerp(0.85, 1.1, progress);
+        if (mechanicKey === 'crossingFast') return lerp(0.22, 1.25, progress);
+        if (mechanicKey === 'crossingHeavy') return lerp(0.15, 1.05, progress);
+        if (mechanicKey === 'switcher') return lerp(0.25, 1.35, progress);
+        return 1;
+      }
+
+      function pickMechanicByDifficulty(profile) {
+        const weighted = [];
+        for (const item of mechanicWeights) {
+          weighted.push({
+            key: item.key,
+            weight: item.weight * mechanicWeightScale(item.key, profile.progress)
+          });
+        }
+        return pickWeighted(weighted);
+      }
+
+      function laneSpanAtSpawn(obstacle) {
+        if (obstacle.kind === 'crossing') {
+          const spread = obstacle.startSpread || 1.4;
+          return { min: -spread, max: spread };
+        }
+        if (obstacle.kind === 'switcher') {
+          const start = Math.min(obstacle.lane, obstacle.target);
+          const end = Math.max(obstacle.lane, obstacle.target);
+          return { min: start - obstacle.hitWidth, max: end + obstacle.hitWidth };
+        }
+        return {
+          min: obstacle.lane - obstacle.hitWidth,
+          max: obstacle.lane + obstacle.hitWidth
+        };
+      }
+
+      function zSpanAtSpawn(obstacle) {
+        if (obstacle.kind === 'long') {
+          return {
+            min: obstacle.z - 18,
+            max: obstacle.z + obstacle.length + 18
+          };
+        }
+        return {
+          min: obstacle.z - 24,
+          max: obstacle.z + 24
+        };
+      }
+
+      function spansOverlap(a, b) {
+        return !(a.max < b.min || b.max < a.min);
+      }
+
+      function zSpansOverlap(a, b, gap) {
+        return !(a.max + gap < b.min || b.max + gap < a.min);
+      }
+
+      function canPlaceObstacle(candidate, profile) {
+        const candidateSpan = laneSpanAtSpawn(candidate);
+        const candidateZ = zSpanAtSpawn(candidate);
+        const baseGap = profile.overlapGap + (candidate.kind === 'long' ? 55 : 0);
+        for (const existing of state.obstacles) {
+          if (existing.z < road.maxZ - 250) continue;
+          if (candidate.kind === 'long' && existing.kind === 'long' && existing.z > road.maxZ - 180) {
+            return false;
+          }
+
+          const dynamicGap = baseGap + (existing.kind === 'long' ? 50 : 0) + (existing.kind === 'crossing' || candidate.kind === 'crossing' ? 36 : 0);
+          const existingZ = zSpanAtSpawn(existing);
+          if (!zSpansOverlap(candidateZ, existingZ, dynamicGap)) continue;
+
+          const existingSpan = laneSpanAtSpawn(existing);
+          if (spansOverlap(candidateSpan, existingSpan)) return false;
+        }
+        return true;
+      }
+
       function startGame() {
         state.mode = 'running';
         state.distance = 0;
@@ -402,7 +679,7 @@
         state.laneVelocity = 0;
         state.obstacles = [];
         state.powerups = [];
-        state.spawnTimer = 0.7;
+        state.spawnTimer = 1.4;
         bannerEl.style.display = 'none';
         gameoverEl.classList.remove('show');
       }
@@ -428,64 +705,78 @@
         state.targetLane = clamp(state.targetLane + dir, -1, 1);
       }
 
-      function spawnObstacle() {
-        const r = Math.random();
-        if (r < 0.45) {
-          const isLong = Math.random() < 0.3;
-          state.obstacles.push({
-            kind: isLong ? 'long' : 'static',
-            lane: [-1, 0, 1][Math.floor(rand(0, 3))],
-            z: road.maxZ + rand(80, 180),
-            length: isLong ? rand(160, 260) : 0,
-            seed: Math.random()
-          });
-        } else if (r < 0.7) {
-          const dir = Math.random() < 0.5 ? -1 : 1;
-          state.obstacles.push({
-            kind: 'crossing',
-            z: road.maxZ + rand(80, 160),
-            cross: dir === -1 ? 1 : 0,
-            dir,
-            speed: rand(0.35, 0.55),
-            seed: Math.random()
-          });
-        } else {
-          const lane = [-1, 0, 1][Math.floor(rand(0, 3))];
-          let target = lane + (Math.random() < 0.5 ? -1 : 1);
-          if (target < -1 || target > 1) target = -target;
-          state.obstacles.push({
-            kind: 'switcher',
-            lane,
-            target,
-            z: road.maxZ + rand(80, 160),
-            switchAt: rand(260, 420),
-            switchProgress: 0,
-            switchDuration: rand(0.6, 1.1),
-            seed: Math.random()
-          });
+      function spawnObstacle(profile) {
+        const mechanicKey = pickMechanicByDifficulty(profile);
+        const cfg = obstacleMechanics[mechanicKey];
+        const lane = cfg.laneRule === 'center' ? 0 : randomLane();
+        const obstacle = {
+          mechanicKey,
+          kind: cfg.kind,
+          tipKey: cfg.tipKey,
+          lane,
+          z: road.maxZ + rangeVal(cfg.spawnZ),
+          hitWidth: cfg.hitWidth,
+          assetKey: pickOne(cfg.assets)
+        };
+
+        if (cfg.kind === 'long') {
+          obstacle.variant = cfg.variant;
+          obstacle.length = rangeVal(cfg.length);
         }
 
+        if (cfg.kind === 'crossing') {
+          obstacle.variant = cfg.variant;
+          obstacle.dir = Math.random() < 0.5 ? -1 : 1;
+          obstacle.cross = obstacle.dir === -1 ? 1 : 0;
+          obstacle.speed = rangeVal(cfg.speed) * lerp(0.88, 1.08, profile.progress);
+          obstacle.startSpread = cfg.startSpread;
+        }
+
+        if (cfg.kind === 'switcher') {
+          obstacle.target = randomAdjacentLane(lane);
+          obstacle.phase = 'signal';
+          obstacle.signalStartZ = rangeVal(cfg.signalStartZ) + lerp(22, -28, profile.progress);
+          obstacle.signalDuration = rangeVal(cfg.signalDuration) * lerp(1.2, 0.86, profile.progress);
+          obstacle.signalElapsed = 0;
+          obstacle.switchProgress = 0;
+          obstacle.switchDuration = rangeVal(cfg.switchDuration) * lerp(1.15, 0.82, profile.progress);
+        }
+
+        if (!canPlaceObstacle(obstacle, profile)) {
+          return false;
+        }
+
+        state.obstacles.push(obstacle);
+
         if (Math.random() < 0.35) {
-          const p = powerupTypes[Math.floor(rand(0, powerupTypes.length))];
+          const p = pickOne(powerupTypes);
           state.powerups.push({
             kind: 'power',
-            lane: [-1, 0, 1][Math.floor(rand(0, 3))],
+            lane: randomLane(),
             z: road.maxZ + rand(60, 140),
             type: p,
             bob: rand(0, Math.PI * 2)
           });
         }
+        return true;
       }
 
       function update(dt) {
         state.time += dt;
         if (state.mode !== 'running') return;
 
-        state.distance += state.speed * dt;
+        const profile = getDifficultyProfile(state.distance);
+        const speedFactor = profile.speedFactor;
+        const travel = state.speed * speedFactor * dt;
+        state.distance += travel;
         state.spawnTimer -= dt;
         if (state.spawnTimer <= 0) {
-          spawnObstacle();
-          state.spawnTimer = rand(0.55, 1.1);
+          let spawned = false;
+          for (let i = 0; i < 3 && !spawned; i++) {
+            spawned = spawnObstacle(profile);
+          }
+          state.spawnTimer = rand(profile.spawnMin, profile.spawnMax);
+          if (!spawned) state.spawnTimer += 0.25;
         }
 
         const laneEase = 1 - Math.exp(-dt * 12);
@@ -499,16 +790,20 @@
           }
         }
 
-        const speedFactor = 1 + Math.min(state.distance / 2800, 0.45);
-        const travel = state.speed * speedFactor * dt;
-
         for (const obs of state.obstacles) {
           obs.z -= travel;
           if (obs.kind === 'crossing') {
             obs.cross = clamp(obs.cross + obs.speed * dt * obs.dir, 0, 1);
           }
-          if (obs.kind === 'switcher' && obs.z < obs.switchAt) {
-            obs.switchProgress = clamp(obs.switchProgress + dt / obs.switchDuration, 0, 1);
+          if (obs.kind === 'switcher') {
+            if (obs.phase === 'signal' && obs.z < obs.signalStartZ) {
+              obs.signalElapsed += dt;
+              if (obs.signalElapsed >= obs.signalDuration) {
+                obs.phase = 'switch';
+              }
+            } else if (obs.phase === 'switch') {
+              obs.switchProgress = clamp(obs.switchProgress + dt / obs.switchDuration, 0, 1);
+            }
           }
         }
 
@@ -522,13 +817,13 @@
         const remaining = [];
         for (const obs of state.obstacles) {
           const laneValue = getObstacleLane(obs);
-          const laneHit = Math.abs(state.lane - laneValue) < 0.35;
+          const laneHit = Math.abs(state.lane - laneValue) < obs.hitWidth;
           if (obs.kind === 'long') {
             if (laneHit && obs.z < collisionZ && obs.z > -obs.length) {
-              gameOver('long');
+              gameOver(obs.tipKey);
             }
           } else if (obs.z < collisionZ && obs.z > -12 && laneHit) {
-            gameOver(obs.kind);
+            gameOver(obs.tipKey);
           }
 
           if (obs.z > despawnZ) remaining.push(obs);
@@ -550,22 +845,29 @@
         state.powerups = remainingPower;
 
         state.score = Math.floor(state.distance * 0.6 * state.multiplier + state.bonusScore);
+        if (state.score > state.highScore) {
+          state.highScore = state.score;
+          saveHighScore(state.highScore);
+        }
         updateHUD(speedFactor);
       }
 
       function updateHUD(speedFactor) {
         distanceEl.textContent = Math.floor(state.distance) + ' m';
         scoreEl.textContent = state.score;
+        highScoreEl.textContent = state.highScore;
         speedEl.textContent = Math.floor(state.speed * speedFactor * 0.24) + ' km/h';
       }
 
       function getObstacleLane(obs) {
         if (obs.kind === 'crossing') {
-          const start = obs.dir === 1 ? -1.4 : 1.4;
-          const end = obs.dir === 1 ? 1.4 : -1.4;
+          const spread = obs.startSpread || 1.4;
+          const start = obs.dir === 1 ? -spread : spread;
+          const end = obs.dir === 1 ? spread : -spread;
           return lerp(start, end, obs.cross);
         }
         if (obs.kind === 'switcher') {
+          if (obs.phase !== 'switch') return obs.lane;
           return lerp(obs.lane, obs.target, easeInOut(obs.switchProgress));
         }
         return obs.lane;
@@ -661,49 +963,68 @@
           if (item.z < 8) continue;
           if (obj.kind === 'power') {
             drawPowerup(obj, curveShift);
-          } else if (obj.kind === 'long') {
-            drawLongObstacle(obj, curveShift);
           } else {
-            drawObstacle(obj, curveShift);
+            drawObstacleByMechanic(obj, curveShift);
           }
+        }
+      }
+
+      function drawObstacleByMechanic(obs, curveShift) {
+        if (obs.kind === 'long') {
+          drawLongObstacle(obs, curveShift);
+        } else {
+          drawObstacle(obs, curveShift);
         }
       }
 
       function drawObstacle(obs, curveShift) {
         const laneValue = getObstacleLane(obs);
         const p = project(laneValue, obs.z, curveShift);
-        const width = 42 * p.scale;
-        const height = 60 * p.scale;
+        const asset = resolveAsset(obs.assetKey);
+        const width = (asset.width || 44) * p.scale * 2;
+        const height = (asset.height || 60) * p.scale * 2;
 
         ctx.save();
         ctx.translate(p.x, p.y);
-        ctx.fillStyle = obs.kind === 'switcher' ? '#f1b84c' : '#f65a4b';
-        if (obs.kind === 'crossing') {
-          ctx.fillStyle = '#6fe2c8';
-        }
-        roundRectPath(-width * 0.55, -height, width * 1.1, height, 6 * p.scale);
-        ctx.fill();
+        drawAssetSprite(asset, width, height, p.scale, () => {
+          drawObstaclePlaceholder(asset, width, height, p.scale);
+        });
 
-        ctx.fillStyle = '#1b232c';
-        roundRectPath(-width * 0.4, -height * 0.55, width * 0.8, height * 0.45, 6 * p.scale);
-        ctx.fill();
-
-        if (obs.kind === 'switcher' && obs.switchProgress > 0 && obs.switchProgress < 1) {
-          const blink = Math.sin(state.time * 12) > 0 ? '#ffd977' : 'rgba(255, 217, 119, 0.3)';
-          ctx.fillStyle = blink;
-          ctx.fillRect(width * 0.4, -height * 0.7, width * 0.2, height * 0.18);
+        if (obs.kind === 'switcher' && (obs.phase === 'signal' || obs.switchProgress < 1)) {
+          const blinkOn = Math.sin(state.time * 14) > 0;
+          const blinkColor = blinkOn ? '#ffd977' : 'rgba(255, 217, 119, 0.25)';
+          const side = obs.target > obs.lane ? 1 : -1;
+          ctx.fillStyle = blinkColor;
+          roundRectPath(side * width * 0.35, -height * 0.72, width * 0.2, height * 0.18, 2 * p.scale);
+          ctx.fill();
         }
         ctx.restore();
       }
 
       function drawLongObstacle(obs, curveShift) {
         const laneValue = obs.lane;
+        const asset = resolveAsset(obs.assetKey);
+        const image = getAssetImage(asset);
+
+        if (image) {
+          for (let z = obs.z; z <= obs.z + obs.length; z += 52) {
+            if (z < 8 || z > road.maxZ + 200) continue;
+            const p = project(laneValue, z, curveShift);
+            const w = (asset.width || 50) * p.scale;
+            const h = (asset.height || 46) * p.scale;
+            ctx.drawImage(image, p.x - w * 0.5, p.y - h, w, h);
+          }
+          return;
+        }
+
         const p1 = project(laneValue, obs.z, curveShift);
         const p2 = project(laneValue, obs.z + obs.length, curveShift);
-        const width1 = 60 * p1.scale;
-        const width2 = 60 * p2.scale;
+        const nearBase = obs.variant === 'divider' ? 44 : 62;
+        const farBase = obs.variant === 'divider' ? 34 : 50;
+        const width1 = nearBase * p1.scale;
+        const width2 = farBase * p2.scale;
 
-        ctx.fillStyle = '#f65a4b';
+        ctx.fillStyle = asset.body || '#f65a4b';
         ctx.beginPath();
         ctx.moveTo(p1.x - width1, p1.y);
         ctx.lineTo(p2.x - width2, p2.y);
@@ -712,12 +1033,89 @@
         ctx.closePath();
         ctx.fill();
 
-        ctx.strokeStyle = 'rgba(0,0,0,0.25)';
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = asset.trim || '#1b232c';
+        ctx.lineWidth = 1.8;
         ctx.beginPath();
-        ctx.moveTo(p1.x - width1 * 0.4, p1.y);
-        ctx.lineTo(p2.x - width2 * 0.4, p2.y);
+        ctx.moveTo(p1.x - width1 * 0.45, p1.y);
+        ctx.lineTo(p2.x - width2 * 0.45, p2.y);
+        ctx.moveTo(p1.x + width1 * 0.45, p1.y);
+        ctx.lineTo(p2.x + width2 * 0.45, p2.y);
         ctx.stroke();
+
+        ctx.strokeStyle = asset.detail || 'rgba(255,245,217,0.9)';
+        ctx.lineWidth = 1.2;
+        for (let z = obs.z + 20; z < obs.z + obs.length; z += 42) {
+          const p = project(laneValue, z, curveShift);
+          const w = (obs.variant === 'divider' ? 28 : 40) * p.scale;
+          ctx.beginPath();
+          ctx.moveTo(p.x - w * 0.5, p.y);
+          ctx.lineTo(p.x + w * 0.5, p.y);
+          ctx.stroke();
+        }
+      }
+
+      function drawObstaclePlaceholder(asset, width, height, scale) {
+        const template = asset.template || 'crate';
+
+        if (template === 'bike' || template === 'switcherBike' || template === 'crosserFast' || template === 'crosserFastAlt') {
+          ctx.fillStyle = asset.body;
+          roundRectPath(-width * 0.44, -height * 0.7, width * 0.88, height * 0.34, 6 * scale);
+          ctx.fill();
+
+          ctx.fillStyle = asset.trim;
+          roundRectPath(-width * 0.3, -height * 0.9, width * 0.6, height * 0.18, 4 * scale);
+          ctx.fill();
+
+          ctx.fillStyle = asset.trim;
+          ctx.beginPath();
+          ctx.arc(-width * 0.28, -height * 0.18, height * 0.14, 0, Math.PI * 2);
+          ctx.arc(width * 0.28, -height * 0.18, height * 0.14, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = asset.detail;
+          ctx.beginPath();
+          ctx.arc(0, -height * 0.52, height * 0.08, 0, Math.PI * 2);
+          ctx.fill();
+          return;
+        }
+
+        if (template === 'crosserHeavy' || template === 'crosserHeavyAlt') {
+          ctx.fillStyle = asset.body;
+          roundRectPath(-width * 0.5, -height * 0.78, width, height * 0.66, 7 * scale);
+          ctx.fill();
+          ctx.fillStyle = asset.trim;
+          roundRectPath(-width * 0.24, -height * 0.94, width * 0.48, height * 0.2, 4 * scale);
+          ctx.fill();
+          ctx.fillStyle = asset.detail;
+          ctx.fillRect(-width * 0.32, -height * 0.56, width * 0.64, height * 0.16);
+          return;
+        }
+
+        if (template === 'bin') {
+          ctx.fillStyle = asset.body;
+          roundRectPath(-width * 0.44, -height * 0.94, width * 0.88, height * 0.82, 6 * scale);
+          ctx.fill();
+          ctx.fillStyle = asset.trim;
+          roundRectPath(-width * 0.5, -height, width, height * 0.14, 4 * scale);
+          ctx.fill();
+          ctx.fillStyle = asset.detail;
+          ctx.fillRect(-width * 0.26, -height * 0.7, width * 0.52, height * 0.2);
+          return;
+        }
+
+        ctx.fillStyle = asset.body;
+        roundRectPath(-width * 0.5, -height * 0.9, width, height * 0.78, 6 * scale);
+        ctx.fill();
+        ctx.strokeStyle = asset.trim;
+        ctx.lineWidth = Math.max(1, 2 * scale);
+        ctx.beginPath();
+        ctx.moveTo(-width * 0.5, -height * 0.55);
+        ctx.lineTo(width * 0.5, -height * 0.55);
+        ctx.moveTo(-width * 0.1, -height * 0.9);
+        ctx.lineTo(-width * 0.1, -height * 0.12);
+        ctx.stroke();
+        ctx.fillStyle = asset.detail;
+        ctx.fillRect(width * 0.26, -height * 0.46, width * 0.14, height * 0.14);
       }
 
       function drawPowerup(pow, curveShift) {
@@ -814,6 +1212,7 @@
 
       restartBtn.addEventListener('click', () => startGame());
 
+      state.highScore = loadHighScore();
       resize();
       updateHUD(1);
       requestAnimationFrame(loop);
