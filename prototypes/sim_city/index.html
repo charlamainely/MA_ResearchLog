@@ -606,6 +606,7 @@
       function createMusic(path, volume) {
         const audio = new Audio(path);
         audio.preload = 'auto';
+        audio.autoplay = true;
         audio.loop = true;
         audio.volume = clamp(volume, 0, 1);
         audio.playbackRate = 1;
