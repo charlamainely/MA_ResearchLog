@@ -757,6 +757,7 @@
         motorbikeStatic: { template: 'bike', width: 46, height: 62, body: '#f65a4b', trim: '#1b232c', detail: '#ffd977', label: 'Motorbike', image: 'assets/sprites/static/static_driver.png', tip: 'Tip: Parked motorbikes are narrow. Shift lanes early instead of swerving late.' },
         truckStatic: { template: 'bin', width: 52, height: 70, body: '#5aa0d5', trim: '#1b232c', detail: '#dff2ff', label: 'Truck', image: 'assets/sprites/static/static_truck.png', tip: 'Tip: Static trucks block more space than they look. Commit to the next lane sooner.' },
         carStatic: { template: 'crate', width: 48, height: 64, body: '#ef7249', trim: '#1b232c', detail: '#ffd977', label: 'Car', image: 'assets/sprites/static/static_car.png', tip: 'Tip: Static cars close the lane fast. Keep one lane as a buffer.' },
+        potholeStatic: { template: 'crate', width: 44, height: 44, body: '#4e4e4e', trim: '#1b232c', detail: '#2f2f2f', label: 'Pothole', image: 'assets/sprites/static/static_pothole.png', sizeMul: 0.78, tip: 'Tip: Potholes are small but dangerous. Keep scanning one lane ahead and shift early.' },
         medianBlocks: {
           template: 'divider',
           body: '#f3c056',
@@ -831,7 +832,7 @@
           spawnZ: [80, 180],
           laneRule: 'any',
           hitWidth: 0.33,
-          assets: ['motorbikeStatic', 'truckStatic', 'carStatic']
+          assets: ['motorbikeStatic', 'truckStatic', 'carStatic', 'potholeStatic']
         },
         dividerLong: {
           kind: 'long',
