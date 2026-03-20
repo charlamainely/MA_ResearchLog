@@ -555,6 +555,7 @@
       const PAUSE_ICON_SRC = 'assets/sprites/ui/icon_pause.png';
       const PLAY_ICON_SRC = 'assets/sprites/ui/icon_play.png';
       const SIDEWALK_TILE_SRC = 'assets/sprites/ui/ui_sidewalk.png';
+      const MAX_SIDEWALK_DECORS = 2;
 
       const road = {
         maxZ: 900,
@@ -586,6 +587,10 @@
         spawnTimer: 1.6,
         obstacles: [],
         powerups: [],
+        sidewalkDecors: [],
+        sidewalkSpawnTimer: 0.8,
+        lastSidewalkAssetPath: '',
+        lastSidewalkSide: 1,
         lastSpawnMechanicKey: null,
         lastSpawnAssetKey: null,
         playerSpriteIndex: 0,
@@ -707,6 +712,8 @@
         state.targetLane = 0;
         state.obstacles = [];
         state.powerups = [];
+        state.sidewalkDecors = [];
+        state.sidewalkSpawnTimer = 0.08;
         state.spawnTimer = 1.4;
         state.crashFx.active = false;
         state.crashFx.flashTimer = 0;
@@ -803,6 +810,8 @@
         truckCross: { template: 'crosserHeavy', width: 72, height: 78, body: '#57a0d4', trim: '#1b232c', detail: '#e7f6ff', label: 'Truck', image: 'assets/sprites/static/static_truck.png', moveDir: 1, facing: 1, tip: 'Tip: Crossing trucks are heavy and wide. Let them clear, then pass behind.' },
         fastBike: { template: 'crosserFast', width: 40, height: 52, body: '#6fe2c8', trim: '#1b232c', detail: '#d5fff6', label: 'Bike', image: 'assets/sprites/crossing/crossing_grandma.png', moveDir: 1, facing: 1, tip: 'Tip: Fast bikes cross early. Read their line before entering that lane.' },
         strayDog: { template: 'crosserFastAlt', width: 38, height: 48, body: '#8ed38a', trim: '#21322b', detail: '#f2ffe9', label: 'Dog', image: 'assets/sprites/crossing/crossing_grandma.png', facing: 1, tip: 'Tip: Small crossers are sudden. Keep a buffer lane when possible.' },
+        megaCross: { template: 'crosserFastAlt', width: 38, height: 48, body: '#8ed38a', trim: '#21322b', detail: '#f2ffe9', label: 'Dog', image: 'assets/sprites/crossing/crossing_mega.png', facing: 1, tip: 'Tip: Small crossers are sudden. Keep a buffer lane when possible.' },
+        kidCross: { template: 'crosserFastAlt', width: 38, height: 48, body: '#8ed38a', trim: '#21322b', detail: '#f2ffe9', label: 'Dog', image: 'assets/sprites/crossing/crossing_kid.png', facing: 1, tip: 'Tip: Small crossers are sudden. Keep a buffer lane when possible.' },
         deliveryCart: { template: 'crosserHeavy', width: 68, height: 72, body: '#57a0d4', trim: '#1b232c', detail: '#e7f6ff', label: 'Cart', image: 'assets/sprites/static/static_truck.png', tip: 'Tip: Heavy crossers take time to clear. Wait a beat, then pass behind.' },
         miniTruck: { template: 'crosserHeavyAlt', width: 76, height: 78, body: '#f1b84c', trim: '#1b232c', detail: '#fff4cc', label: 'Truck', image: 'assets/sprites/static/static_driver.png', tip: 'Tip: Trucks cover width. Use a full-lane move, not a half correction.' },
         oxWalker: { template: 'crosserHeavy', width: 66, height: 68, body: '#987550', trim: '#1b232c', detail: '#f5e5cf', label: 'Ox', image: 'assets/sprites/crossing/crossing_ox.png', moveDir: -1, facing: -1, tip: 'Tip: Ox obstacles move opposite flow. Check right side before committing.' },
@@ -855,7 +864,7 @@
           speed: [0.22, 0.34],
           hitWidth: 0.24,
           startSpread: 1.52,
-          assets: ['motorbikeCross', 'fastBike', 'strayDog']
+          assets: ['motorbikeCross', 'fastBike', 'strayDog', 'megaCross','kidCross']
         },
         crossingHeavy: {
           kind: 'crossing',
@@ -903,6 +912,17 @@
       const playerSprites = [
         'assets/sprites/player/player_linh.png',
         'assets/sprites/player/player_han.png'
+      ];
+
+      // Add more decoration PNG paths here when you drop new files in assets/sprites/sidewalk.
+      const sidewalkDecorPaths = [
+        'assets/sprites/sidewalk/side_light.png',
+        'assets/sprites/sidewalk/side_roadname.png',
+        'assets/sprites/sidewalk/side_sign.png',
+        'assets/sprites/sidewalk/side_stop.png',
+        'assets/sprites/sidewalk/side_table_blue.png',
+        'assets/sprites/sidewalk/side_table_red.png',
+        'assets/sprites/sidewalk/side_chairstack.png'
       ];
 
       function resize() {
@@ -1001,6 +1021,81 @@
 
         drawStrip(0, road.left);
         drawStrip(road.right, W - road.right);
+      }
+
+      function pickSidewalkAssetPath() {
+        if (!Array.isArray(sidewalkDecorPaths) || sidewalkDecorPaths.length === 0) return '';
+        if (!state.lastSidewalkAssetPath || sidewalkDecorPaths.length === 1) return pickOne(sidewalkDecorPaths);
+        const options = sidewalkDecorPaths.filter((p) => p !== state.lastSidewalkAssetPath);
+        return pickOne(options.length > 0 ? options : sidewalkDecorPaths);
+      }
+
+      function spawnSidewalkDecor() {
+        if (!Array.isArray(sidewalkDecorPaths) || sidewalkDecorPaths.length === 0) return false;
+        if (state.sidewalkDecors.length >= MAX_SIDEWALK_DECORS) return false;
+        const path = pickSidewalkAssetPath();
+        if (!path) return false;
+
+        const occupiedSides = new Set(state.sidewalkDecors.map((d) => d.side));
+        let side = state.lastSidewalkSide === 1 ? -1 : 1;
+        if (occupiedSides.has(side) && !occupiedSides.has(-side)) side = -side;
+        if (occupiedSides.has(side)) return false;
+        const stripLeft = side === -1 ? 0 : road.right;
+        const stripWidth = side === -1 ? road.left : (W - road.right);
+        if (stripWidth < 24) return false;
+
+        const img = getImageByPath(path);
+        const rawW = img && img.naturalWidth > 0 ? img.naturalWidth : 32;
+        const rawH = img && img.naturalHeight > 0 ? img.naturalHeight : 32;
+        const ratio = rawH > 0 ? (rawW / rawH) : 1;
+        const drawWidth = Math.max(8, Math.round(stripWidth * 1));
+        const drawHeight = ratio > 0 ? Math.max(8, Math.round(drawWidth / ratio)) : drawWidth;
+        const cx = stripLeft + stripWidth * 0.5;
+        const y = -drawHeight - rand(8, 42);
+
+        state.sidewalkDecors.push({
+          path,
+          side,
+          cx,
+          y,
+          drawWidth
+        });
+        state.lastSidewalkAssetPath = path;
+        state.lastSidewalkSide = side;
+        return true;
+      }
+
+      function updateSidewalkDecors(flowPx, dt) {
+        if (!Array.isArray(state.sidewalkDecors)) state.sidewalkDecors = [];
+        for (const decor of state.sidewalkDecors) {
+          decor.y += flowPx;
+        }
+        state.sidewalkDecors = state.sidewalkDecors.filter((decor) => decor.y < H + Math.max(42, (decor.drawWidth || 42) * 1.6));
+        state.sidewalkSpawnTimer -= dt;
+        if (state.sidewalkSpawnTimer <= 0) {
+          const spawned = spawnSidewalkDecor();
+          state.sidewalkSpawnTimer = spawned ? rand(0.16, 0.34) : 0.1;
+        }
+      }
+
+      function drawSidewalkDecors() {
+        if (!Array.isArray(state.sidewalkDecors) || state.sidewalkDecors.length === 0) return;
+        for (const decor of state.sidewalkDecors) {
+          const img = getImageByPath(decor.path);
+          const rawW = img && img.naturalWidth > 0 ? img.naturalWidth : 32;
+          const rawH = img && img.naturalHeight > 0 ? img.naturalHeight : 32;
+          const ratio = rawH > 0 ? (rawW / rawH) : 1;
+          const drawWidth = Math.max(8, Math.round(decor.drawWidth || 48));
+          const drawHeight = ratio > 0 ? Math.max(8, Math.round(drawWidth / ratio)) : drawWidth;
+          const x = decor.cx - drawWidth * 0.5;
+          const y = decor.y;
+          if (img && img.complete && img.naturalWidth > 0) {
+            ctx.drawImage(img, Math.round(x), Math.round(y), drawWidth, drawHeight);
+          } else {
+            ctx.fillStyle = '#5d696f';
+            ctx.fillRect(Math.round(x), Math.round(y), drawWidth, drawHeight);
+          }
+        }
       }
 
       function refreshResponsiveLongLayouts() {
@@ -1513,6 +1608,8 @@
         state.laneVelocity = 0;
         state.obstacles = [];
         state.powerups = [];
+        state.sidewalkDecors = [];
+        state.sidewalkSpawnTimer = 0.08;
         state.lastSpawnMechanicKey = null;
         state.lastSpawnAssetKey = null;
         state.spawnTimer = 1.4;
@@ -1642,7 +1739,9 @@
       function update(dt) {
         state.time += dt;
         if (state.mode === 'ready') {
-          state.introDistance += state.speed * 1.1 * dt;
+          const introTravel = state.speed * 1.1 * dt;
+          state.introDistance += introTravel;
+          updateSidewalkDecors(introTravel * 0.38, dt);
           updateBgmPlayback(dt);
           return;
         }
@@ -1662,6 +1761,7 @@
         const boostedSpeedFactor = profile.speedFactor * state.speedBoost;
         const travel = state.speed * boostedSpeedFactor * dt;
         state.distance += travel;
+        updateSidewalkDecors(travel * 0.38, dt);
         state.spawnTimer -= dt;
         if (state.spawnTimer <= 0) {
           const burstCount = 1 + (Math.random() < profile.progress * 0.7 ? 1 : 0);
@@ -1845,6 +1945,7 @@
         ctx.fillRect(0, 0, W, H);
         const scrollDistance = state.mode === 'ready' ? state.introDistance : state.distance;
         drawSidewalkTiles(scrollDistance);
+        drawSidewalkDecors();
 
         ctx.fillStyle = '#182438';
         for (const b of skyline) {
