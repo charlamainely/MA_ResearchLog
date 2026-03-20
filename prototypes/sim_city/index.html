@@ -542,10 +542,16 @@
 
       let W = 0, H = 0, DPR = 1;
       let skyline = [];
+      let roadDecals = null;
 
       const rand = (a, b) => a + Math.random() * (b - a);
       const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
       const lerp = (a, b, t) => a + (b - a) * t;
+      const mod = (n, m) => ((n % m) + m) % m;
+      const hash01 = (seed) => {
+        const v = Math.sin(seed * 127.1 + 311.7) * 43758.5453123;
+        return v - Math.floor(v);
+      };
       const PAUSE_ICON_SRC = 'assets/sprites/ui/icon_pause.png';
       const PLAY_ICON_SRC = 'assets/sprites/ui/icon_play.png';
 
@@ -916,6 +922,7 @@
         road.bottomY = H;
 
         buildSkyline();
+        buildRoadDecals();
         refreshResponsiveLongLayouts();
       }
 
@@ -927,6 +934,41 @@
           const h = rand(60, 220);
           skyline.push({ x, w, h });
           x += w + rand(20, 50);
+        }
+      }
+
+      function buildRoadDecals() {
+        const pixel = Math.max(2, Math.round(road.laneWidth * (W <= 820 ? 0.032 : 0.024)));
+        const rowCount = 128;
+        const colCount = Math.max(24, Math.floor(road.width / pixel));
+        const rows = [];
+        for (let r = 0; r < rowCount; r++) {
+          const seed = r * 17.131;
+          const dirt = [];
+          const dirtCount = Math.floor(hash01(seed + 0.6) * 4);
+          for (let i = 0; i < dirtCount; i++) {
+            const w = 1 + Math.floor(hash01(seed + 3.7 + i * 1.23) * 3);
+            const x = Math.floor(hash01(seed + 7.3 + i * 2.11) * Math.max(1, colCount - w - 1));
+            const tone = hash01(seed + 11.9 + i * 0.71) > 0.5 ? '#2b2b2b' : '#3c3c3c';
+            dirt.push({ x, w, tone });
+          }
+          rows.push({ dirt });
+        }
+        roadDecals = { pixel, rowCount, colCount, rows };
+      }
+
+      function drawRoadDecals(scrollDistance) {
+        if (!roadDecals) return;
+        const pixel = roadDecals.pixel;
+        const flowPx = Math.floor(scrollDistance * 0.38);
+        for (let y = road.topY - pixel; y < road.bottomY + pixel; y += pixel) {
+          const rowIndex = mod(Math.floor((y - flowPx - road.topY) / pixel), roadDecals.rowCount);
+          const row = roadDecals.rows[rowIndex];
+          const drawY = Math.round(y);
+          for (const dirt of row.dirt) {
+            ctx.fillStyle = dirt.tone;
+            ctx.fillRect(Math.round(road.left + dirt.x * pixel), drawY, dirt.w * pixel, pixel);
+          }
         }
       }
 
@@ -1784,6 +1826,8 @@
       function drawRoad(curveShift) {
         ctx.fillStyle = '#343434';
         ctx.fillRect(road.left, road.topY, road.width, road.bottomY - road.topY);
+        const scrollDistance = state.mode === 'ready' ? state.introDistance : state.distance;
+        drawRoadDecals(scrollDistance);
 
         ctx.strokeStyle = 'rgba(0, 0, 0, 1)';
         ctx.lineWidth = 8;
@@ -1798,7 +1842,6 @@
         const dashSize = Math.max(18, Math.round(road.laneWidth * 0.36));
         const gapSize = Math.max(18, Math.round(road.laneWidth * 0.36));
         const pattern = dashSize + gapSize;
-        const scrollDistance = state.mode === 'ready' ? state.introDistance : state.distance;
         const flow = (scrollDistance * 0.38) % pattern;
         ctx.save();
         //divider stroke color
