@@ -554,6 +554,7 @@
       };
       const PAUSE_ICON_SRC = 'assets/sprites/ui/icon_pause.png';
       const PLAY_ICON_SRC = 'assets/sprites/ui/icon_play.png';
+      const SIDEWALK_TILE_SRC = 'assets/sprites/ui/ui_sidewalk.png';
 
       const road = {
         maxZ: 900,
@@ -970,6 +971,36 @@
             ctx.fillRect(Math.round(road.left + dirt.x * pixel), drawY, dirt.w * pixel, pixel);
           }
         }
+      }
+
+      function drawSidewalkTiles(scrollDistance) {
+        const sidewalkTile = getImageByPath(SIDEWALK_TILE_SRC);
+        if (!sidewalkTile || !sidewalkTile.complete || sidewalkTile.naturalWidth < 1) {
+          ctx.fillStyle = '#999697';
+          ctx.fillRect(0, 0, road.left, H);
+          ctx.fillRect(road.right, 0, W - road.right, H);
+          return;
+        }
+
+        const tileSize = clamp(Math.round(road.laneWidth * 0.28), 40, 80);
+        const flowPx = mod(Math.floor(scrollDistance * 0.38), tileSize);
+        const drawStrip = (startX, stripWidth) => {
+          const endX = startX + stripWidth;
+          for (let y = flowPx - tileSize; y < H + tileSize; y += tileSize) {
+            for (let x = startX; x < endX; x += tileSize) {
+              ctx.drawImage(
+                sidewalkTile,
+                Math.round(x),
+                Math.round(y),
+                tileSize,
+                tileSize
+              );
+            }
+          }
+        };
+
+        drawStrip(0, road.left);
+        drawStrip(road.right, W - road.right);
       }
 
       function refreshResponsiveLongLayouts() {
@@ -1812,10 +1843,8 @@
         grad.addColorStop(1, '#2c3f6d');
         ctx.fillStyle = grad;
         ctx.fillRect(0, 0, W, H);
-        //sidewalk color
-        ctx.fillStyle = '#999697';
-        ctx.fillRect(0, 0, road.left, H);
-        ctx.fillRect(road.right, 0, W - road.right, H);
+        const scrollDistance = state.mode === 'ready' ? state.introDistance : state.distance;
+        drawSidewalkTiles(scrollDistance);
 
         ctx.fillStyle = '#182438';
         for (const b of skyline) {
