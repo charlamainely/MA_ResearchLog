@@ -4,27 +4,30 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>LIFE LAYERS</title>
+  <link rel="stylesheet" href="https://use.typekit.net/nrw7rwy.css">
   <style>
     :root {
-      --bg-1: #f7efe2;
-      --bg-2: #d8e8ef;
-      --bg-3: #1e2a3b;
-      --ink: #102033;
-      --panel: #fefcf9;
-      --panel-alt: #edf4f8;
-      --line: #d1dbe3;
-      --brand: #ef8b4a;
-      --brand-deep: #d96b28;
-      --accent: #2b88b6;
-      --good: #1e9d72;
-      --bad: #c34747;
-      --muted: #5a6a79;
-      --shadow: 0 16px 42px rgba(16, 32, 51, 0.16);
-      --radius-lg: 18px;
-      --radius-md: 12px;
-      --radius-sm: 9px;
+      --red: #ee293d;
+      --orange: #f36e3e;
+      --yellow: #fee74b;
+      --pink: #e987b7;
+      --blue: #4abeee;
+      --navy: #424ca0;
+      --cream: #fff3e7;
+      --black: #000000;
+      --green-bg: #4a9150;
+      --good: #3f8f53;
+      --bad: #ee293d;
+      --muted: rgba(0, 0, 0, 0.66);
+      --panel-shadow: 0 18px 0 rgba(66, 76, 160, 0.2);
+      --radius-xl: 40px;
+      --radius-lg: 28px;
+      --radius-md: 20px;
+      --radius-sm: 14px;
       --trans-fast: 160ms ease;
       --trans-med: 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
+      --display-font: "alphabet-soup", "alphabet-soup-pro", "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
+      --body-font: "bicyclette", "bicyclette-variable", "Avenir Next", "Segoe UI", "Trebuchet MS", sans-serif;
     }
 
     * {
@@ -35,104 +38,140 @@
     body {
       margin: 0;
       min-height: 100%;
-      font-family: "Avenir Next", "Segoe UI", "Trebuchet MS", sans-serif;
-      color: var(--ink);
-      background:
-        radial-gradient(1000px 500px at 10% -10%, rgba(250, 181, 126, 0.5), transparent 65%),
-        radial-gradient(900px 480px at 95% 5%, rgba(84, 172, 211, 0.42), transparent 60%),
-        linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 38%, #e4edf3 62%, #edf5f8 100%);
+      color: var(--black);
+      font-family: var(--body-font);
+      font-weight: 500;
+      background: linear-gradient(180deg, #52985a 0%, #478a4f 100%);
       overflow-x: hidden;
     }
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.25;
-      background-image:
-        linear-gradient(transparent 31px, rgba(16, 32, 51, 0.06) 32px),
-        linear-gradient(90deg, transparent 31px, rgba(16, 32, 51, 0.06) 32px);
-      background-size: 32px 32px;
-      mask-image: linear-gradient(to bottom, black 15%, transparent 95%);
-      z-index: -1;
+    body.in-game {
+      background: linear-gradient(180deg, #52985a 0%, #478a4f 100%);
     }
 
     .shell {
-      width: min(1240px, 96vw);
-      margin: 18px auto 26px;
+      width: min(1280px, 96vw);
+      margin: 20px auto 28px;
       animation: fadeRise 0.5s var(--trans-med) both;
     }
 
     .title-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      margin-bottom: 14px;
+      display: grid;
+      gap: 8px;
+      justify-items: center;
+      text-align: center;
+      margin-bottom: 18px;
     }
 
     .app-title {
       margin: 0;
-      letter-spacing: 0.08em;
-      font-weight: 800;
-      font-size: clamp(1.35rem, 2vw, 2.1rem);
+      color: var(--yellow);
       text-transform: uppercase;
+      font-family: var(--display-font);
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      font-size: clamp(2rem, 5vw, 4.9rem);
+      text-shadow: 0 3px 0 rgba(0, 0, 0, 0.16);
     }
 
     .sub {
-      color: var(--muted);
-      font-size: 0.92rem;
-      margin-top: 4px;
+      color: rgba(255, 243, 231, 0.92);
+      font-size: 1.04rem;
+      margin: 0;
+      max-width: 760px;
+      line-height: 1.4;
+      font-family: var(--body-font);
+      font-weight: 500;
     }
 
     .chip {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       border-radius: 999px;
-      padding: 0.34rem 0.66rem;
-      border: 1px solid var(--line);
-      font-size: 0.74rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--muted);
-      background: rgba(255, 255, 255, 0.68);
+      border: 2px solid rgba(0, 0, 0, 0.14);
+      background: var(--blue);
+      color: var(--black);
+      font-family: var(--body-font);
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 0.34rem 0.95rem;
+      min-width: 128px;
+    }
+
+    body.in-game .title-bar {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      text-align: left;
+      justify-items: stretch;
+      margin-bottom: 12px;
+    }
+
+    body.in-game .app-title {
+      font-size: clamp(1.6rem, 2.6vw, 2.4rem);
+      color: var(--cream);
+      text-shadow: none;
+    }
+
+    body.in-game .title-bar .sub {
+      display: none;
     }
 
     .panel {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), var(--panel));
-      border: 1px solid rgba(209, 219, 227, 0.9);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(8px);
+      background: var(--cream);
+      border: 24px solid var(--navy);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--panel-shadow);
     }
 
     .setup-screen {
-      padding: clamp(18px, 3vw, 26px);
-      display: grid;
-      gap: 18px;
-      grid-template-columns: 1fr;
+      padding: 0;
+      overflow: hidden;
       animation: panelIn 420ms var(--trans-med) both;
     }
 
     .setup-grid {
       display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
-      gap: 16px;
+      grid-template-columns: 1.05fr 1fr;
     }
 
     .setup-card {
-      background: var(--panel-alt);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-md);
-      padding: 16px;
+      padding: 34px 42px;
+      min-height: 480px;
+    }
+
+    .setup-players-card {
+      display: grid;
+      align-content: start;
+      overflow: hidden;
+    }
+
+    .setup-card + .setup-card {
+      border-left: 18px solid var(--navy);
+    }
+
+    .section-title {
+      display: block;
+      margin: 0;
+      font-family: var(--display-font);
+      text-transform: uppercase;
+      color: var(--navy);
+      letter-spacing: 0.03em;
+      font-size: clamp(1.7rem, 3.2vw, 3.1rem);
+      line-height: 1;
+    }
+
+    .setup-form-card .sub {
+      color: var(--black);
+      margin-top: 8px;
+      max-width: 550px;
     }
 
     .form-row {
       display: grid;
-      grid-template-columns: 1fr 1fr auto;
-      gap: 10px;
-      margin-top: 12px;
+      gap: 14px;
+      margin-top: 28px;
+      max-width: 620px;
     }
 
     input,
@@ -144,31 +183,34 @@
     input,
     select {
       width: 100%;
-      border-radius: var(--radius-sm);
-      border: 1px solid #b8c7d3;
-      padding: 0.68rem 0.72rem;
-      background: white;
-      color: var(--ink);
-      transition: border-color var(--trans-fast), box-shadow var(--trans-fast);
+      border: 3px solid rgba(0, 0, 0, 0.87);
+      border-radius: 999px;
+      padding: 0.88rem 1.2rem;
+      font-size: 1rem;
+      color: var(--black);
+      background: rgba(255, 243, 231, 0.9);
+      transition: box-shadow var(--trans-fast), transform var(--trans-fast);
     }
 
     input:focus,
     select:focus {
       outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(43, 136, 182, 0.18);
+      box-shadow: 0 0 0 4px rgba(74, 190, 238, 0.35);
     }
 
     button {
       border: 0;
-      border-radius: var(--radius-sm);
-      padding: 0.68rem 0.95rem;
+      border-radius: 999px;
+      padding: 0.72rem 1.25rem;
       cursor: pointer;
-      font-weight: 700;
-      color: #fff;
-      background: linear-gradient(135deg, var(--brand), var(--brand-deep));
-      transition: transform var(--trans-fast), filter var(--trans-fast), box-shadow var(--trans-fast);
-      box-shadow: 0 6px 16px rgba(217, 107, 40, 0.3);
+      background: var(--navy);
+      color: var(--cream);
+      font-family: var(--display-font);
+      font-weight: 800;
+      font-size: 1.02rem;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      transition: transform var(--trans-fast), filter var(--trans-fast), opacity var(--trans-fast);
     }
 
     button:hover:not(:disabled) {
@@ -181,106 +223,186 @@
     }
 
     button:disabled {
-      opacity: 0.46;
       cursor: not-allowed;
-      box-shadow: none;
-    }
-
-    .button-muted {
-      background: linear-gradient(135deg, #6f8aa0, #506676);
-      box-shadow: 0 5px 14px rgba(80, 102, 118, 0.28);
+      opacity: 0.5;
+      filter: grayscale(0.2);
     }
 
     .button-accent {
-      background: linear-gradient(135deg, #3d99c7, #2a7599);
-      box-shadow: 0 5px 14px rgba(42, 117, 153, 0.3);
+      background: var(--blue);
+      color: var(--yellow);
+    }
+
+    .button-start {
+      background: var(--orange);
+      color: var(--cream);
+    }
+
+    .button-resolve {
+      background: var(--navy);
+      color: var(--cream);
+    }
+
+    .button-danger {
+      background: var(--red);
+      color: var(--cream);
+    }
+
+    .button-muted {
+      background: var(--pink);
+      color: var(--cream);
+    }
+
+    .tip-text {
+      margin-top: 10px;
+      font-style: italic;
+      color: rgba(0, 0, 0, 0.8);
+      font-size: 0.95rem;
+    }
+
+    .setup-players-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .setup-players-head .button-danger {
+      min-width: 210px;
+      font-size: 1.07rem;
+      padding-top: 0.86rem;
+      padding-bottom: 0.86rem;
     }
 
     .player-list {
       display: grid;
-      gap: 8px;
-      margin-top: 12px;
-      max-height: 230px;
+      gap: 12px;
+      max-height: 366px;
       overflow: auto;
       padding-right: 4px;
+      width: 100%;
+      min-width: 0;
     }
 
     .player-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
-      padding: 9px 10px;
-      border-radius: 10px;
-      background: #fff;
-      border: 1px solid var(--line);
+      gap: 10px;
+      border-radius: 999px;
+      padding: 0.86rem 1.2rem;
+      color: var(--black);
+      font-size: 1.02rem;
+      font-weight: 700;
       animation: slideIn 250ms var(--trans-med) both;
+      border: 2px solid rgba(0, 0, 0, 0.22);
+      background: #e5e0d6;
+      width: 100%;
+      min-width: 0;
+    }
+
+    .player-row > div {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .player-row strong {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .player-row small {
-      color: var(--muted);
+      display: none;
     }
 
     .remove-btn {
-      color: #8a2d2d;
-      border: 1px solid #e4b6b6;
-      background: #fff3f3;
+      border: 2px solid rgba(0, 0, 0, 0.38);
+      background: rgba(255, 255, 255, 0.55);
+      color: var(--black);
       border-radius: 999px;
-      padding: 4px 9px;
-      font-size: 0.72rem;
-      cursor: pointer;
-      box-shadow: none;
+      padding: 0.26rem 0.7rem;
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      font-family: var(--body-font);
+      font-weight: 700;
     }
 
     .game-screen {
       display: grid;
-      grid-template-columns: minmax(320px, 30%) minmax(380px, 39%) minmax(300px, 31%);
-      gap: 14px;
+      gap: 18px;
       min-height: 72vh;
     }
 
-    .column {
-      padding: 14px;
+    .main-board {
       display: grid;
-      gap: 12px;
+      grid-template-columns: 1.08fr 1fr;
+      overflow: hidden;
+      min-height: 570px;
+    }
+
+    .main-board .column {
+      padding: 30px 26px;
+      display: grid;
       align-content: start;
+      gap: 14px;
+      background: #e8dfd3;
+    }
+
+    .main-board .right-col {
+      border-left: 18px solid var(--navy);
     }
 
     .player-card {
-      background: var(--panel-alt);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-md);
-      padding: 14px;
+      display: grid;
+      gap: 10px;
+      background: transparent;
     }
 
     .player-header {
       display: flex;
-      align-items: baseline;
       justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 10px;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .player-header .sub {
+      color: rgba(0, 0, 0, 0.68);
+      font-size: 0.92rem;
     }
 
     .player-name {
-      margin: 0;
-      font-size: 1.25rem;
+      margin: 2px 0 0;
+      font-family: var(--body-font);
+      font-size: clamp(2rem, 3vw, 3rem);
+      font-weight: 800;
+      line-height: 0.95;
+      color: #1d1b25;
+      text-transform: none;
     }
 
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
-      margin: 10px 0;
+      gap: 12px;
+      margin-top: 8px;
     }
 
     .stat-pill {
       position: relative;
-      border-radius: 12px;
-      background: #fff;
-      border: 1px solid var(--line);
-      padding: 10px 8px;
-      min-height: 66px;
+      border-radius: 999px;
+      background: transparent;
+      border: 2px solid rgba(0, 0, 0, 0.82);
+      min-height: 76px;
       overflow: hidden;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
       transform-origin: center;
     }
 
@@ -288,28 +410,58 @@
       animation: pulseStat 520ms ease;
     }
 
+    .stat-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      height: 100%;
+      min-width: 0;
+    }
+
+    .stat-icon {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      flex: 0 0 auto;
+      filter: contrast(1.2) saturate(0.8);
+    }
+
     .stat-label {
-      font-size: 0.72rem;
-      color: var(--muted);
+      font-family: var(--body-font);
+      font-weight: 800;
+      font-size: clamp(0.98rem, 1.55vw, 1.32rem);
+      color: rgba(0, 0, 0, 0.84);
+      letter-spacing: 0.02em;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      line-height: 0.92;
+      height: 60%;
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
     }
 
     .stat-value {
-      margin-top: 2px;
-      font-size: 1.5rem;
+      margin-top: 0;
+      font-family: var(--body-font);
+      font-size: 2.14rem;
       font-weight: 800;
-      line-height: 1.08;
+      line-height: 1;
+      color: var(--good);
+    }
+
+    .stat-value.bad {
+      color: var(--bad);
     }
 
     .float-badge {
       position: absolute;
-      right: 8px;
+      right: 10px;
       top: 8px;
-      font-size: 0.74rem;
-      font-weight: 800;
+      font-size: 0.85rem;
+      font-weight: 900;
       animation: floatOut 700ms ease forwards;
       pointer-events: none;
+      font-family: var(--display-font);
     }
 
     .float-badge.good {
@@ -321,262 +473,410 @@
     }
 
     .status-grid {
+      margin-top: 12px;
       display: grid;
-      gap: 6px;
-      margin-top: 9px;
+      gap: 4px;
     }
 
     .status-item {
       display: flex;
       justify-content: space-between;
-      gap: 8px;
-      font-size: 0.86rem;
-      border-bottom: 1px dashed #d3dce4;
-      padding-bottom: 4px;
+      gap: 12px;
+      border-bottom: 2px solid rgba(0, 0, 0, 0.72);
+      padding: 10px 4px;
+      font-size: 0.92rem;
+      color: var(--black);
+    }
+
+    .status-item span {
+      font-family: var(--body-font);
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      text-transform: none;
+    }
+
+    .status-item strong {
+      text-align: right;
+      font-family: var(--body-font);
+      font-weight: 700;
+      max-width: 72%;
+      line-height: 1.28;
     }
 
     .tag-wrap {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 10px;
+      gap: 8px;
+      margin-top: 6px;
     }
 
     .tag {
-      font-size: 0.72rem;
       border-radius: 999px;
-      padding: 0.3rem 0.56rem;
-      border: 1px solid;
+      padding: 0.25rem 0.66rem;
+      border: 2px solid rgba(0, 0, 0, 0.2);
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
     }
 
     .tag.good {
-      color: #116a4b;
-      background: #e6f6f0;
-      border-color: #b5e2d3;
+      background: rgba(74, 190, 238, 0.3);
+      color: var(--black);
     }
 
     .tag.bad {
-      color: #8d3434;
-      background: #fdeeee;
-      border-color: #efc3c3;
+      background: rgba(238, 41, 61, 0.22);
+      color: #63101a;
     }
 
     .tag.neutral {
-      color: #415566;
-      background: #eef3f8;
-      border-color: #d1dce7;
+      background: rgba(66, 76, 160, 0.22);
+      color: #1f2451;
     }
 
     .turn-panel {
-      border: 1px solid var(--line);
-      border-radius: var(--radius-md);
-      background: linear-gradient(165deg, #f0f8fc, #eef5f9 45%, #f8f9fa);
-      padding: 14px;
       display: grid;
-      gap: 10px;
+      gap: 12px;
+      background: transparent;
     }
 
     .turn-panel h3,
     .map-panel h3,
     .timeline-panel h3 {
       margin: 0;
-      font-size: 0.98rem;
+      font-family: var(--display-font);
+      font-size: clamp(2rem, 3vw, 3.25rem);
+      letter-spacing: 0.02em;
+      color: var(--red);
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #2e4152;
+      line-height: 0.95;
     }
 
-    .turn-input {
-      display: grid;
-      grid-template-columns: minmax(0, 80px) 1fr;
-      gap: 8px;
-      align-items: center;
+    .turn-panel .sub {
+      color: rgba(0, 0, 0, 0.7);
+      font-size: 0.92rem;
+      max-width: none;
     }
 
     .turn-actions {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .turn-actions button {
+      min-height: 76px;
+      font-size: 1.02rem;
+    }
+
+    .undo-turn-btn {
+      width: 100%;
+      min-height: 58px;
+      font-size: 1rem;
+      background: var(--navy);
+      color: var(--cream);
+    }
+
+    .step-picker-wrap {
+      display: grid;
       gap: 8px;
+      margin-top: 4px;
+    }
+
+    .steps-label {
+      font-family: var(--display-font);
+      font-size: clamp(2rem, 3vw, 3.1rem);
+      color: var(--red);
+      text-transform: uppercase;
+      line-height: 0.95;
+    }
+
+    .step-picker {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .step-btn {
+      border-radius: 999px;
+      background: transparent;
+      color: #1f1d27;
+      border: 2px solid rgba(0, 0, 0, 0.7);
+      font-size: 2.5rem;
+      min-height: 84px;
+      font-family: var(--display-font);
+      line-height: 1;
+      padding: 0;
+    }
+
+    .step-btn.active {
+      background: var(--yellow);
+      border-color: rgba(0, 0, 0, 0.9);
+      transform: translateY(-2px);
+    }
+
+    .step-btn:disabled {
+      opacity: 0.42;
     }
 
     .turn-hint {
-      font-size: 0.78rem;
-      color: var(--muted);
-      min-height: 18px;
+      font-size: 0.88rem;
+      color: rgba(0, 0, 0, 0.72);
+      min-height: 22px;
     }
 
-    .map-panel {
-      border: 1px solid var(--line);
-      border-radius: var(--radius-md);
-      background: #f8fbfd;
-      padding: 12px;
+    .dev-tools {
+      border-radius: 16px;
+      border: 2px dashed rgba(66, 76, 160, 0.44);
+      background: rgba(255, 243, 231, 0.62);
+      padding: 10px;
       display: grid;
-      gap: 10px;
+      gap: 8px;
     }
 
-    .space-card {
-      border: 1px solid #d4e1eb;
-      border-radius: 14px;
-      background: linear-gradient(152deg, #ffffff 0%, #f2f7fb 62%, #eaf3f9 100%);
-      padding: 14px;
-      display: grid;
-      gap: 10px;
-      min-height: 225px;
-    }
-
-    .space-kicker {
-      font-size: 0.74rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: #4a677e;
-      font-weight: 700;
-    }
-
-    .space-title-row {
+    .dev-tools-head {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 8px;
+    }
+
+    .dev-tools-title {
+      font-family: var(--body-font);
+      font-weight: 800;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      color: rgba(0, 0, 0, 0.82);
+    }
+
+    .dev-tools small {
+      color: rgba(0, 0, 0, 0.62);
+      font-size: 0.75rem;
+      font-family: var(--body-font);
+      font-weight: 600;
+    }
+
+    .dev-tools-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .dev-tools-row input {
+      padding-top: 0.58rem;
+      padding-bottom: 0.58rem;
+      font-size: 0.9rem;
+      background: #fff9f1;
+    }
+
+    .dev-tools-row button {
+      min-height: 44px;
+      min-width: 108px;
+      font-size: 0.84rem;
+      padding: 0.4rem 0.8rem;
+      font-family: var(--body-font);
+      font-weight: 800;
+      text-transform: uppercase;
+      background: var(--navy);
+      color: var(--cream);
+    }
+
+    .map-panel {
+      background: transparent;
+    }
+
+    .space-card {
+      border: 0;
+      border-radius: 30px;
+      background: var(--yellow);
+      padding: 18px 20px;
+      display: grid;
       gap: 10px;
+      min-height: 280px;
+      box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.12);
+    }
+
+    .space-kicker {
+      font-size: 0.8rem;
+      text-transform: none;
+      color: rgba(0, 0, 0, 0.9);
+      font-weight: 700;
+      font-family: var(--body-font);
+    }
+
+    .space-title-row {
+      display: block;
     }
 
     .space-title {
       margin: 0;
-      font-size: 1.2rem;
+      font-family: var(--body-font);
+      font-weight: 800;
+      font-size: clamp(1.8rem, 3.2vw, 3rem);
+      line-height: 0.95;
+      color: var(--black);
     }
 
     .space-node-id {
+      display: inline-flex;
+      margin-top: 6px;
       border-radius: 999px;
-      font-size: 0.72rem;
-      padding: 0.28rem 0.6rem;
-      border: 1px solid #b6ccdc;
-      color: #35506a;
-      background: #edf5fa;
-      font-weight: 800;
-      letter-spacing: 0.04em;
+      font-size: 0.76rem;
+      padding: 0.24rem 0.66rem;
+      border: 2px solid rgba(0, 0, 0, 0.2);
+      background: rgba(255, 243, 231, 0.56);
+      color: rgba(0, 0, 0, 0.72);
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
     }
 
     .space-description {
       margin: 0;
-      color: #365269;
-      line-height: 1.45;
-      font-size: 0.92rem;
+      color: rgba(0, 0, 0, 0.95);
+      line-height: 1.34;
+      font-size: 1rem;
+      max-width: 92%;
+      font-family: var(--body-font);
+      font-weight: 500;
     }
 
     .space-meta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-      margin-top: 4px;
-    }
-
-    .space-meta-pill {
-      border-radius: 999px;
-      border: 1px solid #c5d7e5;
-      background: #fff;
-      color: #3e5a70;
-      padding: 0.32rem 0.62rem;
-      font-size: 0.74rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      font-weight: 700;
+      display: none;
     }
 
     .space-action {
-      margin-top: 2px;
-      border-top: 1px dashed #cad8e4;
+      border-top: 3px solid rgba(0, 0, 0, 0.7);
       padding-top: 8px;
-      font-size: 0.82rem;
-      color: var(--muted);
+      margin-top: auto;
+      font-size: 1.06rem;
+      color: rgba(0, 0, 0, 0.95);
+      font-weight: 700;
+      line-height: 1.28;
     }
 
-    .timeline-panel {
-      border: 1px solid var(--line);
-      border-radius: var(--radius-md);
-      background: #fafcfe;
-      padding: 12px;
-      display: grid;
-      gap: 10px;
-      height: calc(72vh - 16px);
+    .consequence-label {
+      font-family: var(--body-font);
+      font-size: 1.58rem;
+      font-weight: 800;
+      line-height: 1;
+      text-transform: none;
+      margin-bottom: 2px;
+    }
+
+    .roster-panel {
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      padding: 6px 2px 0;
+      background: transparent;
+    }
+
+    .roster-panel h3 {
+      display: none;
     }
 
     .timeline-list {
-      overflow: auto;
       display: grid;
-      gap: 7px;
-      padding-right: 4px;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
     }
 
     .roster-card {
-      border-radius: 10px;
-      border: 1px solid #d8e3ec;
-      background: #fff;
-      padding: 9px 10px;
+      border-radius: 18px;
+      border: 3px solid rgba(0, 0, 0, 0.2);
+      background: #a5bf9d;
+      padding: 10px 12px;
       animation: fadeRise 240ms var(--trans-med) both;
     }
 
     .roster-card.active {
-      border-color: #76afd0;
-      box-shadow: 0 0 0 3px rgba(43, 136, 182, 0.14);
+      background: #e8dfd3;
+      border-color: var(--cream);
+      box-shadow: 0 0 0 3px rgba(74, 190, 238, 0.28);
     }
 
     .roster-head {
       display: flex;
       justify-content: space-between;
       gap: 8px;
-      align-items: baseline;
+      align-items: center;
     }
 
     .roster-name {
-      font-size: 0.95rem;
-      font-weight: 800;
-      color: #1f3a53;
       margin: 0;
+      font-family: var(--body-font);
+      font-size: 1.12rem;
+      font-weight: 800;
+      color: var(--black);
+      line-height: 1;
     }
 
     .roster-gen {
-      font-size: 0.71rem;
-      color: #587185;
-      text-transform: uppercase;
-      letter-spacing: 0.045em;
+      font-size: 0.75rem;
+      border-radius: 999px;
+      padding: 0.26rem 0.68rem;
+      border: 2px solid rgba(0, 0, 0, 0.15);
+      background: var(--blue);
+      color: var(--black);
+      letter-spacing: 0.01em;
+      font-family: var(--body-font);
+      font-weight: 700;
+      text-transform: none;
     }
 
     .roster-stats {
-      margin-top: 7px;
+      margin-top: 9px;
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 5px;
+      gap: 6px;
     }
 
     .roster-stat {
-      border: 1px solid #dbe6ef;
-      border-radius: 8px;
-      padding: 4px 5px;
-      background: #f8fbfd;
-      font-size: 0.74rem;
+      border: 2px solid rgba(0, 0, 0, 0.58);
+      border-radius: 999px;
+      padding: 0.24rem 0.4rem;
+      background: rgba(255, 243, 231, 0.32);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      font-size: 0.78rem;
+    }
+
+    .roster-stat-icon {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+      opacity: 0.92;
     }
 
     .roster-stat strong {
-      font-size: 0.86rem;
-      color: #19354d;
+      font-family: var(--body-font);
+      font-weight: 800;
+      font-size: 1.62rem;
+      color: var(--black);
+      line-height: 0.9;
     }
 
     .roster-status {
-      margin-top: 4px;
-      font-size: 0.76rem;
-      color: #4f677b;
-      line-height: 1.4;
+      margin-top: 7px;
+      display: none;
     }
 
     .draw-select-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 12px;
+      gap: 14px;
+      margin-top: 18px;
     }
 
     .draw-card {
-      border: 1px solid #c9d8e4;
-      border-radius: 13px;
+      border: 0;
+      border-radius: 24px;
       padding: 0;
       aspect-ratio: 2.8 / 4;
       cursor: pointer;
@@ -584,22 +884,38 @@
       overflow: hidden;
       transform: translateY(0) scale(1);
       transition: transform 220ms ease, filter 220ms ease, opacity 220ms ease;
-      background:
-        radial-gradient(circle at 75% 18%, rgba(255, 255, 255, 0.34), transparent 45%),
-        linear-gradient(150deg, #2f516a 0%, #224158 48%, #162d40 100%);
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14), 0 10px 22px rgba(10, 23, 35, 0.25);
+      background: var(--orange);
+      box-shadow: inset 0 0 0 3px rgba(0, 0, 0, 0.1);
     }
 
     .draw-card::before {
       content: "";
       position: absolute;
-      inset: 8px;
-      border-radius: 9px;
-      border: 1px dashed rgba(226, 237, 245, 0.52);
+      inset: 0;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 80% auto;
+      pointer-events: none;
+    }
+
+    .draw-card.deck-era {
+      background: var(--orange);
+    }
+
+    .draw-card.deck-era::before {
+      background-image: url("ui/GUI/ui_era_design.png");
+    }
+
+    .draw-card.deck-life {
+      background: var(--blue);
+    }
+
+    .draw-card.deck-life::before {
+      background-image: url("ui/GUI/ui_life_design.png");
     }
 
     .draw-card:hover {
-      transform: translateY(-3px) scale(1.01);
+      transform: translateY(-4px) scale(1.01);
       filter: saturate(1.08);
     }
 
@@ -614,70 +930,103 @@
       pointer-events: none;
     }
 
+    .draw-stack-wrap {
+      margin-top: 14px;
+      display: grid;
+      justify-items: center;
+    }
+
+    .draw-stack-btn {
+      background: transparent;
+      border: 0;
+      padding: 0;
+      border-radius: 28px;
+      box-shadow: none;
+      transition: transform var(--trans-fast), filter var(--trans-fast);
+      max-width: 560px;
+      width: 100%;
+    }
+
+    .draw-stack-btn:hover:not(:disabled) {
+      transform: translateY(-2px) scale(1.01);
+    }
+
+    .draw-stack-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 24px;
+      filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.2));
+      transform-origin: center bottom;
+    }
+
+    .draw-stack-btn.selected .draw-stack-image {
+      animation: deckLift 460ms ease forwards;
+    }
+
     .draw-deck-label {
       position: absolute;
-      left: 10px;
-      bottom: 10px;
+      left: 12px;
+      bottom: 12px;
       border-radius: 999px;
-      border: 1px solid rgba(229, 240, 246, 0.42);
-      color: #eef7fb;
-      font-size: 0.64rem;
+      color: var(--cream);
+      font-size: 0.68rem;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      padding: 0.2rem 0.45rem;
-      background: rgba(8, 23, 35, 0.46);
+      padding: 0.26rem 0.54rem;
+      background: rgba(0, 0, 0, 0.16);
       font-weight: 700;
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .actual-card {
-      border-radius: 16px;
-      border: 1px solid #cfdeea;
-      background: linear-gradient(158deg, #ffffff 0%, #f6fbff 48%, #eef6fc 100%);
-      box-shadow: 0 14px 34px rgba(14, 34, 52, 0.18);
-      padding: 14px;
+      border-radius: 22px;
+      border: 3px solid rgba(0, 0, 0, 0.2);
+      background: #f0e8dd;
+      padding: 18px;
       animation: revealCard 420ms var(--trans-med) both;
+      display: grid;
+      gap: 12px;
+      max-width: 380px;
+      min-height: 510px;
     }
 
     .actual-card-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 10px;
-      margin-bottom: 9px;
+      display: grid;
+      gap: 8px;
+      margin-bottom: 6px;
     }
 
     .actual-card-title {
       margin: 0;
-      font-size: 1.16rem;
-      color: #18334b;
+      font-family: var(--body-font);
+      font-weight: 800;
+      font-size: 2.1rem;
+      line-height: 0.98;
+      color: var(--black);
     }
 
     .actual-card-deck {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: #4b677f;
-      border: 1px solid #c0d2e1;
-      border-radius: 999px;
-      padding: 0.24rem 0.52rem;
+      font-size: 0.82rem;
+      color: rgba(0, 0, 0, 0.8);
       font-weight: 700;
+      text-transform: none;
     }
 
     .actual-card-body {
       margin: 0;
-      font-size: 0.93rem;
-      line-height: 1.45;
-      color: #2d4a62;
+      font-size: 1.08rem;
+      line-height: 1.35;
+      color: rgba(0, 0, 0, 0.9);
     }
 
     .actual-card-impact {
-      margin-top: 10px;
-      border: 1px solid #d2e0ea;
-      border-radius: 10px;
-      background: #f6fbff;
-      padding: 8px 9px;
-      font-size: 0.82rem;
-      color: #294761;
+      margin-top: auto;
+      border-top: 3px solid rgba(0, 0, 0, 0.76);
+      padding-top: 9px;
+      font-size: 1.02rem;
+      color: var(--black);
+      font-weight: 700;
     }
 
     .hidden {
@@ -687,7 +1036,7 @@
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(18, 31, 44, 0.46);
+      background: rgba(38, 48, 112, 0.68);
       display: none;
       align-items: center;
       justify-content: center;
@@ -701,14 +1050,14 @@
     }
 
     .modal-card {
-      width: min(680px, 94vw);
-      max-height: 90vh;
+      width: min(1000px, 94vw);
+      max-height: 92vh;
       overflow: auto;
-      border-radius: 16px;
-      border: 1px solid #d4e0ea;
-      box-shadow: 0 24px 60px rgba(11, 23, 34, 0.34);
-      background: #fff;
-      padding: 16px;
+      border-radius: 40px;
+      border: 0;
+      box-shadow: 0 24px 60px rgba(11, 23, 34, 0.4);
+      background: var(--yellow);
+      padding: 26px 30px 30px;
       transform-origin: center;
       animation: popIn 220ms var(--trans-med) both;
     }
@@ -719,57 +1068,284 @@
     }
 
     .modal-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: baseline;
-      margin-bottom: 10px;
+      display: grid;
+      justify-items: center;
+      text-align: center;
+      gap: 8px;
+      margin-bottom: 14px;
     }
 
     .modal-head h4 {
       margin: 0;
-      font-size: 1.16rem;
+      font-family: var(--display-font);
+      font-size: clamp(2rem, 4vw, 4rem);
+      color: var(--navy);
+      text-transform: uppercase;
+      line-height: 0.94;
+      letter-spacing: 0.02em;
     }
 
     .modal-sub {
-      font-size: 0.82rem;
-      color: var(--muted);
-      margin-top: 2px;
+      font-size: 1.05rem;
+      color: var(--black);
+      margin-top: 0;
+      font-family: var(--body-font);
+      font-weight: 700;
+      border-radius: 999px;
+      background: var(--blue);
+      padding: 0.46rem 1.2rem;
+    }
+
+    .modal-card > .sub {
+      color: var(--black);
+      text-align: center;
+      font-size: 1.08rem;
+      margin: 0;
+      max-width: none;
+      font-family: var(--body-font);
+      font-weight: 500;
     }
 
     .option-grid {
       display: grid;
-      gap: 9px;
-      margin-top: 10px;
+      gap: 14px;
+      margin-top: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     }
 
     .option-btn {
       width: 100%;
       text-align: left;
-      border: 1px solid #cfdae5;
-      background: linear-gradient(165deg, #f9fcff, #f1f7fb);
-      color: #173149;
-      border-radius: 12px;
-      padding: 10px;
+      border: 0;
+      border-radius: 24px;
+      padding: 18px;
       font-weight: 700;
       box-shadow: none;
+      min-height: 250px;
+      display: grid;
+      align-content: start;
+      gap: 10px;
+      background: var(--pink);
+      color: var(--cream);
+      text-transform: none;
+      font-family: var(--body-font);
+      font-style: normal;
+      position: relative;
+    }
+
+    .option-btn:nth-child(3n+2) {
+      background: var(--blue);
+    }
+
+    .option-btn:nth-child(3n+3) {
+      background: var(--navy);
+    }
+
+    .option-btn .option-title {
+      font-family: var(--display-font);
+      font-size: 2.02rem;
+      line-height: 0.95;
+      color: var(--cream);
+      text-transform: none;
     }
 
     .option-btn .preview {
-      margin-top: 4px;
-      color: #476176;
-      font-size: 0.8rem;
+      margin-top: 0;
+      color: var(--cream);
+      font-size: 0.95rem;
+      font-family: var(--body-font);
       font-weight: 500;
       line-height: 1.35;
+      text-transform: none;
     }
 
     .option-btn .impact {
-      margin-top: 7px;
-      color: #2f495e;
-      font-size: 0.75rem;
+      margin-top: 4px;
+      color: rgba(255, 243, 231, 0.96);
+      font-size: 0.8rem;
+      font-family: var(--body-font);
       font-weight: 700;
+      text-transform: none;
+      letter-spacing: 0;
+      line-height: 1.3;
+    }
+
+    .option-btn .option-footnote {
+      margin-top: auto;
+      border-top: 2px solid rgba(255, 243, 231, 0.52);
+      padding-top: 9px;
+      display: grid;
+      gap: 8px;
+      color: rgba(255, 243, 231, 0.98);
+    }
+
+    .option-btn .footnote-section {
+      display: grid;
+      gap: 2px;
+      line-height: 1.25;
+    }
+
+    .option-btn .footnote-label {
+      display: block;
+      font-size: 0.76rem;
+      font-family: var(--body-font);
+      font-weight: 800;
+      text-transform: none;
+      color: rgba(255, 243, 231, 0.94);
+    }
+
+    .option-btn .footnote-text {
+      display: block;
+      margin-top: 0;
+      font-size: 0.94rem;
+      font-family: var(--body-font);
+      font-weight: 700;
+      text-transform: none;
+      color: rgba(255, 243, 231, 0.99);
+      line-height: 1.25;
+    }
+
+    .option-btn .footnote-divider {
+      height: 2px;
+      background: rgba(255, 243, 231, 0.4);
+      border-radius: 2px;
+    }
+
+    .option-btn .upkeep-note {
+      margin-top: auto;
+      border-top: 2px solid rgba(255, 243, 231, 0.52);
+      padding-top: 8px;
+      color: rgba(255, 243, 231, 0.98);
+      line-height: 1.25;
+    }
+
+    .option-btn .upkeep-label {
+      display: block;
+      font-size: 0.8rem;
+      font-family: var(--body-font);
+      font-weight: 800;
+      text-transform: none;
+    }
+
+    .option-btn .upkeep-text {
+      display: block;
+      margin-top: 2px;
+      font-size: 0.96rem;
+      font-family: var(--body-font);
+      font-weight: 700;
+      text-transform: none;
+    }
+
+    .option-btn:disabled {
+      opacity: 0.72;
+      filter: grayscale(0.88) saturate(0.25) brightness(0.86);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .option-btn.locked {
+      box-shadow: inset 0 0 0 2px rgba(255, 243, 231, 0.18);
+    }
+
+    .option-btn .locked-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      border-radius: 999px;
+      padding: 0.26rem 0.6rem;
+      background: rgba(0, 0, 0, 0.54);
+      color: var(--cream);
+      border: 1px solid rgba(255, 243, 231, 0.5);
+      font-family: var(--body-font);
+      font-weight: 800;
+      font-size: 0.68rem;
       text-transform: uppercase;
       letter-spacing: 0.04em;
+      line-height: 1;
+    }
+
+    .option-btn .requirement-note {
+      margin-top: 4px;
+      font-size: 0.78rem;
+      line-height: 1.25;
+      color: rgba(255, 243, 231, 0.9);
+      font-family: var(--body-font);
+      font-weight: 700;
+    }
+
+    .modal-card.gate-modal .modal-head h4 {
+      font-family: var(--display-font);
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .modal-card.gate-modal .option-btn .option-title {
+      font-family: var(--body-font);
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .modal-card.choice-modal .option-btn .option-title {
+      font-family: var(--body-font);
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .gate-message {
+      color: var(--black);
+      text-align: center;
+      max-width: 840px;
+      margin: 6px auto 0;
+      font-size: 1.06rem;
+      line-height: 1.4;
+      font-family: var(--body-font);
+      font-weight: 500;
+    }
+
+    .card-result-layout {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: minmax(270px, 0.95fr) 1fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .card-result-side {
+      display: grid;
+      align-content: start;
+      gap: 12px;
+      padding-top: 10px;
+    }
+
+    .card-result-side h5 {
+      margin: 0;
+      font-family: var(--display-font);
+      font-size: clamp(1.8rem, 4vw, 3.5rem);
+      color: var(--navy);
+      text-transform: uppercase;
+      line-height: 0.95;
+    }
+
+    .card-result-side .sub {
+      color: var(--black);
+      margin: 0;
+      font-size: 1.08rem;
+      font-family: var(--body-font);
+      font-weight: 500;
+    }
+
+    .apply-wrap {
+      margin-top: auto;
+      display: flex;
+      justify-content: center;
+    }
+
+    .apply-wrap button {
+      background: var(--blue);
+      color: var(--cream);
+      min-width: 300px;
+      min-height: 90px;
+      font-size: 1.9rem;
     }
 
     .stop-banner {
@@ -788,14 +1364,15 @@
     }
 
     .stop-pill {
-      background: linear-gradient(135deg, #e9654f, #d34838);
-      color: #fff;
+      background: var(--red);
+      color: var(--cream);
       border-radius: 999px;
-      border: 2px solid rgba(255, 255, 255, 0.6);
-      padding: 0.72rem 1.2rem;
+      border: 3px solid rgba(255, 255, 255, 0.65);
+      padding: 0.72rem 1.4rem;
       font-size: clamp(1rem, 2.4vw, 1.5rem);
-      letter-spacing: 0.08em;
-      font-weight: 800;
+      letter-spacing: 0.06em;
+      font-family: var(--display-font);
+      font-weight: 900;
       text-transform: uppercase;
       box-shadow: 0 16px 34px rgba(56, 10, 10, 0.38);
       animation: stopPulse 680ms ease;
@@ -808,11 +1385,13 @@
     }
 
     .summary-item {
-      border-radius: 10px;
-      border: 1px solid #d7e2ec;
-      background: #f6fafd;
+      border-radius: 14px;
+      border: 2px solid rgba(0, 0, 0, 0.14);
+      background: rgba(255, 243, 231, 0.9);
       padding: 8px 9px;
-      font-size: 0.88rem;
+      font-size: 0.93rem;
+      font-family: var(--body-font);
+      font-weight: 500;
     }
 
     @keyframes pulseStat {
@@ -841,6 +1420,12 @@
     @keyframes revealCard {
       from { opacity: 0; transform: rotateY(-60deg) scale(0.95); }
       to { opacity: 1; transform: rotateY(0deg) scale(1); }
+    }
+
+    @keyframes deckLift {
+      0% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-10px) scale(1.02); }
+      100% { transform: translateY(-4px) scale(1.01); }
     }
 
     @keyframes stopPulse {
@@ -875,32 +1460,313 @@
     }
 
     @media (max-width: 1080px) {
-      .game-screen {
-        grid-template-columns: 1fr;
-      }
-
-      .timeline-panel {
-        height: 42vh;
-      }
-
       .setup-grid {
         grid-template-columns: 1fr;
       }
 
-      .form-row {
+      .setup-card + .setup-card {
+        border-left: 0;
+        border-top: 18px solid var(--navy);
+      }
+
+      .main-board {
         grid-template-columns: 1fr;
+      }
+
+      .main-board .right-col {
+        border-left: 0;
+        border-top: 18px solid var(--navy);
       }
 
       .turn-actions {
         grid-template-columns: 1fr;
       }
 
-      .draw-select-grid {
+      .step-picker {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .draw-select-grid,
+      .option-grid,
+      .card-result-layout {
         grid-template-columns: 1fr;
       }
 
+      .setup-card {
+        min-height: auto;
+      }
+
+      .timeline-list {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .turn-actions button {
+        min-height: 66px;
+      }
+
+      .apply-wrap button {
+        min-width: 100%;
+      }
+    }
+
+    @media (max-width: 760px) {
+      body:not(.in-game) .title-bar {
+        margin-bottom: 12px;
+      }
+
+      body:not(.in-game) .app-title {
+        font-size: clamp(2.7rem, 13vw, 4.8rem);
+      }
+
+      body:not(.in-game) .title-bar .sub {
+        font-size: 0.9rem;
+        max-width: 90%;
+      }
+
+      body.in-game .title-bar {
+        justify-items: center;
+        text-align: center;
+        grid-template-columns: 1fr;
+      }
+
+      body.in-game .app-title {
+        font-size: clamp(2.4rem, 12vw, 4.8rem);
+        color: rgba(255, 231, 75, 0.35);
+      }
+
+      body.in-game #roundChip {
+        display: none;
+      }
+
+      .panel {
+        border-width: 14px;
+        border-radius: 28px;
+      }
+
+      #setupScreen.panel {
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+      }
+
+      #setupScreen .setup-grid {
+        gap: 16px;
+      }
+
+      #setupScreen .setup-card {
+        border: 14px solid var(--navy);
+        border-radius: 34px;
+        background: var(--cream);
+      }
+
+      #setupScreen .setup-card + .setup-card {
+        border-top-width: 14px;
+      }
+
+      .main-board .column {
+        padding: 16px 14px;
+      }
+
+      .setup-card {
+        padding: 20px 16px;
+      }
+
+      .setup-players-head {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .setup-players-head .button-danger {
+        width: 100%;
+      }
+
+      .main-board .right-col {
+        border-top: 0;
+      }
+
+      .player-name {
+        font-size: 2.1rem;
+      }
+
+      .player-header .chip {
+        min-width: 120px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stat-pill {
+        min-height: 48px;
+        padding: 6px 10px;
+        gap: 8px;
+      }
+
+      .stat-icon {
+        width: 24px;
+        height: 24px;
+      }
+
+      .stat-label {
+        font-size: clamp(0.8rem, 4vw, 1rem);
+      }
+
+      .stat-value {
+        font-size: 1.56rem;
+      }
+
+      .tag-wrap {
+        display: none;
+      }
+
+      .turn-actions {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .turn-actions button {
+        min-height: 58px;
+        font-size: 0.9rem;
+        padding-left: 0.45rem;
+        padding-right: 0.45rem;
+      }
+
+      .timeline-list {
+        grid-template-columns: 1fr;
+      }
+
+      .roster-card {
+        border-radius: 999px;
+        padding: 0.66rem 0.9rem;
+      }
+
+      .roster-head {
+        align-items: center;
+      }
+
+      .roster-name {
+        font-size: 1.45rem;
+      }
+
       .roster-stats {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        display: none;
+      }
+
+      .roster-gen {
+        font-size: 1.3rem;
+        padding: 0.34rem 0.8rem;
+      }
+
+      .step-btn {
+        min-height: 70px;
+        font-size: 2rem;
+      }
+
+      .modal-backdrop {
+        padding: 10px;
+      }
+
+      .modal-card {
+        width: min(100%, 640px);
+        max-height: 94vh;
+        border-radius: 28px;
+        padding: 18px 14px 18px;
+      }
+
+      .modal-card.gate-modal .modal-head h4 {
+        font-size: clamp(2.2rem, 13vw, 4.2rem);
+      }
+
+      .modal-card.gate-modal .modal-sub {
+        margin-top: 2px;
+      }
+
+      .modal-card.gate-modal .gate-message {
+        font-size: 0.96rem;
+        line-height: 1.35;
+        margin-top: 6px;
+      }
+
+      .modal-card.gate-modal .option-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .modal-card.gate-modal .option-btn {
+        min-height: auto;
+        text-align: center;
+        padding: 14px 12px;
+        gap: 8px;
+      }
+
+      .modal-card.gate-modal .option-btn .option-title {
+        font-size: 2.35rem;
+      }
+
+      .modal-card.gate-modal .option-btn .preview,
+      .modal-card.gate-modal .option-btn .impact {
+        text-align: center;
+      }
+
+      .modal-card.gate-modal .option-btn .upkeep-note,
+      .modal-card.gate-modal .option-btn .option-footnote {
+        text-align: center;
+      }
+
+      .modal-card.draw-modal .modal-head h4 {
+        font-size: clamp(2.3rem, 13vw, 4.3rem);
+      }
+
+      .modal-card.draw-modal .modal-sub {
+        display: none;
+      }
+
+      .modal-card.draw-modal .draw-select-grid {
+        margin-top: 10px;
+      }
+
+      .modal-card.draw-modal .draw-card {
+        border-radius: 28px;
+        min-height: 430px;
+      }
+
+      .modal-card.draw-modal .actual-card {
+        max-width: none;
+        min-height: auto;
+        border-radius: 30px;
+        padding: 16px 14px;
+      }
+
+      .modal-card.draw-modal .actual-card-title {
+        font-size: 3.1rem;
+      }
+
+      .modal-card.draw-modal .actual-card-body {
+        font-size: 1.02rem;
+      }
+
+      .modal-card.draw-modal .actual-card-impact {
+        font-size: 1rem;
+      }
+
+      .modal-card.draw-modal .card-result-layout {
+        margin-top: 4px;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .modal-card.draw-modal .card-result-side {
+        display: none;
+      }
+
+      .modal-card.draw-modal .apply-wrap {
+        margin-top: 8px;
+      }
+
+      .modal-card.draw-modal .apply-wrap button {
+        min-width: 74%;
+        min-height: 78px;
+        font-size: 1.8rem;
       }
     }
   </style>
@@ -909,75 +1775,92 @@
   <main class="shell">
     <header class="title-bar">
       <div>
-        <h1 class="app-title">LIFE LAYERS</h1>
-        <div class="sub">Hybrid boardgame portal for local multiplayer turn tracking</div>
+        <h1 class="app-title">Greener Grass</h1>
+        <div class="sub">Hybrid boardgame prototype for mixed-generation play and branching life outcomes.</div>
       </div>
       <div class="chip" id="roundChip">Setup</div>
     </header>
 
     <section id="setupScreen" class="panel setup-screen">
       <div class="setup-grid">
-        <article class="setup-card">
-          <strong>Session Setup</strong>
-          <p class="sub">Add players on one device, then rotate turns around your physical board.</p>
+        <article class="setup-card setup-form-card">
+          <strong class="section-title">Session Set Up</strong>
+          <p class="sub">Add all players on one device and pass along according to the active turn.</p>
           <div class="form-row">
-            <input id="playerNameInput" type="text" maxlength="24" placeholder="Player name" />
+            <input id="playerNameInput" type="text" maxlength="24" placeholder="Player Name" />
             <select id="generationSelect"></select>
-            <button id="addPlayerBtn" type="button">Add Player</button>
+            <button id="addPlayerBtn" class="button-accent" type="button">Add Player</button>
+          </div>
+          <p class="sub tip-text">Tip: Pick the generation you think had the easiest life path.</p>
+        </article>
+        <article class="setup-card setup-players-card">
+          <div class="setup-players-head">
+            <strong class="section-title">Players</strong>
+            <button id="startGameBtn" class="button-danger" type="button" disabled>Start Game</button>
           </div>
           <div id="playerList" class="player-list"></div>
-        </article>
-        <article class="setup-card">
-          <strong>Core Flow</strong>
-          <p class="sub">
-            Start Turn -> Upkeep -> Income -> Move 1–3 steps -> Gate interrupt decisions -> Node resolve -> End Turn.
-          </p>
-          <p class="sub">Gates cannot be skipped. If your move reaches a gate/checkpoint, decision modal interrupts immediately.</p>
-          <button id="startGameBtn" class="button-accent" type="button" disabled>Start LIFE LAYERS</button>
         </article>
       </div>
     </section>
 
     <section id="gameScreen" class="game-screen hidden">
-      <aside class="panel column">
-        <article class="player-card">
-          <div class="player-header">
-            <h2 id="activePlayerName" class="player-name">-</h2>
-            <span id="activePlayerGen" class="chip">-</span>
-          </div>
-          <div id="statsGrid" class="stats-grid"></div>
-          <div id="statusGrid" class="status-grid"></div>
-          <div id="tagWrap" class="tag-wrap"></div>
-        </article>
-        <article class="turn-panel">
-          <h3>Turn Controls</h3>
-          <div id="turnMeta" class="sub">Round 1 · Turn pending</div>
-          <div class="turn-input">
-            <label for="stepsInput">Steps (1-3)</label>
-            <input id="stepsInput" min="1" max="3" step="1" type="number" value="1" />
-          </div>
-          <div class="turn-actions">
-            <button id="startTurnBtn" type="button">Start Turn</button>
-            <button id="moveBtn" class="button-accent" type="button" disabled>Resolve Move</button>
-            <button id="endTurnBtn" class="button-muted" type="button" disabled>End Turn</button>
-          </div>
-          <div id="turnHint" class="turn-hint"></div>
-        </article>
-      </aside>
+      <div class="panel main-board">
+        <aside class="column left-col">
+          <article class="player-card">
+            <div class="player-header">
+              <div>
+                <div class="sub">Current turn</div>
+                <h2 id="activePlayerName" class="player-name">-</h2>
+              </div>
+              <span id="activePlayerGen" class="chip">-</span>
+            </div>
+            <div id="statsGrid" class="stats-grid"></div>
+            <div id="statusGrid" class="status-grid"></div>
+            <div id="tagWrap" class="tag-wrap"></div>
+          </article>
+        </aside>
 
-      <section class="panel column">
-        <article class="map-panel">
-          <h3>Current Space</h3>
-          <div class="sub">Focus only on where the active player has landed and what it means.</div>
-          <div id="spaceCard" class="space-card"></div>
-        </article>
-      </section>
+        <section class="column right-col">
+          <article class="turn-panel">
+            <h3>Turn Control</h3>
+            <div id="turnMeta" class="sub">Round 1 · Turn pending</div>
+            <div class="turn-actions">
+              <button id="startTurnBtn" class="button-start" type="button">Start Turn</button>
+              <button id="moveBtn" class="button-resolve" type="button" disabled>Resolve Move</button>
+              <button id="endTurnBtn" class="button-danger" type="button" disabled>End Turn</button>
+            </div>
+            <button id="undoTurnBtn" class="undo-turn-btn" type="button" disabled>Undo Turn</button>
+            <div class="step-picker-wrap">
+              <div class="steps-label">Steps</div>
+              <div id="stepPicker" class="step-picker">
+                <button class="step-btn active" data-step="1" type="button">1</button>
+                <button class="step-btn" data-step="2" type="button">2</button>
+                <button class="step-btn" data-step="3" type="button">3</button>
+              </div>
+              <input id="stepsInput" min="1" max="3" step="1" type="number" value="1" hidden />
+            </div>
+            <div id="turnHint" class="turn-hint"></div>
+            <div id="devTools" class="dev-tools hidden">
+              <div class="dev-tools-head">
+                <span class="dev-tools-title">Dev Mode: Jump To Space</span>
+                <small>Testing only</small>
+              </div>
+              <div class="dev-tools-row">
+                <input id="devNodeInput" type="text" placeholder="Enter node id (e.g. 28)" />
+                <button id="devJumpBtn" type="button">Jump</button>
+              </div>
+            </div>
+          </article>
 
-      <aside class="panel column">
-        <article class="timeline-panel">
-          <h3>Players Snapshot</h3>
-          <div id="timelineList" class="timeline-list"></div>
-        </article>
+          <article class="map-panel">
+            <div id="spaceCard" class="space-card"></div>
+          </article>
+        </section>
+      </div>
+
+      <aside class="panel timeline-panel roster-panel">
+        <h3>Players Snapshot</h3>
+        <div id="timelineList" class="timeline-list"></div>
       </aside>
     </section>
   </main>
@@ -1005,12 +1888,28 @@
         experience: "Experience",
         education: "Education"
       };
+      const STAT_ICONS = {
+        happiness: "ui/icons/icon_happiness.png",
+        health: "ui/icons/icon_health.png",
+        time: "ui/icons/icon_time.png",
+        money: "ui/icons/icon_money.png",
+        experience: "ui/icons/icon_experience.png",
+        education: "ui/icons/icon_education.png"
+      };
+      const GENERATION_COLORS = {
+        boomer: "#4abeee",
+        genx: "#e987b7",
+        millennial: "#fee74b",
+        genz: "#f36e3e"
+      };
 
       const state = {
         players: [],
         round: 1,
         currentPlayerIndex: 0,
         phase: "setup",
+        devMode: false,
+        turnUndo: null,
         timeline: [],
         logIndex: 1,
         deckState: {
@@ -1035,11 +1934,16 @@
         statusGrid: document.getElementById("statusGrid"),
         tagWrap: document.getElementById("tagWrap"),
         turnMeta: document.getElementById("turnMeta"),
+        stepPicker: document.getElementById("stepPicker"),
         stepsInput: document.getElementById("stepsInput"),
         startTurnBtn: document.getElementById("startTurnBtn"),
         moveBtn: document.getElementById("moveBtn"),
         endTurnBtn: document.getElementById("endTurnBtn"),
+        undoTurnBtn: document.getElementById("undoTurnBtn"),
         turnHint: document.getElementById("turnHint"),
+        devTools: document.getElementById("devTools"),
+        devNodeInput: document.getElementById("devNodeInput"),
+        devJumpBtn: document.getElementById("devJumpBtn"),
         spaceCard: document.getElementById("spaceCard"),
         timelineList: document.getElementById("timelineList"),
         stopBanner: document.getElementById("stopBanner"),
@@ -1076,6 +1980,89 @@
         return DATA.board.nodes[nodeId] || null;
       }
 
+      function getGenerationColor(generation) {
+        return GENERATION_COLORS[generation] || "#4abeee";
+      }
+
+      function getStatIcon(stat) {
+        return STAT_ICONS[stat] || "";
+      }
+
+      function isMobileViewport() {
+        return window.matchMedia("(max-width: 760px)").matches;
+      }
+
+      function syncStepButtons() {
+        const value = String(refs.stepsInput.value || "1");
+        const buttons = refs.stepPicker ? refs.stepPicker.querySelectorAll(".step-btn") : [];
+        buttons.forEach(function (button) {
+          const active = button.getAttribute("data-step") === value;
+          button.classList.toggle("active", active);
+        });
+      }
+
+      function setDevMode(enabled) {
+        state.devMode = Boolean(enabled);
+        const showPanel = state.devMode && state.phase !== "setup";
+        if (refs.devTools) {
+          refs.devTools.classList.toggle("hidden", !showPanel);
+        }
+        if (!showPanel && refs.devNodeInput) {
+          refs.devNodeInput.value = "";
+        }
+      }
+
+      function canUndoCurrentTurn() {
+        if (!state.turnUndo) {
+          return false;
+        }
+        if (state.phase === "setup" || state.phase === "resolving") {
+          return false;
+        }
+        const player = activePlayer();
+        if (!player) {
+          return false;
+        }
+        return state.turnUndo.playerId === player.id;
+      }
+
+      function snapshotTurnStart(player) {
+        state.turnUndo = {
+          playerId: player.id,
+          state: {
+            players: cloneObject(state.players),
+            round: state.round,
+            currentPlayerIndex: state.currentPlayerIndex,
+            phase: state.phase,
+            deckState: cloneObject(state.deckState),
+            logIndex: state.logIndex
+          }
+        };
+      }
+
+      function clearTurnUndo() {
+        state.turnUndo = null;
+      }
+
+      function undoCurrentTurn() {
+        if (!canUndoCurrentTurn()) {
+          refs.turnHint.textContent = "No turn state available to undo.";
+          return;
+        }
+        const snap = state.turnUndo.state;
+        state.players = cloneObject(snap.players);
+        state.round = snap.round;
+        state.currentPlayerIndex = snap.currentPlayerIndex;
+        state.phase = "await_start";
+        state.deckState = cloneObject(snap.deckState);
+        state.logIndex = snap.logIndex;
+
+        renderAll();
+        updateControls();
+        refs.turnHint.textContent = "Turn reset. Replay this player's turn.";
+        logEntry("Undo", "Turn reset for " + (activePlayer() ? activePlayer().name : "active player") + ".");
+      }
+
       function formatNodeLabel(label) {
         return String(label || "")
           .replace(/_/g, " ")
@@ -1085,7 +2072,7 @@
           });
       }
 
-      function getSpaceMeta(node) {
+      function getSpaceMeta(node, generation) {
         if (!node) {
           return {
             title: "Unknown Space",
@@ -1105,10 +2092,42 @@
           start: "Beginning of the life-course board."
         };
 
+        const generationDescriptions = customMeta.generationDescriptions || {};
         return {
           title: customMeta.title || formatNodeLabel(node.label),
-          description: customMeta.description || fallbackByType[node.type] || "Continue forward and resolve this space."
+          description:
+            generationDescriptions[generation] ||
+            customMeta.description ||
+            fallbackByType[node.type] ||
+            "Continue forward and resolve this space."
         };
+      }
+
+      function getNodeConsequenceText(node) {
+        if (!node) {
+          return "No consequence data.";
+        }
+        if (node.type === "draw") {
+          const deckName = String(node.deck || "life");
+          const label = deckName.charAt(0).toUpperCase() + deckName.slice(1);
+          return "Draw and resolve a " + label + " card.";
+        }
+        if (node.type === "gate" || node.type === "checkpoint") {
+          return "Decision required: choose one branch to apply generation-specific outcomes.";
+        }
+        if (node.type === "choice") {
+          return "Choose one option to apply its effects.";
+        }
+        if (node.type === "effect" && node.effects && node.effects.length) {
+          return summarizeEffects(node.effects);
+        }
+        if (node.type === "hub") {
+          return "Transition space before the next life layer.";
+        }
+        if (node.type === "finish") {
+          return "No further turns for this player.";
+        }
+        return "Continue to next space.";
       }
 
       function logEntry(type, text) {
@@ -1117,11 +2136,20 @@
       }
 
       function clampStat(stat, value) {
+        let next = value;
         if (DATA.statLimits[stat]) {
           const lim = DATA.statLimits[stat];
-          return Math.max(lim.min, Math.min(lim.max, value));
+          if (stat === "health") {
+            next = Math.min(lim.max, next);
+          } else {
+            next = Math.max(lim.min, Math.min(lim.max, next));
+          }
         }
-        return Math.trunc(value);
+        if (stat === "time") {
+          next = Math.max(1, next);
+          next = Math.min(7, next);
+        }
+        return Math.trunc(next);
       }
 
       function statPillElement(stat) {
@@ -1206,6 +2234,30 @@
         logEntry("Effect", "Moved back " + moved + " step(s) to " + player.currentNode + ".");
       }
 
+      function resolveNodeIdFromInput(rawInput) {
+        const raw = String(rawInput || "").trim();
+        if (!raw) {
+          return null;
+        }
+
+        const candidates = [];
+        const cleaned = raw.replace(/^node\s*/i, "").trim();
+        candidates.push(raw, cleaned, cleaned.toUpperCase());
+
+        const numeric = cleaned.match(/\d+/);
+        if (numeric) {
+          candidates.push(String(Number(numeric[0])));
+        }
+
+        for (let i = 0; i < candidates.length; i += 1) {
+          const id = candidates[i];
+          if (id && getNode(id)) {
+            return id;
+          }
+        }
+        return null;
+      }
+
       function effectSummary(effect) {
         if (!effect || !effect.type) {
           return "";
@@ -1234,6 +2286,12 @@
         if (effect.type === "drawCard") {
           return "Draw " + effect.deck + " card";
         }
+        if (effect.type === "startRecurring") {
+          return "Start recurring upkeep";
+        }
+        if (effect.type === "stopRecurring") {
+          return "Stop recurring upkeep";
+        }
         return "";
       }
 
@@ -1242,6 +2300,362 @@
           .map(effectSummary)
           .filter(Boolean);
         return summaries.length ? summaries.join(" · ") : "No direct stat change";
+      }
+
+      function projectStatusesFromEffects(statuses, effects) {
+        const projected = {
+          occupation: statuses.occupation,
+          housingStatus: statuses.housingStatus,
+          housingPayment: statuses.housingPayment,
+          mortgageActive: statuses.mortgageActive,
+          familyStatus: statuses.familyStatus
+        };
+
+        (effects || []).forEach(function (effect) {
+          if (!effect || !effect.type) {
+            return;
+          }
+          if (effect.type === "setOccupation" && effect.occupation) {
+            projected.occupation = effect.occupation;
+          }
+          if (effect.type === "setHousing") {
+            if (effect.housingStatus) {
+              projected.housingStatus = effect.housingStatus;
+            }
+            if (typeof effect.payment === "number") {
+              projected.housingPayment = effect.payment;
+            }
+            if (typeof effect.mortgageActive === "boolean") {
+              projected.mortgageActive = effect.mortgageActive;
+            }
+          }
+          if (effect.type === "setFamilyStatus" && effect.familyStatus) {
+            projected.familyStatus = effect.familyStatus;
+          }
+        });
+
+        return projected;
+      }
+
+      function statusesChanged(before, after) {
+        return (
+          before.occupation !== after.occupation ||
+          before.housingStatus !== after.housingStatus ||
+          before.housingPayment !== after.housingPayment ||
+          before.mortgageActive !== after.mortgageActive ||
+          before.familyStatus !== after.familyStatus
+        );
+      }
+
+      function getRecurringStatusDeltas(statuses) {
+        const deltas = {
+          money: 0,
+          time: 0,
+          experience: 0,
+          health: 0,
+          happiness: 0
+        };
+        const occupation = DATA.occupations[statuses.occupation] || DATA.occupations.unemployed;
+
+        deltas.money += occupation.income || 0;
+        deltas.time += occupation.timeDelta || 0;
+        deltas.experience += occupation.expDelta || 0;
+        deltas.health += occupation.healthDelta || 0;
+        deltas.happiness += occupation.happinessDelta || 0;
+
+        if ((statuses.housingPayment || 0) > 0) {
+          deltas.money -= statuses.housingPayment;
+        }
+
+        if (statuses.familyStatus === "kids") {
+          deltas.money -= 2;
+          deltas.time -= 2;
+        }
+
+        if (statuses.familyStatus === "caregiving") {
+          deltas.money -= 1;
+          deltas.time -= 2;
+        }
+
+        if (statuses.familyStatus === "dating") {
+          deltas.happiness += 1;
+        }
+
+        return deltas;
+      }
+
+      function formatRecurringDeltas(deltas) {
+        const order = ["money", "time", "health", "experience", "happiness"];
+        const parts = order
+          .filter(function (stat) {
+            return deltas[stat];
+          })
+          .map(function (stat) {
+            const value = deltas[stat];
+            const sign = value > 0 ? "+" : "";
+            return STAT_LABELS[stat] + " " + sign + value;
+          });
+        return parts.join(" · ");
+      }
+
+      function getDeltasFromEffectList(effects) {
+        const deltas = {
+          money: 0,
+          time: 0,
+          health: 0,
+          experience: 0,
+          happiness: 0
+        };
+        (effects || []).forEach(function (effect) {
+          if (effect && effect.type === "adjustStat" && deltas[effect.stat] !== undefined) {
+            deltas[effect.stat] += Number(effect.amount) || 0;
+          }
+        });
+        return deltas;
+      }
+
+      function summarizeStartRecurringEffects(effects) {
+        const lines = (effects || [])
+          .filter(function (effect) {
+            return effect && effect.type === "startRecurring";
+          })
+          .map(function (effect) {
+            const recurringText = formatRecurringDeltas(getDeltasFromEffectList(effect.effects || []));
+            if (!recurringText) {
+              return "";
+            }
+            if (typeof effect.durationTurns === "number") {
+              return recurringText + " for " + effect.durationTurns + " turns";
+            }
+            if (effect.endOnOccupationChange) {
+              return recurringText + " until occupation is chosen";
+            }
+            return recurringText;
+          })
+          .filter(Boolean);
+        return lines.join(" · ");
+      }
+
+      function summarizeUpkeepChange(player, effects) {
+        const projected = projectStatusesFromEffects(player.statuses, effects);
+        const recurringText = summarizeStartRecurringEffects(effects);
+        if (recurringText) {
+          return recurringText;
+        }
+        if (!statusesChanged(player.statuses, projected)) {
+          return "No recurring status change";
+        }
+        const text = formatRecurringDeltas(getRecurringStatusDeltas(projected));
+        return text || "No recurring status change";
+      }
+
+      function getImmediateCriticalStatProjection(player, effects) {
+        const projection = {
+          health: player.stats.health || 0,
+          time: player.stats.time || 0
+        };
+
+        (effects || []).forEach(function (effect) {
+          if (!effect || !effect.type) {
+            return;
+          }
+          if (effect.type === "adjustStat" && (effect.stat === "health" || effect.stat === "time")) {
+            projection[effect.stat] += Number(effect.amount) || 0;
+          }
+        });
+
+        return projection;
+      }
+
+      function evaluateCriticalStatFeasibility(player, effects) {
+        const projection = getImmediateCriticalStatProjection(player, effects);
+        const reasons = [];
+
+        if (projection.time < 1) {
+          reasons.push("would reduce Time below 1");
+        }
+
+        if (!reasons.length) {
+          return { ok: true, message: "" };
+        }
+        return { ok: false, message: reasons.join(" and ") };
+      }
+
+      function evaluateOptionAvailability(player, option, effectsOverride) {
+        const requirement = evaluateOptionRequirements(player, option || {});
+        const effects = Array.isArray(effectsOverride)
+          ? effectsOverride
+          : (option && option.effects) || [];
+        const criticalCheck = evaluateCriticalStatFeasibility(player, effects);
+
+        if (requirement.ok && criticalCheck.ok) {
+          return { ok: true, message: "" };
+        }
+
+        const messages = [];
+        if (!requirement.ok && requirement.message) {
+          messages.push(requirement.message);
+        }
+        if (!criticalCheck.ok && criticalCheck.message) {
+          messages.push(criticalCheck.message);
+        }
+
+        return { ok: false, message: messages.join(" · ") || "Unavailable" };
+      }
+
+      function evaluateOptionRequirements(player, option) {
+        const requirements = option && option.requirements ? option.requirements : null;
+        if (!requirements) {
+          return { ok: true, message: "" };
+        }
+
+        const missing = Object.keys(requirements)
+          .filter(function (stat) {
+            return typeof requirements[stat] === "number";
+          })
+          .filter(function (stat) {
+            return (player.stats[stat] || 0) < requirements[stat];
+          })
+          .map(function (stat) {
+            return STAT_LABELS[stat] + " " + requirements[stat] + "+";
+          });
+
+        if (!missing.length) {
+          return { ok: true, message: "" };
+        }
+        return { ok: false, message: "Requires " + missing.join(" and ") };
+      }
+
+      function summarizeNonRecurringEffects(effects) {
+        const filtered = (effects || []).filter(function (effect) {
+          return effect && effect.type && effect.type !== "startRecurring" && effect.type !== "stopRecurring";
+        });
+        return summarizeEffects(filtered);
+      }
+
+      function normalizeEffectText(text) {
+        if (!text || text === "No direct stat change" || text === "No recurring status change") {
+          return "None";
+        }
+        return text;
+      }
+
+      function isOccupationSettingOption(option) {
+        return Boolean(extractOccupationFromEffects((option && option.effects) || []));
+      }
+
+      function showBlockedPassNotice(title, message) {
+        return new Promise(function (resolve) {
+          openModal(
+            '<div class="modal-head"><div><h4>' +
+              title +
+              '</h4><div class="modal-sub">Movement Blocked</div></div></div>' +
+              '<p class="gate-message">' +
+              message +
+              "</p>" +
+              '<div style="margin-top:12px; display:flex; justify-content:center;">' +
+              '<button id="blockedPassOkBtn" type="button">OK</button>' +
+              "</div>",
+            "gate-modal"
+          );
+          const btn = document.getElementById("blockedPassOkBtn");
+          btn.addEventListener("click", function () {
+            closeModal();
+            resolve();
+          });
+        });
+      }
+
+      async function bounceBackFromBlockedNode(player, node, reason) {
+        const nodeLabel = (node && (node.gateLabel || node.label)) || "this space";
+        const message =
+          "You cannot pass " +
+          nodeLabel +
+          " because it " +
+          reason +
+          ". You move back to the previous space and this turn is void.";
+        logEntry("Blocked", message);
+        moveBackSteps(player, 1);
+        player.turnVoided = true;
+        refs.turnHint.textContent = message;
+        renderAll();
+        await showBlockedPassNotice("Cannot Pass", message);
+      }
+
+      function extractOccupationFromEffects(effects) {
+        const list = effects || [];
+        for (let i = 0; i < list.length; i += 1) {
+          const effect = list[i];
+          if (effect && effect.type === "setOccupation" && effect.occupation) {
+            return effect.occupation;
+          }
+        }
+        return "";
+      }
+
+      function addOccupationRequirementsFromOptions(map, options, sourceNodeId, preferOverwrite) {
+        (options || []).forEach(function (option) {
+          const occupationId = extractOccupationFromEffects(option.effects);
+          if (!occupationId) {
+            return;
+          }
+          const current = map[occupationId];
+          const incoming = {
+            requirements: option.requirements || null,
+            sourceNodeId: sourceNodeId || "",
+            optionLabel: option.label || occupationId
+          };
+          if (preferOverwrite) {
+            map[occupationId] = incoming;
+            return;
+          }
+          if (!current) {
+            map[occupationId] = incoming;
+            return;
+          }
+          if (!current.requirements && incoming.requirements) {
+            map[occupationId] = incoming;
+          }
+        });
+      }
+
+      function buildOccupationRequirementMap() {
+        const map = {};
+        const nodes = DATA.board.nodes || {};
+        const jobGateNode = nodes["23"] || Object.keys(nodes).map(function (id) {
+          return nodes[id];
+        }).find(function (node) {
+          return node && (node.label === "JOB_GATE" || node.gateLabel === "Choose Your Occupation");
+        });
+
+        if (jobGateNode && Array.isArray(jobGateNode.options)) {
+          addOccupationRequirementsFromOptions(map, jobGateNode.options, jobGateNode.id, true);
+        }
+
+        Object.keys(nodes).forEach(function (nodeId) {
+          const node = nodes[nodeId];
+          if (!node) {
+            return;
+          }
+          if (Array.isArray(node.options)) {
+            addOccupationRequirementsFromOptions(map, node.options, nodeId, false);
+          }
+          if (node.choice && Array.isArray(node.choice.options)) {
+            addOccupationRequirementsFromOptions(map, node.choice.options, nodeId, false);
+          }
+        });
+
+        return map;
+      }
+
+      const OCCUPATION_REQUIREMENTS = buildOccupationRequirementMap();
+
+      function evaluateOccupationRequirements(player, occupationId) {
+        const rule = OCCUPATION_REQUIREMENTS[occupationId];
+        if (!rule || !rule.requirements) {
+          return { ok: true, message: "" };
+        }
+        return evaluateOptionRequirements(player, { requirements: rule.requirements });
       }
 
       function showStopBanner() {
@@ -1266,22 +2680,74 @@
 
       function chooseOptionModal(config) {
         return new Promise(function (resolve) {
+          const optionCountClass = "option-count-" + String(config.options.length || 0);
+          const subtitleHtml = config.subtitle ? '<div class="modal-sub">' + config.subtitle + "</div>" : "";
           const optionHtml = config.options
             .map(function (option, idx) {
               const impact = option.impact || "";
+              const lockedBadgeHtml = option.disabled ? '<span class="locked-badge">Unqualified</span>' : "";
+              const requirementHtml = option.requirementNote
+                ? '<div class="requirement-note">' + option.requirementNote + "</div>"
+                : "";
+              const structuredFootnote = typeof option.immediateEffects === "string" ||
+                typeof option.generationalEffects === "string" ||
+                typeof option.recurringUpkeep === "string";
+              const footnoteHtml = structuredFootnote
+                ? '<div class="option-footnote">' +
+                  '<div class="footnote-section">' +
+                  '<span class="footnote-label">Immediate effects</span>' +
+                  '<span class="footnote-text">' +
+                  (option.immediateEffects || "None") +
+                  "</span>" +
+                  "</div>" +
+                  '<div class="footnote-divider"></div>' +
+                  '<div class="footnote-section">' +
+                  '<span class="footnote-label">Generational effects</span>' +
+                  '<span class="footnote-text">' +
+                  (option.generationalEffects || "None") +
+                  "</span>" +
+                  "</div>" +
+                  '<div class="footnote-divider"></div>' +
+                  '<div class="footnote-section">' +
+                  '<span class="footnote-label">Recurring upkeep</span>' +
+                  '<span class="footnote-text">' +
+                  (option.recurringUpkeep || "None") +
+                  "</span>" +
+                  "</div>" +
+                  "</div>"
+                : "";
+              const upkeepHtml = option.upkeep
+                ? '<div class="upkeep-note"><span class="upkeep-label">' +
+                  (option.upkeepLabel || "Upkeep per turn") +
+                  '</span><span class="upkeep-text">' +
+                  option.upkeep +
+                  "</span></div>"
+                : "";
+              const impactHtml = impact
+                ? '<div class="impact">' +
+                  impact +
+                  "</div>"
+                : "";
               return (
-                '<button class="option-btn" data-option-index="' +
+                '<button class="option-btn' +
+                (option.disabled ? " locked" : "") +
+                '" data-option-index="' +
                 idx +
+                '"' +
+                (option.disabled ? " disabled" : "") +
                 '">' +
-                '<div>' +
+                lockedBadgeHtml +
+                '<div class="option-title">' +
                 option.label +
                 "</div>" +
                 '<div class="preview">' +
                 (option.preview || "") +
                 "</div>" +
-                '<div class="impact">' +
-                impact +
-                "</div>" +
+                (structuredFootnote
+                  ? ""
+                  : impactHtml) +
+                requirementHtml +
+                (structuredFootnote ? footnoteHtml : upkeepHtml) +
                 "</button>"
               );
             })
@@ -1293,15 +2759,15 @@
               "<h4>" +
               config.title +
               "</h4>" +
-              '<div class="modal-sub">' +
-              (config.subtitle || "") +
+              subtitleHtml +
               "</div>" +
               "</div>" +
-              "</div>" +
-              '<div class="sub">' +
+              '<p class="gate-message">' +
               (config.prompt || "") +
-              "</div>" +
-              '<div class="option-grid">' +
+              "</p>" +
+              '<div class="option-grid ' +
+              optionCountClass +
+              '">' +
               optionHtml +
               "</div>",
             config.modalClass || ""
@@ -1310,8 +2776,14 @@
           const buttons = refs.modalCard.querySelectorAll(".option-btn");
           buttons.forEach(function (button) {
             button.addEventListener("click", function () {
+              if (button.disabled) {
+                return;
+              }
               const idx = Number(button.getAttribute("data-option-index"));
               const selected = config.options[idx];
+              if (!selected || selected.disabled) {
+                return;
+              }
               closeModal();
               resolve(selected);
             });
@@ -1321,28 +2793,121 @@
 
       async function showDeckSelectionAndReveal(deckName) {
         return new Promise(function (resolve) {
+          const upperDeck = deckName === "life" ? "Life" : "Era";
+          const deckBackClass = deckName === "life" ? "deck-life" : "deck-era";
+          const mobileStackImage = deckName === "life" ? "ui/GUI/ui_deckstack_life.png" : "ui/GUI/ui_deckstack_era.png";
+          const mobile = isMobileViewport();
+          if (mobile) {
+            openModal(
+              '<div class="modal-head">' +
+                "<div>" +
+                "<h4>Draw a " +
+                upperDeck +
+                " Card</h4>" +
+                "</div>" +
+                "</div>" +
+                '<div class="sub">Pick one card and reveal your event.</div>' +
+                '<div class="draw-stack-wrap">' +
+                '<button id="drawStackBtn" class="draw-stack-btn" type="button">' +
+                '<img class="draw-stack-image" src="' +
+                mobileStackImage +
+                '" alt="' +
+                upperDeck +
+                ' deck stack" />' +
+                "</button>" +
+                "</div>",
+              "draw-modal"
+            );
+
+            const stackButton = document.getElementById("drawStackBtn");
+            let pickedFromStack = false;
+            stackButton.addEventListener("click", async function () {
+              if (pickedFromStack) {
+                return;
+              }
+              pickedFromStack = true;
+              stackButton.classList.add("selected");
+
+              await sleep(460);
+              const card = drawCard(deckName);
+              if (!card) {
+                closeModal();
+                resolve(null);
+                return;
+              }
+
+              refs.modalCard.className = "modal-card draw-modal flip";
+              refs.modalCard.innerHTML =
+                '<div class="modal-head">' +
+                "<div>" +
+                "<h4>Draw a " +
+                upperDeck +
+                " Card</h4>" +
+                "</div>" +
+                "</div>" +
+                '<div class="sub">Pick one card and reveal your event.</div>' +
+                '<div class="card-result-layout">' +
+                '<div class="actual-card">' +
+                '<div class="actual-card-head">' +
+                '<span class="actual-card-deck">' +
+                upperDeck +
+                " Card</span>" +
+                '<h4 class="actual-card-title">' +
+                card.title +
+                "</h4>" +
+                "</div>" +
+                '<p class="actual-card-body">' +
+                card.text +
+                "</p>" +
+                '<div class="actual-card-impact">Consequences: ' +
+                summarizeEffects(card.effects) +
+                "</div>" +
+                "</div>" +
+                "</div>" +
+                '<div class="apply-wrap">' +
+                '<button id="applyCardBtn" type="button">Apply Card</button>' +
+                "</div>";
+
+              const button = document.getElementById("applyCardBtn");
+              button.addEventListener("click", function () {
+                closeModal();
+                resolve(card);
+              });
+            });
+            return;
+          }
+
           openModal(
             '<div class="modal-head">' +
               "<div>" +
-              "<h4>Draw a Card</h4>" +
+              "<h4>Draw a " +
+              upperDeck +
+              " Card</h4>" +
               '<div class="modal-sub">' +
-              deckName.toUpperCase() +
+              upperDeck +
               " Deck" +
               "</div>" +
               "</div>" +
               "</div>" +
               '<div class="sub">Pick one card to reveal your event.</div>' +
               '<div class="draw-select-grid">' +
-              '<button class="draw-card" data-pick-index="0" type="button"><span class="draw-deck-label">' +
-              deckName.toUpperCase() +
-              "</span></button>" +
-              '<button class="draw-card" data-pick-index="1" type="button"><span class="draw-deck-label">' +
-              deckName.toUpperCase() +
-              "</span></button>" +
-              '<button class="draw-card" data-pick-index="2" type="button"><span class="draw-deck-label">' +
-              deckName.toUpperCase() +
-              "</span></button>" +
-              "</div>"
+              '<button class="draw-card ' +
+              deckBackClass +
+              '" data-pick-index="0" type="button" aria-label="' +
+              upperDeck +
+              ' card back"></button>' +
+              '<button class="draw-card ' +
+              deckBackClass +
+              '" data-pick-index="1" type="button" aria-label="' +
+              upperDeck +
+              ' card back"></button>' +
+              '<button class="draw-card ' +
+              deckBackClass +
+              '" data-pick-index="2" type="button" aria-label="' +
+              upperDeck +
+              ' card back"></button>' +
+              "</div>",
+            "draw-modal"
           );
 
           const picks = refs.modalCard.querySelectorAll(".draw-card");
@@ -1371,16 +2936,17 @@
                 return;
               }
 
-              refs.modalCard.className = "modal-card flip";
+              refs.modalCard.className = "modal-card draw-modal flip";
               refs.modalCard.innerHTML =
+                '<div class="card-result-layout">' +
                 '<div class="actual-card">' +
                 '<div class="actual-card-head">' +
+                '<span class="actual-card-deck">' +
+                upperDeck +
+                " Card</span>" +
                 '<h4 class="actual-card-title">' +
                 card.title +
                 "</h4>" +
-                '<span class="actual-card-deck">' +
-                deckName.toUpperCase() +
-                " Card</span>" +
                 "</div>" +
                 '<p class="actual-card-body">' +
                 card.text +
@@ -1388,8 +2954,17 @@
                 '<div class="actual-card-impact">Impact: ' +
                 summarizeEffects(card.effects) +
                 "</div>" +
-                '<div style="margin-top:12px; display:flex; justify-content:flex-end;">' +
+                "</div>" +
+                '<div class="card-result-side">' +
+                "<h5>" +
+                "Draw a " +
+                upperDeck +
+                " Card" +
+                "</h5>" +
+                '<p class="sub">Pick one card and reveal your event.</p>' +
+                '<div class="apply-wrap">' +
                 '<button id="applyCardBtn" type="button">Apply Card</button>' +
+                "</div>" +
                 "</div>" +
                 "</div>";
 
@@ -1439,18 +3014,35 @@
             break;
           case "choice": {
             const options = effect.options || [];
+            const prepared = options.map(function (option) {
+              const requirement = evaluateOptionAvailability(player, option, option.effects || []);
+              return {
+                id: option.id,
+                label: option.label,
+                preview: option.preview,
+                impact: summarizeEffects(option.effects),
+                disabled: !requirement.ok,
+                requirementNote: requirement.message
+              };
+            });
+            if (prepared.length && prepared.every(function (option) { return option.disabled; })) {
+              const blockedNode = getNode(player.currentNode) || { label: sourceLabel || "this space" };
+              const reasonOption = prepared.find(function (option) {
+                return Boolean(option.requirementNote);
+              });
+              await bounceBackFromBlockedNode(
+                player,
+                blockedNode,
+                reasonOption ? reasonOption.requirementNote : "is not affordable right now"
+              );
+              break;
+            }
             const picked = await chooseOptionModal({
               title: "Choice",
               subtitle: sourceLabel || "Decision",
               prompt: effect.prompt || "Pick one option.",
-              options: options.map(function (option) {
-                return {
-                  id: option.id,
-                  label: option.label,
-                  preview: option.preview,
-                  impact: summarizeEffects(option.effects)
-                };
-              })
+              modalClass: "choice-modal",
+              options: prepared
             });
             const selected = options.find(function (option) {
               return option.id === picked.id;
@@ -1465,14 +3057,34 @@
             await showCardAndResolve(player, effect.deck);
             break;
           case "setOccupation": {
-            player.statuses.occupation = effect.occupation;
             const occupation = DATA.occupations[effect.occupation];
+            if (!occupation) {
+              logEntry("Status", "Occupation change ignored: unknown occupation " + effect.occupation + ".");
+              break;
+            }
+            if (!effect.ignoreRequirements) {
+              const requirement = evaluateOccupationRequirements(player, effect.occupation);
+              if (!requirement.ok) {
+                logEntry("Status", "Occupation change blocked: " + requirement.message + ".");
+                if (player === activePlayer()) {
+                  refs.turnHint.textContent = requirement.message + ". Occupation unchanged.";
+                }
+                break;
+              }
+            }
+            player.statuses.occupation = effect.occupation;
+            player.recurringEffects = (player.recurringEffects || []).filter(function (item) {
+              return !item.endOnOccupationChange;
+            });
             logEntry("Status", "Occupation set to " + (occupation ? occupation.label : effect.occupation) + ".");
             break;
           }
           case "setHousing":
             if (effect.housingStatus) {
               player.statuses.housingStatus = effect.housingStatus;
+              player.recurringEffects = (player.recurringEffects || []).filter(function (entry) {
+                return !entry.endOnHousingChange;
+              });
             }
             if (typeof effect.payment === "number") {
               player.statuses.housingPayment = effect.payment;
@@ -1490,6 +3102,10 @@
                 (player.statuses.mortgageActive ? " mortgage active" : "") +
                 "."
             );
+            break;
+          case "adjustHousingPayment":
+            player.statuses.housingPayment = Math.max(0, (player.statuses.housingPayment || 0) + (effect.amount || 0));
+            logEntry("Status", "Housing payment adjusted to " + player.statuses.housingPayment + " per turn.");
             break;
           case "setFamilyStatus":
             player.statuses.familyStatus = effect.familyStatus;
@@ -1513,6 +3129,128 @@
               }
             }
             break;
+          case "startRecurring": {
+            const key = effect.key || ("recurring_" + Date.now());
+            const stackMode = effect.stackMode || "refresh";
+            if (stackMode !== "stack") {
+              player.recurringEffects = (player.recurringEffects || []).filter(function (entry) {
+                return entry.key !== key;
+              });
+            }
+            player.recurringEffects = player.recurringEffects || [];
+            player.recurringEffects.push({
+              key: key,
+              effects: cloneObject(effect.effects || []),
+              remainingTurns: typeof effect.durationTurns === "number" ? effect.durationTurns : null,
+              endOnOccupationChange: Boolean(effect.endOnOccupationChange),
+              endOnHousingChange: Boolean(effect.endOnHousingChange),
+              note: effect.note || "Recurring upkeep"
+            });
+            logEntry("Status", "Recurring effect started: " + key + ".");
+            break;
+          }
+          case "stopRecurring": {
+            const before = (player.recurringEffects || []).length;
+            player.recurringEffects = (player.recurringEffects || []).filter(function (entry) {
+              return entry.key !== effect.key;
+            });
+            if (before !== player.recurringEffects.length) {
+              logEntry("Status", "Recurring effect ended: " + effect.key + ".");
+            }
+            break;
+          }
+          case "pathBonus": {
+            const previousNode = player.pathHistory[player.pathHistory.length - 2] || "";
+            const rules = effect.rules || [];
+            const matchedRule = rules.find(function (rule) {
+              return rule.fromNode === previousNode;
+            });
+            if (matchedRule && matchedRule.effects && matchedRule.effects.length) {
+              await applyEffects(player, matchedRule.effects, sourceLabel || "Path Bonus");
+            }
+            break;
+          }
+          case "payOffMortgage": {
+            const targetKey = effect.key || "mortgage_debt";
+            const recurring = (player.recurringEffects || []).find(function (entry) {
+              return entry.key === targetKey;
+            });
+            let payoff = 0;
+            if (recurring) {
+              const perTurn = (recurring.effects || []).reduce(function (sum, item) {
+                if (item && item.type === "adjustStat" && item.stat === "money" && item.amount < 0) {
+                  return sum + Math.abs(item.amount);
+                }
+                return sum;
+              }, 0);
+              payoff = perTurn * (typeof recurring.remainingTurns === "number" ? recurring.remainingTurns : 0);
+            }
+            if (payoff > 0) {
+              await applyEffect(player, { type: "adjustStat", stat: "money", amount: -payoff }, sourceLabel || "Mortgage payoff");
+            }
+            player.recurringEffects = (player.recurringEffects || []).filter(function (entry) {
+              return entry.key !== targetKey;
+            });
+            player.statuses.mortgageActive = false;
+            if (player.statuses.housingStatus === "buy") {
+              player.statuses.housingPayment = 0;
+            }
+            logEntry("Status", "Mortgage paid off.");
+            break;
+          }
+          case "housingMentalCheck": {
+            const hasMortgageDebt = (player.recurringEffects || []).some(function (entry) {
+              return entry.key === "mortgage_debt";
+            });
+            let amount = 0;
+            if ((player.stats.money || 0) < 0 || player.statuses.housingStatus === "family") {
+              amount = -5;
+            } else if (player.statuses.housingStatus === "rent" || hasMortgageDebt || player.statuses.mortgageActive) {
+              amount = -3;
+            } else if (player.statuses.housingStatus === "buy" && !hasMortgageDebt && !player.statuses.mortgageActive) {
+              amount = 3;
+            }
+            if (amount !== 0) {
+              await applyEffect(player, { type: "adjustStat", stat: "happiness", amount: amount }, "Home Security Mental Check");
+            }
+            break;
+          }
+          case "chooseOccupation": {
+            const options = Object.keys(DATA.occupations)
+              .filter(function (id) {
+                return id !== "unemployed" && id !== "retired";
+              })
+              .map(function (id) {
+                const occ = DATA.occupations[id];
+                const requirement = evaluateOccupationRequirements(player, id);
+                return {
+                  id: id,
+                  label: occ.label,
+                  preview: "Switch your role",
+                  upkeep: formatRecurringDeltas({
+                    money: occ.income || 0,
+                    time: occ.timeDelta || 0,
+                    experience: occ.expDelta || 0,
+                    health: occ.healthDelta || 0,
+                    happiness: occ.happinessDelta || 0
+                  }),
+                  upkeepLabel: "Recurring upkeep",
+                  disabled: !requirement.ok,
+                  requirementNote: requirement.message
+                };
+              });
+            const picked = await chooseOptionModal({
+              title: "Choose Occupation",
+              subtitle: "Career Shift",
+              prompt: "Select a new occupation.",
+              modalClass: "choice-modal",
+              options: options
+            });
+            if (picked) {
+              await applyEffect(player, { type: "setOccupation", occupation: picked.id }, "Occupation Change");
+            }
+            break;
+          }
           case "log":
             logEntry("Info", effect.message || "Event");
             break;
@@ -1544,21 +3282,57 @@
         await showStopBanner();
 
         const generation = player.generation;
+        player.enterEffectsApplied = player.enterEffectsApplied || {};
+        if (!player.enterEffectsApplied[node.id] && node.onEnterEffects && node.onEnterEffects.length) {
+          player.enterEffectsApplied[node.id] = true;
+          await applyEffects(player, node.onEnterEffects, node.gateLabel || node.label);
+        }
+
         const options = (node.options || []).map(function (option) {
           const generationEffects = (option.generationEffects && option.generationEffects[generation]) || [];
           const baseEffects = option.effects || [];
+          const combinedEffects = baseEffects.concat(generationEffects);
+          const requirement = evaluateOptionAvailability(player, option, combinedEffects);
+          const previewText =
+            (option.generationPreviews && option.generationPreviews[generation]) || option.preview || "";
+          const upkeepText = option.upkeepNote || summarizeUpkeepChange(player, combinedEffects);
+          const occupationOption = isOccupationSettingOption(option);
           return {
             id: option.id,
             label: option.label,
-            preview: option.preview,
-            impact: summarizeEffects(baseEffects.concat(generationEffects))
+            preview: previewText,
+            immediateEffects: occupationOption ? undefined : normalizeEffectText(summarizeNonRecurringEffects(baseEffects)),
+            generationalEffects: occupationOption ? undefined : normalizeEffectText(summarizeNonRecurringEffects(generationEffects)),
+            recurringUpkeep: occupationOption ? undefined : normalizeEffectText(upkeepText),
+            upkeep: occupationOption ? normalizeEffectText(upkeepText) : undefined,
+            upkeepLabel: occupationOption ? "Recurring upkeep" : undefined,
+            disabled: !requirement.ok,
+            requirementNote: requirement.message
           };
         });
 
+        if (options.length && options.every(function (option) { return option.disabled; })) {
+          const firstReason = options.find(function (option) {
+            return Boolean(option.requirementNote);
+          });
+          await bounceBackFromBlockedNode(
+            player,
+            node,
+            firstReason ? firstReason.requirementNote : "is not affordable right now"
+          );
+          return;
+        }
+
+        const gateMeta = (DATA.board.spaceMeta && DATA.board.spaceMeta[node.id]) || {};
+        const gatePrompt =
+          (node.gatePrompts && node.gatePrompts[generation]) ||
+          (gateMeta.generationDescriptions && gateMeta.generationDescriptions[generation]) ||
+          "Choose your path. Gate decisions are mandatory and cannot be skipped.";
         const selected = await chooseOptionModal({
           title: node.gateLabel || "Decision Point",
           subtitle: DATA.generations[generation].label + " impact",
-          prompt: "Choose your path. Gate decisions are mandatory and cannot be skipped.",
+          prompt: gatePrompt,
+          modalClass: "gate-modal",
           options
         });
 
@@ -1571,6 +3345,16 @@
         });
         if (!fullOption) {
           return;
+        }
+        const requirementCheck = evaluateOptionAvailability(
+          player,
+          fullOption,
+          (fullOption.effects || []).concat((fullOption.generationEffects && fullOption.generationEffects[generation]) || [])
+        );
+        if (!requirementCheck.ok) {
+          logEntry("Gate", "Blocked option: " + (requirementCheck.message || "requirements not met") + ".");
+          refs.turnHint.textContent = requirementCheck.message || "Requirements not met for this option.";
+          return resolveGateInterrupt(player, node);
         }
 
         const generationEffects = (fullOption.generationEffects && fullOption.generationEffects[generation]) || [];
@@ -1609,12 +3393,18 @@
         }
 
         if (node.effects && node.effects.length) {
+          const mandatoryCheck = evaluateCriticalStatFeasibility(player, node.effects);
+          if (!mandatoryCheck.ok) {
+            await bounceBackFromBlockedNode(player, node, mandatoryCheck.message);
+            return;
+          }
           await applyEffects(player, node.effects, node.label);
         }
       }
 
       async function resolveMovement(player, steps) {
         const total = Math.max(1, Math.min(3, Number(steps) || 1));
+        player.turnVoided = false;
         logEntry("Move", "Advance " + total + " step(s) from " + player.currentNode + ".");
 
         for (let i = 0; i < total; i += 1) {
@@ -1635,14 +3425,24 @@
           if (landedNode && (landedNode.type === "gate" || landedNode.type === "checkpoint")) {
             await resolveGateInterrupt(player, landedNode);
             renderMap();
+            if (player.turnVoided) {
+              break;
+            }
           }
 
           await sleep(130);
         }
 
+        if (player.turnVoided) {
+          return;
+        }
+
         const finalNode = getNode(player.currentNode);
         if (finalNode && finalNode.type !== "gate" && finalNode.type !== "checkpoint") {
           await resolveLandingNode(player, finalNode);
+          if (player.turnVoided) {
+            return;
+          }
         }
 
         if (player.currentNode === DATA.board.finishNode) {
@@ -1655,6 +3455,25 @@
 
       async function applyTurnUpkeep(player) {
         logEntry("Upkeep", "Applying recurring costs.");
+        const activeRecurring = (player.recurringEffects || []).slice();
+        if (activeRecurring.length) {
+          for (let i = 0; i < activeRecurring.length; i += 1) {
+            const recurring = activeRecurring[i];
+            await applyEffects(player, recurring.effects || [], recurring.note || "Recurring upkeep");
+          }
+          player.recurringEffects = activeRecurring
+            .map(function (recurring) {
+              const next = Object.assign({}, recurring);
+              if (typeof next.remainingTurns === "number") {
+                next.remainingTurns -= 1;
+              }
+              return next;
+            })
+            .filter(function (recurring) {
+              return recurring.remainingTurns === null || recurring.remainingTurns > 0;
+            });
+        }
+
         const effects = [];
 
         if (player.statuses.housingPayment > 0) {
@@ -1694,6 +3513,13 @@
           { type: "adjustStat", stat: "experience", amount: job.expDelta, note: "Work growth" }
         ];
 
+        if (job.healthDelta) {
+          effects.push({ type: "adjustStat", stat: "health", amount: job.healthDelta, note: "Occupation load" });
+        }
+        if (job.happinessDelta) {
+          effects.push({ type: "adjustStat", stat: "happiness", amount: job.happinessDelta, note: "Occupation mood" });
+        }
+
         if (player.statuses.familyStatus === "dating") {
           effects.push({ type: "adjustStat", stat: "happiness", amount: 1, note: "Partner support" });
         }
@@ -1713,7 +3539,9 @@
         state.phase = "resolving";
         updateControls();
 
+        snapshotTurnStart(player);
         logEntry("Turn", player.name + " starts turn.");
+        await adjustStat(player, "time", 5, "Round refresh");
         await applyTurnUpkeep(player);
         await applyTurnIncome(player);
 
@@ -1746,8 +3574,60 @@
         if (state.phase !== "game_over") {
           state.phase = "await_end";
           updateControls();
-          refs.turnHint.textContent = "Movement and node resolution complete. End turn to rotate player.";
+          refs.turnHint.textContent = player.turnVoided
+            ? "Turn voided after blocked movement. End turn to rotate player."
+            : "Movement and node resolution complete. End turn to rotate player.";
           logEntry("Turn", player.name + " completed turn flow.");
+        }
+      }
+
+      async function devJumpToNode() {
+        if (!state.players.length || state.phase === "setup") {
+          refs.turnHint.textContent = "Start a session first.";
+          return;
+        }
+
+        const player = activePlayer();
+        if (!player) {
+          refs.turnHint.textContent = "No active player.";
+          return;
+        }
+
+        const targetNodeId = resolveNodeIdFromInput(refs.devNodeInput.value);
+        if (!targetNodeId) {
+          refs.turnHint.textContent = "Invalid node id.";
+          refs.devNodeInput.focus();
+          return;
+        }
+
+        const previousPhase = state.phase;
+        state.phase = "resolving";
+        updateControls();
+        refs.turnHint.textContent = "Dev jump in progress...";
+
+        logEntry("Dev", "Jump " + player.name + " to node " + targetNodeId + ".");
+        moveToNode(player, targetNodeId, "(dev jump)");
+        renderAll();
+
+        const targetNode = getNode(targetNodeId);
+        if (targetNode && (targetNode.type === "gate" || targetNode.type === "checkpoint")) {
+          await resolveGateInterrupt(player, targetNode);
+        } else {
+          await resolveLandingNode(player, targetNode);
+        }
+
+        if (targetNodeId === DATA.board.finishNode && !player.finished) {
+          player.finished = true;
+          player.finishedRound = state.round;
+          logEntry("Finish", player.name + " reached FINISH (dev jump).");
+          await showResultsIfNeeded();
+        }
+
+        renderAll();
+        if (state.phase !== "game_over") {
+          state.phase = previousPhase === "setup" ? "await_start" : previousPhase;
+          updateControls();
+          refs.turnHint.textContent = "Dev jump resolved at node " + player.currentNode + ".";
         }
       }
 
@@ -1781,6 +3661,7 @@
         const nextIndex = nextActivePlayerIndex();
         if (nextIndex === -1) {
           state.phase = "game_over";
+          clearTurnUndo();
           updateControls();
           await showResultsIfNeeded();
           return;
@@ -1790,6 +3671,7 @@
           state.round += 1;
         }
 
+        clearTurnUndo();
         state.currentPlayerIndex = nextIndex;
         state.phase = "await_start";
         refs.turnHint.textContent = "Start turn to apply upkeep and income.";
@@ -1800,7 +3682,7 @@
       function computeTags(player) {
         const tags = [];
         const occupation = DATA.occupations[player.statuses.occupation];
-        if (occupation) {
+        if (occupation && occupation.tags) {
           occupation.tags.forEach(function (label) {
             tags.push({
               text: label,
@@ -1821,7 +3703,9 @@
         if (player.stats.money < 0) {
           tags.push({ text: "Debt Pressure", tone: "bad" });
         }
-        if (player.stats.health <= 3) {
+        if (player.stats.health < 0) {
+          tags.push({ text: "unhealthy lifestyle", tone: "bad" });
+        } else if (player.stats.health <= 3) {
           tags.push({ text: "Burnout Risk", tone: "bad" });
         }
         if (player.stats.education >= 7) {
@@ -1829,6 +3713,140 @@
         }
 
         return tags;
+      }
+
+      function formatSigned(value) {
+        const amount = Number(value) || 0;
+        return (amount > 0 ? "+" : "") + String(amount);
+      }
+
+      function formatStatDeltaInline(stat, amount) {
+        return STAT_LABELS[stat] + " " + formatSigned(amount);
+      }
+
+      function prettyRelationshipStatus(statusId) {
+        const map = {
+          solo: "Single (No kids)",
+          single: "Single (No kids)",
+          dating: "In a Relationship",
+          married: "Married",
+          kids: "Parenting",
+          caregiving: "Caregiving",
+          married_kids: "Married with Kids",
+          married_childfree: "Married (Child-free)"
+        };
+        return map[statusId] || formatNodeLabel(statusId || "-");
+      }
+
+      function prettyHousingStatus(statusId) {
+        const map = {
+          none: "No Housing Selected",
+          rent: "Renting",
+          buy: "Homeowner",
+          family: "Living with Family",
+          shared: "Shared Housing"
+        };
+        return map[statusId] || formatNodeLabel(statusId || "-");
+      }
+
+      function getOccupationLine(player) {
+        const occupation = DATA.occupations[player.statuses.occupation] || DATA.occupations.unemployed;
+        const parts = [
+          formatSigned(occupation.income || 0) + " Money / Turn",
+          formatSigned(occupation.timeDelta || 0) + " Time / Turn"
+        ];
+        return occupation.label + " (" + parts.join(", ") + ")";
+      }
+
+      function getHousingLine(player) {
+        const housingLabel = prettyHousingStatus(player.statuses.housingStatus);
+        const details = [];
+
+        if (player.statuses.housingPayment > 0) {
+          details.push("-" + player.statuses.housingPayment + " Money / Turn");
+        }
+
+        const mortgageRecurring = (player.recurringEffects || []).find(function (entry) {
+          return entry && entry.key === "mortgage_debt";
+        });
+        if (mortgageRecurring) {
+          const mortgageText = formatRecurringDeltas(getDeltasFromEffectList(mortgageRecurring.effects || []));
+          if (mortgageText) {
+            if (typeof mortgageRecurring.remainingTurns === "number") {
+              details.push("Mortgage " + mortgageText + " (" + mortgageRecurring.remainingTurns + " turns left)");
+            } else {
+              details.push("Mortgage " + mortgageText);
+            }
+          }
+        } else if (player.statuses.mortgageActive) {
+          details.push("Mortgage Active");
+        }
+
+        if (!details.length) {
+          if (player.statuses.housingStatus === "family") {
+            details.push("No Rent / Mortgage");
+          } else if (player.statuses.housingStatus === "none") {
+            details.push("Pending selection");
+          } else {
+            details.push("No direct housing payment");
+          }
+        }
+
+        return housingLabel + " (" + details.join(", ") + ")";
+      }
+
+      function getPerTurnBreakdownLine(player) {
+        const entries = [];
+        const occupation = DATA.occupations[player.statuses.occupation] || DATA.occupations.unemployed;
+
+        if ((occupation.income || 0) !== 0) {
+          entries.push("Salary: " + formatStatDeltaInline("money", occupation.income));
+        }
+        if ((occupation.timeDelta || 0) !== 0) {
+          entries.push("Workload: " + formatStatDeltaInline("time", occupation.timeDelta));
+        }
+        if ((occupation.expDelta || 0) !== 0) {
+          entries.push("Career growth: " + formatStatDeltaInline("experience", occupation.expDelta));
+        }
+        if ((occupation.healthDelta || 0) !== 0) {
+          entries.push("Job health load: " + formatStatDeltaInline("health", occupation.healthDelta));
+        }
+        if ((occupation.happinessDelta || 0) !== 0) {
+          entries.push("Job mood effect: " + formatStatDeltaInline("happiness", occupation.happinessDelta));
+        }
+
+        if ((player.statuses.housingPayment || 0) > 0) {
+          entries.push("Housing payment: " + formatStatDeltaInline("money", -player.statuses.housingPayment));
+        }
+        if (player.statuses.familyStatus === "kids") {
+          entries.push("Childcare: " + formatStatDeltaInline("money", -2) + ", " + formatStatDeltaInline("time", -2));
+        }
+        if (player.statuses.familyStatus === "caregiving") {
+          entries.push("Care support: " + formatStatDeltaInline("money", -1) + ", " + formatStatDeltaInline("time", -2));
+        }
+        if (player.statuses.familyStatus === "dating") {
+          entries.push("Partner support: " + formatStatDeltaInline("happiness", 1));
+        }
+        if ((player.stats.money || 0) < 0) {
+          entries.push("Debt interest: " + formatStatDeltaInline("money", -1) + ", " + formatStatDeltaInline("happiness", -1));
+        }
+
+        (player.recurringEffects || []).forEach(function (recurring) {
+          const recurringText = formatRecurringDeltas(getDeltasFromEffectList(recurring.effects || []));
+          if (!recurringText) {
+            return;
+          }
+          let suffix = "";
+          if (typeof recurring.remainingTurns === "number") {
+            suffix = " (" + recurring.remainingTurns + " turns left)";
+          }
+          entries.push((recurring.note || recurring.key || "Recurring") + ": " + recurringText + suffix);
+        });
+
+        if (!entries.length) {
+          return "No ongoing upkeep effects.";
+        }
+        return entries.join(" • ");
       }
 
       function renderPlayerCard() {
@@ -1840,19 +3858,31 @@
         const generation = DATA.generations[player.generation];
         refs.activePlayerName.textContent = player.name + (player.finished ? " (Finished)" : "");
         refs.activePlayerGen.textContent = generation.label;
-        refs.activePlayerGen.style.borderColor = generation.accent;
+        refs.activePlayerGen.style.background = getGenerationColor(player.generation);
+        refs.activePlayerGen.style.borderColor = "rgba(0,0,0,0.18)";
+        refs.activePlayerGen.style.color = "#000";
 
         refs.statsGrid.innerHTML = STAT_ORDER
           .map(function (stat) {
             const value = player.stats[stat] || 0;
+            const valueClass = (stat === "money" || stat === "health") && value < 0 ? "bad" : "";
             return (
               '<div class="stat-pill" data-stat="' +
               stat +
               '">' +
+              '<div class="stat-left">' +
+              '<img class="stat-icon" src="' +
+              getStatIcon(stat) +
+              '" alt="' +
+              STAT_LABELS[stat] +
+              ' icon" />' +
               '<div class="stat-label">' +
               STAT_LABELS[stat] +
               "</div>" +
-              '<div class="stat-value">' +
+              "</div>" +
+              '<div class="stat-value ' +
+              valueClass +
+              '">' +
               value +
               "</div>" +
               "</div>"
@@ -1862,15 +3892,16 @@
 
         refs.statusGrid.innerHTML =
           '<div class="status-item"><span>Occupation</span><strong>' +
-          (DATA.occupations[player.statuses.occupation] ? DATA.occupations[player.statuses.occupation].label : "-") +
+          getOccupationLine(player) +
           "</strong></div>" +
           '<div class="status-item"><span>Housing</span><strong>' +
-          player.statuses.housingStatus +
-          " (" +
-          player.statuses.housingPayment +
-          "/turn)</strong></div>" +
-          '<div class="status-item"><span>Family</span><strong>' +
-          player.statuses.familyStatus +
+          getHousingLine(player) +
+          "</strong></div>" +
+          '<div class="status-item"><span>Relationship</span><strong>' +
+          prettyRelationshipStatus(player.statuses.familyStatus) +
+          '</strong></div>' +
+          '<div class="status-item"><span>Upkeep per turn</span><strong>' +
+          getPerTurnBreakdownLine(player) +
           "</strong></div>";
 
         const tags = computeTags(player);
@@ -1889,6 +3920,8 @@
           DATA.generations[player.generation].short;
 
         refs.roundChip.textContent = "Round " + state.round + " · " + player.name;
+        refs.roundChip.style.background = getGenerationColor(player.generation);
+        refs.roundChip.style.color = "#000";
       }
 
       function renderMap() {
@@ -1903,18 +3936,8 @@
           return;
         }
 
-        const meta = getSpaceMeta(node);
-        const gateTag = (node.type === "gate" || node.type === "checkpoint") ? "Decision Required" : "Resolve Then Continue";
-        const actionByType = {
-          draw: "Landing here triggers a card draw and card resolution.",
-          choice: "Landing here opens a choice modal with branching effects.",
-          gate: "Movement pauses here. You must pick one branch before remaining steps continue.",
-          checkpoint: "Checkpoint interrupt: choose before continuing movement.",
-          effect: "Immediate space effect applies on landing.",
-          hub: "Connector space. Next movement leaves toward the next gate.",
-          start: "Starting position for this player's journey.",
-          finish: "Journey complete for this player."
-        };
+        const meta = getSpaceMeta(node, player.generation);
+        const consequenceText = getNodeConsequenceText(node);
 
         refs.spaceCard.innerHTML =
           '<div class="space-kicker">Active Landing Space</div>' +
@@ -1929,19 +3952,9 @@
           '<p class="space-description">' +
           meta.description +
           "</p>" +
-          '<div class="space-meta-row">' +
-          '<span class="space-meta-pill">' +
-          String(node.type).toUpperCase() +
-          "</span>" +
-          '<span class="space-meta-pill">' +
-          gateTag +
-          "</span>" +
-          '<span class="space-meta-pill">Visited ' +
-          player.pathHistory.length +
-          " spaces</span>" +
-          "</div>" +
           '<div class="space-action">' +
-          (actionByType[node.type] || "Resolve this space based on game effects.") +
+          '<div class="consequence-label">Consequences</div>' +
+          consequenceText +
           "</div>";
       }
 
@@ -1950,6 +3963,7 @@
           .map(function (item) {
             const generation = DATA.generations[item.generation];
             const classes = ["roster-card"];
+            const generationColor = getGenerationColor(item.generation);
             if (state.players[state.currentPlayerIndex] && state.players[state.currentPlayerIndex].id === item.id) {
               classes.push("active");
             }
@@ -1960,37 +3974,49 @@
               '<div class="roster-head"><h4 class="roster-name">' +
               item.name +
               (item.finished ? " (Finished)" : "") +
-              '</h4><span class="roster-gen">' +
+              '</h4><span class="roster-gen" style="background:' +
+              generationColor +
+              ';">' +
               generation.label +
               "</span></div>" +
               '<div class="roster-stats">' +
-              '<div class="roster-stat">Hap <strong>' +
+              '<div class="roster-stat"><img class="roster-stat-icon" src="' +
+              getStatIcon("happiness") +
+              '" alt="" /><strong>' +
               item.stats.happiness +
               "</strong></div>" +
-              '<div class="roster-stat">Health <strong>' +
+              '<div class="roster-stat"><img class="roster-stat-icon" src="' +
+              getStatIcon("health") +
+              '" alt="" /><strong>' +
               item.stats.health +
               "</strong></div>" +
-              '<div class="roster-stat">Time <strong>' +
+              '<div class="roster-stat"><img class="roster-stat-icon" src="' +
+              getStatIcon("time") +
+              '" alt="" /><strong>' +
               item.stats.time +
               "</strong></div>" +
-              '<div class="roster-stat">Money <strong>' +
+              '<div class="roster-stat"><img class="roster-stat-icon" src="' +
+              getStatIcon("money") +
+              '" alt="" /><strong>' +
               item.stats.money +
               "</strong></div>" +
-              '<div class="roster-stat">Exp <strong>' +
+              '<div class="roster-stat"><img class="roster-stat-icon" src="' +
+              getStatIcon("experience") +
+              '" alt="" /><strong>' +
               item.stats.experience +
               "</strong></div>" +
-              '<div class="roster-stat">Edu <strong>' +
+              '<div class="roster-stat"><img class="roster-stat-icon" src="' +
+              getStatIcon("education") +
+              '" alt="" /><strong>' +
               item.stats.education +
               "</strong></div>" +
               "</div>" +
               '<div class="roster-status">Occ: ' +
               (DATA.occupations[item.statuses.occupation] ? DATA.occupations[item.statuses.occupation].label : item.statuses.occupation) +
               " · Housing: " +
-              item.statuses.housingStatus +
-              " (" +
-              item.statuses.housingPayment +
-              "/turn) · Family: " +
-              item.statuses.familyStatus +
+              prettyHousingStatus(item.statuses.housingStatus) +
+              " · Relationship: " +
+              prettyRelationshipStatus(item.statuses.familyStatus) +
               "</div>" +
               '<div class="roster-status">Current node: ' +
               item.currentNode +
@@ -2006,13 +4032,16 @@
       function renderSetupPlayers() {
         refs.playerList.innerHTML = state.players
           .map(function (player, index) {
+            const generationColor = getGenerationColor(player.generation);
             return (
-              '<div class="player-row">' +
+              '<div class="player-row" style="background:' +
+              generationColor +
+              ';">' +
               "<div><strong>" +
               player.name +
-              "</strong><br/><small>" +
+              " — " +
               DATA.generations[player.generation].label +
-              "</small></div>" +
+              "</strong></div>" +
               '<button class="remove-btn" type="button" data-remove-index="' +
               index +
               '">Remove</button>' +
@@ -2043,7 +4072,21 @@
         refs.startTurnBtn.disabled = state.phase !== "await_start";
         refs.moveBtn.disabled = state.phase !== "await_steps";
         refs.endTurnBtn.disabled = state.phase !== "await_end";
+        refs.undoTurnBtn.disabled = !canUndoCurrentTurn();
         refs.stepsInput.disabled = state.phase !== "await_steps";
+        if (refs.devNodeInput && refs.devJumpBtn) {
+          const disableDev =
+            !state.devMode || !state.players.length || state.phase === "setup" || state.phase === "resolving" || state.phase === "game_over";
+          refs.devNodeInput.disabled = disableDev;
+          refs.devJumpBtn.disabled = disableDev;
+        }
+        if (refs.stepPicker) {
+          const buttons = refs.stepPicker.querySelectorAll(".step-btn");
+          buttons.forEach(function (button) {
+            button.disabled = state.phase !== "await_steps";
+          });
+        }
+        syncStepButtons();
 
         if (state.phase === "await_start") {
           refs.turnHint.textContent = "Start turn to run upkeep and income.";
@@ -2121,14 +4164,17 @@
           stats: cloneObject(DATA.baseStats),
           statuses: {
             occupation: "unemployed",
-            housingStatus: "rent",
-            housingPayment: 1,
+            housingStatus: "none",
+            housingPayment: 0,
             mortgageActive: false,
             familyStatus: "solo"
           },
           currentNode: DATA.board.startNode,
           pathHistory: [DATA.board.startNode],
           gateRoutes: {},
+          recurringEffects: [],
+          enterEffectsApplied: {},
+          turnVoided: false,
           finished: false,
           finishedRound: null
         };
@@ -2144,9 +4190,12 @@
         state.round = 1;
         state.currentPlayerIndex = 0;
         state.phase = "await_start";
+        setDevMode(false);
+        clearTurnUndo();
         state.timeline = [];
         state.logIndex = 1;
 
+        document.body.classList.add("in-game");
         refs.setupScreen.classList.add("hidden");
         refs.gameScreen.classList.remove("hidden");
         renderAll();
@@ -2156,12 +4205,29 @@
       }
 
       function initSetupForm() {
+        document.body.classList.remove("in-game");
+        setDevMode(false);
+        clearTurnUndo();
+        refs.roundChip.style.background = "#4abeee";
+        refs.roundChip.style.color = "#000";
         const generationOptions = Object.keys(DATA.generations)
           .map(function (key) {
             return '<option value="' + key + '">' + DATA.generations[key].label + "</option>";
           })
           .join("");
-        refs.generationSelect.innerHTML = generationOptions;
+        refs.generationSelect.innerHTML = '<option value="" selected disabled>Pick a generation</option>' + generationOptions;
+
+        if (refs.stepPicker) {
+          const stepButtons = refs.stepPicker.querySelectorAll(".step-btn");
+          stepButtons.forEach(function (button) {
+            button.addEventListener("click", function () {
+              const step = Number(button.getAttribute("data-step"));
+              refs.stepsInput.value = String(step);
+              syncStepButtons();
+            });
+          });
+          syncStepButtons();
+        }
 
         refs.addPlayerBtn.addEventListener("click", function () {
           const name = refs.playerNameInput.value.trim();
@@ -2170,8 +4236,13 @@
             refs.playerNameInput.focus();
             return;
           }
+          if (!generation) {
+            refs.generationSelect.focus();
+            return;
+          }
           state.players.push(createPlayer(name, generation));
           refs.playerNameInput.value = "";
+          refs.generationSelect.value = "";
           refs.playerNameInput.focus();
           renderSetupPlayers();
         });
@@ -2197,6 +4268,40 @@
         });
         refs.endTurnBtn.addEventListener("click", function () {
           endTurnFlow();
+        });
+        refs.undoTurnBtn.addEventListener("click", function () {
+          undoCurrentTurn();
+        });
+        refs.devJumpBtn.addEventListener("click", function () {
+          devJumpToNode();
+        });
+        refs.devNodeInput.addEventListener("keydown", function (event) {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            devJumpToNode();
+          }
+        });
+        document.addEventListener("keydown", function (event) {
+          if (event.repeat || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) {
+            return;
+          }
+          if (String(event.key || "").toLowerCase() !== "d") {
+            return;
+          }
+          if (state.phase === "setup" || state.phase === "resolving" || state.phase === "game_over") {
+            return;
+          }
+          const target = event.target;
+          const tag = target && target.tagName ? target.tagName.toLowerCase() : "";
+          if (tag === "input" || tag === "textarea" || tag === "select" || (target && target.isContentEditable)) {
+            return;
+          }
+          event.preventDefault();
+          setDevMode(!state.devMode);
+          updateControls();
+          refs.turnHint.textContent = state.devMode
+            ? "Dev mode enabled. Enter a node id and jump."
+            : "Dev mode disabled.";
         });
 
         renderSetupPlayers();

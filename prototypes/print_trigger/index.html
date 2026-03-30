@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NFC Thermal Print Portal</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      color: #222;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: min(720px, 90vw);
+      background: white;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 2rem;
+    }
+
+    h2 {
+      margin-top: 2rem;
+      font-size: 1.2rem;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    .button-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    button {
+      padding: 12px 18px;
+      border: none;
+      border-radius: 10px;
+      background: #222;
+      color: white;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+
+    button:hover {
+      background: #444;
+    }
+
+    .status-box {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 12px;
+      background: #f0f0f0;
+    }
+
+    .status-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.65;
+      margin-bottom: 6px;
+    }
+
+    #status {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .uid-box {
+      margin-top: 12px;
+      font-family: monospace;
+      font-size: 0.95rem;
+      opacity: 0.8;
+    }
+
+    .hint {
+      margin-top: 20px;
+      font-size: 0.92rem;
+      opacity: 0.75;
+    }
+
+    /* Hidden input for wedge-style NFC reader */
+    #scannerInput {
+      position: absolute;
+      left: -9999px;
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Thermal Print Portal</h1>
+    <p>
+      Use the buttons below to test templates manually, or tap an NFC tag to trigger
+      a print automatically.
+    </p>
+
+    <h2>Manual test buttons</h2>
+    <div class="button-group">
+      <button onclick="printTemplate('childhood-memory')">Print Childhood Memory</button>
+      <button onclick="printTemplate('family-conflict')">Print Family Conflict</button>
+      <button onclick="printTemplate('migration-story')">Print Migration Story</button>
+    </div>
+
+    <h2>NFC scan trigger</h2>
+    <p>
+      Your NFC reader can type the UID into the hidden input below. When it sends
+      Enter, this page will detect the UID and print the mapped template.
+    </p>
+
+    <div class="status-box">
+      <div class="status-label">Status</div>
+      <div id="status">Ready. Tap a tag or press a test button.</div>
+      <div class="uid-box" id="lastUid">Last scanned UID: —</div>
+    </div>
+
+    <p class="hint">
+      Tip: keep this page active and in focus so the NFC reader types into the hidden input correctly.
+    </p>
+  </div>
+
+  <input id="scannerInput" type="text" autofocus />
+
+  <script>
+    const statusEl = document.getElementById("status");
+    const lastUidEl = document.getElementById("lastUid");
+    const scannerInput = document.getElementById("scannerInput");
+
+    // Map scanned UID → template name used by your Python server
+    const UID_TO_TEMPLATE = {
+      "1149891332": "childhood-memory",
+      "0037184260": "family-conflict",
+      "1172026116": "migration-story"
+    };
+
+    async function printTemplate(template) {
+      statusEl.textContent = `Printing template: ${template}...`;
+
+      try {
+        const response = await fetch("http://127.0.0.1:5050/print", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ template: template })
+        });
+
+        const result = await response.json();
+
+        if (!response.ok || !result.ok) {
+          throw new Error(result.error || "Print failed");
+        }
+
+        statusEl.textContent = `Printed: ${result.printed}`;
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = `Error: ${err.message}`;
+      }
+    }
+
+    function keepScannerFocus() {
+      scannerInput.focus();
+    }
+
+    // Keep focus when page loads or user clicks anywhere
+    window.addEventListener("load", keepScannerFocus);
+    window.addEventListener("click", keepScannerFocus);
+
+    // Extra insurance for wedge-style readers in exhibition mode
+    setInterval(keepScannerFocus, 1000);
+
+    scannerInput.addEventListener("keydown", async (event) => {
+      if (event.key === "Enter") {
+        const uid = scannerInput.value.trim();
+        scannerInput.value = "";
+
+        if (!uid) {
+          keepScannerFocus();
+          return;
+        }
+
+        console.log("Scanned UID:", uid);
+        lastUidEl.textContent = `Last scanned UID: ${uid}`;
+
+        const template = UID_TO_TEMPLATE[uid];
+
+        if (!template) {
+          statusEl.textContent = `Unknown tag: ${uid}`;
+          keepScannerFocus();
+          return;
+        }
+
+        statusEl.textContent = `Tag recognised: ${uid} → ${template}`;
+        await printTemplate(template);
+        keepScannerFocus();
+      }
+    });
+  </script>
+</body>
+</html>
