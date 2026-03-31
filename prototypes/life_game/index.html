@@ -503,6 +503,34 @@
       line-height: 1.28;
     }
 
+    .status-item.upkeep-item {
+      align-items: flex-start;
+    }
+
+    .status-item.upkeep-item strong {
+      display: grid;
+      gap: 4px;
+      justify-items: end;
+    }
+
+    .status-value-stack {
+      display: grid;
+      gap: 3px;
+      justify-items: end;
+    }
+
+    .status-value-line {
+      display: block;
+    }
+
+    .status-value-label {
+      font-weight: 800;
+    }
+
+    .status-value-amount {
+      font-weight: 600;
+    }
+
     .tag-wrap {
       display: flex;
       flex-wrap: wrap;
@@ -537,8 +565,15 @@
 
     .turn-panel {
       display: grid;
-      gap: 12px;
+      gap: 10px;
       background: transparent;
+    }
+
+    .turn-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
     }
 
     .turn-panel h3,
@@ -553,49 +588,49 @@
       line-height: 0.95;
     }
 
-    .turn-panel .sub {
-      color: rgba(0, 0, 0, 0.7);
-      font-size: 0.92rem;
-      max-width: none;
-    }
-
     .turn-actions {
       display: grid;
-      gap: 12px;
+      gap: 10px;
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .turn-actions button {
-      min-height: 76px;
-      font-size: 1.02rem;
+      min-height: 62px;
+      font-size: 0.96rem;
     }
 
     .undo-turn-btn {
-      width: 100%;
-      min-height: 58px;
-      font-size: 1rem;
+      width: auto;
+      min-height: 52px;
+      min-width: 154px;
+      font-size: 0.9rem;
+      padding: 0.4rem 0.9rem;
       background: var(--navy);
       color: var(--cream);
     }
 
     .step-picker-wrap {
-      display: grid;
-      gap: 8px;
-      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 0;
+      flex-wrap: nowrap;
     }
 
     .steps-label {
       font-family: var(--display-font);
-      font-size: clamp(2rem, 3vw, 3.1rem);
+      font-size: clamp(1.65rem, 2.5vw, 2.35rem);
       color: var(--red);
       text-transform: uppercase;
       line-height: 0.95;
+      flex: 0 0 auto;
     }
 
     .step-picker {
       display: grid;
-      gap: 12px;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      grid-template-columns: repeat(3, auto);
+      align-items: center;
     }
 
     .step-btn {
@@ -603,11 +638,12 @@
       background: transparent;
       color: #1f1d27;
       border: 2px solid rgba(0, 0, 0, 0.7);
-      font-size: 2.5rem;
-      min-height: 84px;
+      font-size: 1.85rem;
+      min-height: 56px;
+      min-width: 86px;
       font-family: var(--display-font);
       line-height: 1;
-      padding: 0;
+      padding: 0 0.5rem;
     }
 
     .step-btn.active {
@@ -621,9 +657,7 @@
     }
 
     .turn-hint {
-      font-size: 0.88rem;
-      color: rgba(0, 0, 0, 0.72);
-      min-height: 22px;
+      display: none;
     }
 
     .dev-tools {
@@ -715,7 +749,7 @@
       margin: 0;
       font-family: var(--body-font);
       font-weight: 800;
-      font-size: clamp(1.8rem, 3.2vw, 3rem);
+      font-size: clamp(1.45rem, 2.25vw, 2.2rem);
       line-height: 0.95;
       color: var(--black);
     }
@@ -1479,7 +1513,7 @@
       }
 
       .turn-actions {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
       .step-picker {
@@ -1501,7 +1535,7 @@
       }
 
       .turn-actions button {
-        min-height: 66px;
+        min-height: 60px;
       }
 
       .apply-wrap button {
@@ -1594,26 +1628,32 @@
       }
 
       .stats-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 8px;
       }
 
       .stat-pill {
-        min-height: 48px;
-        padding: 6px 10px;
+        min-height: 44px;
+        padding: 5px 8px;
         gap: 8px;
       }
 
       .stat-icon {
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
       }
 
       .stat-label {
-        font-size: clamp(0.8rem, 4vw, 1rem);
+        font-size: clamp(0.72rem, 3.4vw, 0.92rem);
       }
 
       .stat-value {
-        font-size: 1.56rem;
+        font-size: 1.34rem;
+      }
+
+      .status-item.upkeep-item strong {
+        font-size: 0.84rem;
+        line-height: 1.18;
       }
 
       .tag-wrap {
@@ -1625,10 +1665,30 @@
       }
 
       .turn-actions button {
-        min-height: 58px;
-        font-size: 0.9rem;
+        min-height: 52px;
+        font-size: 0.82rem;
         padding-left: 0.45rem;
         padding-right: 0.45rem;
+      }
+
+      .turn-head {
+        gap: 8px;
+      }
+
+      .undo-turn-btn {
+        min-height: 44px;
+        min-width: 118px;
+        font-size: 0.74rem;
+        padding: 0.3rem 0.64rem;
+      }
+
+      .step-picker-wrap {
+        gap: 8px;
+      }
+
+      .step-picker {
+        flex: 1;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
       .timeline-list {
@@ -1658,8 +1718,13 @@
       }
 
       .step-btn {
-        min-height: 70px;
-        font-size: 2rem;
+        min-height: 46px;
+        min-width: 0;
+        font-size: 1.5rem;
+      }
+
+      .space-title {
+        font-size: clamp(1.28rem, 7vw, 1.82rem);
       }
 
       .modal-backdrop {
@@ -1822,14 +1887,15 @@
 
         <section class="column right-col">
           <article class="turn-panel">
-            <h3>Turn Control</h3>
-            <div id="turnMeta" class="sub">Round 1 · Turn pending</div>
+            <div class="turn-head">
+              <h3>Turn Control</h3>
+              <button id="undoTurnBtn" class="undo-turn-btn" type="button" disabled>Undo Turn</button>
+            </div>
             <div class="turn-actions">
               <button id="startTurnBtn" class="button-start" type="button">Start Turn</button>
               <button id="moveBtn" class="button-resolve" type="button" disabled>Resolve Move</button>
               <button id="endTurnBtn" class="button-danger" type="button" disabled>End Turn</button>
             </div>
-            <button id="undoTurnBtn" class="undo-turn-btn" type="button" disabled>Undo Turn</button>
             <div class="step-picker-wrap">
               <div class="steps-label">Steps</div>
               <div id="stepPicker" class="step-picker">
@@ -1902,6 +1968,8 @@
         millennial: "#fee74b",
         genz: "#f36e3e"
       };
+      const RETIREMENT_NODE_ID = "73";
+      const RETIREMENT_MESSAGE = "You're entering retirement, there's no more income from your job.";
 
       const state = {
         players: [],
@@ -1933,7 +2001,6 @@
         statsGrid: document.getElementById("statsGrid"),
         statusGrid: document.getElementById("statusGrid"),
         tagWrap: document.getElementById("tagWrap"),
-        turnMeta: document.getElementById("turnMeta"),
         stepPicker: document.getElementById("stepPicker"),
         stepsInput: document.getElementById("stepsInput"),
         startTurnBtn: document.getElementById("startTurnBtn"),
@@ -2010,6 +2077,41 @@
         if (!showPanel && refs.devNodeInput) {
           refs.devNodeInput.value = "";
         }
+      }
+
+      function isAtOrPastRetirementNode(nodeId) {
+        const order = DATA.board.nodeOrder || [];
+        const retirementIndex = order.indexOf(RETIREMENT_NODE_ID);
+        const nodeIndex = order.indexOf(String(nodeId));
+        if (retirementIndex !== -1 && nodeIndex !== -1) {
+          return nodeIndex >= retirementIndex;
+        }
+        return Number(nodeId) >= Number(RETIREMENT_NODE_ID);
+      }
+
+      async function enforceRetirementIfNeeded(player) {
+        if (!player) {
+          return;
+        }
+        if (player.statuses.occupation === "retired") {
+          player.retirementApplied = true;
+          return;
+        }
+        if (player.retirementApplied) {
+          return;
+        }
+        if (!isAtOrPastRetirementNode(player.currentNode)) {
+          return;
+        }
+        if (String(player.currentNode) === RETIREMENT_NODE_ID) {
+          return;
+        }
+
+        player.retirementApplied = true;
+        await applyEffect(player, { type: "setOccupation", occupation: "retired", ignoreRequirements: true }, "Retirement");
+        await applyEffect(player, { type: "stopRecurring", key: "childcare" }, "Retirement");
+        logEntry("Retirement", RETIREMENT_MESSAGE);
+        refs.turnHint.textContent = RETIREMENT_MESSAGE;
       }
 
       function canUndoCurrentTurn() {
@@ -2272,10 +2374,10 @@
         }
         if (effect.type === "setHousing") {
           const pay = effect.payment !== undefined ? " (upkeep " + effect.payment + ")" : "";
-          return "Housing: " + effect.housingStatus + pay;
+          return "Housing: " + prettyHousingStatus(effect.housingStatus) + pay;
         }
         if (effect.type === "setFamilyStatus") {
-          return "Family: " + effect.familyStatus;
+          return "Family: " + prettyRelationshipStatus(effect.familyStatus);
         }
         if (effect.type === "moveToNode") {
           return "Move to " + effect.nodeId;
@@ -2580,6 +2682,26 @@
         refs.turnHint.textContent = message;
         renderAll();
         await showBlockedPassNotice("Cannot Pass", message);
+      }
+
+      function showRetirementNotice(message) {
+        return new Promise(function (resolve) {
+          openModal(
+            '<div class="modal-head"><div><h4>Retirement</h4><div class="modal-sub">Life Transition</div></div></div>' +
+              '<p class="gate-message">' +
+              message +
+              "</p>" +
+              '<div style="margin-top:12px; display:flex; justify-content:center;">' +
+              '<button id="retirementOkBtn" type="button">Continue</button>' +
+              "</div>",
+            "gate-modal"
+          );
+          const btn = document.getElementById("retirementOkBtn");
+          btn.addEventListener("click", function () {
+            closeModal();
+            resolve();
+          });
+        });
       }
 
       function extractOccupationFromEffects(effects) {
@@ -3073,6 +3195,14 @@
               }
             }
             player.statuses.occupation = effect.occupation;
+            if (effect.occupation === "retired") {
+              player.retirementApplied = true;
+              if (!player.retirementAnnounced) {
+                player.retirementAnnounced = true;
+                refs.turnHint.textContent = RETIREMENT_MESSAGE;
+                await showRetirementNotice(RETIREMENT_MESSAGE);
+              }
+            }
             player.recurringEffects = (player.recurringEffects || []).filter(function (item) {
               return !item.endOnOccupationChange;
             });
@@ -3095,7 +3225,7 @@
             logEntry(
               "Status",
               "Housing: " +
-                player.statuses.housingStatus +
+                prettyHousingStatus(player.statuses.housingStatus) +
                 " (upkeep " +
                 player.statuses.housingPayment +
                 ")" +
@@ -3109,10 +3239,11 @@
             break;
           case "setFamilyStatus":
             player.statuses.familyStatus = effect.familyStatus;
-            logEntry("Status", "Family status: " + effect.familyStatus + ".");
+            logEntry("Status", "Family status: " + prettyRelationshipStatus(effect.familyStatus) + ".");
             break;
           case "moveToNode":
             moveToNode(player, effect.nodeId, "via effect");
+            await enforceRetirementIfNeeded(player);
             {
               const node = getNode(player.currentNode);
               if (node && (node.type === "gate" || node.type === "checkpoint")) {
@@ -3144,7 +3275,7 @@
               remainingTurns: typeof effect.durationTurns === "number" ? effect.durationTurns : null,
               endOnOccupationChange: Boolean(effect.endOnOccupationChange),
               endOnHousingChange: Boolean(effect.endOnHousingChange),
-              note: effect.note || "Recurring upkeep"
+              note: effect.note || (effect.key ? formatNodeLabel(effect.key) : "Recurring upkeep")
             });
             logEntry("Status", "Recurring effect started: " + key + ".");
             break;
@@ -3234,7 +3365,7 @@
                     health: occ.healthDelta || 0,
                     happiness: occ.happinessDelta || 0
                   }),
-                  upkeepLabel: "Recurring upkeep",
+                  upkeepLabel: "Per-turn effects",
                   disabled: !requirement.ok,
                   requirementNote: requirement.message
                 };
@@ -3305,7 +3436,7 @@
             generationalEffects: occupationOption ? undefined : normalizeEffectText(summarizeNonRecurringEffects(generationEffects)),
             recurringUpkeep: occupationOption ? undefined : normalizeEffectText(upkeepText),
             upkeep: occupationOption ? normalizeEffectText(upkeepText) : undefined,
-            upkeepLabel: occupationOption ? "Recurring upkeep" : undefined,
+            upkeepLabel: occupationOption ? "Per-turn effects" : undefined,
             disabled: !requirement.ok,
             requirementNote: requirement.message
           };
@@ -3419,6 +3550,7 @@
           }
 
           moveToNode(player, nextNodeId, "(step " + (i + 1) + "/" + total + ")");
+          await enforceRetirementIfNeeded(player);
           renderMap();
 
           const landedNode = getNode(nextNodeId);
@@ -3540,6 +3672,7 @@
         updateControls();
 
         snapshotTurnStart(player);
+        await enforceRetirementIfNeeded(player);
         logEntry("Turn", player.name + " starts turn.");
         await adjustStat(player, "time", 5, "Round refresh");
         await applyTurnUpkeep(player);
@@ -3607,6 +3740,7 @@
 
         logEntry("Dev", "Jump " + player.name + " to node " + targetNodeId + ".");
         moveToNode(player, targetNodeId, "(dev jump)");
+        await enforceRetirementIfNeeded(player);
         renderAll();
 
         const targetNode = getNode(targetNodeId);
@@ -3751,10 +3885,21 @@
 
       function getOccupationLine(player) {
         const occupation = DATA.occupations[player.statuses.occupation] || DATA.occupations.unemployed;
+        const promotionBonus = (player.recurringEffects || []).reduce(function (sum, recurring) {
+          if (!recurring || recurring.key !== "promotion_raise") {
+            return sum;
+          }
+          const deltas = getDeltasFromEffectList(recurring.effects || []);
+          return sum + (deltas.money || 0);
+        }, 0);
+        const totalIncome = (occupation.income || 0) + promotionBonus;
         const parts = [
-          formatSigned(occupation.income || 0) + " Money / Turn",
+          formatSigned(totalIncome) + " Money / Turn",
           formatSigned(occupation.timeDelta || 0) + " Time / Turn"
         ];
+        if (promotionBonus > 0) {
+          parts.push("includes Promotion +" + promotionBonus);
+        }
         return occupation.label + " (" + parts.join(", ") + ")";
       }
 
@@ -3795,12 +3940,59 @@
         return housingLabel + " (" + details.join(", ") + ")";
       }
 
-      function getPerTurnBreakdownLine(player) {
+      function isGenericRecurringLabel(label) {
+        if (!label) {
+          return true;
+        }
+        const normalized = String(label).trim().toLowerCase();
+        return (
+          normalized === "recurring upkeep" ||
+          normalized === "recurring effect" ||
+          normalized === "recurring status change" ||
+          normalized === "recurring"
+        );
+      }
+
+      function getRecurringSourceLabel(recurring) {
+        const keyMap = {
+          mortgage_debt: "Mortgage debt",
+          childcare: "Childcare",
+          student_debt: "Student debt",
+          tuition_debt: "Tuition debt",
+          education_debt: "Education debt",
+          loan_repayment: "Loan repayment",
+          promotion_raise: "Promotion raise",
+          rent_support: "Rent adjustment",
+          caregiving_cost: "Caregiving cost",
+          eldercare_cost: "Eldercare support"
+        };
+
+        if (recurring && !isGenericRecurringLabel(recurring.note)) {
+          return recurring.note;
+        }
+        if (recurring && recurring.key && keyMap[recurring.key]) {
+          return keyMap[recurring.key];
+        }
+        if (recurring && recurring.key) {
+          return formatNodeLabel(recurring.key);
+        }
+        return "Ongoing effect";
+      }
+
+      function getPerTurnBreakdownItems(player) {
         const entries = [];
         const occupation = DATA.occupations[player.statuses.occupation] || DATA.occupations.unemployed;
+        const promotionBonus = (player.recurringEffects || []).reduce(function (sum, recurring) {
+          if (!recurring || recurring.key !== "promotion_raise") {
+            return sum;
+          }
+          const deltas = getDeltasFromEffectList(recurring.effects || []);
+          return sum + (deltas.money || 0);
+        }, 0);
+        const totalSalary = (occupation.income || 0) + promotionBonus;
 
-        if ((occupation.income || 0) !== 0) {
-          entries.push("Salary: " + formatStatDeltaInline("money", occupation.income));
+        if (totalSalary !== 0) {
+          entries.push("Salary: " + formatStatDeltaInline("money", totalSalary));
         }
         if ((occupation.timeDelta || 0) !== 0) {
           entries.push("Workload: " + formatStatDeltaInline("time", occupation.timeDelta));
@@ -3816,7 +4008,14 @@
         }
 
         if ((player.statuses.housingPayment || 0) > 0) {
-          entries.push("Housing payment: " + formatStatDeltaInline("money", -player.statuses.housingPayment));
+          const housingLabel = player.statuses.housingStatus === "buy"
+            ? "Mortgage payment"
+            : player.statuses.housingStatus === "rent"
+              ? "Rent"
+              : player.statuses.housingStatus === "shared"
+                ? "Shared housing"
+                : "Housing payment";
+          entries.push(housingLabel + ": " + formatStatDeltaInline("money", -player.statuses.housingPayment));
         }
         if (player.statuses.familyStatus === "kids") {
           entries.push("Childcare: " + formatStatDeltaInline("money", -2) + ", " + formatStatDeltaInline("time", -2));
@@ -3832,6 +4031,9 @@
         }
 
         (player.recurringEffects || []).forEach(function (recurring) {
+          if (recurring && recurring.key === "promotion_raise") {
+            return;
+          }
           const recurringText = formatRecurringDeltas(getDeltasFromEffectList(recurring.effects || []));
           if (!recurringText) {
             return;
@@ -3840,13 +4042,10 @@
           if (typeof recurring.remainingTurns === "number") {
             suffix = " (" + recurring.remainingTurns + " turns left)";
           }
-          entries.push((recurring.note || recurring.key || "Recurring") + ": " + recurringText + suffix);
+          entries.push(getRecurringSourceLabel(recurring) + ": " + recurringText + suffix);
         });
 
-        if (!entries.length) {
-          return "No ongoing upkeep effects.";
-        }
-        return entries.join(" • ");
+        return entries;
       }
 
       function renderPlayerCard() {
@@ -3890,6 +4089,15 @@
           })
           .join("");
 
+        const upkeepLines = getPerTurnBreakdownItems(player);
+        const upkeepHtml = upkeepLines.length
+          ? upkeepLines
+            .map(function (line) {
+              return '<span class="status-value-line">' + line + "</span>";
+            })
+            .join("")
+          : '<span class="status-value-line">No ongoing upkeep effects.</span>';
+
         refs.statusGrid.innerHTML =
           '<div class="status-item"><span>Occupation</span><strong>' +
           getOccupationLine(player) +
@@ -3900,8 +4108,8 @@
           '<div class="status-item"><span>Relationship</span><strong>' +
           prettyRelationshipStatus(player.statuses.familyStatus) +
           '</strong></div>' +
-          '<div class="status-item"><span>Upkeep per turn</span><strong>' +
-          getPerTurnBreakdownLine(player) +
+          '<div class="status-item upkeep-item"><span>Upkeep per turn</span><strong>' +
+          upkeepHtml +
           "</strong></div>";
 
         const tags = computeTags(player);
@@ -3910,14 +4118,6 @@
             return '<span class="tag ' + tag.tone + '">' + tag.text + "</span>";
           })
           .join("");
-
-        refs.turnMeta.textContent =
-          "Round " +
-          state.round +
-          " · Active Node " +
-          player.currentNode +
-          " · " +
-          DATA.generations[player.generation].short;
 
         refs.roundChip.textContent = "Round " + state.round + " · " + player.name;
         refs.roundChip.style.background = getGenerationColor(player.generation);
@@ -4175,6 +4375,8 @@
           recurringEffects: [],
           enterEffectsApplied: {},
           turnVoided: false,
+          retirementApplied: false,
+          retirementAnnounced: false,
           finished: false,
           finishedRound: null
         };

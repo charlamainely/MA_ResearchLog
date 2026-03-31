@@ -2619,7 +2619,7 @@ window.LIFE_LAYERS_DATA = {
           },
           {
             "type": "log",
-            "message": "Retired: no salary income, +2 time per upkeep from retirement routine."
+            "message": "You're entering retirement, there's no more income from your job."
           }
         ]
       },
