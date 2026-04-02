@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>LIFE LAYERS</title>
+  <title>GREENER GRASS</title>
   <link rel="stylesheet" href="https://use.typekit.net/nrw7rwy.css">
   <style>
     :root {
@@ -167,11 +167,124 @@
       max-width: 550px;
     }
 
+    .setup-form-card {
+      display: grid;
+      justify-items: center;
+      align-content: start;
+      text-align: center;
+    }
+
+    .setup-form-card .section-title,
+    .setup-form-card .sub,
+    .setup-form-card .form-row,
+    .setup-form-card .generation-picker {
+      width: 100%;
+      max-width: 620px;
+    }
+
     .form-row {
       display: grid;
       gap: 14px;
-      margin-top: 28px;
+      margin-top: 14px;
       max-width: 620px;
+    }
+
+    .generation-select-hidden {
+      display: none !important;
+    }
+
+    .generation-picker {
+      margin-top: 22px;
+      display: grid;
+      gap: 8px;
+      max-width: 620px;
+    }
+
+    .generation-picker-title {
+      margin: 0;
+      font-family: var(--display-font);
+      color: var(--navy);
+      font-size: clamp(1.45rem, 2.5vw, 2.2rem);
+      line-height: 0.95;
+      text-transform: uppercase;
+      letter-spacing: 0.01em;
+    }
+
+    .generation-picker-tip {
+      margin: 0;
+      font-style: italic;
+      color: rgba(0, 0, 0, 0.86);
+      font-size: 0.92rem;
+      font-family: var(--body-font);
+      font-weight: 600;
+    }
+
+    .generation-avatar-list {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .generation-option {
+      border: 0;
+      background: transparent;
+      color: var(--black);
+      padding: 0;
+      border-radius: 14px;
+      display: grid;
+      gap: 6px;
+      justify-items: center;
+      text-transform: none;
+      font-family: var(--body-font);
+      font-size: 0.92rem;
+      letter-spacing: 0;
+      font-weight: 700;
+      min-height: auto;
+    }
+
+    .generation-option-thumb {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 3px solid transparent;
+      box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.06);
+      transition: transform var(--trans-fast), border-color var(--trans-fast), box-shadow var(--trans-fast);
+      background: #f0e8dc;
+    }
+
+    .generation-option-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(1) saturate(0.05) brightness(0.95);
+      opacity: 0.74;
+      transition: filter var(--trans-fast), opacity var(--trans-fast), transform var(--trans-fast);
+    }
+
+    .generation-option-label {
+      font-family: var(--body-font);
+      font-weight: 700;
+      font-size: 0.92rem;
+      line-height: 1.1;
+    }
+
+    .generation-option.active .generation-option-thumb {
+      border-color: rgba(0, 0, 0, 0.9);
+      box-shadow: 0 0 0 3px rgba(74, 190, 238, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .generation-option.active .generation-option-thumb img {
+      filter: none;
+      opacity: 1;
+    }
+
+    .setup-form-card .button-accent {
+      margin-top: 16px;
+      width: min(320px, 100%);
+      justify-self: center;
     }
 
     input,
@@ -363,15 +476,34 @@
     }
 
     .player-header {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: flex-start;
+      display: grid;
+      grid-template-columns: 114px 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .player-avatar {
+      width: 114px;
+      height: 114px;
+      border-radius: 18px;
+      border: 8px solid #1f1d27;
+      object-fit: cover;
+      display: block;
+      background: #f3ede3;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .player-header-main {
+      min-width: 0;
+      display: grid;
+      align-content: center;
+      gap: 8px;
     }
 
     .player-header .sub {
       color: rgba(0, 0, 0, 0.68);
       font-size: 0.92rem;
+      display: none;
     }
 
     .player-name {
@@ -1605,6 +1737,10 @@
         padding: 20px 16px;
       }
 
+      .setup-form-card {
+        text-align: center;
+      }
+
       .setup-players-head {
         align-items: flex-start;
         flex-direction: column;
@@ -1621,6 +1757,43 @@
 
       .player-name {
         font-size: 2.1rem;
+      }
+
+      .generation-avatar-list {
+        gap: 8px;
+      }
+
+      .generation-option {
+        font-size: 0.82rem;
+      }
+
+      .generation-option-label {
+        font-size: 0.74rem;
+      }
+
+      .setup-form-card .button-accent {
+        margin-top: 12px;
+        width: 100%;
+      }
+
+      .form-row {
+        margin-top: 10px;
+      }
+
+      .generation-picker {
+        margin-top: 18px;
+      }
+
+      .player-header {
+        grid-template-columns: 84px 1fr;
+        gap: 10px;
+      }
+
+      .player-avatar {
+        width: 84px;
+        height: 84px;
+        border-width: 6px;
+        border-radius: 14px;
       }
 
       .player-header .chip {
@@ -1853,10 +2026,14 @@
           <p class="sub">Add all players on one device and pass along according to the active turn.</p>
           <div class="form-row">
             <input id="playerNameInput" type="text" maxlength="24" placeholder="Player Name" />
-            <select id="generationSelect"></select>
-            <button id="addPlayerBtn" class="button-accent" type="button">Add Player</button>
+            <select id="generationSelect" class="generation-select-hidden" aria-hidden="true" tabindex="-1"></select>
           </div>
-          <p class="sub tip-text">Tip: Pick the generation you think had the easiest life path.</p>
+          <div class="generation-picker">
+            <h4 class="generation-picker-title">Pick A Generation</h4>
+            <p class="generation-picker-tip">Tip: Pick the generation you think had the easiest in life</p>
+            <div id="generationAvatarList" class="generation-avatar-list"></div>
+          </div>
+          <button id="addPlayerBtn" class="button-accent" type="button">Add Player</button>
         </article>
         <article class="setup-card setup-players-card">
           <div class="setup-players-head">
@@ -1873,11 +2050,11 @@
         <aside class="column left-col">
           <article class="player-card">
             <div class="player-header">
-              <div>
-                <div class="sub">Current turn</div>
+              <img id="activePlayerAvatar" class="player-avatar" src="ui/avatars/avatar_boomer.png" alt="Active player avatar" />
+              <div class="player-header-main">
                 <h2 id="activePlayerName" class="player-name">-</h2>
+                <span id="activePlayerGen" class="chip">-</span>
               </div>
-              <span id="activePlayerGen" class="chip">-</span>
             </div>
             <div id="statsGrid" class="stats-grid"></div>
             <div id="statusGrid" class="status-grid"></div>
@@ -1968,6 +2145,12 @@
         millennial: "#fee74b",
         genz: "#f36e3e"
       };
+      const GENERATION_AVATARS = {
+        boomer: "ui/avatars/avatar_boomer.png",
+        genx: "ui/avatars/avatar_genx.png",
+        millennial: "ui/avatars/avatar_millenial.png",
+        genz: "ui/avatars/avatar_genz.png"
+      };
       const RETIREMENT_NODE_ID = "73";
       const RETIREMENT_MESSAGE = "You're entering retirement, there's no more income from your job.";
 
@@ -1993,10 +2176,12 @@
         roundChip: document.getElementById("roundChip"),
         playerNameInput: document.getElementById("playerNameInput"),
         generationSelect: document.getElementById("generationSelect"),
+        generationAvatarList: document.getElementById("generationAvatarList"),
         addPlayerBtn: document.getElementById("addPlayerBtn"),
         playerList: document.getElementById("playerList"),
         startGameBtn: document.getElementById("startGameBtn"),
         activePlayerName: document.getElementById("activePlayerName"),
+        activePlayerAvatar: document.getElementById("activePlayerAvatar"),
         activePlayerGen: document.getElementById("activePlayerGen"),
         statsGrid: document.getElementById("statsGrid"),
         statusGrid: document.getElementById("statusGrid"),
@@ -2051,6 +2236,10 @@
         return GENERATION_COLORS[generation] || "#4abeee";
       }
 
+      function getGenerationAvatar(generation) {
+        return GENERATION_AVATARS[generation] || GENERATION_AVATARS.boomer;
+      }
+
       function getStatIcon(stat) {
         return STAT_ICONS[stat] || "";
       }
@@ -2065,6 +2254,53 @@
         buttons.forEach(function (button) {
           const active = button.getAttribute("data-step") === value;
           button.classList.toggle("active", active);
+        });
+      }
+
+      function setSetupGeneration(generation) {
+        refs.generationSelect.value = generation || "";
+        if (!refs.generationAvatarList) {
+          return;
+        }
+        const buttons = refs.generationAvatarList.querySelectorAll(".generation-option");
+        buttons.forEach(function (button) {
+          const active = button.getAttribute("data-generation") === generation;
+          button.classList.toggle("active", active);
+          button.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+      }
+
+      function renderGenerationAvatarList() {
+        if (!refs.generationAvatarList) {
+          return;
+        }
+        refs.generationAvatarList.innerHTML = Object.keys(DATA.generations)
+          .map(function (key) {
+            return (
+              '<button class="generation-option" type="button" data-generation="' +
+              key +
+              '" aria-pressed="false">' +
+              '<span class="generation-option-thumb">' +
+              '<img src="' +
+              getGenerationAvatar(key) +
+              '" alt="' +
+              DATA.generations[key].label +
+              ' avatar" />' +
+              "</span>" +
+              '<span class="generation-option-label">' +
+              DATA.generations[key].label +
+              "</span>" +
+              "</button>"
+            );
+          })
+          .join("");
+
+        const buttons = refs.generationAvatarList.querySelectorAll(".generation-option");
+        buttons.forEach(function (button) {
+          button.addEventListener("click", function () {
+            const generation = button.getAttribute("data-generation");
+            setSetupGeneration(generation);
+          });
         });
       }
 
@@ -4056,6 +4292,8 @@
 
         const generation = DATA.generations[player.generation];
         refs.activePlayerName.textContent = player.name + (player.finished ? " (Finished)" : "");
+        refs.activePlayerAvatar.src = getGenerationAvatar(player.generation);
+        refs.activePlayerAvatar.alt = generation.label + " avatar";
         refs.activePlayerGen.textContent = generation.label;
         refs.activePlayerGen.style.background = getGenerationColor(player.generation);
         refs.activePlayerGen.style.borderColor = "rgba(0,0,0,0.18)";
@@ -4418,6 +4656,8 @@
           })
           .join("");
         refs.generationSelect.innerHTML = '<option value="" selected disabled>Pick a generation</option>' + generationOptions;
+        renderGenerationAvatarList();
+        setSetupGeneration("");
 
         if (refs.stepPicker) {
           const stepButtons = refs.stepPicker.querySelectorAll(".step-btn");
@@ -4439,12 +4679,17 @@
             return;
           }
           if (!generation) {
-            refs.generationSelect.focus();
+            const firstButton = refs.generationAvatarList
+              ? refs.generationAvatarList.querySelector(".generation-option")
+              : null;
+            if (firstButton) {
+              firstButton.focus();
+            }
             return;
           }
           state.players.push(createPlayer(name, generation));
           refs.playerNameInput.value = "";
-          refs.generationSelect.value = "";
+          setSetupGeneration("");
           refs.playerNameInput.focus();
           renderSetupPlayers();
         });

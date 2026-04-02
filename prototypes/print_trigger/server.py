@@ -8,7 +8,10 @@ CORS(app)
 VALID_TEMPLATES = {
     "childhood-memory",
     "family-conflict",
-    "migration-story"
+    "migration-story",
+    "traditional-recipe",
+    "love-story",
+    "life-choice"
 }
 
 @app.route("/print", methods=["POST"])

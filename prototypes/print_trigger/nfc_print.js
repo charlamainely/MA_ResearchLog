@@ -7,6 +7,9 @@ const UID_TO_TEMPLATE = {
   "1149891332": "childhood-memory",
   "0037184260": "family-conflict",
   "1172026116": "migration-story",
+  "1256604420": "traditional-recipe",
+  "1000551172": "love-story",
+  "1223926532": "life-choice"
 };
 
 let lastUid = null;

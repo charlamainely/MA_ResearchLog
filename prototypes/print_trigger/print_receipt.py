@@ -29,7 +29,32 @@ TEMPLATES = {
             "What place do you remember leaving behind most clearly?"
         ),
         "footer": "A memory can travel too."
+    },
+    "traditional-recipe": {
+        "title": "Family Recipe",
+        "body": (
+            "Ask someone older in your family:\n\n"
+            "What food is popular to our family and what's the recipe?"
+        ),
+        "footer": "Keep this receipt and take the question home."
+    },
+    "love-story": {
+        "title": "Love Story",
+        "body": (
+            "Ask someone older in your family:\n\n"
+            "Can you tell me a love story from someone in the family that you know?"
+        ),
+        "footer": "A memory can travel too."
+    },
+    "life-choice": {
+        "title": "Life Decision",
+        "body": (
+            "Ask someone older in your family:\n\n"
+            "What is the biggest life decision that you have made and how do you feel about it now?"
+        ),
+        "footer": "Take this question into a conversation."
     }
+
 }
 
 def escpos_init() -> bytes:
