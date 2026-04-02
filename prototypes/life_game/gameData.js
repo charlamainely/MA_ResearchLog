@@ -30,22 +30,42 @@ window.LIFE_LAYERS_DATA = {
     "boomer": {
       "label": "Baby Boomers",
       "short": "Boomers",
-      "accent": "#4abeee"
+      "accent": "#4abeee",
+      "communication": {
+        "title": "Baby Boomers",
+        "description": "Many older-family communication norms prioritize face-saving and harmony. Indirectness is a common strategy to avoid putting someone on the spot or creating embarrassment. It models higher conformity orientation styles where direct probing can feel disrespectful or confrontational.",
+        "rule": "You may not ask direct questions. No 'what / why / how / when / where.' You must use statements, compliments, experience sharing, or storytelling, then pause for them to fill in."
+      }
     },
     "genx": {
       "label": "Gen X",
       "short": "Gen X",
-      "accent": "#e987b7"
+      "accent": "#e987b7",
+      "communication": {
+        "title": "Gen X",
+        "description": "Gen X is often stereotyped (and self-described) as pragmatic, time-scarce, and allergic to prolonged emotional processing. This constraint creates a 'get to the point' style and mimics communication shaped by busyness and responsibility: you ask clearly, get the information, then move on.",
+        "rule": "Your attempt must be one direct question (end with a question mark). One question per attempt. No multi-part questions ('...and also...?' counts as two). No follow-ups. If they do not answer clearly, you must wait and try again later."
+      }
     },
     "millennial": {
       "label": "Millennials",
       "short": "Millennials",
-      "accent": "#fee74b"
+      "accent": "#fee74b",
+      "communication": {
+        "title": "Millennials",
+        "description": "Millennial communication culture often emphasizes consent, boundaries, and emotional safety (more explicit meta-communication). This constraint trains a respectful entry and a soft exit, which reduces defensiveness and keeps the table safe.",
+        "rule": "Before you ask your objective, you must do a permission check. Example: 'Can I ask a question?'"
+      }
     },
     "genz": {
       "label": "Gen Z",
       "short": "Gen Z",
-      "accent": "#f36e3e"
+      "accent": "#f36e3e",
+      "communication": {
+        "title": "Gen Z",
+        "description": "Gen Z communication norms are often associated with short-form, low-commitment, low-pressure messages (DM energy). This pushes concise, meme-like prompts that feel casual and less interrogative, useful for families who shut down under 'serious talk.'",
+        "rule": "Your questioning must include a popular culture reference as an entry point (meme/video/film/slang/etc.)."
+      }
     }
   },
   "occupations": {
@@ -277,7 +297,7 @@ window.LIFE_LAYERS_DATA = {
       },
       "6": {
         "title": "Invest in Getting a Degree (Degree Path)",
-        "description": "You\u2019ve been admitted to university! Time to get busy studying!"
+        "description": "You’ve been admitted to university! Time to get busy studying!"
       },
       "7": {
         "title": "Spend Time to Study & Grind (Degree Path)",
@@ -285,7 +305,7 @@ window.LIFE_LAYERS_DATA = {
       },
       "8": {
         "title": "Try For An Internship (Degree Path)",
-        "description": "You want to get a head start in life by trying to get an internship. Let\u2019s see what the job market has in store for you."
+        "description": "You want to get a head start in life by trying to get an internship. Let’s see what the job market has in store for you."
       },
       "9": {
         "title": "Graduate! Gain Knowledge! (Degree Path)",
@@ -297,7 +317,7 @@ window.LIFE_LAYERS_DATA = {
       },
       "11": {
         "title": "Learn a Practical Trade (Trade Path)",
-        "description": "You signed up for trade school. Let\u2019s hope you\u2019re resilient because it\u2019s tough work!"
+        "description": "You signed up for trade school. Let’s hope you’re resilient because it’s tough work!"
       },
       "12": {
         "title": "Spend Time Learning The Trade (Trade Path)",
@@ -313,11 +333,11 @@ window.LIFE_LAYERS_DATA = {
       },
       "15": {
         "title": "Apply For Jobs (Trade Path)",
-        "description": "You\u2019re done with school! Time to get a serious job."
+        "description": "You’re done with school! Time to get a serious job."
       },
       "16": {
         "title": "Skip School And Go To Work Now (Work Path)",
-        "description": "School takes too much time! You need income NOW. You found a job that doesn\u2019t require a degree or experience."
+        "description": "School takes too much time! You need income NOW. You found a job that doesn’t require a degree or experience."
       },
       "17": {
         "title": "Gain Income Now (Work Path)",
@@ -325,7 +345,7 @@ window.LIFE_LAYERS_DATA = {
       },
       "18": {
         "title": "Limited Opportunity! (Work Path)",
-        "description": "You feel trapped at your job, and without a degree or qualifications, you find it hard to look for a new career. Let\u2019s see if your luck is good today!"
+        "description": "You feel trapped at your job, and without a degree or qualifications, you find it hard to look for a new career. Let’s see if your luck is good today!"
       },
       "19": {
         "title": "Work Harder To Prove Yourself! (Work Path)",
@@ -333,7 +353,7 @@ window.LIFE_LAYERS_DATA = {
       },
       "20": {
         "title": "Family Concern About Career (Work Path)",
-        "description": "Your family is worried about your career prospect since without a degree or qualification, it\u2019s hard for you to climb the career ladder."
+        "description": "Your family is worried about your career prospect since without a degree or qualification, it’s hard for you to climb the career ladder."
       },
       "21": {
         "title": "Work Exhaustion! (Work Path)",
@@ -349,11 +369,11 @@ window.LIFE_LAYERS_DATA = {
       },
       "24": {
         "title": "Chance to pursue higher studies",
-        "description": "You\u2019re passionate about learning more and expanding your knowledge horizons."
+        "description": "You’re passionate about learning more and expanding your knowledge horizons."
       },
       "25": {
         "title": "Face an early life crisis",
-        "description": "All your friends are doing so well, and you don\u2019t feel like you\u2019re catching up with them. You stress out about how you\u2019re doing in life, and decide to go to therapy."
+        "description": "All your friends are doing so well, and you don’t feel like you’re catching up with them. You stress out about how you’re doing in life, and decide to go to therapy."
       },
       "26": {
         "title": "Work or Personal Life?",
@@ -387,7 +407,7 @@ window.LIFE_LAYERS_DATA = {
       },
       "32": {
         "title": "Stress from Housemates & Landlord (Rent path)",
-        "description": "Your landlord won\u2019t fix issues and your housemates keep blasting music at 2AM."
+        "description": "Your landlord won’t fix issues and your housemates keep blasting music at 2AM."
       },
       "33": {
         "title": "Rent Raised! (Rent path)",
@@ -427,7 +447,7 @@ window.LIFE_LAYERS_DATA = {
       },
       "42": {
         "title": "Saving Payoff! (Move in path)",
-        "description": "You can save a lot when you don\u2019t have housing payments."
+        "description": "You can save a lot when you don’t have housing payments."
       },
       "43": {
         "title": "Lack of Freedom (Move in path)",
@@ -451,11 +471,11 @@ window.LIFE_LAYERS_DATA = {
       },
       "48": {
         "title": "A Sudden Event Occur in The World!",
-        "description": "Life is full of surprises, let\u2019s see what it is this time."
+        "description": "Life is full of surprises, let’s see what it is this time."
       },
       "49": {
         "title": "Potential Career Change!",
-        "description": "You feel like it\u2019s time for a career change."
+        "description": "You feel like it’s time for a career change."
       },
       "50": {
         "title": "Pick One Life Value To Prioritise",
@@ -467,7 +487,7 @@ window.LIFE_LAYERS_DATA = {
       },
       "52": {
         "title": "Mid-life Crisis!",
-        "description": "You\u2019re halfway through life. Draw a Life card."
+        "description": "You’re halfway through life. Draw a Life card."
       },
       "53": {
         "title": "Choose Relationship Status",
@@ -480,8 +500,8 @@ window.LIFE_LAYERS_DATA = {
         }
       },
       "54": {
-        "title": "Single But Won\u2019t Mingle (Single path)",
-        "description": "Who said you need a relationship to feel fulfilled? You\u2019re doing fine by yourself."
+        "title": "Single But Won’t Mingle (Single path)",
+        "description": "Who said you need a relationship to feel fulfilled? You’re doing fine by yourself."
       },
       "55": {
         "title": "Personal Focus (Single path)",
@@ -504,7 +524,7 @@ window.LIFE_LAYERS_DATA = {
         "description": "With fewer obligations, disposable income can grow."
       },
       "60": {
-        "title": "They\u2019re The One! (Relationship path)",
+        "title": "They’re The One! (Relationship path)",
         "description": "Honeymoon phase begins with excitement and joy."
       },
       "61": {
@@ -512,7 +532,7 @@ window.LIFE_LAYERS_DATA = {
         "description": "Bring your partner home to meet family. Draw a Life card."
       },
       "62": {
-        "title": "Let\u2019s Get Married! (Relationship path)",
+        "title": "Let’s Get Married! (Relationship path)",
         "description": "Wedding plans are joyful but taxing."
       },
       "63": {
@@ -526,8 +546,8 @@ window.LIFE_LAYERS_DATA = {
         }
       },
       "64": {
-        "title": "We\u2019re Happy Just Like This (Childfree path)",
-        "description": "You and your partner are happy in each other\u2019s company."
+        "title": "We’re Happy Just Like This (Childfree path)",
+        "description": "You and your partner are happy in each other’s company."
       },
       "65": {
         "title": "What To Do With All This Time? (Childfree path)",
@@ -538,15 +558,15 @@ window.LIFE_LAYERS_DATA = {
         "description": "Strong relationship stability with time flexibility."
       },
       "67": {
-        "title": "Who\u2019s Gonna Take Care Of You? (Childfree path)",
+        "title": "Who’s Gonna Take Care Of You? (Childfree path)",
         "description": "Sometimes future-care anxiety sets in."
       },
       "68": {
-        "title": "Let\u2019s Have Kids! (Children path)",
+        "title": "Let’s Have Kids! (Children path)",
         "description": "Starting a family is meaningful and demanding."
       },
       "69": {
-        "title": "Let\u2019s Have Kids! (Children path)",
+        "title": "Let’s Have Kids! (Children path)",
         "description": "Parenting intensity continues with sustained pressure."
       },
       "70": {
@@ -563,15 +583,15 @@ window.LIFE_LAYERS_DATA = {
       },
       "73": {
         "title": "Time To Retire!",
-        "description": "You\u2019ve worked hard your whole life. It\u2019s time to retire and rest."
+        "description": "You’ve worked hard your whole life. It’s time to retire and rest."
       },
       "74": {
         "title": "Go On A Cruise?",
         "description": "Spend now for joy or save for longevity."
       },
       "75": {
-        "title": "What\u2019s Your Plans For Retirement?",
-        "description": "Even after retirement, life doesn\u2019t rest."
+        "title": "What’s Your Plans For Retirement?",
+        "description": "Even after retirement, life doesn’t rest."
       },
       "76": {
         "title": "Retirement Fund!",
@@ -2700,24 +2720,430 @@ window.LIFE_LAYERS_DATA = {
       {
         "id": "era_1",
         "title": "Economic Boom",
-        "text": "Opportunities surge across sectors.",
+        "description": "The economy heats up and opportunities expand. Older cohorts tend to benefit from stability and accumulated experience, while younger cohorts gain entry-level openings and faster skill growth.",
+        "effects": [],
+        "generationEffects": {
+          "boomer": [
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": 2
+            },
+            {
+              "type": "adjustStat",
+              "stat": "happiness",
+              "amount": 1
+            }
+          ],
+          "genx": [
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": 2
+            },
+            {
+              "type": "adjustStat",
+              "stat": "happiness",
+              "amount": 1
+            }
+          ],
+          "millennial": [
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": 1
+            },
+            {
+              "type": "adjustStat",
+              "stat": "experience",
+              "amount": 1
+            },
+            {
+              "type": "adjustStat",
+              "stat": "education",
+              "amount": 1
+            }
+          ],
+          "genz": [
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": 1
+            },
+            {
+              "type": "adjustStat",
+              "stat": "experience",
+              "amount": 1
+            },
+            {
+              "type": "adjustStat",
+              "stat": "happiness",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      {
+        "id": "era_2",
+        "title": "Inflation Spike",
+        "description": "Prices jump and everyday costs rise. Housing and essentials squeeze younger cohorts more, while older cohorts often absorb the shock with relatively steadier footing.",
+        "effects": [],
+        "generationEffects": {
+          "boomer": [
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": -1
+            }
+          ],
+          "genx": [
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": -2
+            }
+          ],
+          "millennial": [
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": -2
+            },
+            {
+              "type": "adjustStat",
+              "stat": "happiness",
+              "amount": -1
+            }
+          ],
+          "genz": [
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": -2
+            },
+            {
+              "type": "adjustStat",
+              "stat": "happiness",
+              "amount": -1
+            },
+            {
+              "type": "adjustStat",
+              "stat": "health",
+              "amount": -1
+            }
+          ]
+        }
+      },
+      {
+        "id": "era_3",
+        "title": "Tech Leap",
+        "description": "A major tech shift changes work and learning. Younger cohorts convert it into new opportunities quickly, while older cohorts may spend extra time/energy adapting before seeing benefits.",
+        "effects": [],
+        "generationEffects": {
+          "boomer": [
+            {
+              "type": "adjustStat",
+              "stat": "time",
+              "amount": -2
+            },
+            {
+              "type": "adjustStat",
+              "stat": "education",
+              "amount": 1
+            }
+          ],
+          "genx": [
+            {
+              "type": "adjustStat",
+              "stat": "time",
+              "amount": -1
+            },
+            {
+              "type": "adjustStat",
+              "stat": "experience",
+              "amount": 1
+            }
+          ],
+          "millennial": [
+            {
+              "type": "adjustStat",
+              "stat": "experience",
+              "amount": 2
+            },
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": 1
+            }
+          ],
+          "genz": [
+            {
+              "type": "adjustStat",
+              "stat": "experience",
+              "amount": 3
+            },
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": 2
+            }
+          ]
+        }
+      },
+      {
+        "id": "era_4",
+        "title": "Hiring Freeze",
+        "description": "Hiring slows and competition intensifies. Younger cohorts feel it as blocked entry points, while mid-career cohorts feel delayed mobility; older cohorts may be buffered but still lose momentum.",
+        "effects": [],
+        "generationEffects": {
+          "boomer": [
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": -1
+            }
+          ],
+          "genx": [
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": -1
+            },
+            {
+              "type": "adjustStat",
+              "stat": "happiness",
+              "amount": -1
+            }
+          ],
+          "millennial": [
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": -2
+            },
+            {
+              "type": "adjustStat",
+              "stat": "happiness",
+              "amount": -1
+            }
+          ],
+          "genz": [
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": -2
+            },
+            {
+              "type": "adjustStat",
+              "stat": "happiness",
+              "amount": -2
+            }
+          ]
+        }
+      },
+      {
+        "id": "era_5",
+        "title": "Healthcare Innovation",
+        "description": "New treatments and better care improve wellbeing. All generations benefit from health innovation.",
         "effects": [
           {
             "type": "adjustStat",
-            "stat": "money",
+            "stat": "health",
             "amount": 3
+          }
+        ]
+      },
+      {
+        "id": "era_6",
+        "title": "Credential Arms Race",
+        "description": "Requirements climb again: 'just experience' is not enough. Younger cohorts feel heavier pressure to collect credentials, while older cohorts may rely on experience but still face retraining costs or frustration.",
+        "effects": [],
+        "generationEffects": {
+          "boomer": [
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": -1
+            },
+            {
+              "type": "adjustStat",
+              "stat": "education",
+              "amount": 1
+            }
+          ],
+          "genx": [
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": -1
+            },
+            {
+              "type": "adjustStat",
+              "stat": "experience",
+              "amount": 1
+            }
+          ],
+          "millennial": [
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": -2
+            },
+            {
+              "type": "adjustStat",
+              "stat": "education",
+              "amount": 1
+            },
+            {
+              "type": "adjustStat",
+              "stat": "happiness",
+              "amount": -1
+            }
+          ],
+          "genz": [
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": -2
+            },
+            {
+              "type": "adjustStat",
+              "stat": "education",
+              "amount": 1
+            },
+            {
+              "type": "adjustStat",
+              "stat": "happiness",
+              "amount": -2
+            }
+          ]
+        }
+      },
+      {
+        "id": "era_7",
+        "title": "Remote Shift",
+        "description": "Work/school moves online. Younger cohorts adapt faster but older cohorts may struggle more with the shift while gaining less flexibility.",
+        "effects": [],
+        "generationEffects": {
+          "boomer": [
+            {
+              "type": "adjustStat",
+              "stat": "happiness",
+              "amount": -2
+            }
+          ],
+          "genx": [
+            {
+              "type": "adjustStat",
+              "stat": "happiness",
+              "amount": -1
+            }
+          ],
+          "millennial": [
+            {
+              "type": "adjustStat",
+              "stat": "happiness",
+              "amount": 1
+            },
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": 2
+            }
+          ],
+          "genz": [
+            {
+              "type": "adjustStat",
+              "stat": "happiness",
+              "amount": 2
+            },
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": 1
+            }
+          ]
+        }
+      },
+      {
+        "id": "era_8",
+        "title": "Wellfare Policy Surprise",
+        "description": "A new policy package rolls out (support, subsidies, access reforms). Younger cohorts feel the biggest lift because it reduces entry barriers and boosts education/work pathways, while older cohorts see a smaller but still helpful stability bump.",
+        "effects": [],
+        "generationEffects": {
+          "boomer": [
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": 1
+            }
+          ],
+          "genx": [
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": 1
+            },
+            {
+              "type": "adjustStat",
+              "stat": "happiness",
+              "amount": 1
+            }
+          ],
+          "millennial": [
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": 2
+            },
+            {
+              "type": "adjustStat",
+              "stat": "education",
+              "amount": 1
+            }
+          ],
+          "genz": [
+            {
+              "type": "adjustStat",
+              "stat": "money",
+              "amount": 2
+            },
+            {
+              "type": "adjustStat",
+              "stat": "education",
+              "amount": 2
+            }
+          ]
+        }
+      }
+    ],
+    "life": [
+      {
+        "id": "life_1",
+        "title": "Family Support",
+        "description": "Someone in your family shows up for you with practical help, a meal, or a quiet check-in... who has shown up for you like that, and how did it feel?",
+        "effects": [
+          {
+            "type": "adjustStat",
+            "stat": "happiness",
+            "amount": 1
           },
           {
             "type": "adjustStat",
-            "stat": "experience",
+            "stat": "health",
+            "amount": 1
+          },
+          {
+            "type": "adjustStat",
+            "stat": "time",
             "amount": 1
           }
         ]
       },
       {
-        "id": "era_2",
-        "title": "Inflation Spike",
-        "text": "Daily costs climb faster than wages.",
+        "id": "life_2",
+        "title": "Unexpected Expense",
+        "description": "Something breaks and needs fixing, so your budget takes a hit... what's a 'small' expense that always turns into a bigger problem?",
         "effects": [
           {
             "type": "adjustStat",
@@ -2732,183 +3158,19 @@ window.LIFE_LAYERS_DATA = {
         ]
       },
       {
-        "id": "era_3",
-        "title": "Tech Leap",
-        "text": "Digital skills become highly rewarded.",
-        "effects": [
-          {
-            "type": "adjustStat",
-            "stat": "education",
-            "amount": 1
-          },
-          {
-            "type": "adjustStat",
-            "stat": "experience",
-            "amount": 1
-          }
-        ]
-      },
-      {
-        "id": "era_4",
-        "title": "Hiring Freeze",
-        "text": "Teams shrink and promotions slow.",
-        "effects": [
-          {
-            "type": "adjustStat",
-            "stat": "money",
-            "amount": -1
-          },
-          {
-            "type": "adjustStat",
-            "stat": "time",
-            "amount": 1
-          }
-        ]
-      },
-      {
-        "id": "era_5",
-        "title": "Healthcare Innovation",
-        "text": "Better care access improves wellbeing.",
-        "effects": [
-          {
-            "type": "adjustStat",
-            "stat": "health",
-            "amount": 2
-          }
-        ]
-      },
-      {
-        "id": "era_6",
-        "title": "Credential Arms Race",
-        "text": "Formal credentials dominate screening.",
-        "effects": [
-          {
-            "type": "choice",
-            "prompt": "How do you respond?",
-            "options": [
-              {
-                "id": "retrain",
-                "label": "Retrain",
-                "preview": "Invest now for long-term edge.",
-                "effects": [
-                  {
-                    "type": "adjustStat",
-                    "stat": "money",
-                    "amount": -2
-                  },
-                  {
-                    "type": "adjustStat",
-                    "stat": "education",
-                    "amount": 2
-                  }
-                ]
-              },
-              {
-                "id": "push_through",
-                "label": "Push Through",
-                "preview": "Save money but feel the pressure.",
-                "effects": [
-                  {
-                    "type": "adjustStat",
-                    "stat": "happiness",
-                    "amount": -1
-                  },
-                  {
-                    "type": "adjustStat",
-                    "stat": "health",
-                    "amount": -1
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "id": "era_7",
-        "title": "Remote Shift",
-        "text": "Work location changes your daily rhythm.",
-        "effects": [
-          {
-            "type": "adjustStat",
-            "stat": "time",
-            "amount": 1
-          },
-          {
-            "type": "adjustStat",
-            "stat": "happiness",
-            "amount": 1
-          }
-        ]
-      },
-      {
-        "id": "era_8",
-        "title": "Policy Surprise",
-        "text": "A sudden policy reform reshapes your plans.",
-        "effects": [
-          {
-            "type": "moveBackSteps",
-            "steps": 1
-          },
-          {
-            "type": "adjustStat",
-            "stat": "experience",
-            "amount": 1
-          }
-        ]
-      }
-    ],
-    "life": [
-      {
-        "id": "life_1",
-        "title": "Family Support",
-        "text": "Relatives step in to help this season.",
-        "effects": [
-          {
-            "type": "adjustStat",
-            "stat": "money",
-            "amount": 2
-          },
-          {
-            "type": "adjustStat",
-            "stat": "time",
-            "amount": 1
-          }
-        ]
-      },
-      {
-        "id": "life_2",
-        "title": "Unexpected Expense",
-        "text": "A repair bill lands at the worst time.",
-        "effects": [
-          {
-            "type": "adjustStat",
-            "stat": "money",
-            "amount": -3
-          }
-        ]
-      },
-      {
         "id": "life_3",
         "title": "Community Network",
-        "text": "Connections open a better opportunity.",
+        "description": "A friend, neighbor, or community contact opens a door for you to a new occupation... who outside your family has helped you most, and what did they do?",
         "effects": [
           {
-            "type": "adjustStat",
-            "stat": "experience",
-            "amount": 1
-          },
-          {
-            "type": "adjustStat",
-            "stat": "happiness",
-            "amount": 1
+            "type": "chooseOccupation"
           }
         ]
       },
       {
         "id": "life_4",
         "title": "Burnout Warning",
-        "text": "Your pace is unsustainable.",
+        "description": "Your body/mind taps out and you realize you've been pushing too long... what's your personal burnout warning sign and when did it last happen?",
         "effects": [
           {
             "type": "adjustStat",
@@ -2925,24 +3187,51 @@ window.LIFE_LAYERS_DATA = {
       {
         "id": "life_5",
         "title": "Chance Windfall",
-        "text": "A bonus, gift, or lucky break arrives.",
+        "description": "A lucky break lands in your lap, work bonus, gift, refund, or opportunity... what's the luckiest thing that's happened to you (even something small)?",
         "effects": [
           {
             "type": "adjustStat",
             "stat": "money",
-            "amount": 4
+            "amount": 3
+          },
+          {
+            "type": "adjustStat",
+            "stat": "happiness",
+            "amount": 1
           }
         ]
       },
       {
         "id": "life_6",
         "title": "Mentor Moment",
-        "text": "Someone experienced gives practical guidance.",
+        "description": "Someone teaches you a shortcut, shares hard-earned advice, or advocates for you... who has mentored you, and what did you learn from them?",
         "effects": [
+          {
+            "type": "adjustStat",
+            "stat": "experience",
+            "amount": 2
+          },
           {
             "type": "adjustStat",
             "stat": "education",
             "amount": 1
+          }
+        ]
+      },
+      {
+        "id": "life_7",
+        "title": "Geographic Move",
+        "description": "You relocate (by choice or necessity), gaining new possibilities but losing some comfort... if you could live anywhere for one year, where would you go and why?",
+        "effects": [
+          {
+            "type": "adjustStat",
+            "stat": "time",
+            "amount": -1
+          },
+          {
+            "type": "adjustStat",
+            "stat": "happiness",
+            "amount": -1
           },
           {
             "type": "adjustStat",
@@ -2952,65 +3241,41 @@ window.LIFE_LAYERS_DATA = {
         ]
       },
       {
-        "id": "life_7",
-        "title": "Geographic Move",
-        "text": "Relocation changes your near-term trajectory.",
+        "id": "life_8",
+        "title": "Career Change",
+        "description": "You switch paths: new role, new industry, or back to academia. Exciting but destabilizing... what's a career change you've considered (or made), and what pushed you toward it?",
         "effects": [
           {
-            "type": "moveToNode",
-            "nodeId": "47"
-          },
+            "type": "chooseOccupation"
+          }
+        ]
+      },
+      {
+        "id": "life_9",
+        "title": "A Bad Breakup",
+        "description": "A relationship ends badly, and it shakes your routine and confidence for a while... what helps you recover when something important ends?",
+        "effects": [
           {
             "type": "adjustStat",
             "stat": "happiness",
+            "amount": -4
+          },
+          {
+            "type": "adjustStat",
+            "stat": "health",
             "amount": -1
           }
         ]
       },
       {
-        "id": "life_8",
+        "id": "life_10",
         "title": "Reunion & Reflection",
-        "text": "You reconnect with people and rethink priorities.",
+        "description": "You reconnect with someone and remember what matters, even if it takes time... what's one thing you avoid discussing with your family, and why?",
         "effects": [
           {
-            "type": "choice",
-            "prompt": "What do you prioritize after reflecting?",
-            "options": [
-              {
-                "id": "relationships",
-                "label": "Relationships",
-                "preview": "Nurture people around you.",
-                "effects": [
-                  {
-                    "type": "adjustStat",
-                    "stat": "happiness",
-                    "amount": 2
-                  },
-                  {
-                    "type": "adjustStat",
-                    "stat": "time",
-                    "amount": -1
-                  }
-                ]
-              },
-              {
-                "id": "career",
-                "label": "Career",
-                "preview": "Double down on momentum.",
-                "effects": [
-                  {
-                    "type": "adjustStat",
-                    "stat": "money",
-                    "amount": 2
-                  },
-                  {
-                    "type": "adjustStat",
-                    "stat": "health",
-                    "amount": -1
-                  }
-                ]
-              }
-            ]
+            "type": "adjustStat",
+            "stat": "happiness",
+            "amount": 3
           }
         ]
       }
