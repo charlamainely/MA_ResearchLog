@@ -516,7 +516,7 @@
       font-family: var(--body-font);
       font-weight: 800;
       font-size: 0.82rem;
-      text-transform: uppercase;
+      text-transform: none;
       letter-spacing: 0.01em;
       border: 2px solid rgba(0, 0, 0, 0.18);
     }
@@ -1214,6 +1214,23 @@
       font-size: 1.02rem;
       color: var(--black);
       font-weight: 700;
+    }
+
+    .actual-card-impact .impact-heading {
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .actual-card-impact .impact-list {
+      display: grid;
+      gap: 4px;
+      font-size: 0.9rem;
+      line-height: 1.25;
+      font-weight: 600;
+    }
+
+    .actual-card-impact .impact-row strong {
+      font-weight: 800;
     }
 
     .hidden {
@@ -2177,7 +2194,6 @@
               <div class="player-header-main">
                 <h2 id="activePlayerName" class="player-name">-</h2>
                 <div class="player-gen-row">
-                  <span id="activePlayerGen" class="chip">-</span>
                   <button id="showRuleOverlayBtn" class="rule-toggle-btn" type="button">Rules</button>
                 </div>
               </div>
@@ -2308,7 +2324,6 @@
         startGameBtn: document.getElementById("startGameBtn"),
         activePlayerName: document.getElementById("activePlayerName"),
         activePlayerAvatar: document.getElementById("activePlayerAvatar"),
-        activePlayerGen: document.getElementById("activePlayerGen"),
         showRuleOverlayBtn: document.getElementById("showRuleOverlayBtn"),
         statsGrid: document.getElementById("statsGrid"),
         statusGrid: document.getElementById("statusGrid"),
@@ -2380,6 +2395,34 @@
           (card && card.generationEffects && card.generationEffects[generation]) || []
         );
         return baseEffects.concat(generationEffects);
+      }
+
+      function getEraConsequenceHtml(card) {
+        const generationKeys = Object.keys(DATA.generations || {});
+        const rows = generationKeys.map(function (generationKey) {
+          const generation = DATA.generations[generationKey];
+          const effects = getCardEffectsForGeneration(card, generationKey);
+          return (
+            '<div class="impact-row"><strong>' +
+            generation.label +
+            ":</strong> " +
+            summarizeEffects(effects) +
+            "</div>"
+          );
+        });
+        return (
+          '<div class="impact-heading">Consequences by generation</div>' +
+          '<div class="impact-list">' +
+          rows.join("") +
+          "</div>"
+        );
+      }
+
+      function getCardConsequenceHtml(card, deckName, generation) {
+        if (deckName === "era") {
+          return getEraConsequenceHtml(card);
+        }
+        return "Consequences: " + summarizeEffects(getCardEffectsForGeneration(card, generation));
       }
 
       function getStatIcon(stat) {
@@ -3405,8 +3448,8 @@
                 '<p class="actual-card-body">' +
                 getCardDescription(card) +
                 "</p>" +
-                '<div class="actual-card-impact">Consequences: ' +
-                summarizeEffects(resolvedEffects) +
+                '<div class="actual-card-impact">' +
+                getCardConsequenceHtml(card, deckName, generationKey) +
                 "</div>" +
                 "</div>" +
                 "</div>" +
@@ -3501,8 +3544,8 @@
                 '<p class="actual-card-body">' +
                 getCardDescription(card) +
                 "</p>" +
-                '<div class="actual-card-impact">Consequences: ' +
-                summarizeEffects(resolvedEffects) +
+                '<div class="actual-card-impact">' +
+                getCardConsequenceHtml(card, deckName, generationKey) +
                 "</div>" +
                 "</div>" +
                 '<div class="card-result-side">' +
@@ -3537,6 +3580,14 @@
           return;
         }
         logEntry("Card", "Drew " + deckName.toUpperCase() + ": " + drawn.card.title + ".");
+        if (deckName === "era") {
+          for (let i = 0; i < state.players.length; i += 1) {
+            const targetPlayer = state.players[i];
+            const targetEffects = getCardEffectsForGeneration(drawn.card, targetPlayer.generation);
+            await applyEffects(targetPlayer, targetEffects, "Era Card");
+          }
+          return;
+        }
         await applyEffects(player, drawn.effects || [], "Card");
       }
 
@@ -4489,12 +4540,9 @@
         refs.activePlayerName.textContent = player.name + (player.finished ? " (Finished)" : "");
         refs.activePlayerAvatar.src = getGenerationAvatar(player.generation);
         refs.activePlayerAvatar.alt = generation.label + " avatar";
-        refs.activePlayerGen.textContent = generation.label;
-        refs.activePlayerGen.style.background = getGenerationColor(player.generation);
-        refs.activePlayerGen.style.borderColor = "rgba(0,0,0,0.18)";
-        refs.activePlayerGen.style.color = "#000";
         refs.showRuleOverlayBtn.style.background = getGenerationColor(player.generation);
         refs.showRuleOverlayBtn.style.color = "#000";
+        refs.showRuleOverlayBtn.textContent = generation.label + " Rules";
 
         refs.statsGrid.innerHTML = STAT_ORDER
           .map(function (stat) {
