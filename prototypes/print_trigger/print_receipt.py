@@ -105,7 +105,10 @@ def make_receipt(title: str, body: str, footer: str = "") -> bytes:
         escpos_bold_off(),
         (divider + "\n").encode("utf-8"),
         escpos_align_left(),
-        (wrapped_body + "\n").encode("utf-8"),
+        (wrapped_body + "\n\n").encode("utf-8"),
+
+# ✨ WRITING SPACE (no lines)
+("\n" * 8).encode("utf-8"),
     ]
 
     if wrapped_footer:
