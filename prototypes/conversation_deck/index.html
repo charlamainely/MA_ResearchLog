@@ -3,136 +3,189 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Conversation Deck</title>
+    <title>While We Are Young</title>
+    <link rel="stylesheet" href="https://use.typekit.net/kau7emn.css" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="page">
+    <main class="page">
       <header class="hero">
-        <div>
-          <h1>Conversation Deck</h1>
-          <p>
-            A tactile, shared prompt ritual for small groups. Deal three cards, choose one,
-            and answer together before the turn passes.
-          </p>
-        </div>
+        <h1>While We Are Young</h1>
+        <p>
+          This is a lightweight conversation card deck designed to help players surface and
+          share childhood memories as a gentle entry point into family storytelling. The
+          prompts are structured to encourage players to compare experiences, notice
+          similarities and differences, and build connection through shared "when we were
+          young" moments.
+        </p>
       </header>
 
       <section class="panel setup" id="setup">
-        <h2>Set up the session</h2>
-        <p>Add each player and start when everyone is ready.</p>
-        <div class="player-input">
-          <input id="player-name" type="text" placeholder="Player name" autocomplete="off" />
-          <button id="add-player" type="button">Add player</button>
+        <div class="setup-layout">
+          <div class="setup-form">
+            <div class="section-heading">
+              <h2>Session Set Up</h2>
+              <p>Add each player and start when everyone is ready</p>
+            </div>
+
+            <div class="player-input">
+              <input
+                id="player-name"
+                type="text"
+                placeholder="Player Name"
+                autocomplete="off"
+              />
+              <button id="add-player" class="action-button" type="button">Add Player</button>
+            </div>
+          </div>
+
+          <aside class="setup-roster">
+            <div class="roster-top">
+              <h2>Players</h2>
+              <button id="start-game" class="action-button" type="button" disabled>
+                Start Game
+              </button>
+            </div>
+            <ul class="player-list" id="player-list"></ul>
+          </aside>
         </div>
-        <ul class="player-list" id="player-list"></ul>
-        <button id="start-game" class="primary" type="button" disabled>Start session</button>
       </section>
 
       <section class="panel game hidden" id="game">
-        <div class="status">
-          <div class="turn">
-            <span class="label">Current turn</span>
-            <h2 id="current-player">--</h2>
-          </div>
-          <div class="phase" id="phase-label">Shuffle to deal three cards</div>
-        </div>
+        <div class="game-layout">
+          <aside class="info-rail">
+            <div class="turn-block">
+              <div class="turn-label">Current Turn</div>
+              <h2 id="current-player">--</h2>
+            </div>
 
-        <div class="table">
-          <div class="deck-area">
-            <button class="deck" id="deck" type="button" aria-label="Shuffle and deal">
-              <div class="deck-card"></div>
-              <div class="deck-card"></div>
-              <div class="deck-card"></div>
-              <div class="deck-card top"></div>
+            <div class="deck-wrap">
+              <button class="deck" id="deck" type="button" aria-label="Shuffle and deal">
+                <div class="deck-card"></div>
+                <div class="deck-card"></div>
+                <div class="deck-card"></div>
+                <div class="deck-card top"></div>
+              </button>
+              <div class="deck-hint">Click the deck to deal 3 cards</div>
+            </div>
+
+            <button id="next-turn-btn" class="action-button next-button" type="button" disabled>
+              Next Turn
             </button>
-            <div class="deck-hint">Click the deck to deal three cards</div>
-          </div>
+          </aside>
 
-          <div class="card-area">
-            <div class="card-carousel">
-              <button
-                class="carousel-arrow"
-                id="carousel-prev"
-                type="button"
-                aria-label="Previous card"
-              >
-                &larr;
-              </button>
-              <div class="card-grid" id="card-grid">
-                <div class="card-track" id="card-track">
-                  <button class="card-choice" data-index="0" type="button" aria-label="Card option 1">
-                    <div class="card-motion">
-                      <div class="card" data-category="starter">
-                        <div class="card-face card-front">
-                          <div class="option-label">Option 1</div>
-                          <div class="category">Starter</div>
-                          <h3 class="card-title-vi">Tieu de (VI)</h3>
-                          <p class="subtitle card-title-en">Title (EN)</p>
-                          <div class="question card-question-vi">Cau hoi (VI)</div>
-                          <div class="translation card-question-en">Question (EN)</div>
-                        </div>
-                        <div class="card-face card-back">
-                          <div class="back-text">Conversation Deck</div>
-                        </div>
-                      </div>
-                    </div>
-                  </button>
-                  <button class="card-choice" data-index="1" type="button" aria-label="Card option 2">
-                    <div class="card-motion">
-                      <div class="card" data-category="starter">
-                        <div class="card-face card-front">
-                          <div class="option-label">Option 2</div>
-                          <div class="category">Starter</div>
-                          <h3 class="card-title-vi">Tieu de (VI)</h3>
-                          <p class="subtitle card-title-en">Title (EN)</p>
-                          <div class="question card-question-vi">Cau hoi (VI)</div>
-                          <div class="translation card-question-en">Question (EN)</div>
-                        </div>
-                        <div class="card-face card-back">
-                          <div class="back-text">Conversation Deck</div>
+          <div class="play-stage">
+            <div class="stage-top">
+              <div class="phase-badge" id="phase-label">Shuffle to deal three cards</div>
+            </div>
+
+            <div class="card-area">
+              <div class="card-carousel">
+                <button
+                  class="carousel-arrow"
+                  id="carousel-prev"
+                  type="button"
+                  aria-label="Previous card"
+                >
+                  &larr;
+                </button>
+
+                <div class="card-grid" id="card-grid">
+                  <div class="card-track" id="card-track">
+                    <button
+                      class="card-choice is-hidden"
+                      data-index="0"
+                      type="button"
+                      aria-label="Card 1"
+                    >
+                      <div class="card-motion">
+                        <div class="card">
+                          <div class="card-face card-front">
+                            <div class="card-copy">
+                              <h3 class="card-title-vi">Tieu de tieng Viet</h3>
+                              <p class="card-title-en">English title</p>
+                              <p class="card-question-vi">
+                                Cau hoi tieng Viet se xuat hien o day.
+                              </p>
+                              <p class="card-question-en">
+                                The English translation will appear here.
+                              </p>
+                            </div>
+                          </div>
+                          <div class="card-face card-back"></div>
                         </div>
                       </div>
-                    </div>
-                  </button>
-                  <button class="card-choice" data-index="2" type="button" aria-label="Card option 3">
-                    <div class="card-motion">
-                      <div class="card" data-category="starter">
-                        <div class="card-face card-front">
-                          <div class="option-label">Option 3</div>
-                          <div class="category">Starter</div>
-                          <h3 class="card-title-vi">Tieu de (VI)</h3>
-                          <p class="subtitle card-title-en">Title (EN)</p>
-                          <div class="question card-question-vi">Cau hoi (VI)</div>
-                          <div class="translation card-question-en">Question (EN)</div>
-                        </div>
-                        <div class="card-face card-back">
-                          <div class="back-text">Conversation Deck</div>
+                    </button>
+
+                    <button
+                      class="card-choice is-hidden"
+                      data-index="1"
+                      type="button"
+                      aria-label="Card 2"
+                    >
+                      <div class="card-motion">
+                        <div class="card">
+                          <div class="card-face card-front">
+                            <div class="card-copy">
+                              <h3 class="card-title-vi">Tieu de tieng Viet</h3>
+                              <p class="card-title-en">English title</p>
+                              <p class="card-question-vi">
+                                Cau hoi tieng Viet se xuat hien o day.
+                              </p>
+                              <p class="card-question-en">
+                                The English translation will appear here.
+                              </p>
+                            </div>
+                          </div>
+                          <div class="card-face card-back"></div>
                         </div>
                       </div>
-                    </div>
-                  </button>
-                </div>
-                <div class="round-panel hidden" id="round-panel">
-                  <div class="round-header">
-                    <span class="label">Everyone answers</span>
-                    <span id="round-status">0/0 answered</span>
+                    </button>
+
+                    <button
+                      class="card-choice is-hidden"
+                      data-index="2"
+                      type="button"
+                      aria-label="Card 3"
+                    >
+                      <div class="card-motion">
+                        <div class="card">
+                          <div class="card-face card-front">
+                            <div class="card-copy">
+                              <h3 class="card-title-vi">Tieu de tieng Viet</h3>
+                              <p class="card-title-en">English title</p>
+                              <p class="card-question-vi">
+                                Cau hoi tieng Viet se xuat hien o day.
+                              </p>
+                              <p class="card-question-en">
+                                The English translation will appear here.
+                              </p>
+                            </div>
+                          </div>
+                          <div class="card-face card-back"></div>
+                        </div>
+                      </div>
+                    </button>
                   </div>
-                  <div class="checklist" id="answer-list"></div>
+
+                  <div class="round-panel hidden" id="round-panel">
+                    <div class="round-header">
+                      <span class="round-pill">Everyone answers</span>
+                      <span id="round-status">0/0 answered</span>
+                    </div>
+                    <div class="checklist" id="answer-list"></div>
+                  </div>
                 </div>
+
+                <button class="carousel-arrow" id="carousel-next" type="button" aria-label="Next card">
+                  &rarr;
+                </button>
               </div>
-              <button class="carousel-arrow" id="carousel-next" type="button" aria-label="Next card">
-                &rarr;
-              </button>
             </div>
           </div>
         </div>
-
-        <div class="controls">
-          <button id="next-turn-btn" type="button" class="primary" disabled>Next turn</button>
-        </div>
       </section>
-    </div>
+    </main>
 
     <script src="questions.js"></script>
     <script src="game.js"></script>
