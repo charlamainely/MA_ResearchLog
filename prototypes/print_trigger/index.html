@@ -3,147 +3,279 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NFC Thermal Print Portal</title>
+  <title>Print Portal</title>
+
   <style>
+    :root {
+      --panel-width: 320px;
+      --panel-bg: rgba(255, 255, 255, 0.92);
+      --panel-border: rgba(0, 0, 0, 0.08);
+      --shadow: 0 10px 30px rgba(0,0,0,0.12);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      color: #222;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+      background: #000;
+      overflow: hidden;
     }
 
-    .container {
-      width: min(720px, 90vw);
-      background: white;
-      border-radius: 16px;
-      padding: 32px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    }
-
-    h1 {
-      margin-top: 0;
-      font-size: 2rem;
-    }
-
-    h2 {
-      margin-top: 2rem;
-      font-size: 1.2rem;
-    }
-
-    p {
-      line-height: 1.5;
-    }
-
-    .button-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    button {
-      padding: 12px 18px;
+    iframe {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
       border: none;
-      border-radius: 10px;
-      background: #222;
-      color: white;
-      cursor: pointer;
-      font-size: 0.95rem;
+      z-index: 1;
+      background: white;
     }
 
-    button:hover {
-      background: #444;
-    }
-
-    .status-box {
-      margin-top: 20px;
-      padding: 16px;
-      border-radius: 12px;
-      background: #f0f0f0;
-    }
-
-    .status-label {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      opacity: 0.65;
-      margin-bottom: 6px;
-    }
-
-    #status {
-      font-size: 1rem;
-      font-weight: 500;
-    }
-
-    .uid-box {
-      margin-top: 12px;
-      font-family: monospace;
-      font-size: 0.95rem;
-      opacity: 0.8;
-    }
-
-    .hint {
-      margin-top: 20px;
-      font-size: 0.92rem;
-      opacity: 0.75;
-    }
-
-    /* Hidden input for wedge-style NFC reader */
     #scannerInput {
       position: absolute;
       left: -9999px;
       opacity: 0;
       pointer-events: none;
     }
+
+    .side-panel {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      width: min(var(--panel-width), calc(100vw - 32px));
+      max-height: calc(100vh - 32px);
+      overflow: auto;
+      background: var(--panel-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--panel-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      z-index: 15;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+
+    .side-panel.hidden {
+      transform: translateX(calc(100% + 24px));
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .panel-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .panel-hint {
+      font-size: 0.8rem;
+      opacity: 0.7;
+      margin: 2px 0 0 0;
+    }
+
+    .hotkey-pill {
+      font-size: 0.75rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #222;
+      color: white;
+      white-space: nowrap;
+    }
+
+    .section {
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .section:first-of-type {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
+    }
+
+    .section-title {
+      margin: 0 0 8px 0;
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      opacity: 0.65;
+      font-weight: 700;
+    }
+
+    .status-box {
+      background: rgba(0,0,0,0.04);
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    #status {
+      font-size: 0.95rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    #lastUid {
+      margin-top: 6px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      opacity: 0.8;
+      word-break: break-all;
+    }
+
+    .button-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    button {
+      padding: 10px 12px;
+      border: none;
+      border-radius: 10px;
+      background: #dadada;
+      color: white;
+      cursor: pointer;
+      font-size: 0.85rem;
+      line-height: 1.2;
+    }
+
+    button:hover {
+      background: #444;
+    }
+
+    .small-note {
+      margin-top: 10px;
+      font-size: 0.82rem;
+      opacity: 0.72;
+      line-height: 1.45;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.5rem;
+      z-index: 20;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .overlay-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px;
+      padding: 24px 28px;
+      backdrop-filter: blur(8px);
+      min-width: 220px;
+    }
+
+    .floating-show-button {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 14;
+      border-radius: 999px;
+      background: rgba(216, 216, 216, 0.5);
+      color: white;
+      padding: 10px 14px;
+      font-size: 0.8rem;
+      box-shadow: var(--shadow);
+      display: none;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .floating-show-button.visible {
+      display: inline-block;
+    }
   </style>
 </head>
+
 <body>
-  <div class="container">
-    <h1>Thermal Print Portal</h1>
-    <p>
-      Use the buttons below to test templates manually, or tap an NFC tag to trigger
-      a print automatically.
-    </p>
-
-    <h2>Manual test buttons</h2>
-    <div class="button-group">
-      <button onclick="printTemplate('childhood-memory')">Print Childhood Memory</button>
-      <button onclick="printTemplate('family-conflict')">Print Family Conflict</button>
-      <button onclick="printTemplate('migration-story')">Print Migration Story</button>
-      <button onclick="printTemplate('traditional-recipe')">Print Traditional Recipe</button>
-      <button onclick="printTemplate('love-story')">Print Love Story</button>
-      <button onclick="printTemplate('life-choice')">Print Life Decisions</button>
-    </div>
-
-    <h2>NFC scan trigger</h2>
-    <p>
-      Your NFC reader can type the UID into the hidden input below. When it sends
-      Enter, this page will detect the UID and print the mapped template.
-    </p>
-
-    <div class="status-box">
-      <div class="status-label">Status</div>
-      <div id="status">Ready. Tap a tag or press a test button.</div>
-      <div class="uid-box" id="lastUid">Last scanned UID: —</div>
-    </div>
-
-    <p class="hint">
-      Tip: keep this page active and in focus so the NFC reader types into the hidden input correctly.
-    </p>
-  </div>
+  <iframe src="https://charlamainely.github.io/MA_ResearchLog/"></iframe>
 
   <input id="scannerInput" type="text" autofocus />
 
+  <div id="sidePanel" class="side-panel hidden">
+    <div class="panel-header">
+      <div>
+        <h1 class="panel-title">Print Portal</h1>
+        <p class="panel-hint">Press <strong>H</strong> to hide/show this panel.</p>
+      </div>
+      <div class="hotkey-pill">H</div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Reader</h2>
+      <div class="status-box">
+        <div id="status">Ready. Tap a card anytime.</div>
+        <div id="lastUid">UID: —</div>
+      </div>
+      <div class="small-note">
+        The scanner stays active in the parent page. Clicking around the website should bounce focus back automatically.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Manual controls</h2>
+      <div class="button-group">
+        <button onclick="printTemplate('childhood-memory')">Childhood</button>
+        <button onclick="printTemplate('family-conflict')">Conflict</button>
+        <button onclick="printTemplate('migration-story')">Migration</button>
+        <button onclick="printTemplate('traditional-recipe')">Recipe</button>
+        <button onclick="printTemplate('love-story')">Love</button>
+        <button onclick="printTemplate('life-choice')">Life</button>
+      </div>
+      <div class="small-note">
+        Use these for testing or backup during installation.
+      </div>
+    </div>
+  </div>
+
+  <div id="showPanelButton" class="floating-show-button" onclick="togglePanel(true)">
+    Printer Controls
+  </div>
+
+  <div id="overlay" class="overlay">
+    <div class="overlay-card">
+      <div id="overlayText">Processing...</div>
+    </div>
+  </div>
+
   <script>
+    const scannerInput = document.getElementById("scannerInput");
     const statusEl = document.getElementById("status");
     const lastUidEl = document.getElementById("lastUid");
-    const scannerInput = document.getElementById("scannerInput");
+    const overlay = document.getElementById("overlay");
+    const overlayText = document.getElementById("overlayText");
+    const sidePanel = document.getElementById("sidePanel");
+    const showPanelButton = document.getElementById("showPanelButton");
 
-    // Map scanned UID → template name used by your Python server
     const UID_TO_TEMPLATE = {
       "1149891332": "childhood-memory",
       "0037184260": "family-conflict",
@@ -153,66 +285,108 @@
       "1223926532": "life-choice"
     };
 
+    let panelHidden = false;
+
+    function refocus() {
+      if (document.activeElement !== scannerInput) {
+        scannerInput.focus();
+      }
+    }
+
+    function showOverlay(text) {
+      overlayText.textContent = text;
+      overlay.classList.add("active");
+    }
+
+    function hideOverlay() {
+      overlay.classList.remove("active");
+    }
+
+    function togglePanel(forceShow = null) {
+      panelHidden = forceShow === null ? !panelHidden : !forceShow;
+      sidePanel.classList.toggle("hidden", panelHidden);
+      showPanelButton.classList.toggle("visible", panelHidden);
+      setTimeout(refocus, 30);
+    }
+
     async function printTemplate(template) {
-      statusEl.textContent = `Printing template: ${template}...`;
+      showOverlay("Processing...");
+      statusEl.textContent = `Printing: ${template}`;
 
       try {
-        const response = await fetch("http://127.0.0.1:5050/print", {
+        const res = await fetch("http://127.0.0.1:5050/print", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ template: template })
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ template })
         });
 
-        const result = await response.json();
+        const result = await res.json();
 
-        if (!response.ok || !result.ok) {
+        if (!res.ok || !result.ok) {
           throw new Error(result.error || "Print failed");
         }
 
         statusEl.textContent = `Printed: ${result.printed}`;
+        showOverlay("Printed ✓");
       } catch (err) {
         console.error(err);
         statusEl.textContent = `Error: ${err.message}`;
+        showOverlay("Error");
       }
+
+      setTimeout(hideOverlay, 1200);
+      setTimeout(refocus, 50);
     }
 
-    function keepScannerFocus() {
-      scannerInput.focus();
-    }
+    // Keep scanner focus alive
+    window.addEventListener("load", refocus);
+    window.addEventListener("click", refocus);
+    window.addEventListener("focus", refocus);
 
-    // Keep focus when page loads or user clicks anywhere
-    window.addEventListener("load", keepScannerFocus);
-    window.addEventListener("click", keepScannerFocus);
+    // Important for iframe focus stealing
+    window.addEventListener("blur", () => {
+      setTimeout(refocus, 50);
+    });
 
-    // Extra insurance for wedge-style readers in exhibition mode
-    setInterval(keepScannerFocus, 1000);
+    // Gentle safety net
+    setInterval(refocus, 1500);
 
-    scannerInput.addEventListener("keydown", async (event) => {
-      if (event.key === "Enter") {
+    // NFC wedge input
+    scannerInput.addEventListener("keydown", async (e) => {
+      if (e.key === "Enter") {
         const uid = scannerInput.value.trim();
         scannerInput.value = "";
 
         if (!uid) {
-          keepScannerFocus();
+          refocus();
           return;
         }
 
-        console.log("Scanned UID:", uid);
-        lastUidEl.textContent = `Last scanned UID: ${uid}`;
+        lastUidEl.textContent = `UID: ${uid}`;
 
         const template = UID_TO_TEMPLATE[uid];
 
         if (!template) {
           statusEl.textContent = `Unknown tag: ${uid}`;
-          keepScannerFocus();
+          setTimeout(refocus, 50);
           return;
         }
 
-        statusEl.textContent = `Tag recognised: ${uid} → ${template}`;
         await printTemplate(template);
-        keepScannerFocus();
+      }
+    });
+
+    // Hotkey: H hides/shows panel
+    document.addEventListener("keydown", (e) => {
+      const tag = (e.target.tagName || "").toLowerCase();
+      const isTypingTarget =
+        tag === "input" || tag === "textarea" || tag === "select" || e.target.isContentEditable;
+
+      if (isTypingTarget && e.target !== scannerInput) return;
+
+      if (e.key === "h" || e.key === "H") {
+        // Avoid toggling when scanner submits Enter data; H is still okay
+        togglePanel();
       }
     });
   </script>

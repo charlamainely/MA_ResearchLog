@@ -4,6 +4,7 @@ import textwrap
 
 PRINTER_NAME = "9printer-80mpt"
 CHARS_PER_LINE = 42  # adjust after testing
+SHARE_URL = "https://forms.gle/ZuFKTD1WGh14eW62A"  # <-- replace with your real link
 
 TEMPLATES = {
     "childhood-memory": {
@@ -54,7 +55,6 @@ TEMPLATES = {
         ),
         "footer": "Take this question into a conversation."
     }
-
 }
 
 def escpos_init() -> bytes:
@@ -74,6 +74,42 @@ def escpos_bold_off() -> bytes:
 
 def escpos_cut() -> bytes:
     return b"\x1dV\x00"
+
+def escpos_qr(data: str, module_size: int = 4, error_level: str = "M") -> bytes:
+    """
+    Generate ESC/POS QR code commands.
+    module_size: 1-16, 4 is a good small readable size for receipts.
+    error_level: L, M, Q, H
+    """
+    if not (1 <= module_size <= 16):
+        module_size = 4
+
+    error_map = {
+        "L": 48,  # 7%
+        "M": 49,  # 15%
+        "Q": 50,  # 25%
+        "H": 51,  # 30%
+    }
+    ec = error_map.get(error_level.upper(), 49)
+
+    data_bytes = data.encode("utf-8")
+    store_len = len(data_bytes) + 3
+    pL = store_len % 256
+    pH = store_len // 256
+
+    commands = [
+        # Select model 2
+        b"\x1d(k\x04\x001A2\x00",
+        # Set module size
+        b"\x1d(k\x03\x001C" + bytes([module_size]),
+        # Set error correction
+        b"\x1d(k\x03\x001E" + bytes([ec]),
+        # Store data
+        b"\x1d(k" + bytes([pL, pH]) + b"1P0" + data_bytes,
+        # Print QR
+        b"\x1d(k\x03\x001Q0",
+    ]
+    return b"".join(commands)
 
 def wrap_text(text: str, width: int) -> str:
     paragraphs = text.split("\n")
@@ -107,18 +143,26 @@ def make_receipt(title: str, body: str, footer: str = "") -> bytes:
         escpos_align_left(),
         (wrapped_body + "\n\n").encode("utf-8"),
 
-# ✨ WRITING SPACE (no lines)
-("\n" * 8).encode("utf-8"),
+        # Writing space
+        ("\n" * 8).encode("utf-8"),
     ]
 
     if wrapped_footer:
         parts.extend([
             ("\n" + divider + "\n").encode("utf-8"),
             escpos_align_center(),
-            (wrapped_footer + "\n").encode("utf-8"),
+            (wrapped_footer + "\n\n").encode("utf-8"),
         ])
 
-    parts.extend([b"\n\n", escpos_cut()])
+    # QR section
+    parts.extend([
+        ("Scan to share your response\n").encode("utf-8"),
+        escpos_align_center(),
+        escpos_qr(SHARE_URL, module_size=4, error_level="M"),
+        b"\n\n",
+        escpos_cut(),
+    ])
+
     return b"".join(parts)
 
 def send_to_printer(data: bytes):
