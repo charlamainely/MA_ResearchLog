@@ -62,6 +62,7 @@ html, body{
   background: linear-gradient(180deg, rgba(252, 252, 252, 0.8) 0%, rgba(247, 247, 247, 0.8) 100%), url('../icons/exercise_tile.jpg');
   background-repeat: repeat;
   background-attachment: fixed;
+  height: 100vh;
 }
 
 .prototype{
