@@ -69,6 +69,11 @@ html, body{
   background-repeat: repeat;
   background-attachment: fixed;
 }
+.prototype-mini{
+  background: linear-gradient(180deg, rgba(252, 252, 252, 0.8) 0%, rgba(247, 247, 247, 0.8) 100%);
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
 
 .footer{
   background: linear-gradient(180deg, rgba(252, 252, 252, 0.8) 0%, rgba(247, 247, 247, 0.8) 100%);
