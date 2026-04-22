@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>While We Were Young - Digital Portal</title>
+  
+  <link rel="stylesheet" href="../../assets/styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  
+  <header class="page-head">
+    <div class="container">
+      <div class="kicker">Prototype</div>
+      <h1 class="h1">While We Were Young - Digital Portal</h1>
+      <div class="page-meta">
+        <span><strong>Type:</strong> Digital Portal</span>
+        <span><strong>Context:</strong> After the first user test, I wanted this prototype to be able to travel on its own, in the sense that players should be able to keep a copy for themselves and play with their own friends and family whenever they want. So, I decided to develop this digital portal.</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:20px">
+    <div class="grid">
+      <article class="span-8 stack measure order-1">
+
+        <section class="card">
+          <h2 class="h2">Objective</h2>
+          <p class="measure">As I cannot afford to print a deck for every single person to play this game, as much as I want to, I needed to come up with a way for players to carry this game in their pocket and play when the opportunity arrive. Players can already easily facilitate play session by themselves, hence, there is no need for me to be there, so if they can keep playing and play spontaneously, it could really help my project travel far. Hence a digital version of the game just makes perfect sense.</p>
+        </section>
+
+        <section>
+          <h2 class="h2">Process Breakdown</h2>
+          <p class="measure"><h3>Converting Rules into Code</h3>
+For this platform to work, I have to first deduce the rule of the game into a logic flow that can be converted into code. And the rule is as follows:
+<li>The game is divided into 3 main stages: Set Up, Player Take Turns, and Game Ends</li>
+<li>During Set Up: Add all players who is in the game to the session.</li>
+<li>During each player turn: Player is dealt 3 cards, player choose one out of 3, everyone has to answer this question. Once everyone has answered, the turn ends.</li>
+<li>Players keep taking turns until they are satisfied</li>
+Using this logic, we can then create the code for the game.
+<h3>Platform</h3>
+As I want this to be easy to play, and since based on the rules, the game can easily be hosted on one device that players can just pass between each other, I decide to make this platform using html and javascript, as it doesn't require any back end to store data, only front end.
+However, based on the rules explained above, there are some minor changes to the game dynamics compared to the physical version of the game:
+<li>Player would have to discard both cards that are not chosen on their turn and would be dealt 3 new cards upon next turn. So if players were also curious about the remaining questions they wouldn't be able to ask it unless it was dealt to them again, OR if someone else got it.</li>
+This might alter the play experience somewhat but so far I have not received any complaints.
+</p>
+        </section>
+
+        <section class="card">
+          <h2 class="h2">Key Takeaways</h2>
+          <ul>
+            <li>
+  So now I have a working digital version of the game, that has basically all the core mechanics but just slight deviation in user experience.
+</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="h2">Reflection</h2>
+          <p class="measure"><li>This was a pretty interesting experiment as now whenever I try to promote this prototype, I can just send them the link to the game and they can instantly play with their friends.</li>
+<li>And if player wants to add more questions, I can also easily do so.</li>
+<li>However, I realised I have yet to implement a feature to collect story into this portal, and so far I have not found a way to aesthetic implement it. So I will keep brainstorming on this idea.</li></p> </section>
+
+       
+      </article>
+
+      <aside class="span-4 order-2 stack">
+        <figure class="figure">
+  <img src="assets/cover.jpg" alt="Cover image of this card game"/>
+  <figcaption class="figcap">Cover image of this card game</figcaption>
+</figure>
+
+        <section class="card">
+          <h2 class="h2">Tags</h2>
+          <p>
+            <span class="badge">card game</span> <span class="badge">digital</span>
+          </p>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <script src="../assets/prevnext_universal.js" defer></script>
+</body>
+</html>

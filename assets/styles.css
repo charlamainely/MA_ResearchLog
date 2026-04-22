@@ -351,7 +351,7 @@ a{ color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 /* ===============================
    SMALL UTILITIES SHARED
    =============================== */
-.meta-list{ list-style:none; padding:0; margin:0; }
+.meta-list{ list-style:none; padding:0; margin:0;}
 .meta-list li + li{ margin-top:6px; }
 .badge{ display:inline-block; padding: 2px 8px; border:1px solid var(--line); border-radius:999px; font-size:.85rem; color: var(--muted); background: linear-gradient(180deg, #fefefe 0%, #e8e8e8 100%); box-shadow: 0 1px 1px rgba(0,0,0,0.1); }
 .inline-img{ max-width:100%; height:auto; vertical-align: baseline; }

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Greener Grass - Second Iteration</title>
+  
+  <link rel="stylesheet" href="../../assets/styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  
+  <header class="page-head">
+    <div class="container">
+      <div class="kicker">Prototype</div>
+      <h1 class="h1">Greener Grass - Second Iteration</h1>
+      <div class="page-meta">
+        <span><strong>Type:</strong> Board Game</span>
+        <span><strong>Context:</strong> After the first playtest exposed balancing issues and weak communication flow, I redesigned the board, refined the stat system and implemented new quality of life features to make the game both clearer and more conversational.</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:20px">
+    <div class="grid">
+      <article class="span-8 stack measure order-1">
+
+        <section class="card">
+          <h2 class="h2">Objective</h2>
+          <p class="measure">The goal of the second iteration was not to change the core idea of the project, but to make the system actually support that idea better. The first version already showed that players were interested in the generational comparison, but too many stat effects were behaving wildly and sometimes locking people into frustrating situations. Also, while the game was fun, it still did not naturally generate enough communication on its own. So this round of development focused on making the board feel better, making the stats more flexible, and making the experience more conversational and readable overall.</p>
+        </section>
+
+        <section>
+          <h2 class="h2">Process Breakdown</h2>
+          <p class="measure"><h3>Redesigning the Board</h3> I started by redesigning the board itself so that it looked more coherent and intentional as a game object. Since the first version was more functional, this was the stage where I could think more carefully about the player journey, readability of spaces, and how the board visually supports the life course structure of the game. I also revised a number of the individual squares so that their effects felt more sensible and better distributed across the whole session.</p>
+
+          <p class="measure"><h3>Reworking the Stat System</h3> A major part of this iteration was continuing to test and rebalance the six stats. Some stats made sense going negative, while others seemed less logical at first. In the end, I decided that all stats except time could go below zero, because this gives players more freedom and allows life to feel messier and less artificially bounded. However, negative stats do come with consequences, so players are still encouraged to manage them carefully. This change made the game feel more open while also reducing the amount of hard stopping and soft locking that happened in the earlier build.</p>
+
+          <p class="measure"><h3>Adding Quality of Life Features</h3> I also introduced a series of smaller updates that made the game much smoother to play. These include undo buttons, cute avatars, animations, more specific generational differences, and clearer feedback when effects are applied. While these may sound minor compared to the larger system changes, they made a huge difference to how readable and playable the game felt. Since the portal already handles so much hidden logic, these interface improvements help players stay oriented and make the experience feel less intimidating.</p>
+
+          <p class="measure"><h3>Implementing Shared Effects</h3> One of the most important additions in this version was implementing stat effects that impact all players, especially through Era cards. This turned out to be really valuable, because players were fascinated not only by what happened to themselves, but also by what happened to others. In particular, when shared events negatively affected other players, it created a strong competitive dynamic, but it also sparked discussion. Players bonded over joint setbacks, reacted to each other’s situations, and began reflecting more openly on why certain generations are differently vulnerable to the same external pressure.</p>
+
+          <p class="measure"><h3>Second User Test</h3> The second playtest was much more successful than the first. The game takes around one hour and works best with four players, and for testing purposes each player picked a different generation so the comparison would be clear. Players loved the generational difference mechanics, especially when effects spilled across the whole table. Another major success was the implementation of conversation prompts in the Life cards, which finally gave the game a consistent way to encourage discussion during play. During post-game reflections, players expressed much deeper empathy for other generations, especially their parents. One player even said that they now understood why their parents made certain life decisions, because before this game those choices did not make sense to them, but now they did.</p>
+        </section>
+
+        <section class="card">
+          <h2 class="h2">Key Takeaways</h2>
+          <ul>
+            <li>
+  This iteration finally brought the strategic and conversational sides of the game together, making the system more stable while also creating much better player discussion and reflection.
+</li>
+            <li>
+  The strongest evidence of success was not just that players enjoyed the game, but that they left with more empathy and clearer understanding of generational decision-making.
+</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="h2">Reflection</h2>
+          <p class="measure"><li>This version feels much closer to what I originally wanted the project to do, because the mechanics are no longer fighting against the communication goals.</li><li>I was especially happy to see that shared negative impacts actually helped players bond and talk more, instead of just making them annoyed.</li><li>The comment about understanding one’s parents better was probably the clearest sign so far that this prototype is capable of producing real perspective shifts.</li></p>
+        </section>
+
+      </article>
+
+      <aside class="span-4 order-2 stack">
+        <figure class="figure">
+  <img src="assets/boardgame.jpg" alt="Cover image of the second board game iteration"/>
+  <figcaption class="figcap">Cover image of the second board game iteration</figcaption>
+</figure>
+
+        <section class="card">
+          <h2 class="h2">Tags</h2>
+          <p>
+            <span class="badge">board game</span> <span class="badge">second iteration</span> <span class="badge">digital</span> <span class="badge">physical</span>
+          </p>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <script src="../assets/prevnext_universal.js" defer></script>
+</body>
+</html>

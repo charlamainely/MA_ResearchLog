@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Greener Grass - Digital Portal</title>
+  
+  <link rel="stylesheet" href="../../assets/styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  
+  <header class="page-head">
+    <div class="container">
+      <div class="kicker">Prototype</div>
+      <h1 class="h1">Greener Grass - Digital Portal</h1>
+      <div class="page-meta">
+        <span><strong>Type:</strong> Digital Portal</span>
+        <span><strong>Context:</strong> Because this board game relies on a lot of stat changes, recurring effects and generation-specific calculations, I developed a hybrid digital portal so that the physical board and the digital platform can work together.</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:20px">
+    <div class="grid">
+      <article class="span-8 stack measure order-1">
+
+        <section class="card">
+          <h2 class="h2">Objective</h2>
+          <p class="measure">From early on, I knew this game could not work as a fully analogue board game, because there were simply too many calculations happening in the background. Different generations receive different effects, some choices affect occupation or future opportunities, some spaces trigger recurring changes, and some events affect all players at once. If players had to manually calculate all of this while also trying to talk to each other, the whole session would become confusing and exhausting. So the objective of the portal was to handle the messy math in the background and present the consequences clearly, allowing players to focus on the discussion and the broader life simulation instead of getting stuck in accounting.</p>
+        </section>
+
+        <section>
+          <h2 class="h2">Process Breakdown</h2>
+          <p class="measure"><h3>Designing a Hybrid Structure</h3> Rather than replacing the physical board, I wanted the digital portal to work with it. The board gives players a shared physical space to gather around, while the portal manages the game logic that would otherwise be too cumbersome to track manually. This hybrid approach also felt appropriate for the project itself, because it keeps the social, table-based feeling of a board game while still using digital tools where they are actually useful.</p>
+
+          <p class="measure"><h3>Translating the System into Logic</h3> To make the portal work, I first had to define the game logic in an extremely detailed way. This was much more complicated than the earlier digital portal for the card game. Here, every square on the board could potentially behave differently depending on generation, occupation status, previous choices, ongoing effects and current stat levels. Some effects only happen once, others recur over time, and some decisions unlock future consequences much later in the game. In order to track all of this, I ended up building a very detailed Excel sheet that mapped the effects of each board space, each event, and all the possible edge cases I could think of.</p>
+
+          <p class="measure"><h3>Balancing Challenge and Frustration</h3> Building that system was only half the problem. The harder part was tweaking the values so that the game remained challenging but not frustrating. If the numbers were too soft, the generational differences would feel meaningless. But if they were too harsh, players would get trapped in cycles of penalties and the game would stop being fun. So a lot of the digital development was actually balancing work: adjusting stat effects, rewriting recurring penalties, and making sure the consequences still felt dramatic without constantly punishing players into dead ends.</p>
+
+          <p class="measure"><h3>Making Effects Legible</h3> One of the biggest strengths of the portal is that it allows players to see the consequences of their choices clearly. Rather than trying to mentally track six different stats and a pile of exceptions, players can immediately see what changed after they land on a space or draw an event. This was important because the project is not just about winning or losing, but about making players notice patterns. The portal helps visualise how one generation may be boosted or disadvantaged in ways that are not obvious until the numbers are laid out in front of them.</p>
+
+          <p class="measure"><h3>Testing Hosting Modes</h3> During user testing, I also compared two hosting structures for the portal: one device shared by all players, and each player on their own device. Interestingly, players were more focused in the one-device mode because everyone could witness the joint impact on all players together, especially when an event affected the whole table. However, over a longer play session, staring in one direction also created some physical discomfort. This makes me think the ideal future direction is a multiplayer version where players can join the same session from separate devices while still seeing shared updates in real time.</p>
+        </section>
+
+        <section class="card">
+          <h2 class="h2">Key Takeaways</h2>
+          <ul>
+            <li>
+  The portal became essential to the game, because it turned a very messy rule system into something playable, readable and much easier to discuss around.
+</li>
+            <li>
+  It also revealed that future iterations would benefit from proper backend support so players can join the same session from multiple devices without losing the shared sense of play.
+</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="h2">Reflection</h2>
+          <p class="measure"><li>This platform taught me that the digital part of a hybrid game should not exist just because it looks nice, but because it solves a real problem that the physical format cannot handle on its own.</li><li>The Excel planning stage was honestly exhausting, but it was also the only way I could keep the whole system coherent.</li><li>Moving forward, I would love to extend this into a real multiplayer system and maybe even include a visual life-course summary at the end of the game.</li></p>
+        </section>
+
+      </article>
+
+      <aside class="span-4 order-2 stack">
+        <figure class="figure">
+  <img src="assets/digital.jpg" alt="Cover image of the digital portal"/>
+  <figcaption class="figcap">Cover image of the digital portal</figcaption>
+</figure>
+
+        <section class="card">
+          <h2 class="h2">Tags</h2>
+          <p>
+            <span class="badge">board game</span> <span class="badge">digital</span> <span class="badge">hybrid</span> <span class="badge">game system</span>
+          </p>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <script src="../assets/prevnext_universal.js" defer></script>
+</body>
+</html>

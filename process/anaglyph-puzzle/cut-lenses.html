@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Anaglyph Word Search Puzzle - Lens Development</title>
+  
+  <link rel="stylesheet" href="../../assets/styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  
+  <header class="page-head">
+    <div class="container">
+      <div class="kicker">Prototype</div>
+      <h1 class="h1">Anaglyph Word Search Puzzle - Lens Development</h1>
+      <div class="page-meta">
+        <span><strong>Type:</strong> Material Experiment</span>
+        <span><strong>Context:</strong> After the first user test exposed major usability issues, I focused on redesigning the viewing mechanism itself, testing different materials and locking methods in hopes of making the cooperative puzzle easier and more comfortable to use.</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:20px">
+    <div class="grid">
+      <article class="span-8 stack measure order-1">
+
+        <section class="card">
+          <h2 class="h2">Objective</h2>
+          <p class="measure">Since the first version failed mainly because of the viewing experience, the next stage was less about redesigning the puzzle itself and more about solving the material problem. I needed a lens system that would make the colour separation clear, sit together neatly, and remain comfortable enough for players to use over time. In theory, if I could fix the physical interaction, the puzzle might still be viable. So this phase became a material investigation into what kind of lens structure could support the anaglyph mechanic properly.</p>
+        </section>
+
+        <section>
+          <h2 class="h2">Process Breakdown</h2>
+          <p class="measure"><h3>Testing Cellophane Sheets</h3> My first attempt was to use coloured cellophane sheets, since they are lightweight, cheap and easy to cut. However, this did not work well, especially for the cyan side. The colour was too weak to produce a clear enough filter, so I would have needed to stack multiple sheets together in order to get the desired effect. But once multiple layers are introduced, the whole object becomes awkward and messy, and there was no graceful way to handle that in the game. So although cellophane seemed promising at first, it was not a practical solution.</p>
+
+          <p class="measure"><h3>Switching to Acrylic</h3> After that, I moved on to acrylic. Acrylic seemed like a better option because it is sturdier, gives cleaner colour differentiation, and feels more intentional as a game object. I designed a pair of acrylic pieces with a jigsaw-like locking edge so that the two viewing pieces could fit together neatly while the players worked on the puzzle. This was meant to solve the alignment issue from the first test and make the two-player setup more stable during use.</p>
+
+          <p class="measure"><h3>New Problems with the Acrylic Build</h3> Unfortunately, the acrylic introduced a different set of problems. In practice, the locking mechanic still did not perform well, because the material was too gritty and the pieces did not slide together as smoothly as I hoped. So even though the idea of the jigsaw edge made sense, the physical behaviour of the material worked against it. On top of that, the darker blue acrylic did create stronger colour separation, but it was simply too dark to look through comfortably for long periods. So while the filtering was technically better, the usability was still poor.</p>
+
+          <p class="measure"><h3>Recognising the Limits of the Format</h3> This stage was important because it made me realise that the problem was not just one bad material choice, but that the whole interaction demanded too much from the player’s eyes and hands. Even when the colours were clearer, the act of aligning, holding and peering through the filters was still tiring. At that point, I started to suspect that the prototype might be fundamentally too demanding, even if the symbolic idea behind it remained strong.</p>
+        </section>
+
+        <section class="card">
+          <h2 class="h2">Key Takeaways</h2>
+          <ul>
+            <li>
+  The material testing phase showed that improving the colour separation alone was not enough, because the viewing system remained physically awkward and visually tiring regardless of the material used.
+</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="h2">Reflection</h2>
+          <p class="measure"><li>This phase was frustrating, but useful, because it forced me to stop assuming that a better material would automatically solve the interaction problem.</li><li>I still like the jigsaw locking idea conceptually, but the acrylic proved that an elegant sketch does not always translate into a workable physical object.</li><li>By this point, I was already beginning to question whether this prototype was worth saving at all.</li></p>
+        </section>
+
+      </article>
+
+      <aside class="span-4 order-2 stack">
+        <figure class="figure">
+  <img src="assets/anaglyph_3.jpg" alt="Cover image of the lens development phase"/>
+  <figcaption class="figcap">Cover image of the lens development phase</figcaption>
+</figure>
+
+        <section class="card">
+          <h2 class="h2">Tags</h2>
+          <p>
+            <span class="badge">material test</span> <span class="badge">acrylic</span> <span class="badge">anaglyph</span> <span class="badge">iteration</span>
+          </p>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <script src="../assets/prevnext_universal.js" defer></script>
+</body>
+</html>

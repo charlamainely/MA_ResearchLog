@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Thermal Printer Installation - Experience Design</title>
+  
+  <link rel="stylesheet" href="../../assets/styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  
+  <header class="page-head">
+    <div class="container">
+      <div class="kicker">Prototype</div>
+      <h1 class="h1">Thermal Printer Installation - Experience Design</h1>
+      <div class="page-meta">
+        <span><strong>Type:</strong> Interactive System</span>
+        <span><strong>Context:</strong> Once the printer itself was working, I designed the interaction around NFC tapping so visitors could trigger different prompts by tapping wooden cards on the installation, turning the printer into a more tactile and playful experience.</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:20px">
+    <div class="grid">
+      <article class="span-8 stack measure order-1">
+
+        <section class="card">
+          <h2 class="h2">Objective</h2>
+          <p class="measure">The objective of this phase was to turn the printer from a machine that I manually control into an interactive installation that visitors can trigger themselves. I wanted the interaction to feel simple and magical: tap a card, get a printed prompt. To achieve that, I designed an NFC-based system where each wooden card corresponds to a different prompt category, and the printer responds when the reader detects the card. This sounds simple, but in practice it required building a whole system of hardware, web interface and scripts just to make all the parts talk to each other on one device.</p>
+        </section>
+
+        <section>
+          <h2 class="h2">Process Breakdown</h2>
+          <p class="measure"><h3>Designing the Interaction</h3> The interaction design was centred around six plywood NFC cards that visitors could pick up and tap. I wanted this to feel more tactile and intentional than pressing a button on a screen. The reader itself was hidden behind the front panel of the printer platform, so the technology stays mostly invisible while the action remains physical and legible. This was important because I did not want the installation to feel like a standard kiosk. It had to feel more like a small ritual object.</p>
+
+          <p class="measure"><h3>Dealing with the Reader Problem</h3> The biggest challenge was that the RFID/NFC reader and the printing logic did not naturally integrate into one neat system. So instead of relying on a single ready-made solution, I ended up building a custom chain of processes. The website interface, the server, the print script and the prompt library all had to work together. This meant figuring out how the portal would send commands, how those commands would trigger the correct printing script, and how the whole thing could run on one machine reliably enough for exhibition use.</p>
+
+          <p class="measure"><h3>Building the Scripts</h3> This phase involved much more scripting than I initially expected. I ended up using a browser portal together with a local server setup so that different prompt categories could trigger specific print jobs. There were many small issues to solve along the way, from paths not matching correctly, to commands not firing, to the system returning errors when the website and print script were not properly linked. In other words, a lot of this phase was really about debugging an invisible infrastructure until the whole thing finally behaved like a single experience.</p>
+
+          <p class="measure"><h3>Designing for Exhibition Use</h3> Another important part of this phase was thinking about the fact that this system would need to run in an exhibition setting, not just on my own laptop at home. That meant the setup had to be launchable, repeatable and stable enough to be restarted on one device when needed. So the “experience design” here was not only about what the visitor sees, but also about designing the backstage logic that allows the interaction to appear seamless in front of them.</p>
+        </section>
+
+        <section class="card">
+          <h2 class="h2">Key Takeaways</h2>
+          <ul>
+            <li>
+  This phase transformed the printer from a manual output device into an actual installation experience, but only because the hardware, web portal and scripting logic were designed together as one system.
+</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="h2">Reflection</h2>
+          <p class="measure"><li>This was probably the most chaotic development phase, because so much of the work was invisible and technical, yet absolutely crucial.</li><li>I really liked that the final interaction remained simple for the user even though the system behind it was anything but simple.</li><li>It also reminded me that a lot of interaction design is really about hiding complexity well.</li></p>
+        </section>
+
+      </article>
+
+      <aside class="span-4 order-2 stack">
+        <figure class="figure">
+  <img src="assets/full_setup.jpeg" alt="Cover image of the NFC interaction system"/>
+  <figcaption class="figcap">Cover image of the NFC interaction system</figcaption>
+</figure>
+
+        <section class="card">
+          <h2 class="h2">Tags</h2>
+          <p>
+            <span class="badge">installation</span> <span class="badge">nfc</span> <span class="badge">interaction design</span> <span class="badge">scripting</span>
+          </p>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <script src="../assets/prevnext_universal.js" defer></script>
+</body>
+</html>
