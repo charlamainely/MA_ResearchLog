@@ -16,5 +16,41 @@
     "path": "fw-2.html",
     "thumb": "../icons/fieldwork_icon.jpg",
     "meta": "2025-11-23 · Singapore · Observation"
+  },
+  {
+    "title": "Play to Learn: Making National Education Fun through Game-based Learning",
+    "path": "fw-4.html",
+    "thumb": "../icons/fieldwork_icon.jpg",
+    "meta": "2025-09-18 · Singapore · Observation"
+  },
+  {
+    "title": "Eason Yang Masterclass",
+    "path": "fw-7.html",
+    "thumb": "../icons/fieldwork_icon.jpg",
+    "meta": "2025-09-23 - 2025-09-25 · LASALLE College of the Arts · Workshop Participation & Observation"
+  },
+  {
+    "title": "Volunteering at the Don Norman Design Award 2025",
+    "path": "fw-8.html",
+    "thumb": "../icons/fieldwork_icon.jpg",
+    "meta": "2025-11-19 - 2025-11-21 · Singapore Polytechnic · Conference Participation, Facilitation & Observation"
+  },
+  {
+    "title": "Research Residency at Tusitala Studio",
+    "path": "fw-5.html",
+    "thumb": "../icons/fieldwork_icon.jpg",
+    "meta": "2025-12-01 - 2025-12-17 · Tusitala Studio · Playtest Observation & Design Support"
+  },
+  {
+    "title": "Research Residency at the Mixed Reality Lab, ADM NTU",
+    "path": "fw-9.html",
+    "thumb": "../icons/fieldwork_icon.jpg",
+    "meta": "2025-12-01 - 2025-12-12 · ADM, NTU · Research Assistantship, Observation & Interview"
+  },
+  {
+    "title": "Site Visit to Dover Forest with the Mixed Reality Lab",
+    "path": "fw-10.html",
+    "thumb": "../icons/fieldwork_icon.jpg",
+    "meta": "2025-12-05 · Dover Forest, Singapore · Site Visit & 360 Capture Observation"
   }
 ]
