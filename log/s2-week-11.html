@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Week 11 - Work Check and More User Tests</title>
+  <link rel="stylesheet" href="../assets/styles.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+<div id="navbar"></div>
+  <script src="../assets/nav-inject.js" defer></script>
+
+  <header class="page-head">
+    <div class="container">
+      <div class="kicker">Weekly Log</div>
+      <h1 class="h1">Week 11 - Work Check and More User Tests</h1>
+      <div class="page-meta">
+        <span class="badge">Dates: 2026-03-23 → 2026-03-29</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="padding-top:20px">
+    <div class="grid">
+
+      <article class="span-8 measure stack order-1">
+
+        <section id="actual">
+          <h2 class="h2">Activities</h2>
+          <ul>
+            <li>
+  Development next iteration of anaglyph puzzle
+</li>
+<li>
+  Polish specific elements of table display
+</li>
+<li>
+  Develop interactive mechanism for printer installation
+</li>
+          </ul>
+        </section>
+
+        <section id="reflection">
+          <h2 class="h2">Reflection</h2>
+          <p class="measure">After the first round of user test, the anaglyph puzzle is disappointing me quite a lot as it did not generate the amount of excitement as I expected. The main complaint has been from the lens not working well and the word search being too challenging without clues. So these are some notes I want to address in the next iteration of this prototype.</p>
+
+<figure class="figure">
+  <img src="log_images/s2_week_11/user_test.jpeg" alt="Image from user test session"/>
+  <figcaption class="figcap">Image from user test session</figcaption>
+</figure>
+
+<p class="measure">Another development from this week is the printer installation, since I have managed to make the printer print by manually sending commands from my laptop. The next stage is to determine how the user can perform this task, and how it fits into the overall user experience. Please read the full breakdown of my process development in the prototype process page, but the simplified idea is that I wanted to implement a form of tapping mechanic that user can use to tap onto an RFID/NFC reader, which would then trigger the printer to print. And I set about purchasing both the NFC chips and also the reader.</p>
+
+<figure class="figure">
+  <img src="log_images/s2_week_11/chip.jpeg" alt="NFC chips"/>
+  <figcaption class="figcap">NFC chips</figcaption>
+</figure>
+
+<p class="measure">One of the tricky parts is that the reader I bought, though worked quite well as a card reader, for my purposes, it presented an issue where when I tap the NFC chips, the reader immediate read and &#39;Enter&#39; the input into whatever is open on the computer. There&#39;s no buffer in between the input and the enter.</p>
+
+<figure class="figure">
+  <img src="log_images/s2_week_11/reader.jpeg" alt="RFID/NFC reader"/>
+  <figcaption class="figcap">RFID/NFC reader</figcaption>
+</figure>
+
+<p class="measure">So to combat this, I created a web portal that would be on when the reader enters the input, and it would take this input and trigger the printer. So the issue of the reader immediately triggering the input turned out to work in my favour. Here&#39;s a breakdown of all the scripts I needed to make this work:</p>
+
+<figure class="figure">
+  <img src="log_images/s2_week_11/scripts.jpg" alt="Printer scripts set up"/>
+  <figcaption class="figcap">Printer scripts set up</figcaption>
+</figure>
+
+<p class="measure">So finally, with this scrappy set up, I had my first version of the printer installation, where I placed the printer on a mini pedestal and the user can tap on the front of the pedestal where the reader is taped behind it.</p>
+
+<figure class="figure">
+  <img src="log_images/s2_week_11/printer.jpeg" alt="RFID/NFC reader"/>
+  <figcaption class="figcap">First printer installations set up</figcaption>
+</figure>
+
+<p class="measure">As for the table design, based on my supervisor&#39;s complaint of my paper choice, I went to a paper shop to pick out some new paper that would help elevate my table&#39;s design, as well as my prototypes.</p>
+
+<figure class="figure">
+  <img src="log_images/s2_week_11/paper1.jpeg" alt="Picking out new paper"/>
+  <figcaption class="figcap">Picking out new paper</figcaption>
+</figure>
+
+<figure class="figure">
+  <img src="log_images/s2_week_11/paper2.jpeg" alt="Picking out new paper"/>
+  <figcaption class="figcap">Picking out new paper</figcaption>
+</figure>
+        </section>
+
+        
+
+        <section id="decisions">
+          <h2 class="h2">Tasks</h2>
+          <ul>
+            <li>
+  User test new iterations of prototypes
+</li>
+<li>
+  Finalise printed materials for table display using new paper options
+</li>
+          </ul>
+        </section>
+
+        <section id="resources">
+          <h2 class="h2">Links</h2>
+          <ul class="meta-list">
+            <li><a href="../process/anaglyph-puzzle/second-iteration.html">Second Iteration of Anaglyph Puzzle</a></li>
+            <li><a href="../process/printer-install/experience.html">User Experience Development of Printer Installation</a></li>
+          </ul>
+        </section>
+
+      </article>
+
+      <aside class="span-4 stack">
+        <section class="card">
+          <h2 class="h2">To Do</h2>
+          <ul class="meta-list">
+            <li>
+  User test new iterations of prototypes
+</li>
+<li>
+  Finalise printed materials for table display using new paper options
+</li>
+          </ul>
+        </section>
+
+        <section class="card">
+          <h2 class="h2">Research Question</h2>
+          <p class="measure">How might play-based reflective play help young adults in Vietnamese families recognize intergenerational tensions and build familial communication capacity?</p>
+        </section>
+
+        <section class="card">
+          <h2 class="h2">Navigation</h2>
+          <ul class="meta-list" data-prevnext data-json="../assets/weeks.json"></ul>
+        </section>
+      </aside>
+
+    </div>
+  </main>
+
+  <script src="../assets/prevnext_universal.js" defer></script>
+</body>
+</html>
