@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Postmarked Stories Archive</title>
+  <meta
+    name="description"
+    content="A static prototype for receiving, submitting, and browsing intergenerational stories through postcards, envelopes, and letters."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="page-noise" aria-hidden="true"></div>
+  <header class="site-header">
+    <a class="home-link" href="../../index.html">Back to research log</a>
+    <div class="site-title-block">
+      <p class="eyebrow">MA Design prototype</p>
+      <h1>Postmarked Stories Archive</h1>
+      <p class="site-intro">
+        A playful public archive for family and intergenerational stories, shaped as postcards, envelopes, and handwritten letters.
+      </p>
+    </div>
+    <nav class="top-nav" aria-label="Story archive">
+      <button type="button" class="nav-link is-active" data-view-target="home">Home</button>
+      <button type="button" class="nav-link" data-view-target="receive">Receive a story</button>
+      <button type="button" class="nav-link" data-view-target="submit">Send a story</button>
+      <button type="button" class="nav-link" data-view-target="gallery">Browse archive</button>
+      <button type="button" class="nav-link nav-link-admin" data-view-target="admin" hidden>Review panel</button>
+    </nav>
+  </header>
+
+  <main class="page-shell" id="appShell">
+    <noscript>
+      <section class="paper-panel">
+        <h2>JavaScript required</h2>
+        <p>This prototype needs JavaScript enabled because stories, filters, and submissions are handled client-side.</p>
+      </section>
+    </noscript>
+
+    <section class="view-panel" data-view="home" aria-labelledby="home-title">
+      <div class="hero-grid">
+        <article class="hero-card hero-card-main">
+          <p class="card-kicker">Welcome</p>
+          <h2 id="home-title" tabindex="-1">A public archive made of stories that travel.</h2>
+          <p>
+            This prototype explores how family memories might be shared as postcards, received as letters, and gathered in a soft public archive.
+          </p>
+          <div class="hero-actions">
+            <button type="button" class="action-button" data-view-target="receive">Receive a story</button>
+            <button type="button" class="action-button action-button-secondary" data-view-target="submit">Send a story</button>
+          </div>
+        </article>
+
+        <article class="hero-card postcard-scene" aria-hidden="true">
+          <div class="scene-stack">
+            <div class="scene-envelope"></div>
+            <div class="scene-postcard scene-postcard-top">
+              <span>Family archive</span>
+            </div>
+            <div class="scene-postcard scene-postcard-bottom">
+              <span>Stories in transit</span>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <section class="choice-grid" aria-label="Main options">
+        <article class="choice-card">
+          <p class="choice-number">01</p>
+          <h3>Receive a story</h3>
+          <p>Move through a postcard ritual and receive matching stories in envelopes.</p>
+          <button type="button" class="card-button" data-view-target="receive">Open postcard flow</button>
+        </article>
+        <article class="choice-card">
+          <p class="choice-number">02</p>
+          <h3>Send a story</h3>
+          <p>Submit your own memory. For now it is stored locally and marked pending review.</p>
+          <button type="button" class="card-button" data-view-target="submit">Open submission form</button>
+        </article>
+        <article class="choice-card">
+          <p class="choice-number">03</p>
+          <h3>Browse archive</h3>
+          <p>Explore approved stories in a filterable gallery of envelopes and letters.</p>
+          <button type="button" class="card-button" data-view-target="gallery">Open archive</button>
+        </article>
+      </section>
+    </section>
+
+    <section class="view-panel" data-view="receive" hidden aria-labelledby="receive-title">
+      <div class="section-heading">
+        <p class="card-kicker">Receive a story</p>
+        <h2 id="receive-title" tabindex="-1">Send a postcard and wait for letters back.</h2>
+        <p>The interaction below shapes the kinds of approved stories that arrive.</p>
+      </div>
+
+      <ol class="stepper" aria-label="Postcard steps">
+        <li class="stepper-item is-current" data-step-marker="1"><span>1</span> Take a family photo</li>
+        <li class="stepper-item" data-step-marker="2"><span>2</span> Choose a stamp</li>
+        <li class="stepper-item" data-step-marker="3"><span>3</span> Choose the stamp mood</li>
+        <li class="stepper-item" data-step-marker="4"><span>4</span> Send postcard</li>
+        <li class="stepper-item" data-step-marker="5"><span>5</span> Receive envelopes</li>
+      </ol>
+
+      <div class="paper-panel receive-step" data-receive-step="1">
+        <div class="step-layout">
+          <div class="photo-card">
+            <div class="family-photo-preview" id="familyPhotoPreview" aria-hidden="true">
+              <div class="photo-frame">
+                <div class="photo-silhouette photo-silhouette-left"></div>
+                <div class="photo-silhouette photo-silhouette-center"></div>
+                <div class="photo-silhouette photo-silhouette-right"></div>
+              </div>
+            </div>
+            <p class="photo-caption">Adjust the focus to describe how close this family photo feels.</p>
+          </div>
+
+          <div class="step-copy">
+            <h3>Take a family photo</h3>
+            <p>Choose one closeness level. The image softens and shifts as the emotional distance changes.</p>
+            <label class="slider-label" for="receiveClosenessRange">Closeness focus</label>
+            <input
+              id="receiveClosenessRange"
+              class="focus-slider"
+              type="range"
+              min="1"
+              max="6"
+              value="2"
+              aria-describedby="receiveClosenessText"
+            >
+            <div id="receiveClosenessButtons" class="token-grid" role="radiogroup" aria-label="Family closeness options"></div>
+            <p id="receiveClosenessText" class="selection-note" aria-live="polite"></p>
+            <div class="step-actions">
+              <button type="button" class="action-button" data-step-next="2">Continue</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="paper-panel receive-step" data-receive-step="2" hidden>
+        <div class="section-heading section-heading-tight">
+          <h3>Choose a stamp</h3>
+          <p>Pick one narrative focus to tell the archive what kind of story should arrive.</p>
+        </div>
+        <div id="receiveStampGrid" class="stamp-grid" role="radiogroup" aria-label="Narrative focus stamps"></div>
+        <div class="step-actions">
+          <button type="button" class="action-button action-button-secondary" data-step-prev="1">Back</button>
+          <button type="button" class="action-button" data-step-next="3">Continue</button>
+        </div>
+      </div>
+
+      <div class="paper-panel receive-step" data-receive-step="3" hidden>
+        <div class="section-heading section-heading-tight">
+          <h3>Choose the stamp mood</h3>
+          <p>Set the overall tone. Each option uses label, texture, and shape so the cue is not only colour-based.</p>
+        </div>
+        <div id="receiveToneGrid" class="tone-grid" role="radiogroup" aria-label="Tone options"></div>
+        <div class="step-actions">
+          <button type="button" class="action-button action-button-secondary" data-step-prev="2">Back</button>
+          <button type="button" class="action-button" data-step-next="4">Continue</button>
+        </div>
+      </div>
+
+      <div class="paper-panel receive-step" data-receive-step="4" hidden>
+        <div class="step-layout step-layout-send">
+          <div>
+            <div class="section-heading section-heading-tight">
+              <h3>Send postcard</h3>
+              <p>Review the choices before sending them into the archive.</p>
+            </div>
+            <dl class="summary-list" id="receiveSummary"></dl>
+            <div class="step-actions">
+              <button type="button" class="action-button action-button-secondary" data-step-prev="3">Back</button>
+              <button type="button" class="action-button" id="sendPostcardButton">Send postcard</button>
+            </div>
+            <p class="selection-note" id="sendStatus" aria-live="polite"></p>
+          </div>
+
+          <div class="sending-stage" id="sendingStage" aria-hidden="true">
+            <div class="mailbox">
+              <div class="mailbox-flag"></div>
+              <div class="mailbox-slot"></div>
+            </div>
+            <div class="postcard-flight">
+              <div class="flight-card">
+                <span>To the archive</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="paper-panel receive-step" data-receive-step="5" hidden>
+        <div class="section-heading section-heading-tight">
+          <h3>Receive envelopes</h3>
+          <p>Approved stories are matched first by exact fit, then softer similarities when needed.</p>
+        </div>
+        <div id="receiveResultsMeta" class="results-meta"></div>
+        <div id="receiveResults" class="story-grid"></div>
+        <div id="receiveEmptyState" class="empty-state" hidden>
+          <h4>No envelopes arrived just yet.</h4>
+          <p>Try another postcard combination, browse the archive, or submit a story of your own.</p>
+          <div class="empty-actions">
+            <button type="button" class="card-button" data-step-prev="4">Change postcard</button>
+            <button type="button" class="card-button" data-view-target="gallery">Browse archive</button>
+            <button type="button" class="card-button" data-view-target="submit">Send a story</button>
+          </div>
+        </div>
+        <div class="step-actions">
+          <button type="button" class="action-button action-button-secondary" data-view-target="home">Return home</button>
+          <button type="button" class="action-button action-button-secondary" data-view-target="gallery">Browse archive</button>
+          <button type="button" class="action-button" data-view-target="submit">Send a story</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="view-panel" data-view="submit" hidden aria-labelledby="submit-title">
+      <div class="section-heading">
+        <p class="card-kicker">Send a story</p>
+        <h2 id="submit-title" tabindex="-1">Share a family or intergenerational memory.</h2>
+        <p>Submissions are stored in the browser for now and marked pending for later review.</p>
+      </div>
+
+      <div class="paper-panel">
+        <form id="submissionForm" class="submission-form" novalidate>
+          <div class="form-row">
+            <label for="storyText">Story text</label>
+            <textarea
+              id="storyText"
+              name="storyText"
+              rows="8"
+              required
+              placeholder="Write a family memory, moment, or reflection..."
+            ></textarea>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-row">
+              <label for="displayName">Display name</label>
+              <input id="displayName" name="displayName" type="text" placeholder="Anonymous">
+            </div>
+
+            <div class="form-row">
+              <label for="language">Language</label>
+              <select id="language" name="language" required>
+                <option value="Vietnamese">Vietnamese</option>
+                <option value="English" selected>English</option>
+                <option value="Bilingual">Bilingual</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <fieldset class="form-row">
+            <legend>Family closeness</legend>
+            <div id="submissionClosenessOptions" class="statement-grid"></div>
+          </fieldset>
+
+          <fieldset class="form-row">
+            <legend>Narrative focus</legend>
+            <p class="field-note">Choose at least 1 and up to 3.</p>
+            <div id="submissionFocusOptions" class="checkbox-grid"></div>
+            <p id="focusValidationMessage" class="selection-note" aria-live="polite"></p>
+          </fieldset>
+
+          <fieldset class="form-row">
+            <legend>Tone</legend>
+            <div id="submissionToneOptions" class="tone-grid tone-grid-compact"></div>
+          </fieldset>
+
+          <div class="form-row consent-row">
+            <label class="consent-check">
+              <input id="consent" name="consent" type="checkbox" required>
+              <span>I understand this story may be reviewed before appearing publicly in the archive.</span>
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="action-button">Submit story</button>
+            <p id="submissionStatus" class="selection-note" aria-live="polite"></p>
+          </div>
+        </form>
+
+        <section id="submissionConfirmation" class="confirmation-card" hidden aria-live="polite">
+          <h3>Your story has been sent for review.</h3>
+          <p>It has been saved locally in this browser with a pending status.</p>
+          <div class="empty-actions">
+            <button type="button" class="card-button" id="submitAnotherButton">Submit another story</button>
+            <button type="button" class="card-button" data-view-target="gallery">Read stories</button>
+            <button type="button" class="card-button" data-view-target="home">Return home</button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="view-panel" data-view="gallery" hidden aria-labelledby="gallery-title">
+      <div class="section-heading">
+        <p class="card-kicker">Browse archive</p>
+        <h2 id="gallery-title" tabindex="-1">All approved stories</h2>
+        <p>Use filters to narrow the envelopes by narrative focus, tone, and family closeness.</p>
+      </div>
+
+      <div class="paper-panel">
+        <form id="galleryFilters" class="filters-bar">
+          <label>
+            <span>Narrative focus</span>
+            <select id="galleryFocusFilter" name="focus"></select>
+          </label>
+          <label>
+            <span>Tone</span>
+            <select id="galleryToneFilter" name="tone"></select>
+          </label>
+          <label>
+            <span>Family closeness</span>
+            <select id="galleryClosenessFilter" name="familyCloseness"></select>
+          </label>
+          <button type="button" class="card-button reset-button" id="resetGalleryFilters">Reset filters</button>
+        </form>
+
+        <div id="galleryMeta" class="results-meta"></div>
+        <div id="galleryGrid" class="story-grid"></div>
+        <div id="galleryEmptyState" class="empty-state" hidden>
+          <h4>No stories match these filters.</h4>
+          <p>Reset the filters or try a different combination.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="view-panel" data-view="admin" hidden aria-labelledby="admin-title">
+      <div class="section-heading">
+        <p class="card-kicker">Prototype review panel</p>
+        <h2 id="admin-title" tabindex="-1">Local pending submissions</h2>
+        <p>This panel is for prototype testing only. It edits locally stored submissions in this browser.</p>
+      </div>
+
+      <div class="paper-panel">
+        <div id="adminMeta" class="results-meta"></div>
+        <div id="adminList" class="admin-list"></div>
+        <div id="adminEmptyState" class="empty-state" hidden>
+          <h4>No pending submissions.</h4>
+          <p>Submit a story first, then return here to approve or reject it locally.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Static prototype for GitHub Pages. Pending submissions are stored in this browser only.</p>
+    <button type="button" class="footer-link" id="adminToggleButton" hidden>Open review panel</button>
+  </footer>
+
+  <dialog id="storyDialog" class="story-dialog" aria-labelledby="storyDialogTitle">
+    <form method="dialog" class="dialog-close-form">
+      <button type="submit" class="dialog-close-button" aria-label="Close story">Close</button>
+    </form>
+    <article id="storyDialogContent" class="letter-sheet"></article>
+  </dialog>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

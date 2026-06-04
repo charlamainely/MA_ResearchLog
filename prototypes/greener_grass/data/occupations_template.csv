@@ -1,0 +1,14 @@
+occupation_id,pool,label_vi,label_en,selectable,requirements,recurring_effects,notes
+unemployed,default,Thất nghiệp,Unemployed,no,,,System-only starting state before the player chooses a job.
+office_worker,early_career,Nhân viên văn phòng,Office Worker,yes,experience>=5,money:+3;happiness:-2,Migrated from current gameData.js. Legacy timeDelta=-2 is not used in the 4-stat model.
+repairman,early_career,Thợ sửa chữa,Repairman,yes,experience>=3,money:+3;health:-1,Migrated from current gameData.js. Legacy timeDelta=-3 is not used in the 4-stat model.
+artist,early_career,Hoạ sĩ,Artist,yes,experience>=3,money:+2;happiness:+1,
+freelancer,early_career,Làm tự do,Freelancer,yes,experience>=2,money:+1;happiness:+1,Migrated from current gameData.js. Legacy timeDelta=-3 is not used in the 4-stat model.
+educator,early_career,Giáo viên,Educator,yes,experience>=5,money:+4;health:-1,Migrated from current gameData.js. Legacy timeDelta=-1 is not used in the 4-stat model.
+healthcare_worker,early_career,Nhân viên y tế,Healthcare Worker,yes,experience>=7,money:+5;health:-2,Migrated from current gameData.js. Legacy timeDelta=-3 is not used in the 4-stat model.
+software_developer,mid_career,Lập trình viên,Software Developer,yes,experience>=8,money:+6;health:-2,Migrated from current gameData.js. Legacy timeDelta=-2 is not used in the 4-stat model.
+service_worker,early_career,Nhân viên dịch vụ,Service Worker,yes,experience>=0,money:+1;health:-1,Migrated from current gameData.js. Legacy timeDelta=-1 is not used in the 4-stat model.
+corporate_manager,mid_career,Quản lý doanh nghiệp,Corporate Manager,yes,experience>=8,money:+8;happiness:-2,Migrated from current gameData.js. Legacy timeDelta=-3 is not used in the 4-stat model.
+professor,mid_career,Giảng viên đại học,Professor,yes,experience>=8,money:+6;happiness:+1,
+doctor,mid_career,Bác sĩ,Doctor,yes,experience>=10,money:+8;health:-2,
+retired,retirement,Nghỉ hưu,Retired,no,,,System-only state applied automatically at the retirement transition.
