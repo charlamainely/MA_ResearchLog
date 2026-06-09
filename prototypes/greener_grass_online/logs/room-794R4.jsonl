@@ -1,0 +1,17 @@
+{"id":"log_kw44knt3","at":"2026-06-08T04:33:52.317Z","type":"player_joined","message":"Haaan 22 joined the room.","payload":{"playerId":"player_k6i1a5v9"}}
+{"id":"log_0cz611tj","at":"2026-06-08T04:34:04.467Z","type":"game_started","message":"Game started.","payload":{}}
+{"id":"log_tyshvylh","at":"2026-06-08T04:34:19.200Z","type":"turn_started","message":"Haaan 11 started their turn.","payload":{"playerId":"player_yk9wny5c"}}
+{"id":"log_w6op4hb3","at":"2026-06-08T04:34:19.887Z","type":"steps_submitted","message":"Haaan 11 moved 1 step(s).","payload":{"playerId":"player_yk9wny5c","steps":1,"nodeId":"1"}}
+{"id":"log_f2e63pmj","at":"2026-06-08T04:34:25.790Z","type":"era_card_drawn","message":"Haaan 11 drew an era card.","payload":{"playerId":"player_yk9wny5c","cardId":"era_003"}}
+{"id":"log_tmzmis2a","at":"2026-06-08T04:34:40.823Z","type":"turn_ended","message":"Haaan 11 ended their turn.","payload":{"playerId":"player_yk9wny5c"}}
+{"id":"log_awagtah1","at":"2026-06-08T04:38:44.146Z","type":"turn_started","message":"Haaan 22 started their turn.","payload":{"playerId":"player_k6i1a5v9"}}
+{"id":"log_hkxmr6jr","at":"2026-06-08T04:39:55.868Z","type":"steps_submitted","message":"Haaan 22 moved 1 step(s).","payload":{"playerId":"player_k6i1a5v9","steps":1,"nodeId":"1"}}
+{"id":"log_mmn23gju","at":"2026-06-08T04:41:26.844Z","type":"era_card_drawn","message":"Haaan 22 drew an era card.","payload":{"playerId":"player_k6i1a5v9","cardId":"era_001"}}
+{"id":"log_626nx4qu","at":"2026-06-08T04:41:35.466Z","type":"turn_ended","message":"Haaan 22 ended their turn.","payload":{"playerId":"player_k6i1a5v9"}}
+{"id":"log_1lzf99f0","at":"2026-06-08T04:41:43.729Z","type":"turn_started","message":"Haaan 11 started their turn.","payload":{"playerId":"player_yk9wny5c"}}
+{"id":"log_qq17r7j8","at":"2026-06-08T04:41:46.955Z","type":"steps_submitted","message":"Haaan 11 moved 1 step(s).","payload":{"playerId":"player_yk9wny5c","steps":1,"nodeId":"2"}}
+{"id":"log_y5zr66qa","at":"2026-06-08T04:41:54.336Z","type":"turn_ended","message":"Haaan 11 ended their turn.","payload":{"playerId":"player_yk9wny5c"}}
+{"id":"log_kodbn3vd","at":"2026-06-08T04:57:37.369Z","type":"turn_started","message":"Haaan 22 started their turn.","payload":{"playerId":"player_k6i1a5v9"}}
+{"id":"log_faqpg15g","at":"2026-06-08T04:57:38.466Z","type":"steps_submitted","message":"Haaan 22 moved 1 step(s).","payload":{"playerId":"player_k6i1a5v9","steps":1,"nodeId":"2"}}
+{"id":"log_2gpzh1go","at":"2026-06-08T04:58:32.479Z","type":"turn_ended","message":"Haaan 22 ended their turn.","payload":{"playerId":"player_k6i1a5v9"}}
+{"id":"log_128l80kh","at":"2026-06-08T05:18:33.998Z","type":"game_reset","message":"Game reset to lobby.","payload":{}}

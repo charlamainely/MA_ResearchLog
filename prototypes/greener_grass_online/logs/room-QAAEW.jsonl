@@ -1,0 +1,15 @@
+{"id":"log_mp5g7jfz","at":"2026-06-08T07:21:25.552Z","type":"game_started","message":"Game started.","payload":{}}
+{"id":"log_w1v71lcn","at":"2026-06-08T07:21:28.029Z","type":"turn_started","message":"hhh started their turn.","payload":{"playerId":"player_ck0f37md"}}
+{"id":"log_ea95ximl","at":"2026-06-08T07:21:29.178Z","type":"steps_submitted","message":"hhh moved 1 step(s).","payload":{"playerId":"player_ck0f37md","steps":1,"nodeId":"1"}}
+{"id":"log_sezzt2ow","at":"2026-06-08T07:21:35.818Z","type":"era_card_drawn","message":"hhh drew an era card.","payload":{"playerId":"player_ck0f37md","cardId":"era_017"}}
+{"id":"log_85hvxhmq","at":"2026-06-08T07:21:42.314Z","type":"turn_ended","message":"hhh ended their turn.","payload":{"playerId":"player_ck0f37md"}}
+{"id":"log_iy7d37pw","at":"2026-06-08T07:21:43.672Z","type":"turn_started","message":"hhh started their turn.","payload":{"playerId":"player_ck0f37md"}}
+{"id":"log_vforw9mb","at":"2026-06-08T07:21:44.225Z","type":"steps_submitted","message":"hhh moved 1 step(s).","payload":{"playerId":"player_ck0f37md","steps":1,"nodeId":"2"}}
+{"id":"log_piktp30v","at":"2026-06-08T07:21:49.361Z","type":"turn_ended","message":"hhh ended their turn.","payload":{"playerId":"player_ck0f37md"}}
+{"id":"log_x7jq9sbv","at":"2026-06-08T07:21:52.790Z","type":"turn_started","message":"hhh started their turn.","payload":{"playerId":"player_ck0f37md"}}
+{"id":"log_omoj2vlo","at":"2026-06-08T07:21:54.224Z","type":"steps_submitted","message":"hhh moved 1 step(s).","payload":{"playerId":"player_ck0f37md","steps":1,"nodeId":"3"}}
+{"id":"log_rbdfbpay","at":"2026-06-08T07:21:55.679Z","type":"life_card_drawn","message":"hhh drew a life card.","payload":{"playerId":"player_ck0f37md","cardId":"life_002"}}
+{"id":"log_ff8s0l1y","at":"2026-06-08T07:21:59.982Z","type":"turn_ended","message":"hhh ended their turn.","payload":{"playerId":"player_ck0f37md"}}
+{"id":"log_nu6y1sh2","at":"2026-06-08T07:22:00.816Z","type":"turn_started","message":"hhh started their turn.","payload":{"playerId":"player_ck0f37md"}}
+{"id":"log_ovt5bkxx","at":"2026-06-08T07:22:01.755Z","type":"steps_submitted","message":"hhh moved 1 step(s).","payload":{"playerId":"player_ck0f37md","steps":1,"nodeId":"4"}}
+{"id":"log_3ojojsp1","at":"2026-06-08T07:22:06.381Z","type":"turn_ended","message":"hhh ended their turn.","payload":{"playerId":"player_ck0f37md"}}

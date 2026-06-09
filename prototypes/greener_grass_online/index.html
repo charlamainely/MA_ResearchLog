@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Greener Grass Online MVP</title>
+  <link rel="stylesheet" href="https://use.typekit.net/kau7emn.css" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="lang-toggle" role="group" aria-label="Language toggle">
+    <button id="langViBtn" class="active" type="button">VI</button>
+    <button id="langEnBtn" type="button">EN</button>
+  </div>
+
+  <main class="app-shell">
+    <section id="landingScreen" class="screen screen-active">
+      <div class="hero">
+        <img class="hero-logo" src="./assets/images/game_logo.png" alt="Greener Grass" />
+        <div class="hero-copy" id="heroCopy"></div>
+      </div>
+
+      <div class="lobby-grid">
+        <article class="panel">
+          <h1 id="createTitle">Tạo phòng mới</h1>
+          <p id="createSubtitle">Tạo một phòng thử nghiệm và mời mọi người nhập bằng mã phòng.</p>
+          <form id="createForm" class="stack-form">
+            <label>
+              <span id="nameLabelCreate">Tên / nickname</span>
+              <input id="createNameInput" type="text" maxlength="24" />
+            </label>
+            <label>
+              <span id="generationLabelCreate">Thế hệ</span>
+              <select id="createGenerationSelect" class="hidden-native-select"></select>
+              <div id="createGenerationPicker" class="generation-picker"></div>
+            </label>
+            <button id="createRoomBtn" class="primary-btn" type="submit">Tạo phòng</button>
+          </form>
+        </article>
+
+        <article class="panel">
+          <h2 id="joinTitle">Vào phòng có sẵn</h2>
+          <p id="joinSubtitle">Nhập mã phòng, tên và thế hệ của bạn để tham gia từ thiết bị khác.</p>
+          <form id="joinForm" class="stack-form">
+            <label>
+              <span id="roomCodeLabel">Mã phòng</span>
+              <input id="joinRoomCodeInput" type="text" maxlength="8" autocapitalize="characters" />
+            </label>
+            <label>
+              <span id="nameLabelJoin">Tên / nickname</span>
+              <input id="joinNameInput" type="text" maxlength="24" />
+            </label>
+            <label>
+              <span id="generationLabelJoin">Thế hệ</span>
+              <select id="joinGenerationSelect" class="hidden-native-select"></select>
+              <div id="joinGenerationPicker" class="generation-picker"></div>
+            </label>
+            <button id="joinRoomBtn" class="primary-btn" type="submit">Vào phòng</button>
+          </form>
+        </article>
+      </div>
+    </section>
+
+    <section id="roomScreen" class="screen hidden room-screen">
+      <header class="online-room-banner panel">
+        <div class="online-room-copy">
+          <div class="eyebrow" id="roomHeaderEyebrow">Phòng trực tuyến</div>
+          <h1 id="roomTitle">Đứng Núi Này Trông Núi Nọ Online</h1>
+          <p id="roomMeta"></p>
+        </div>
+        <div class="online-room-actions">
+          <div class="room-code-wrap">
+            <span id="roomCodeCaption">Mã phòng</span>
+            <strong id="roomCodeValue">-----</strong>
+          </div>
+          <button id="endGameBtn" class="secondary-btn danger-btn" type="button">Kết thúc ván</button>
+          <button id="startGameBtn" class="primary-btn" type="button">Bắt đầu chơi</button>
+        </div>
+      </header>
+
+      <div class="game-main-wrap">
+        <div class="panel main-board">
+          <aside class="column left-col">
+            <article class="player-card">
+              <div class="player-card-topbar">
+                <div id="activePlayerGenerationTag" class="generation-card-tag">-</div>
+                <div class="room-mini-card">
+                  <span id="roomCodeCaptionInline">Mã phòng</span>
+                  <strong id="roomCodeValueInline">-----</strong>
+                </div>
+              </div>
+
+              <div class="player-header">
+                <img id="activePlayerAvatar" class="player-avatar" src="./ui/avatars/avatar_boomer.png" alt="Active player avatar" />
+                <div class="player-header-main">
+                  <h2 id="activePlayerName" class="player-name">-</h2>
+                  <div class="player-age"><span id="ageLabel">Tuổi</span> <strong id="activePlayerAge">18 tuổi</strong></div>
+                </div>
+              </div>
+
+              <div id="activeStatsGrid" class="stats-grid"></div>
+
+              <button id="playerDetailsToggle" class="player-details-toggle" type="button" aria-expanded="false">Chi tiết người chơi</button>
+              <div id="playerDetailsBody" class="player-details-body">
+                <div class="status-grid">
+                  <div class="status-item"><span id="occupationLabel">Nghề nghiệp</span><strong id="activeOccupation">-</strong></div>
+                  <div class="status-item"><span id="hobbyLabel">Sở thích</span><strong id="activeHobby">-</strong></div>
+                  <div class="status-item"><span id="housingLabel">Nơi ở</span><strong id="activeHousing">-</strong></div>
+                  <div class="status-item"><span id="relationshipLabel">Quan hệ</span><strong id="activeRelationship">-</strong></div>
+                  <div class="status-item"><span id="childrenLabel">Gia đình</span><strong id="activeChildren">-</strong></div>
+                  <div class="status-item upkeep-item"><span id="upkeepLabel">Chi phí mỗi lượt</span><strong id="activeUpkeep">-</strong></div>
+                </div>
+
+                <div id="tagWrap" class="tag-wrap"></div>
+              </div>
+            </article>
+          </aside>
+
+          <section class="column right-col">
+            <article class="turn-panel">
+              <div class="turn-form-head">
+                <div class="turn-form-toprow">
+                  <div class="turn-form-copy">
+                    <div class="eyebrow" id="turnEyebrow">Người đang chơi</div>
+                    <h2 id="turnTitle">Tờ khai lượt đi</h2>
+                    <p id="turnHint" class="turn-hint"></p>
+                  </div>
+                </div>
+              </div>
+              <div class="turn-form-divider"></div>
+
+              <div id="stepBlock1" class="turn-step active-step">
+                <h3 id="step1Title" class="turn-step-title">Bước 1: Bắt đầu lượt</h3>
+                <div class="turn-step-row">
+                  <button id="startTurnBtn" class="action-btn button-start" type="button">Bắt đầu lượt</button>
+                </div>
+              </div>
+
+              <div id="stepBlock2" class="turn-step">
+                <h3 id="step2Title" class="turn-step-title">Bước 2: Nhập số bước đi và xác nhận</h3>
+                <div class="turn-step-row">
+                  <div class="step-picker">
+                    <button class="step-btn active" data-step="1" type="button">1</button>
+                    <button class="step-btn" data-step="2" type="button">2</button>
+                    <button class="step-btn" data-step="3" type="button">3</button>
+                  </div>
+                </div>
+                <div class="turn-step-action-wrap">
+                  <button id="submitStepsBtn" class="action-btn button-resolve" type="button">Xác nhận số bước</button>
+                </div>
+              </div>
+
+              <div id="stepBlock3" class="turn-step">
+                <h3 id="step3Title" class="turn-step-title">Bước 3: Xem nội dung của ô</h3>
+                <div id="spaceCard" class="space-card">
+                  <h4 id="spaceCardTitle">-</h4>
+                  <p id="spaceCardDesc">-</p>
+                </div>
+                <div class="turn-step-action-wrap">
+                  <button id="endTurnBtn" class="action-btn turn-end-btn" type="button">Kết thúc lượt</button>
+                </div>
+              </div>
+            </article>
+          </section>
+        </div>
+
+        <aside class="deck-side-panel">
+          <button id="sideEraDeckBtn" class="side-deck-card era" type="button" disabled>
+            <span id="eraDeckLabel" class="deck-card-title">Sự kiện xã hội</span>
+            <img src="./assets/icons/icon_era.png" alt="Sự kiện xã hội" />
+          </button>
+          <button id="sideLifeDeckBtn" class="side-deck-card life" type="button" disabled>
+            <span id="lifeDeckLabel" class="deck-card-title">Sự kiện cuộc đời</span>
+            <img src="./assets/icons/icon_life.png" alt="Sự kiện cuộc đời" />
+          </button>
+        </aside>
+      </div>
+
+      <div class="bottom-panels">
+        <section class="panel roster-panel">
+          <div class="panel-head">
+            <div>
+              <div class="eyebrow" id="rosterEyebrow">Người chơi</div>
+              <h2 id="rosterTitle">Tất cả người chơi</h2>
+            </div>
+          </div>
+          <div id="rosterList" class="roster-list"></div>
+        </section>
+
+        <section class="panel log-panel">
+          <div class="panel-head">
+            <div>
+              <div class="eyebrow" id="logEyebrow">Nhật ký</div>
+              <h2 id="logTitle">Diễn biến ván chơi</h2>
+            </div>
+          </div>
+          <div id="logList" class="log-list"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <div id="modalBackdrop" class="modal-backdrop hidden">
+    <div id="modalCard" class="modal-card"></div>
+  </div>
+
+  <script type="module" src="./client.js"></script>
+</body>
+</html>

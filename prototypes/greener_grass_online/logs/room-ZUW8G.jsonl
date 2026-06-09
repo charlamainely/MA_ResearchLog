@@ -1,0 +1,4 @@
+{"id":"log_soqdgbd4","at":"2026-06-08T05:51:24.573Z","type":"game_started","message":"Game started.","payload":{}}
+{"id":"log_1sx8plq8","at":"2026-06-08T05:51:27.169Z","type":"turn_started","message":"Haan started their turn.","payload":{"playerId":"player_ki3iczvi"}}
+{"id":"log_5t4d2br1","at":"2026-06-08T05:51:28.145Z","type":"steps_submitted","message":"Haan moved 1 step(s).","payload":{"playerId":"player_ki3iczvi","steps":1,"nodeId":"1"}}
+{"id":"log_0wh9wko8","at":"2026-06-08T05:51:30.662Z","type":"era_card_drawn","message":"Haan drew an era card.","payload":{"playerId":"player_ki3iczvi","cardId":"era_004"}}

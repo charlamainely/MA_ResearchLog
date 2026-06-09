@@ -1,0 +1,47 @@
+{"id":"log_bggbycdw","at":"2026-06-08T03:31:19.936Z","type":"game_started","message":"Game started.","payload":{}}
+{"id":"log_048bprz6","at":"2026-06-08T03:32:10.452Z","type":"turn_started","message":"HAAAn started their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_4uzmvli1","at":"2026-06-08T03:32:11.130Z","type":"steps_submitted","message":"HAAAn moved 1 step(s).","payload":{"playerId":"player_qi6eo4mn","steps":1,"nodeId":"1"}}
+{"id":"log_f9lgf6g4","at":"2026-06-08T03:32:14.525Z","type":"turn_ended","message":"HAAAn ended their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_9gvao2qm","at":"2026-06-08T03:32:15.420Z","type":"turn_started","message":"HAAAn started their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_p8c6gse0","at":"2026-06-08T03:32:16.017Z","type":"steps_submitted","message":"HAAAn moved 1 step(s).","payload":{"playerId":"player_qi6eo4mn","steps":1,"nodeId":"2"}}
+{"id":"log_oia8qfgs","at":"2026-06-08T03:38:05.056Z","type":"turn_ended","message":"HAAAn ended their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_ebow3fiv","at":"2026-06-08T03:38:12.075Z","type":"turn_started","message":"HAAAn started their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_y3r8honc","at":"2026-06-08T03:38:12.743Z","type":"steps_submitted","message":"HAAAn moved 1 step(s).","payload":{"playerId":"player_qi6eo4mn","steps":1,"nodeId":"3"}}
+{"id":"log_9lwkdszm","at":"2026-06-08T03:38:16.975Z","type":"turn_ended","message":"HAAAn ended their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_8l935hb3","at":"2026-06-08T03:38:20.056Z","type":"turn_started","message":"HAAAn started their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_i2orbnr5","at":"2026-06-08T03:38:20.620Z","type":"steps_submitted","message":"HAAAn moved 1 step(s).","payload":{"playerId":"player_qi6eo4mn","steps":1,"nodeId":"4"}}
+{"id":"log_ksqlw0tl","at":"2026-06-08T03:38:43.001Z","type":"turn_ended","message":"HAAAn ended their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_3oqtfzvt","at":"2026-06-08T03:38:43.616Z","type":"turn_started","message":"HAAAn started their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_6yfo0g7a","at":"2026-06-08T03:38:44.225Z","type":"steps_submitted","message":"HAAAn moved 1 step(s).","payload":{"playerId":"player_qi6eo4mn","steps":1,"nodeId":"5"}}
+{"id":"log_0nglbwuz","at":"2026-06-08T03:41:28.637Z","type":"choice_selected","message":"HAAAn selected Start Working.","payload":{"playerId":"player_qi6eo4mn","optionId":"5_opt_3"}}
+{"id":"log_8paxyze8","at":"2026-06-08T03:41:30.618Z","type":"turn_ended","message":"HAAAn ended their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_wg9w2p71","at":"2026-06-08T03:41:37.223Z","type":"turn_started","message":"HAAAn started their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_3pqx1xt7","at":"2026-06-08T03:41:38.125Z","type":"steps_submitted","message":"HAAAn moved 1 step(s).","payload":{"playerId":"player_qi6eo4mn","steps":1,"nodeId":"17"}}
+{"id":"log_d8ljdtz2","at":"2026-06-08T03:41:51.598Z","type":"turn_ended","message":"HAAAn ended their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_muhc0vnj","at":"2026-06-08T03:41:52.548Z","type":"turn_started","message":"HAAAn started their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_6kf4joox","at":"2026-06-08T03:41:53.215Z","type":"steps_submitted","message":"HAAAn moved 1 step(s).","payload":{"playerId":"player_qi6eo4mn","steps":1,"nodeId":"18"}}
+{"id":"log_v0suitt8","at":"2026-06-08T03:41:58.188Z","type":"turn_ended","message":"HAAAn ended their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_6yup14jk","at":"2026-06-08T03:41:59.186Z","type":"turn_started","message":"HAAAn started their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_rtpr9n3z","at":"2026-06-08T03:41:59.764Z","type":"steps_submitted","message":"HAAAn moved 1 step(s).","payload":{"playerId":"player_qi6eo4mn","steps":1,"nodeId":"19"}}
+{"id":"log_l9phqg6z","at":"2026-06-08T03:42:06.395Z","type":"turn_ended","message":"HAAAn ended their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_hksc767l","at":"2026-06-08T03:42:07.318Z","type":"turn_started","message":"HAAAn started their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_rlabyb14","at":"2026-06-08T03:42:08.005Z","type":"steps_submitted","message":"HAAAn moved 1 step(s).","payload":{"playerId":"player_qi6eo4mn","steps":1,"nodeId":"20"}}
+{"id":"log_7o9t59xe","at":"2026-06-08T03:42:11.570Z","type":"occupation_selected","message":"HAAAn became Repairman.","payload":{"playerId":"player_qi6eo4mn","occupationId":"repairman"}}
+{"id":"log_4ufexgzo","at":"2026-06-08T03:48:25.641Z","type":"turn_ended","message":"HAAAn ended their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_nrbnliyz","at":"2026-06-08T03:48:26.914Z","type":"turn_started","message":"HAAAn started their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_k7becd1v","at":"2026-06-08T03:48:28.723Z","type":"steps_submitted","message":"HAAAn moved 1 step(s).","payload":{"playerId":"player_qi6eo4mn","steps":1,"nodeId":"21"}}
+{"id":"log_z3vx16wh","at":"2026-06-08T03:48:33.387Z","type":"choice_selected","message":"HAAAn selected We deserve it!.","payload":{"playerId":"player_qi6eo4mn","optionId":"21_opt_1"}}
+{"id":"log_4uko8v0i","at":"2026-06-08T03:48:34.115Z","type":"turn_ended","message":"HAAAn ended their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_6w0gb6rj","at":"2026-06-08T03:48:35.000Z","type":"turn_started","message":"HAAAn started their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_6jvq8ox1","at":"2026-06-08T03:48:35.476Z","type":"steps_submitted","message":"HAAAn moved 1 step(s).","payload":{"playerId":"player_qi6eo4mn","steps":1,"nodeId":"23"}}
+{"id":"log_eoptqekr","at":"2026-06-08T03:48:42.591Z","type":"turn_ended","message":"HAAAn ended their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_xdl5j1e0","at":"2026-06-08T03:48:43.416Z","type":"turn_started","message":"HAAAn started their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_s8vw9sla","at":"2026-06-08T03:48:43.918Z","type":"steps_submitted","message":"HAAAn moved 1 step(s).","payload":{"playerId":"player_qi6eo4mn","steps":1,"nodeId":"24"}}
+{"id":"log_30kl52ir","at":"2026-06-08T04:01:36.967Z","type":"turn_ended","message":"HAAAn ended their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_p8u15kp2","at":"2026-06-08T04:01:37.815Z","type":"turn_started","message":"HAAAn started their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_qp0nkh4m","at":"2026-06-08T04:01:38.345Z","type":"steps_submitted","message":"HAAAn moved 1 step(s).","payload":{"playerId":"player_qi6eo4mn","steps":1,"nodeId":"25"}}
+{"id":"log_2y3mb71x","at":"2026-06-08T04:01:51.606Z","type":"choice_selected","message":"HAAAn selected Rent a Home.","payload":{"playerId":"player_qi6eo4mn","optionId":"25_opt_2"}}
+{"id":"log_qr6xjl8t","at":"2026-06-08T04:01:56.300Z","type":"turn_ended","message":"HAAAn ended their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_cd5ypj5r","at":"2026-06-08T04:01:57.192Z","type":"turn_started","message":"HAAAn started their turn.","payload":{"playerId":"player_qi6eo4mn"}}
+{"id":"log_wg1grq05","at":"2026-06-08T04:01:58.419Z","type":"steps_submitted","message":"HAAAn moved 1 step(s).","payload":{"playerId":"player_qi6eo4mn","steps":1,"nodeId":"31"}}
+{"id":"log_vu1lo5cq","at":"2026-06-08T04:02:01.456Z","type":"turn_ended","message":"HAAAn ended their turn.","payload":{"playerId":"player_qi6eo4mn"}}

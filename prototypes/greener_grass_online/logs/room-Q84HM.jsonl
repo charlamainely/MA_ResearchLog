@@ -1,0 +1,11 @@
+{"id":"log_7hvy1nx5","at":"2026-06-08T07:20:36.849Z","type":"game_started","message":"Game started.","payload":{}}
+{"id":"log_z6r8bh81","at":"2026-06-08T07:20:40.895Z","type":"turn_started","message":"Haaan started their turn.","payload":{"playerId":"player_z8tz7h60"}}
+{"id":"log_spqxnthn","at":"2026-06-08T07:20:41.757Z","type":"steps_submitted","message":"Haaan moved 1 step(s).","payload":{"playerId":"player_z8tz7h60","steps":1,"nodeId":"1"}}
+{"id":"log_z0syijw2","at":"2026-06-08T07:20:44.647Z","type":"era_card_drawn","message":"Haaan drew an era card.","payload":{"playerId":"player_z8tz7h60","cardId":"era_003"}}
+{"id":"log_x5xxo49j","at":"2026-06-08T07:20:57.739Z","type":"turn_ended","message":"Haaan ended their turn.","payload":{"playerId":"player_z8tz7h60"}}
+{"id":"log_1pfi3ibr","at":"2026-06-08T07:21:00.806Z","type":"turn_started","message":"Haaan started their turn.","payload":{"playerId":"player_z8tz7h60"}}
+{"id":"log_3i9qrtc5","at":"2026-06-08T07:21:02.391Z","type":"steps_submitted","message":"Haaan moved 1 step(s).","payload":{"playerId":"player_z8tz7h60","steps":1,"nodeId":"2"}}
+{"id":"log_kj5ijobs","at":"2026-06-08T07:21:10.062Z","type":"turn_ended","message":"Haaan ended their turn.","payload":{"playerId":"player_z8tz7h60"}}
+{"id":"log_e5lywbt4","at":"2026-06-08T07:21:12.318Z","type":"turn_started","message":"Haaan started their turn.","payload":{"playerId":"player_z8tz7h60"}}
+{"id":"log_z4c5qabf","at":"2026-06-08T07:21:13.546Z","type":"steps_submitted","message":"Haaan moved 1 step(s).","payload":{"playerId":"player_z8tz7h60","steps":1,"nodeId":"3"}}
+{"id":"log_piphxlwm","at":"2026-06-08T07:21:15.186Z","type":"life_card_drawn","message":"Haaan drew a life card.","payload":{"playerId":"player_z8tz7h60","cardId":"life_007"}}

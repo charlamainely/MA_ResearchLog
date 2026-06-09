@@ -107,14 +107,16 @@ const dom = {
   storyDialogContent: document.getElementById("storyDialogContent")
 };
 
+const defaultPostcardState = {
+  familyCloseness: "close",
+  selectedNarrativeFocus: "what",
+  tone: "positive"
+};
+
 const state = {
   activeView: "home",
   receiveStep: 1,
-  postcard: {
-    familyCloseness: "close",
-    selectedNarrativeFocus: "what",
-    tone: "positive"
-  },
+  postcard: { ...defaultPostcardState },
   galleryFilters: {
     focus: "all",
     tone: "all",
@@ -349,6 +351,19 @@ function updateStepper() {
 function setReceiveStep(step) {
   state.receiveStep = step;
   updateStepper();
+}
+
+function resetPostcardExperience() {
+  state.postcard = { ...defaultPostcardState };
+  updateReceiveCloseness(state.postcard.familyCloseness);
+  updateReceiveFocus(state.postcard.selectedNarrativeFocus);
+  updateReceiveTone(state.postcard.tone);
+  dom.sendStatus.textContent = "";
+  dom.receiveResultsMeta.textContent = "";
+  dom.receiveResults.innerHTML = "";
+  dom.receiveEmptyState.hidden = true;
+  dom.sendingStage.classList.remove("is-sending");
+  setReceiveStep(1);
 }
 
 function matchScore(story, criteria) {
@@ -668,6 +683,12 @@ function bootFromLocation() {
 function bindEvents() {
   dom.navButtons.forEach((button) => {
     button.addEventListener("click", () => {
+      if (button.dataset.resetPostcard === "true") {
+        resetPostcardExperience();
+      } else if (button.dataset.viewTarget === "receive" && state.receiveStep === 5) {
+        resetPostcardExperience();
+      }
+
       setView(button.dataset.viewTarget);
     });
   });

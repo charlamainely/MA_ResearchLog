@@ -1,0 +1,63 @@
+{"id":"log_egfppae1","at":"2026-06-08T04:05:54.565Z","type":"player_joined","message":"Haaan 22 joined the room.","payload":{"playerId":"player_3mtz17bd"}}
+{"id":"log_pd5hjsv5","at":"2026-06-08T04:06:09.742Z","type":"game_reset","message":"Game reset to lobby.","payload":{}}
+{"id":"log_ogyihfoj","at":"2026-06-08T04:06:10.639Z","type":"game_reset","message":"Game reset to lobby.","payload":{}}
+{"id":"log_78yamit9","at":"2026-06-08T04:06:11.200Z","type":"game_reset","message":"Game reset to lobby.","payload":{}}
+{"id":"log_467g2gsc","at":"2026-06-08T04:06:11.618Z","type":"game_reset","message":"Game reset to lobby.","payload":{}}
+{"id":"log_0agx5hxz","at":"2026-06-08T04:06:11.833Z","type":"game_reset","message":"Game reset to lobby.","payload":{}}
+{"id":"log_143lamus","at":"2026-06-08T04:06:16.472Z","type":"game_reset","message":"Game reset to lobby.","payload":{}}
+{"id":"log_vgo4npsp","at":"2026-06-08T04:06:16.945Z","type":"game_reset","message":"Game reset to lobby.","payload":{}}
+{"id":"log_wlx9du60","at":"2026-06-08T04:06:18.491Z","type":"game_started","message":"Game started.","payload":{}}
+{"id":"log_98x7arwf","at":"2026-06-08T04:06:19.523Z","type":"game_reset","message":"Game reset to lobby.","payload":{}}
+{"id":"log_3ped4ftv","at":"2026-06-08T04:06:21.152Z","type":"game_reset","message":"Game reset to lobby.","payload":{}}
+{"id":"log_9j1xmajk","at":"2026-06-08T04:06:22.721Z","type":"game_reset","message":"Game reset to lobby.","payload":{}}
+{"id":"log_a8yfrm4j","at":"2026-06-08T04:06:31.052Z","type":"game_started","message":"Game started.","payload":{}}
+{"id":"log_tkbt1ulq","at":"2026-06-08T04:06:31.918Z","type":"turn_started","message":"Haan started their turn.","payload":{"playerId":"player_o22n7rya"}}
+{"id":"log_vnbeo2g7","at":"2026-06-08T04:06:32.493Z","type":"steps_submitted","message":"Haan moved 1 step(s).","payload":{"playerId":"player_o22n7rya","steps":1,"nodeId":"1"}}
+{"id":"log_vnk83dv3","at":"2026-06-08T04:06:39.880Z","type":"era_card_drawn","message":"Haan drew an era card.","payload":{"playerId":"player_o22n7rya","cardId":"era_007"}}
+{"id":"log_k06fezz4","at":"2026-06-08T04:06:57.331Z","type":"turn_ended","message":"Haan ended their turn.","payload":{"playerId":"player_o22n7rya"}}
+{"id":"log_l4ogi1ny","at":"2026-06-08T04:07:08.139Z","type":"turn_started","message":"Haaan 22 started their turn.","payload":{"playerId":"player_3mtz17bd"}}
+{"id":"log_4b4yrw1q","at":"2026-06-08T04:08:02.379Z","type":"steps_submitted","message":"Haaan 22 moved 1 step(s).","payload":{"playerId":"player_3mtz17bd","steps":1,"nodeId":"1"}}
+{"id":"log_47ntlrpt","at":"2026-06-08T04:08:04.695Z","type":"era_card_drawn","message":"Haaan 22 drew an era card.","payload":{"playerId":"player_3mtz17bd","cardId":"era_009"}}
+{"id":"log_11cdl8de","at":"2026-06-08T04:08:14.727Z","type":"turn_ended","message":"Haaan 22 ended their turn.","payload":{"playerId":"player_3mtz17bd"}}
+{"id":"log_gxav3zql","at":"2026-06-08T04:08:18.611Z","type":"turn_started","message":"Haan started their turn.","payload":{"playerId":"player_o22n7rya"}}
+{"id":"log_sklf9mit","at":"2026-06-08T04:08:19.089Z","type":"steps_submitted","message":"Haan moved 1 step(s).","payload":{"playerId":"player_o22n7rya","steps":1,"nodeId":"2"}}
+{"id":"log_7ulksc5j","at":"2026-06-08T04:08:22.315Z","type":"turn_ended","message":"Haan ended their turn.","payload":{"playerId":"player_o22n7rya"}}
+{"id":"log_asb6xxw6","at":"2026-06-08T04:08:25.490Z","type":"turn_started","message":"Haaan 22 started their turn.","payload":{"playerId":"player_3mtz17bd"}}
+{"id":"log_m42gtdgd","at":"2026-06-08T04:08:27.191Z","type":"steps_submitted","message":"Haaan 22 moved 1 step(s).","payload":{"playerId":"player_3mtz17bd","steps":1,"nodeId":"2"}}
+{"id":"log_n04gkxh4","at":"2026-06-08T04:08:32.580Z","type":"turn_ended","message":"Haaan 22 ended their turn.","payload":{"playerId":"player_3mtz17bd"}}
+{"id":"log_8ursyip0","at":"2026-06-08T04:08:34.365Z","type":"turn_started","message":"Haan started their turn.","payload":{"playerId":"player_o22n7rya"}}
+{"id":"log_y0fk2lkw","at":"2026-06-08T04:08:34.951Z","type":"steps_submitted","message":"Haan moved 1 step(s).","payload":{"playerId":"player_o22n7rya","steps":1,"nodeId":"3"}}
+{"id":"log_gekgzws9","at":"2026-06-08T04:08:36.319Z","type":"life_card_drawn","message":"Haan drew a life card.","payload":{"playerId":"player_o22n7rya","cardId":"life_020"}}
+{"id":"log_j7rpl91p","at":"2026-06-08T04:08:42.931Z","type":"occupation_selected","message":"Haan became Software Developer.","payload":{"playerId":"player_o22n7rya","occupationId":"software_developer"}}
+{"id":"log_oeqhqj39","at":"2026-06-08T04:08:47.743Z","type":"turn_ended","message":"Haan ended their turn.","payload":{"playerId":"player_o22n7rya"}}
+{"id":"log_05ymcbz3","at":"2026-06-08T04:08:49.686Z","type":"turn_started","message":"Haaan 22 started their turn.","payload":{"playerId":"player_3mtz17bd"}}
+{"id":"log_4kc6bsuy","at":"2026-06-08T04:08:50.762Z","type":"steps_submitted","message":"Haaan 22 moved 1 step(s).","payload":{"playerId":"player_3mtz17bd","steps":1,"nodeId":"3"}}
+{"id":"log_hs64fg6k","at":"2026-06-08T04:08:55.394Z","type":"life_card_drawn","message":"Haaan 22 drew a life card.","payload":{"playerId":"player_3mtz17bd","cardId":"life_023"}}
+{"id":"log_ox8x4at0","at":"2026-06-08T04:09:06.504Z","type":"hobby_selected","message":"Haaan 22 chose Exercise.","payload":{"playerId":"player_3mtz17bd","hobbyId":"exercise"}}
+{"id":"log_5bhkvxuq","at":"2026-06-08T04:09:15.755Z","type":"turn_ended","message":"Haaan 22 ended their turn.","payload":{"playerId":"player_3mtz17bd"}}
+{"id":"log_tfqvikuw","at":"2026-06-08T04:09:17.785Z","type":"turn_started","message":"Haan started their turn.","payload":{"playerId":"player_o22n7rya"}}
+{"id":"log_67pskycu","at":"2026-06-08T04:09:18.301Z","type":"steps_submitted","message":"Haan moved 1 step(s).","payload":{"playerId":"player_o22n7rya","steps":1,"nodeId":"4"}}
+{"id":"log_k3bgs9y0","at":"2026-06-08T04:09:22.156Z","type":"turn_ended","message":"Haan ended their turn.","payload":{"playerId":"player_o22n7rya"}}
+{"id":"log_rl31i0bn","at":"2026-06-08T04:09:24.378Z","type":"turn_started","message":"Haaan 22 started their turn.","payload":{"playerId":"player_3mtz17bd"}}
+{"id":"log_udfw1c58","at":"2026-06-08T04:09:25.173Z","type":"steps_submitted","message":"Haaan 22 moved 1 step(s).","payload":{"playerId":"player_3mtz17bd","steps":1,"nodeId":"4"}}
+{"id":"log_vopi71as","at":"2026-06-08T04:09:31.014Z","type":"turn_ended","message":"Haaan 22 ended their turn.","payload":{"playerId":"player_3mtz17bd"}}
+{"id":"log_k9hgn0hw","at":"2026-06-08T04:09:33.054Z","type":"turn_started","message":"Haan started their turn.","payload":{"playerId":"player_o22n7rya"}}
+{"id":"log_qojymod8","at":"2026-06-08T04:09:34.396Z","type":"steps_submitted","message":"Haan moved 1 step(s).","payload":{"playerId":"player_o22n7rya","steps":1,"nodeId":"5"}}
+{"id":"log_4oj65px9","at":"2026-06-08T04:09:39.653Z","type":"choice_selected","message":"Haan selected Go to University.","payload":{"playerId":"player_o22n7rya","optionId":"5_opt_1"}}
+{"id":"log_q9ytkru9","at":"2026-06-08T04:09:43.275Z","type":"turn_ended","message":"Haan ended their turn.","payload":{"playerId":"player_o22n7rya"}}
+{"id":"log_qzx8462v","at":"2026-06-08T04:09:45.771Z","type":"turn_started","message":"Haaan 22 started their turn.","payload":{"playerId":"player_3mtz17bd"}}
+{"id":"log_s8qj5jw7","at":"2026-06-08T04:09:46.462Z","type":"steps_submitted","message":"Haaan 22 moved 1 step(s).","payload":{"playerId":"player_3mtz17bd","steps":1,"nodeId":"5"}}
+{"id":"log_qvbrbpij","at":"2026-06-08T04:09:52.621Z","type":"choice_selected","message":"Haaan 22 selected Start Working.","payload":{"playerId":"player_3mtz17bd","optionId":"5_opt_3"}}
+{"id":"log_z5gbnrrv","at":"2026-06-08T04:09:54.606Z","type":"turn_ended","message":"Haaan 22 ended their turn.","payload":{"playerId":"player_3mtz17bd"}}
+{"id":"log_18wmauwx","at":"2026-06-08T04:09:58.909Z","type":"turn_started","message":"Haan started their turn.","payload":{"playerId":"player_o22n7rya"}}
+{"id":"log_jga2pr7n","at":"2026-06-08T04:09:59.822Z","type":"steps_submitted","message":"Haan moved 1 step(s).","payload":{"playerId":"player_o22n7rya","steps":1,"nodeId":"7"}}
+{"id":"log_e2mkj4ef","at":"2026-06-08T04:10:01.487Z","type":"life_card_drawn","message":"Haan drew a life card.","payload":{"playerId":"player_o22n7rya","cardId":"life_009"}}
+{"id":"log_u82mpm87","at":"2026-06-08T04:10:12.811Z","type":"turn_ended","message":"Haan ended their turn.","payload":{"playerId":"player_o22n7rya"}}
+{"id":"log_dp9jl21h","at":"2026-06-08T04:10:17.476Z","type":"turn_started","message":"Haaan 22 started their turn.","payload":{"playerId":"player_3mtz17bd"}}
+{"id":"log_u1ypewyi","at":"2026-06-08T04:10:18.263Z","type":"steps_submitted","message":"Haaan 22 moved 1 step(s).","payload":{"playerId":"player_3mtz17bd","steps":1,"nodeId":"17"}}
+{"id":"log_7klbr8xe","at":"2026-06-08T04:10:21.696Z","type":"era_card_drawn","message":"Haaan 22 drew an era card.","payload":{"playerId":"player_3mtz17bd","cardId":"era_011"}}
+{"id":"log_vfxef5ku","at":"2026-06-08T04:10:35.141Z","type":"turn_ended","message":"Haaan 22 ended their turn.","payload":{"playerId":"player_3mtz17bd"}}
+{"id":"log_u6agibz4","at":"2026-06-08T04:10:38.971Z","type":"turn_started","message":"Haan started their turn.","payload":{"playerId":"player_o22n7rya"}}
+{"id":"log_9sbv2imo","at":"2026-06-08T04:10:39.521Z","type":"steps_submitted","message":"Haan moved 1 step(s).","payload":{"playerId":"player_o22n7rya","steps":1,"nodeId":"8"}}
+{"id":"log_q2yw5fxe","at":"2026-06-08T04:10:46.799Z","type":"turn_ended","message":"Haan ended their turn.","payload":{"playerId":"player_o22n7rya"}}
+{"id":"log_4fp5d0sk","at":"2026-06-08T04:19:49.904Z","type":"game_reset","message":"Game reset to lobby.","payload":{}}

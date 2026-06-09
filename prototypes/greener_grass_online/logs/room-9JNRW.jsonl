@@ -1,0 +1,15 @@
+{"id":"log_v0eq6b81","at":"2026-06-08T04:23:50.513Z","type":"game_reset","message":"Game reset to lobby.","payload":{}}
+{"id":"log_0ee633ww","at":"2026-06-08T04:23:51.345Z","type":"game_reset","message":"Game reset to lobby.","payload":{}}
+{"id":"log_eipppwfl","at":"2026-06-08T04:24:20.309Z","type":"game_started","message":"Game started.","payload":{}}
+{"id":"log_6fc31yan","at":"2026-06-08T04:24:23.325Z","type":"turn_started","message":"Haan started their turn.","payload":{"playerId":"player_fl08s4ul"}}
+{"id":"log_msldgtcw","at":"2026-06-08T04:24:24.458Z","type":"steps_submitted","message":"Haan moved 1 step(s).","payload":{"playerId":"player_fl08s4ul","steps":1,"nodeId":"1"}}
+{"id":"log_jz79vnq5","at":"2026-06-08T04:24:26.550Z","type":"era_card_drawn","message":"Haan drew an era card.","payload":{"playerId":"player_fl08s4ul","cardId":"era_006"}}
+{"id":"log_4v2dpkue","at":"2026-06-08T04:24:31.502Z","type":"turn_ended","message":"Haan ended their turn.","payload":{"playerId":"player_fl08s4ul"}}
+{"id":"log_uqoydks5","at":"2026-06-08T04:24:32.387Z","type":"turn_started","message":"Haan started their turn.","payload":{"playerId":"player_fl08s4ul"}}
+{"id":"log_bwspbixf","at":"2026-06-08T04:24:33.062Z","type":"steps_submitted","message":"Haan moved 1 step(s).","payload":{"playerId":"player_fl08s4ul","steps":1,"nodeId":"2"}}
+{"id":"log_uxthrk0c","at":"2026-06-08T04:24:35.438Z","type":"turn_ended","message":"Haan ended their turn.","payload":{"playerId":"player_fl08s4ul"}}
+{"id":"log_r410ceig","at":"2026-06-08T04:25:56.718Z","type":"turn_started","message":"Haan started their turn.","payload":{"playerId":"player_fl08s4ul"}}
+{"id":"log_qm67iiab","at":"2026-06-08T04:25:57.316Z","type":"steps_submitted","message":"Haan moved 1 step(s).","payload":{"playerId":"player_fl08s4ul","steps":1,"nodeId":"3"}}
+{"id":"log_s3lxfynb","at":"2026-06-08T04:25:59.119Z","type":"life_card_drawn","message":"Haan drew a life card.","payload":{"playerId":"player_fl08s4ul","cardId":"life_028"}}
+{"id":"log_yr0l5n1e","at":"2026-06-08T04:26:04.395Z","type":"hobby_selected","message":"Haan chose Volunteering.","payload":{"playerId":"player_fl08s4ul","hobbyId":"volunteering"}}
+{"id":"log_iawlb8gv","at":"2026-06-08T04:33:05.293Z","type":"game_reset","message":"Game reset to lobby.","payload":{}}

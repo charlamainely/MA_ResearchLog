@@ -1,0 +1,9 @@
+hobby_id,pool,label_vi,label_en,requirements,recurring_effects,notes
+gardening,general,Làm vườn,Gardening,,happiness:+2;health:+1,Starter hobby example.
+music,general,Âm nhạc,Music,,happiness:+3;money:-1,Starter hobby example.
+cooking,general,Nấu ăn,Cooking,,happiness:+2;health:+2;money:-2,Starter hobby example.
+exercise,general,Tập thể dục,Exercise,,health:+3,Starter hobby example.
+drawing,general,Hội hoạ,Drawing,,happiness:+3,Starter hobby example.
+reading_club,general,Đọc sách,Reading Club,,happiness:+2;health:+1,Starter hobby example.
+volunteering,general,Tình nguyện,Volunteering,,happiness:+3;money:-1,Starter hobby example.
+gaming,general,Chơi game,Gaming,,happiness:+4;health:-1;money:-2,Starter hobby example.
