@@ -9490,7 +9490,11 @@
             if (player.turnVoided) {
               break;
             }
-            break;
+            if (i === total - 1) {
+              break;
+            }
+            await sleep(130);
+            continue;
           }
 
           if (landedNode && landedNode.type === "choice") {
