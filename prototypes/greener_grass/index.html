@@ -2108,6 +2108,10 @@
       align-items: center;
     }
 
+    .dev-tools-row-compact {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .dev-tools-row input {
       padding-top: 0.58rem;
       padding-bottom: 0.58rem;
@@ -2125,6 +2129,71 @@
       text-transform: uppercase;
       background: var(--navy);
       color: var(--cream);
+    }
+
+    .dev-space-list-modal {
+      width: min(20vw, 320px);
+      min-width: 240px;
+      max-height: 82vh;
+      margin-left: auto;
+      display: grid;
+      gap: 12px;
+      overflow: auto;
+      font-family: var(--body-font);
+    }
+
+    .dev-space-list-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .dev-space-list-head h4 {
+      margin: 0;
+      font-family: var(--body-font);
+      font-size: 1rem;
+      font-weight: 800;
+      text-transform: none;
+    }
+
+    .dev-space-list-close {
+      min-width: 48px;
+      min-height: 48px;
+      font-family: var(--body-font);
+      font-size: 1.1rem;
+      background: var(--red);
+      color: var(--cream);
+      box-shadow: var(--shadow);
+    }
+
+    .dev-space-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .dev-space-item {
+      width: 100%;
+      display: grid;
+      gap: 4px;
+      text-align: left;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: 4px 4px 0 var(--black);
+      padding: 10px 12px;
+      border: 0;
+      color: var(--black);
+      font-family: var(--body-font);
+    }
+
+    .dev-space-item strong {
+      font-size: 0.9rem;
+      font-family: var(--body-font);
+    }
+
+    .dev-space-item span {
+      font-size: 0.82rem;
+      line-height: 1.28;
+      font-family: var(--body-font);
     }
 
     .map-panel {
@@ -5057,6 +5126,10 @@
                   <input id="devNodeInput" type="text" placeholder="Enter node id (e.g. 28)" />
                   <button id="devJumpBtn" type="button">Jump</button>
                 </div>
+                <div class="dev-tools-row dev-tools-row-compact">
+                  <button id="devSetNodeBtn" type="button">Set Current Space</button>
+                  <button id="devSpaceListBtn" type="button">List Spaces (L)</button>
+                </div>
               <div class="dev-tools-row">
                 <input id="devEffectInput" type="text" placeholder="Effect test (e.g. money:+3;health:-1 or occupation_choice)" />
                 <button id="devEffectBtn" type="button">Apply</button>
@@ -5547,6 +5620,8 @@
         devTools: document.getElementById("devTools"),
         devNodeInput: document.getElementById("devNodeInput"),
         devJumpBtn: document.getElementById("devJumpBtn"),
+        devSetNodeBtn: document.getElementById("devSetNodeBtn"),
+        devSpaceListBtn: document.getElementById("devSpaceListBtn"),
         devEffectInput: document.getElementById("devEffectInput"),
         devEffectBtn: document.getElementById("devEffectBtn"),
         devDrawLifeBtn: document.getElementById("devDrawLifeBtn"),
@@ -7314,6 +7389,59 @@
         if (!showPanel && refs.devCardIdInput) {
           refs.devCardIdInput.value = "";
         }
+      }
+
+      function buildDevSpaceListHtml() {
+        const rows = (DATA.board.nodeOrder || [])
+          .map(function (nodeId) {
+            const node = getNode(nodeId);
+            if (!node) {
+              return "";
+            }
+            const meta = getSpaceMeta(node, activePlayer() ? activePlayer().generation : "war-time");
+            const title = meta.title || node.label || ("Node " + nodeId);
+            return (
+              '<button class="dev-space-item" type="button" data-dev-space-id="' + escapeHtml(String(nodeId)) + '">' +
+              "<strong>" + escapeHtml(String(nodeId)) + " — " + escapeHtml(String(title)) + "</strong>" +
+              '<span>' + escapeHtml(node.type || "space") + "</span>" +
+              "</button>"
+            );
+          })
+          .join("");
+
+        return (
+          '<div class="dev-space-list-head">' +
+          '<h4>Danh sách ô / Space list</h4>' +
+          '<button id="closeDevSpaceListBtn" class="dev-space-list-close" type="button" aria-label="Close">x</button>' +
+          "</div>" +
+          '<div class="dev-space-list">' + rows + "</div>"
+        );
+      }
+
+      function openDevSpaceList() {
+        if (refs.modalBackdrop.classList.contains("show") && refs.modalCard.classList.contains("dev-space-list-modal")) {
+          closeModal();
+          return;
+        }
+        openModal(buildDevSpaceListHtml(), "dev-space-list-modal");
+        const closeBtn = document.getElementById("closeDevSpaceListBtn");
+        if (closeBtn) {
+          closeBtn.addEventListener("click", function () {
+            closeModal();
+          });
+        }
+        const items = refs.modalCard.querySelectorAll("[data-dev-space-id]");
+        items.forEach(function (button) {
+          button.addEventListener("click", function () {
+            const nodeId = button.getAttribute("data-dev-space-id") || "";
+            if (refs.devNodeInput) {
+              refs.devNodeInput.value = nodeId;
+              refs.devNodeInput.focus();
+            }
+            closeModal();
+            refs.turnHint.textContent = "Selected node " + nodeId + " for dev tools.";
+          });
+        });
       }
 
       function isAtOrPastRetirementNode(nodeId) {
@@ -9714,6 +9842,32 @@
         }
       }
 
+      function devSetCurrentNodeOnly() {
+        if (!state.players.length || state.phase === "setup") {
+          refs.turnHint.textContent = "Start a session first.";
+          return;
+        }
+
+        const player = activePlayer();
+        if (!player) {
+          refs.turnHint.textContent = "No active player.";
+          return;
+        }
+
+        const targetNodeId = resolveNodeIdFromInput(refs.devNodeInput.value);
+        if (!targetNodeId) {
+          refs.turnHint.textContent = "Invalid node id.";
+          refs.devNodeInput.focus();
+          return;
+        }
+
+        logEntry("Dev", "Set current space for " + player.name + " to node " + targetNodeId + " (no resolution).");
+        moveToNode(player, targetNodeId, "(dev set)");
+        renderAll();
+        updateControls();
+        refs.turnHint.textContent = "Current space set to node " + player.currentNode + " without resolving effects.";
+      }
+
       async function devApplyEffectString() {
         if (!state.players.length || state.phase === "setup") {
           refs.turnHint.textContent = "Start a session first.";
@@ -10536,6 +10690,12 @@
             !state.devMode || !state.players.length || state.phase === "setup" || state.phase === "resolving" || state.phase === "game_over";
           refs.devNodeInput.disabled = disableDev;
           refs.devJumpBtn.disabled = disableDev;
+          if (refs.devSetNodeBtn) {
+            refs.devSetNodeBtn.disabled = disableDev;
+          }
+          if (refs.devSpaceListBtn) {
+            refs.devSpaceListBtn.disabled = disableDev;
+          }
         }
         if (refs.devEffectInput && refs.devEffectBtn) {
           const disableDevEffects =
@@ -10993,6 +11153,16 @@
         refs.devJumpBtn.addEventListener("click", function () {
           devJumpToNode();
         });
+        if (refs.devSetNodeBtn) {
+          refs.devSetNodeBtn.addEventListener("click", function () {
+            devSetCurrentNodeOnly();
+          });
+        }
+        if (refs.devSpaceListBtn) {
+          refs.devSpaceListBtn.addEventListener("click", function () {
+            openDevSpaceList();
+          });
+        }
         refs.devNodeInput.addEventListener("keydown", function (event) {
           if (event.key === "Enter") {
             event.preventDefault();
@@ -11039,9 +11209,6 @@
           if (event.repeat || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) {
             return;
           }
-          if (String(event.key || "").toLowerCase() !== "d") {
-            return;
-          }
           if (state.phase === "setup" || state.phase === "resolving" || state.phase === "game_over") {
             return;
           }
@@ -11050,12 +11217,20 @@
           if (tag === "input" || tag === "textarea" || tag === "select" || (target && target.isContentEditable)) {
             return;
           }
-          event.preventDefault();
-          setDevMode(!state.devMode);
-          updateControls();
-          refs.turnHint.textContent = state.devMode
-            ? "Dev mode enabled. Enter a node id and jump."
-            : "Dev mode disabled.";
+          const key = String(event.key || "").toLowerCase();
+          if (key === "d") {
+            event.preventDefault();
+            setDevMode(!state.devMode);
+            updateControls();
+            refs.turnHint.textContent = state.devMode
+              ? "Dev mode enabled. Enter a node id and jump."
+              : "Dev mode disabled.";
+            return;
+          }
+          if (key === "l" && state.devMode) {
+            event.preventDefault();
+            openDevSpaceList();
+          }
         });
 
         applyLanguage();
