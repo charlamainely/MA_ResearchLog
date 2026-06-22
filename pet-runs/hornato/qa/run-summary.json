@@ -1,9 +1,0 @@
-{
-  "ok": true,
-  "run_dir": "/Users/lydukhanhhan/Documents/MA_ResearchLog/pet-runs/hornato",
-  "spritesheet": "/Users/lydukhanhhan/Documents/MA_ResearchLog/pet-runs/hornato/final/spritesheet.webp",
-  "validation": "/Users/lydukhanhhan/Documents/MA_ResearchLog/pet-runs/hornato/final/validation.json",
-  "contact_sheet": "/Users/lydukhanhhan/Documents/MA_ResearchLog/pet-runs/hornato/qa/contact-sheet.png",
-  "review": "/Users/lydukhanhhan/Documents/MA_ResearchLog/pet-runs/hornato/qa/review.json",
-  "package": "/Users/lydukhanhhan/.codex/pets/hornato"
-}
