@@ -28,6 +28,16 @@
     throw new Error('Could not load assets/navbar.html from any known path.');
   }
 
+  async function fetchJson(paths) {
+    for (const href of paths) {
+      try {
+        const res = await fetch(href, { cache: 'no-store' });
+        if (res.ok) return await res.json();
+      } catch (_) { /* continue */ }
+    }
+    throw new Error('Could not load JSON from any known path.');
+  }
+
   // --- Compute site base for absolute URLs ---
   function computeBase(navEl) {
     const isLocalHost = ['127.0.0.1', 'localhost', '::1'].includes(location.hostname);
@@ -99,6 +109,34 @@
     const clean = path.replace(/^\//, '');
     el.setAttribute('src', new URL(clean, location.origin + base).href);
   });
+
+  // --- Replace dynamic links that should follow the latest content entry ---
+  const weeklyLinks = nav.querySelectorAll('[data-latest-json="weeks"]');
+  if (weeklyLinks.length) {
+    const candidates = [
+      new URL('assets/weeks.json', location.origin + base).href,
+      '../assets/weeks.json',
+      'assets/weeks.json',
+      './assets/weeks.json',
+      '/assets/weeks.json'
+    ];
+
+    try {
+      const entries = await fetchJson(candidates);
+      const latest = Array.isArray(entries)
+        ? [...entries].reverse().find(item => typeof item?.path === 'string' && item.path.trim())
+        : null;
+
+      if (latest) {
+        const relPath = latest.path.replace(/^\.?\//, '');
+        const logPath = relPath.startsWith('log/') ? relPath : `log/${relPath}`;
+        const latestHref = new URL(logPath, location.origin + base).href;
+        weeklyLinks.forEach(link => link.setAttribute('href', latestHref));
+      }
+    } catch (err) {
+      console.warn('Could not resolve latest weekly entry from weeks.json:', err);
+    }
+  }
 
   // --- Mark active link (aria-current="page") ---
   const here = norm(location.pathname);
