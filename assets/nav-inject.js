@@ -3,6 +3,15 @@
   const mount = document.getElementById('navbar');
   if (!mount) return;
 
+  function ensureTypekit() {
+    if (document.querySelector('link[data-typekit="research-log"]')) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'https://use.typekit.net/kau7emn.css';
+    link.setAttribute('data-typekit', 'research-log');
+    document.head.appendChild(link);
+  }
+
   // --- Robust fetch of navbar.html regardless of page depth ---
   async function fetchNavbar() {
     const tries = [
@@ -21,6 +30,9 @@
 
   // --- Compute site base for absolute URLs ---
   function computeBase(navEl) {
+    const isLocalHost = ['127.0.0.1', 'localhost', '::1'].includes(location.hostname);
+    if (isLocalHost) return '/';
+
     // 1) Prefer explicit data-base if present
     const hint = navEl?.getAttribute('data-base');
     if (hint && hint.trim()) {
@@ -51,6 +63,7 @@
   // --- Inject HTML ---
   let html = '';
   try {
+    ensureTypekit();
     html = await fetchNavbar();
   } catch (err) {
     console.error(err);
@@ -78,6 +91,13 @@
     const clean = path.replace(/^\//, '');
     const abs = new URL(clean, location.origin + base).href;
     a.setAttribute('href', abs);
+  });
+
+  nav.querySelectorAll('[data-src]').forEach(el => {
+    const path = (el.getAttribute('data-src') || '').trim();
+    if (!path) return;
+    const clean = path.replace(/^\//, '');
+    el.setAttribute('src', new URL(clean, location.origin + base).href);
   });
 
   // --- Mark active link (aria-current="page") ---
