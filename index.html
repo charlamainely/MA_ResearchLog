@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>My MA Research Log</title>
   <link rel="stylesheet" href="https://use.typekit.net/kau7emn.css">
-  <link rel="stylesheet" href="assets/styles.css?v=20260622-homepage-v11"/>
+  <link rel="stylesheet" href="assets/styles.css?v=20260622-homepage-v16"/>
 </head>
 <body class="homepage">
-
   <div id="navbar"></div>
   <script src="assets/nav-inject.js?v=20260622-homepage-v3" defer></script>
 
-  <main class="container home-main">
-    <div class="home-layout">
+  <div class="homepage-fit-shell">
+    <main class="container home-main">
+      <div class="home-layout">
       <aside class="home-side home-side-left" aria-label="Featured research outputs">
         <h1 class="announcement-title">New Research Outputs!</h1>
 
@@ -114,8 +114,9 @@
           </ul>
         </section>
       </aside>
-    </div>
-  </main>
+      </div>
+    </main>
+  </div>
 
   <footer class="footer footer-home">
     <div class="container">
@@ -163,7 +164,9 @@
     const semesterGrid = document.getElementById('semester-grid');
     const prevButton = document.getElementById('semester-prev');
     const nextButton = document.getElementById('semester-next');
+    const homepageShell = document.querySelector('.homepage-fit-shell');
     let activeSemester = 0;
+    let fitFrame = 0;
 
     function renderSemester() {
       const semester = semesters[activeSemester];
@@ -191,7 +194,42 @@
       renderSemester();
     });
 
+    function fitHomepageToWindow() {
+      if (!homepageShell) return;
+
+      homepageShell.style.setProperty('--homepage-scale', '1');
+
+      if (window.innerWidth <= 1100) {
+        document.documentElement.style.removeProperty('--homepage-fit-width');
+        return;
+      }
+
+      const nav = document.getElementById('site-nav');
+      const footer = document.querySelector('.footer-home');
+      const navHeight = nav ? nav.getBoundingClientRect().height : 0;
+      const footerHeight = footer ? footer.getBoundingClientRect().height : 0;
+      const shellRect = homepageShell.getBoundingClientRect();
+      const availableHeight = Math.max(window.innerHeight - navHeight - footerHeight - 12, 0);
+      const scale = Math.min(
+        (window.innerWidth - 16) / shellRect.width,
+        availableHeight / shellRect.height,
+        1
+      );
+
+      homepageShell.style.setProperty('--homepage-scale', scale.toFixed(4));
+      document.documentElement.style.setProperty('--homepage-fit-width', `${(shellRect.width * scale).toFixed(2)}px`);
+    }
+
+    function queueHomepageFit() {
+      cancelAnimationFrame(fitFrame);
+      fitFrame = requestAnimationFrame(fitHomepageToWindow);
+    }
+
     renderSemester();
+    queueHomepageFit();
+    window.addEventListener('resize', queueHomepageFit);
+    window.addEventListener('load', queueHomepageFit);
+    document.fonts?.ready.then(queueHomepageFit);
   </script>
 </body>
 </html>
