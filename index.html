@@ -157,6 +157,16 @@
           { label: 'Week 11', href: 'log/s2-week-11.html' },
           { label: 'Week 12', href: 'log/s2-week-12.html' }
         ]
+      },
+      {
+        title: 'Semester 3',
+        weeks: [
+          { label: 'Week 01', href: 'log/s3-week-01.html' },
+          { label: 'Week 02', href: 'log/s3-week-02.html' },
+          { label: 'Week 03', href: 'log/s3-week-03.html' },
+          { label: 'Week 04', href: 'log/s3-week-04.html' },
+          { label: 'Week 05', href: 'log/s3-week-05.html' }
+        ]
       }
     ];
 
@@ -165,7 +175,7 @@
     const prevButton = document.getElementById('semester-prev');
     const nextButton = document.getElementById('semester-next');
     const homepageShell = document.querySelector('.homepage-fit-shell');
-    let activeSemester = 0;
+    let activeSemester = semesters.length - 1;
     let fitFrame = 0;
 
     function renderSemester() {
