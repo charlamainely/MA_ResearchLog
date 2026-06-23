@@ -52,5 +52,23 @@
     "path": "fw-10.html",
     "thumb": "../icons/fieldwork_icon.jpg",
     "meta": "2025-12-05 · Dover Forest, Singapore · Site Visit & 360 Capture Observation"
+  },
+  {
+    "title": "Family User Testing Session 1",
+    "path": "fw-11.html",
+    "thumb": "../icons/fieldwork_icon.jpg",
+    "meta": "2026-06 · Vietnam · Family Playtesting, Observation & Feedback Form"
+  },
+  {
+    "title": "Family User Testing Session 2",
+    "path": "fw-12.html",
+    "thumb": "../icons/fieldwork_icon.jpg",
+    "meta": "2026-06 · Vietnam · Family Playtesting, Observation & Feedback Form"
+  },
+  {
+    "title": "Family User Testing Session 3",
+    "path": "fw-13.html",
+    "thumb": "../icons/fieldwork_icon.jpg",
+    "meta": "2026-06 · Vietnam · Family Playtesting & Observation"
   }
 ]
