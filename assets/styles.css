@@ -1017,6 +1017,10 @@ body.homepage{
     overflow-y: auto;
   }
 
+  body.homepage.nav-open{
+    overflow: hidden;
+  }
+
   .homepage-fit-shell{
     width: auto;
   }
@@ -1026,33 +1030,73 @@ body.homepage{
   }
 
   #site-nav .nav-inner{
-    width: calc(100vw - 24px);
-    min-height: 80px;
+    width: calc(100vw - 28px);
+    min-height: 74px;
     padding: 10px 0;
     align-items: center;
+    position: relative;
   }
 
   #site-nav .brand{
-    height: 54px;
+    height: 48px;
   }
 
   #site-nav .hamburger{
     display: flex;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    outline: none;
+    gap: 5px;
+    z-index: 72;
+  }
+
+  #site-nav .hamburger span{
+    width: 32px;
+    height: 4px;
+    transition: transform 0.18s ease, opacity 0.18s ease;
+  }
+
+  #site-nav.open .hamburger{
+    position: fixed;
+    top: 14px;
+    right: 14px;
+  }
+
+  #site-nav.open .hamburger span:nth-child(1){
+    transform: translateY(9px) rotate(45deg);
+  }
+
+  #site-nav.open .hamburger span:nth-child(2){
+    opacity: 0;
+  }
+
+  #site-nav.open .hamburger span:nth-child(3){
+    transform: translateY(-9px) rotate(-45deg);
   }
 
   #site-nav .nav-links{
     display: none;
-    position: absolute;
-    left: 12px;
-    right: 12px;
-    top: calc(100% + 4px);
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: auto;
+    width: max(40vw, 250px);
     margin-left: 0;
-    padding: 14px 12px;
-    border: 4px solid var(--home-black);
+    padding: 96px 16px 28px;
+    border: 0;
     background: var(--home-blue);
-    box-shadow: var(--home-shadow);
-    flex-wrap: wrap;
-    justify-content: center;
+    box-shadow: none;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 38px;
+    z-index: 71;
   }
 
   #site-nav.open .nav-links{
@@ -1060,40 +1104,179 @@ body.homepage{
   }
 
   #site-nav .nav-link{
-    min-width: 96px;
+    min-width: 0;
+    width: 100%;
+    padding: 0;
+    gap: 14px;
+    justify-content: center;
+    font-size: clamp(1.1rem, 0.92rem + 0.8vw, 1.6rem);
+    line-height: 0.92;
+  }
+
+  #site-nav .nav-link img{
+    width: 72px;
+    height: 72px;
+  }
+
+  #site-nav .nav-link span{
+    white-space: normal;
   }
 
   #site-nav .nav-link::after{
-    height: 32px;
+    display: none;
   }
 
   .home-main.container{
-    width: calc(100vw - 24px);
+    width: calc(100vw - 28px);
+    max-width: 420px;
+    padding: 10px 0 28px;
+    background: var(--home-yellow);
   }
 
   .home-layout{
-    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 0;
   }
 
-  .home-side-left,
+  .home-center-panel{
+    order: 1;
+    height: auto;
+    align-self: auto;
+  }
+
+  .home-side-left{
+    order: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: auto;
+  }
+
   .home-side-right{
+    order: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: auto;
+  }
+
+  .home-log-column,
+  .home-links-column{
+    min-width: 0;
+  }
+
+  .home-center-columns{
     grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .home-log-column{
+    padding: 18px 18px 14px;
+  }
+
+  .home-panel-header{
+    margin-bottom: 14px;
+  }
+
+  .home-log-column > br,
+  .home-links-column > br,
+  .home-links-column > .semester-title{
+    display: none;
+  }
+
+  .semester-title{
+    font-size: clamp(2.2rem, 1.6rem + 3vw, 3.2rem);
   }
 
   .semester-grid{
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px 8px;
+  }
+
+  .calendar-card::after{
+    inset: 6px;
+  }
+
+  .calendar-card span{
+    padding-top: 16px;
+    font-size: clamp(0.78rem, 0.65rem + 0.4vw, 0.94rem);
   }
 
   .semester-nav{
-    flex-direction: column;
-    align-items: flex-start;
+    padding-top: 14px;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .semester-toggle{
+    flex: 1 1 0;
+    padding: 8px 0 0;
+    font-size: clamp(1rem, 0.88rem + 0.8vw, 1.3rem);
+    white-space: normal;
+  }
+
+  #semester-prev{
+    justify-content: flex-start;
+  }
+
+  #semester-next{
+    justify-content: flex-end;
+  }
+
+  .home-links-column{
+    padding: 12px 18px 18px;
+    border-top: 2px solid rgba(0, 0, 0, 0.3);
   }
 
   .home-section-row{
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    padding: 14px 0;
+  }
+
+  .home-section-title{
+    font-size: clamp(1.45rem, 1.05rem + 1.3vw, 2rem);
+  }
+
+  .home-section-link{
+    font-size: clamp(0.86rem, 0.74rem + 0.35vw, 1rem);
   }
 
   .home-section-icon{
-    width: 72px;
+    width: 56px;
+  }
+
+  .announcement-title{
+    padding: 12px 14px 10px 28%;
+    font-size: clamp(1.1rem, 0.95rem + 0.9vw, 1.4rem);
+  }
+
+  .spotlight-button-tall{
+    padding-bottom: 0;
+  }
+
+  .quick-links-panel{
+    padding: 14px 16px 16px;
+  }
+
+  .quick-links-title{
+    margin-bottom: 10px;
+  }
+
+  .quick-links-list a{
+    font-size: clamp(1rem, 0.88rem + 0.55vw, 1.16rem);
+  }
+
+  .footer-home{
+    padding: 12px 0;
+  }
+
+  .footer-home p{
+    text-align: center;
+    font-size: 0.72rem;
+    line-height: 1.25;
   }
 }

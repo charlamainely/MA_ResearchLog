@@ -153,12 +153,16 @@
     if (!nav.classList.contains('open')) return;
     nav.classList.remove('open');
     btn?.setAttribute('aria-expanded', 'false');
+    btn?.setAttribute('aria-label', 'Open menu');
+    document.body.classList.remove('nav-open');
   }
 
   if (btn && panel) {
     btn.addEventListener('click', () => {
       const open = nav.classList.toggle('open');
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      document.body.classList.toggle('nav-open', open);
     });
 
     // Close after clicking a link (mobile UX)
@@ -169,6 +173,12 @@
     // Close if resized back to desktop
     window.addEventListener('resize', () => {
       if (window.innerWidth > 900) closeMenu();
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!nav.classList.contains('open')) return;
+      if (nav.contains(e.target)) return;
+      closeMenu();
     });
 
     // Optional: close on Escape
