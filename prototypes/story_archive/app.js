@@ -3,78 +3,137 @@ import { APPROVED_STORIES } from "./data/stories.js";
 const STORAGE_KEY = "story-archive-submissions-v1";
 const ADMIN_FLAG_KEY = "story-archive-admin-visible-v1";
 
+const STORY_HINTS = [
+  "Think of a family object that only makes sense inside your household. What story sits behind it?",
+  "Recall a meal where something small revealed a larger family feeling. What happened?",
+  "Describe a moment when you understood a parent or grandparent differently than before.",
+  "Write about a family ritual that seems ordinary but carries meaning when you look closely.",
+  "Think of a misunderstanding that still says something true about how your family relates."
+];
+
 const narrativeFocusOptions = [
-  { value: "what", label: "What", stampLabel: "Keepsake", prompt: "Objects, actions, or events." },
-  { value: "why", label: "Why", stampLabel: "Reason", prompt: "Meaning, motive, or significance." },
-  { value: "where", label: "Where", stampLabel: "Place", prompt: "Homes, streets, villages, and rooms." },
-  { value: "when", label: "When", stampLabel: "Moment", prompt: "Seasons, festivals, and turning points." },
-  { value: "who", label: "Who", stampLabel: "Person", prompt: "Specific relatives and relationships." },
-  { value: "how", label: "How", stampLabel: "Gesture", prompt: "Rituals, habits, and ways of caring." }
+  {
+    value: "what",
+    label: "WHAT",
+    displayTitle: "Keepsake",
+    description: "Objects, actions & events",
+    asset: "./assets/stamp_what.png"
+  },
+  {
+    value: "why",
+    label: "WHY",
+    displayTitle: "Reason",
+    description: "Meanings, motives & significance",
+    asset: "./assets/stamp_why.png"
+  },
+  {
+    value: "where",
+    label: "WHERE",
+    displayTitle: "Places",
+    description: "Physical spaces or locations",
+    asset: "./assets/stamp_where.png"
+  },
+  {
+    value: "when",
+    label: "WHEN",
+    displayTitle: "Moments",
+    description: "Special occasions or memorable times",
+    asset: "./assets/stamp_when.png"
+  },
+  {
+    value: "who",
+    label: "WHO",
+    displayTitle: "Person",
+    description: "Specific characters & relationships",
+    asset: "./assets/stamp_who.png"
+  },
+  {
+    value: "how",
+    label: "HOW",
+    displayTitle: "Gestures",
+    description: "Rituals, habits or way of doing things",
+    asset: "./assets/stamp_how.png"
+  }
 ];
 
 const toneOptions = [
-  { value: "positive", label: "Positive", descriptor: "Warm and affirming", marker: "Dot pattern" },
-  { value: "neutral", label: "Neutral", descriptor: "Steady and reflective", marker: "Ruled lines" },
-  { value: "negative", label: "Negative", descriptor: "Heavy or unresolved", marker: "Diagonal hatch" }
+  { value: "positive", label: "POSITIVE", descriptor: "Warm & affirming" },
+  { value: "neutral", label: "NEUTRAL", descriptor: "Steady & reflective" },
+  { value: "negative", label: "NEGATIVE", descriptor: "Heavy or unresolved" }
 ];
 
 const closenessOptions = [
   {
-    value: "very-close",
-    sliderValue: 1,
-    label: "My family feels very close to me",
-    shortLabel: "Very close",
-    preview: { blur: 0.2, scale: 1.08, opacity: 1 }
-  },
-  {
-    value: "close",
-    sliderValue: 2,
-    label: "We are close, even if not perfect",
-    shortLabel: "Close",
-    preview: { blur: 0.45, scale: 1.04, opacity: 0.98 }
-  },
-  {
-    value: "somewhat-close",
-    sliderValue: 3,
-    label: "We are somewhat close",
-    shortLabel: "Somewhat close",
-    preview: { blur: 0.8, scale: 1.01, opacity: 0.93 }
-  },
-  {
-    value: "complicated",
-    sliderValue: 4,
-    label: "It feels complicated",
-    shortLabel: "Complicated",
-    preview: { blur: 1.4, scale: 0.99, opacity: 0.86 }
-  },
-  {
     value: "distant",
-    sliderValue: 5,
-    label: "There is some distance between us",
-    shortLabel: "Distant",
-    preview: { blur: 2.1, scale: 0.96, opacity: 0.73 }
+    label: "Distant",
+    statement: "There’s some distance between us.",
+    asset: "./assets/family-distance-01.png",
+    orbLeft: "24%",
+    orbRight: "76%"
   },
   {
     value: "not-close",
-    sliderValue: 6,
-    label: "We are not close right now",
-    shortLabel: "Not close",
-    preview: { blur: 3.1, scale: 0.93, opacity: 0.58 }
+    label: "Not close",
+    statement: "We are not close right now.",
+    asset: "./assets/family-distance-02.png",
+    orbLeft: "29%",
+    orbRight: "71%"
+  },
+  {
+    value: "complicated",
+    label: "Complicated",
+    statement: "It feels complicated.",
+    asset: "./assets/family-distance-03.png",
+    orbLeft: "35%",
+    orbRight: "65%"
+  },
+  {
+    value: "somewhat-close",
+    label: "Somewhat close",
+    statement: "It feels normal being with my family.",
+    asset: "./assets/family-distance-04.png",
+    orbLeft: "41%",
+    orbRight: "59%"
+  },
+  {
+    value: "close",
+    label: "Close",
+    statement: "We are close and speak often.",
+    asset: "./assets/family-distance-05.png",
+    orbLeft: "45%",
+    orbRight: "55%"
+  },
+  {
+    value: "very-close",
+    label: "Very close",
+    statement: "We share everything with each other.",
+    asset: "./assets/family-distance-06.png",
+    orbLeft: "48%",
+    orbRight: "52%"
   }
 ];
 
 const dom = {
+  body: document.body,
   appShell: document.getElementById("appShell"),
+  mobileMenuToggle: document.getElementById("mobileMenuToggle"),
+  topNav: document.getElementById("topNav"),
   navButtons: [...document.querySelectorAll("[data-view-target]")],
   views: [...document.querySelectorAll("[data-view]")],
   stepPanels: [...document.querySelectorAll("[data-receive-step]")],
   stepMarkers: [...document.querySelectorAll("[data-step-marker]")],
+  receivePhotoStage: document.getElementById("receivePhotoStage"),
   familyPhotoPreview: document.getElementById("familyPhotoPreview"),
-  receiveClosenessRange: document.getElementById("receiveClosenessRange"),
-  receiveClosenessButtons: document.getElementById("receiveClosenessButtons"),
+  familyPhotoFrames: document.getElementById("familyPhotoFrames"),
+  receiveClosenessLabel: document.getElementById("receiveClosenessLabel"),
   receiveClosenessText: document.getElementById("receiveClosenessText"),
+  receiveFurtherButton: document.getElementById("receiveFurtherButton"),
+  receiveCloserButton: document.getElementById("receiveCloserButton"),
   receiveStampGrid: document.getElementById("receiveStampGrid"),
   receiveToneGrid: document.getElementById("receiveToneGrid"),
+  reviewPostcard: document.getElementById("reviewPostcard"),
+  reviewStampImage: document.getElementById("reviewStampImage"),
+  reviewPhotoCard: document.getElementById("reviewPhotoCard"),
   receiveSummary: document.getElementById("receiveSummary"),
   sendPostcardButton: document.getElementById("sendPostcardButton"),
   sendingStage: document.getElementById("sendingStage"),
@@ -83,6 +142,8 @@ const dom = {
   receiveResults: document.getElementById("receiveResults"),
   receiveEmptyState: document.getElementById("receiveEmptyState"),
   submissionForm: document.getElementById("submissionForm"),
+  storyHintButton: document.getElementById("storyHintButton"),
+  storyHintOutput: document.getElementById("storyHintOutput"),
   submissionClosenessOptions: document.getElementById("submissionClosenessOptions"),
   submissionFocusOptions: document.getElementById("submissionFocusOptions"),
   submissionToneOptions: document.getElementById("submissionToneOptions"),
@@ -91,6 +152,8 @@ const dom = {
   submissionConfirmation: document.getElementById("submissionConfirmation"),
   submitAnotherButton: document.getElementById("submitAnotherButton"),
   galleryFilters: document.getElementById("galleryFilters"),
+  galleryFiltersToggle: document.getElementById("galleryFiltersToggle"),
+  galleryFiltersWrap: document.getElementById("galleryFiltersWrap"),
   galleryFocusFilter: document.getElementById("galleryFocusFilter"),
   galleryToneFilter: document.getElementById("galleryToneFilter"),
   galleryClosenessFilter: document.getElementById("galleryClosenessFilter"),
@@ -108,14 +171,21 @@ const dom = {
 };
 
 const defaultPostcardState = {
-  familyCloseness: "close",
-  selectedNarrativeFocus: "what",
+  familyCloseness: "distant",
+  selectedNarrativeFocus: "",
+  tone: ""
+};
+
+const defaultSubmissionState = {
+  familyCloseness: "somewhat-close",
   tone: "positive"
 };
 
 const state = {
   activeView: "home",
   receiveStep: 1,
+  mobileMenuOpen: false,
+  galleryFiltersOpen: true,
   postcard: { ...defaultPostcardState },
   galleryFilters: {
     focus: "all",
@@ -128,6 +198,19 @@ const state = {
 function shouldShowAdminPanel() {
   const params = new URLSearchParams(window.location.search);
   return params.get("admin") === "1" || window.localStorage.getItem(ADMIN_FLAG_KEY) === "true";
+}
+
+function setMobileMenu(open) {
+  state.mobileMenuOpen = open;
+  dom.body.classList.toggle("mobile-nav-open", open);
+  dom.mobileMenuToggle?.setAttribute("aria-expanded", String(open));
+  dom.mobileMenuToggle?.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
+}
+
+function setGalleryFiltersOpen(open) {
+  state.galleryFiltersOpen = open;
+  dom.galleryFiltersWrap.hidden = !open;
+  dom.galleryFiltersToggle?.setAttribute("aria-expanded", String(open));
 }
 
 function sortByNewest(a, b) {
@@ -187,6 +270,10 @@ function getClosenessMeta(value) {
   return closenessOptions.find((option) => option.value === value) || closenessOptions[0];
 }
 
+function getClosenessIndex(value) {
+  return closenessOptions.findIndex((option) => option.value === value);
+}
+
 function getFocusMeta(value) {
   return narrativeFocusOptions.find((option) => option.value === value) || narrativeFocusOptions[0];
 }
@@ -195,18 +282,19 @@ function getToneMeta(value) {
   return toneOptions.find((option) => option.value === value) || toneOptions[0];
 }
 
+function fillSelect(select, allLabel, options, labelKey = "label") {
+  const optionHtml = options.map((option) => `
+    <option value="${option.value}">${escapeHtml(option[labelKey])}</option>
+  `).join("");
+
+  select.innerHTML = `<option value="all">${escapeHtml(allLabel)}</option>${optionHtml}`;
+}
+
 function renderOptionControls() {
-  dom.receiveClosenessButtons.innerHTML = closenessOptions.map((option) => `
-    <button
-      type="button"
-      class="token-button"
-      data-closeness-select="${option.value}"
-      role="radio"
-      aria-checked="false"
-    >
-      <strong>${escapeHtml(option.shortLabel)}</strong>
-      <span>${escapeHtml(option.label)}</span>
-    </button>
+  dom.familyPhotoFrames.innerHTML = closenessOptions.map((option) => `
+    <div class="family-photo-layer" data-closeness-frame="${option.value}">
+      <img src="${option.asset}" alt="${escapeHtml(option.label)} family closeness illustration">
+    </div>
   `).join("");
 
   dom.receiveStampGrid.innerHTML = narrativeFocusOptions.map((option) => `
@@ -216,18 +304,22 @@ function renderOptionControls() {
       data-focus-select="${option.value}"
       role="radio"
       aria-checked="false"
+      aria-label="${escapeHtml(option.displayTitle)}"
     >
-      <span class="stamp-letter">${escapeHtml(option.label)}</span>
-      <strong>${escapeHtml(option.stampLabel)}</strong>
-      <span>${escapeHtml(option.prompt)}</span>
-      <span class="stamp-chip">Narrative focus: ${escapeHtml(option.label)}</span>
+      <div class="stamp-art">
+        <img src="${option.asset}" alt="${escapeHtml(option.label)} stamp">
+      </div>
+      <div class="stamp-copy">
+        <strong>${escapeHtml(option.displayTitle)}</strong>
+        <span>${escapeHtml(option.description)}</span>
+      </div>
     </button>
   `).join("");
 
   dom.receiveToneGrid.innerHTML = toneOptions.map((option) => `
     <button
       type="button"
-      class="tone-button"
+      class="tone-card"
       data-tone="${option.value}"
       data-tone-select="${option.value}"
       role="radio"
@@ -235,86 +327,93 @@ function renderOptionControls() {
     >
       <strong>${escapeHtml(option.label)}</strong>
       <span>${escapeHtml(option.descriptor)}</span>
-      <span>${escapeHtml(option.marker)}</span>
     </button>
   `).join("");
 
-  dom.submissionClosenessOptions.innerHTML = closenessOptions.map((option, index) => `
-    <label class="statement-card">
-      <input type="radio" name="familyCloseness" value="${option.value}" ${index === 1 ? "checked" : ""} required>
+  dom.submissionClosenessOptions.innerHTML = closenessOptions.map((option) => `
+    <label class="closeness-option">
+      <input type="radio" name="familyCloseness" value="${option.value}" ${option.value === defaultSubmissionState.familyCloseness ? "checked" : ""} required>
+      <span class="closeness-option-node" aria-hidden="true"></span>
       <span>
-        <strong>${escapeHtml(option.shortLabel)}</strong>
-        <span>${escapeHtml(option.label)}</span>
+        <strong>${escapeHtml(option.label)}</strong>
+        <span>${escapeHtml(option.statement)}</span>
       </span>
     </label>
   `).join("");
 
   dom.submissionFocusOptions.innerHTML = narrativeFocusOptions.map((option) => `
-    <label class="checkbox-card">
+    <label class="check-option">
       <input type="checkbox" name="narrativeFocuses" value="${option.value}">
-      <span>
-        <strong>${escapeHtml(option.label)}</strong>
-        <span>${escapeHtml(option.prompt)}</span>
+      <span class="check-box" aria-hidden="true"></span>
+      <span class="check-copy">
+        <strong>${escapeHtml(option.label.charAt(0) + option.label.slice(1).toLowerCase())}</strong>
+        <span>${escapeHtml(option.description)}</span>
       </span>
     </label>
   `).join("");
 
-  dom.submissionToneOptions.innerHTML = toneOptions.map((option, index) => `
-    <label class="tone-button" data-tone="${option.value}">
-      <input type="radio" name="tone" value="${option.value}" ${index === 0 ? "checked" : ""} required>
-      <strong>${escapeHtml(option.label)}</strong>
-      <span>${escapeHtml(option.descriptor)}</span>
-      <span>${escapeHtml(option.marker)}</span>
+  dom.submissionToneOptions.innerHTML = toneOptions.map((option) => `
+    <label class="tone-option">
+      <input type="radio" name="tone" value="${option.value}" ${option.value === defaultSubmissionState.tone ? "checked" : ""} required>
+      <span class="check-box" aria-hidden="true"></span>
+      <span class="tone-copy">
+        <strong>${escapeHtml(option.label.charAt(0) + option.label.slice(1).toLowerCase())}</strong>
+      </span>
     </label>
   `).join("");
 
-  fillSelect(dom.galleryFocusFilter, "All narrative focuses", narrativeFocusOptions, "focus");
-  fillSelect(dom.galleryToneFilter, "All tones", toneOptions, "tone");
-  fillSelect(dom.galleryClosenessFilter, "All closeness levels", closenessOptions, "familyCloseness");
-}
-
-function fillSelect(select, allLabel, options, type) {
-  const labelKey = type === "familyCloseness" ? "label" : "label";
-  const valueKey = "value";
-  const optionHtml = options.map((option) => `
-    <option value="${option[valueKey]}">${escapeHtml(option[labelKey])}</option>
-  `).join("");
-
-  select.innerHTML = `<option value="all">${escapeHtml(allLabel)}</option>${optionHtml}`;
+  fillSelect(dom.galleryFocusFilter, "All narrative focuses", narrativeFocusOptions, "displayTitle");
+  fillSelect(dom.galleryToneFilter, "All tones", toneOptions, "label");
+  fillSelect(dom.galleryClosenessFilter, "All closeness levels", closenessOptions, "label");
 }
 
 function updateReceiveCloseness(value) {
   const meta = getClosenessMeta(value);
+  const currentIndex = getClosenessIndex(meta.value);
   state.postcard.familyCloseness = meta.value;
-  dom.receiveClosenessRange.value = String(meta.sliderValue);
-  dom.receiveClosenessText.textContent = meta.label;
-  dom.familyPhotoPreview.style.setProperty("--focus-blur", `${meta.preview.blur}px`);
-  dom.familyPhotoPreview.style.setProperty("--focus-scale", String(meta.preview.scale));
-  dom.familyPhotoPreview.style.setProperty("--focus-opacity", String(meta.preview.opacity));
 
-  [...dom.receiveClosenessButtons.querySelectorAll("[data-closeness-select]")].forEach((button) => {
-    const isSelected = button.dataset.closenessSelect === meta.value;
-    button.classList.toggle("is-selected", isSelected);
-    button.setAttribute("aria-checked", String(isSelected));
+  dom.receiveClosenessLabel.textContent = meta.label;
+  dom.receiveClosenessText.textContent = meta.statement;
+  dom.receivePhotoStage.style.setProperty("--focus-left-x", meta.orbLeft);
+  dom.receivePhotoStage.style.setProperty("--focus-right-x", meta.orbRight);
+  dom.receivePhotoStage.setAttribute("aria-label", `${meta.label}. ${meta.statement}`);
+
+  [...dom.familyPhotoFrames.querySelectorAll("[data-closeness-frame]")].forEach((frame) => {
+    frame.classList.toggle("is-active", frame.dataset.closenessFrame === meta.value);
   });
+
+  dom.receiveFurtherButton.disabled = currentIndex === 0;
+  dom.receiveCloserButton.disabled = currentIndex === closenessOptions.length - 1;
+}
+
+function changeReceiveClosenessBy(delta) {
+  const currentIndex = getClosenessIndex(state.postcard.familyCloseness);
+  const nextIndex = Math.min(Math.max(currentIndex + delta, 0), closenessOptions.length - 1);
+  updateReceiveCloseness(closenessOptions[nextIndex].value);
 }
 
 function updateReceiveFocus(value) {
   state.postcard.selectedNarrativeFocus = value;
+
   [...dom.receiveStampGrid.querySelectorAll("[data-focus-select]")].forEach((button) => {
     const isSelected = button.dataset.focusSelect === value;
     button.classList.toggle("is-selected", isSelected);
     button.setAttribute("aria-checked", String(isSelected));
   });
+
+  updateReceiveStepValidity();
 }
 
 function updateReceiveTone(value) {
   state.postcard.tone = value;
+
   [...dom.receiveToneGrid.querySelectorAll("[data-tone-select]")].forEach((button) => {
     const isSelected = button.dataset.toneSelect === value;
     button.classList.toggle("is-selected", isSelected);
     button.setAttribute("aria-checked", String(isSelected));
   });
+
+  updateReceiveStepValidity();
 }
 
 function renderReceiveSummary() {
@@ -322,13 +421,30 @@ function renderReceiveSummary() {
   const focus = getFocusMeta(state.postcard.selectedNarrativeFocus);
   const tone = getToneMeta(state.postcard.tone);
 
+  dom.reviewPostcard.dataset.tone = tone.value;
+  dom.reviewStampImage.src = focus.asset;
+  dom.reviewStampImage.alt = `${focus.label} stamp`;
+  dom.reviewPhotoCard.innerHTML = `
+    <img
+      src="${closeness.asset}"
+      alt="${escapeHtml(closeness.label)} family illustration"
+      class="review-photo-image"
+    >
+  `;
+
   dom.receiveSummary.innerHTML = `
-    <dt>Family closeness</dt>
-    <dd>${escapeHtml(closeness.label)}</dd>
-    <dt>Narrative focus</dt>
-    <dd>${escapeHtml(focus.label)}: ${escapeHtml(focus.prompt)}</dd>
-    <dt>Tone</dt>
-    <dd>${escapeHtml(tone.label)}: ${escapeHtml(tone.descriptor)}</dd>
+    <div class="review-summary-block">
+      <strong>Closeness:</strong>
+      <p>${escapeHtml(closeness.label)} — ${escapeHtml(closeness.statement)}</p>
+    </div>
+    <div class="review-summary-block">
+      <strong>Narrative focus:</strong>
+      <p>${escapeHtml(focus.displayTitle)} — ${escapeHtml(focus.description)}</p>
+    </div>
+    <div class="review-summary-block">
+      <strong>Mood:</strong>
+      <p>${escapeHtml(tone.label.charAt(0) + tone.label.slice(1).toLowerCase())} — ${escapeHtml(tone.descriptor)}</p>
+    </div>
   `;
 }
 
@@ -346,11 +462,30 @@ function updateStepper() {
   if (state.receiveStep === 4) {
     renderReceiveSummary();
   }
+
+  updateReceiveStepValidity();
 }
 
 function setReceiveStep(step) {
   state.receiveStep = step;
   updateStepper();
+}
+
+function updateReceiveStepValidity() {
+  const step2Next = dom.appShell.querySelector('[data-receive-step="2"] [data-step-next="3"]');
+  const step3Next = dom.appShell.querySelector('[data-receive-step="3"] [data-step-next="4"]');
+
+  if (step2Next) {
+    step2Next.disabled = !state.postcard.selectedNarrativeFocus;
+  }
+
+  if (step3Next) {
+    step3Next.disabled = !state.postcard.tone;
+  }
+
+  if (dom.sendPostcardButton) {
+    dom.sendPostcardButton.disabled = !state.postcard.selectedNarrativeFocus || !state.postcard.tone;
+  }
 }
 
 function resetPostcardExperience() {
@@ -413,33 +548,35 @@ function findMatchingStories(criteria) {
 
 function storyPreview(storyText) {
   const trimmed = storyText.trim();
-  return trimmed.length > 126 ? `${trimmed.slice(0, 123)}...` : trimmed;
+  return trimmed.length > 132 ? `${trimmed.slice(0, 129)}...` : trimmed;
 }
 
-function buildStoryCard(match) {
+function buildStoryCard(match, context) {
   const story = match.story;
   const tone = getToneMeta(story.tone);
   const closeness = getClosenessMeta(story.familyCloseness);
+  const showMatch = context === "results" && match.matchType !== "Archive story";
   const focusTags = story.narrativeFocuses.map((focusValue) => {
     const meta = getFocusMeta(focusValue);
-    return `<span class="story-tag">${escapeHtml(meta.label)}</span>`;
+    return `<span class="story-tag story-tag-focus">${escapeHtml(meta.label.charAt(0) + meta.label.slice(1).toLowerCase())}</span>`;
   }).join("");
 
   return `
-    <button type="button" class="envelope-button" data-story-open="${story.id}">
-      <div class="envelope-top">
-        <div class="story-card-heading">
-          <div class="story-card-meta">
-            <span class="match-pill">${escapeHtml(match.matchType || "Archive story")}</span>
-            <span class="tone-badge" data-tone="${story.tone}">${escapeHtml(tone.label)}</span>
-          </div>
-          <h4>Letter from ${escapeHtml(story.displayName || "Anonymous")}</h4>
-          <p class="story-card-preview">${escapeHtml(storyPreview(story.storyText))}</p>
-        </div>
+    <button
+      type="button"
+      class="story-card ${showMatch ? "story-card-has-match" : "story-card-no-match"}"
+      data-story-open="${story.id}"
+    >
+      ${showMatch ? `<span class="match-pill">${escapeHtml(match.matchType)}</span>` : ""}
+      <div class="story-card-body">
+        <p class="story-card-preview">${escapeHtml(storyPreview(story.storyText))}</p>
       </div>
-      <div class="envelope-bottom">
-        <div class="tag-row">${focusTags}</div>
-        <p class="story-closeness-note">${escapeHtml(closeness.label)}</p>
+      <div class="story-card-footer">
+        <div class="story-card-top-tags">
+          <span class="story-tag story-tag-closeness">${escapeHtml(closeness.label)}</span>
+          <span class="tone-badge" data-tone="${story.tone}">${escapeHtml(tone.label.charAt(0) + tone.label.slice(1).toLowerCase())}</span>
+        </div>
+        <div class="focus-tag-row">${focusTags}</div>
       </div>
     </button>
   `;
@@ -447,7 +584,7 @@ function buildStoryCard(match) {
 
 function renderReceiveResults() {
   const matches = findMatchingStories(state.postcard);
-  dom.receiveResults.innerHTML = matches.map(buildStoryCard).join("");
+  dom.receiveResults.innerHTML = matches.map((match) => buildStoryCard(match, "results")).join("");
 
   if (matches.length > 0) {
     dom.receiveResultsMeta.textContent = `${matches.length} envelope${matches.length === 1 ? "" : "s"} arrived. Exact matches appear first, followed by softer similarities when needed.`;
@@ -478,8 +615,7 @@ function applyGalleryFilters(stories) {
 
 function renderGallery() {
   const stories = applyGalleryFilters(getApprovedStories());
-  dom.galleryGrid.innerHTML = stories.map((story) => buildStoryCard({ story, matchType: "Archive story" })).join("");
-
+  dom.galleryGrid.innerHTML = stories.map((story) => buildStoryCard({ story, matchType: "Archive story" }, "gallery")).join("");
   dom.galleryMeta.textContent = `${stories.length} approved stor${stories.length === 1 ? "y" : "ies"} shown.`;
   dom.galleryEmptyState.hidden = stories.length > 0;
 }
@@ -487,15 +623,15 @@ function renderGallery() {
 function renderAdminPanel() {
   const pendingStories = getPendingStories();
   dom.adminList.innerHTML = pendingStories.map((story) => {
-    const focusList = story.narrativeFocuses.map((focus) => getFocusMeta(focus).label).join(", ");
+    const focusList = story.narrativeFocuses.map((focusValue) => getFocusMeta(focusValue).label).join(", ");
     const closeness = getClosenessMeta(story.familyCloseness).label;
     return `
       <article class="admin-card">
-        <h4>${escapeHtml(story.displayName || "Anonymous")}</h4>
+        <h4>Anonymous submission</h4>
         <p><strong>Language:</strong> ${escapeHtml(story.language)}</p>
         <p><strong>Closeness:</strong> ${escapeHtml(closeness)}</p>
         <p><strong>Focus:</strong> ${escapeHtml(focusList)}</p>
-        <p><strong>Tone:</strong> ${escapeHtml(getToneMeta(story.tone).label)}</p>
+        <p><strong>Tone:</strong> ${escapeHtml(getToneMeta(story.tone).label.charAt(0) + getToneMeta(story.tone).label.slice(1).toLowerCase())}</p>
         <p>${escapeHtml(story.storyText)}</p>
         <div class="admin-actions">
           <button type="button" class="admin-action" data-admin-action="approved" data-story-id="${story.id}">Approve locally</button>
@@ -513,11 +649,10 @@ function renderAdminPanel() {
 function renderStoryDialog(storyId) {
   const story = getStoryById(storyId);
   if (!story) return;
-  const statusLabel = story.status.charAt(0).toUpperCase() + story.status.slice(1);
 
   const focusTags = story.narrativeFocuses.map((focusValue) => {
     const meta = getFocusMeta(focusValue);
-    return `<span class="story-tag">${escapeHtml(meta.label)}</span>`;
+    return `<span class="story-tag story-tag-focus">${escapeHtml(meta.label.charAt(0) + meta.label.slice(1).toLowerCase())}</span>`;
   }).join("");
 
   const paragraphs = story.storyText
@@ -528,20 +663,19 @@ function renderStoryDialog(storyId) {
 
   dom.storyDialogContent.innerHTML = `
     <header class="letter-header">
-      <div class="letter-heading-top">
-        <span class="match-pill">${escapeHtml(statusLabel)} story</span>
-        <span class="tone-badge" data-tone="${story.tone}">${escapeHtml(getToneMeta(story.tone).label)}</span>
-      </div>
-      <h2 id="storyDialogTitle">Letter from ${escapeHtml(story.displayName || "Anonymous")}</h2>
       <div class="letter-meta">
-        <span class="story-tag">${escapeHtml(getClosenessMeta(story.familyCloseness).label)}</span>
-        <span class="story-tag">${escapeHtml(story.language)}</span>
+        <span class="tone-badge" data-tone="${story.tone}">${escapeHtml(getToneMeta(story.tone).label.charAt(0) + getToneMeta(story.tone).label.slice(1).toLowerCase())}</span>
+        <span class="story-tag story-tag-closeness">${escapeHtml(getClosenessMeta(story.familyCloseness).label)}</span>
+        <span class="story-tag story-tag-focus">${escapeHtml(story.language)}</span>
         ${focusTags}
       </div>
     </header>
     <div class="letter-body">${paragraphs}</div>
-    <p class="signature">With care, ${escapeHtml(story.displayName || "Anonymous")}</p>
   `;
+
+  if (dom.storyDialog.open) {
+    dom.storyDialog.close();
+  }
 
   if (typeof dom.storyDialog.showModal === "function") {
     dom.storyDialog.showModal();
@@ -555,7 +689,10 @@ function setView(viewName) {
     viewName = "home";
   }
 
+  setMobileMenu(false);
   state.activeView = viewName;
+  dom.body.dataset.view = viewName;
+
   dom.views.forEach((view) => {
     view.hidden = view.dataset.view !== viewName;
   });
@@ -565,7 +702,10 @@ function setView(viewName) {
     button.classList.toggle("is-active", isMatch);
   });
 
-  window.location.hash = viewName;
+  if (window.location.hash !== `#${viewName}`) {
+    window.location.hash = viewName;
+  }
+
   const heading = document.querySelector(`[data-view="${viewName}"] h2`);
   if (heading) heading.focus?.();
 
@@ -590,12 +730,14 @@ function toggleAdminVisibility(forceVisible) {
 
 function resetSubmissionForm() {
   dom.submissionForm.reset();
-  const defaultCloseness = dom.submissionForm.querySelector('input[name="familyCloseness"][value="close"]');
-  const defaultTone = dom.submissionForm.querySelector('input[name="tone"][value="positive"]');
+  const defaultCloseness = dom.submissionForm.querySelector(`input[name="familyCloseness"][value="${defaultSubmissionState.familyCloseness}"]`);
+  const defaultTone = dom.submissionForm.querySelector(`input[name="tone"][value="${defaultSubmissionState.tone}"]`);
   if (defaultCloseness) defaultCloseness.checked = true;
   if (defaultTone) defaultTone.checked = true;
   dom.focusValidationMessage.textContent = "";
   dom.submissionStatus.textContent = "";
+  dom.storyHintOutput.hidden = true;
+  dom.storyHintOutput.textContent = "";
 }
 
 function validateFocusSelection() {
@@ -615,26 +757,29 @@ function validateFocusSelection() {
   }
 }
 
+function insertStoryHint() {
+  const hint = STORY_HINTS[Math.floor(Math.random() * STORY_HINTS.length)];
+  dom.storyHintOutput.hidden = false;
+  dom.storyHintOutput.textContent = hint;
+}
+
 function submitStory(event) {
   event.preventDefault();
 
   const formData = new FormData(dom.submissionForm);
   const storyText = (formData.get("storyText") || "").toString().trim();
-  const displayName = (formData.get("displayName") || "").toString().trim() || "Anonymous";
-  const language = (formData.get("language") || "").toString();
   const familyCloseness = (formData.get("familyCloseness") || "").toString();
   const narrativeFocuses = formData.getAll("narrativeFocuses").map(String);
   const tone = (formData.get("tone") || "").toString();
+  const language = (formData.get("language") || "").toString();
   const consent = formData.get("consent") === "on";
-
   const errors = [];
 
   if (!storyText) errors.push("Story text is required.");
   if (!familyCloseness) errors.push("Family closeness is required.");
-  if (narrativeFocuses.length < 1 || narrativeFocuses.length > 3) {
-    errors.push("Choose between 1 and 3 narrative focuses.");
-  }
+  if (narrativeFocuses.length < 1 || narrativeFocuses.length > 3) errors.push("Choose between 1 and 3 narrative focuses.");
   if (!tone) errors.push("Tone is required.");
+  if (!language) errors.push("Language is required.");
   if (!consent) errors.push("Consent is required.");
 
   if (errors.length > 0) {
@@ -649,7 +794,7 @@ function submitStory(event) {
     narrativeFocuses,
     tone,
     familyCloseness,
-    displayName,
+    displayName: "Anonymous",
     language,
     status: "pending",
     createdAt: new Date().toISOString()
@@ -681,6 +826,10 @@ function bootFromLocation() {
 }
 
 function bindEvents() {
+  dom.mobileMenuToggle?.addEventListener("click", () => {
+    setMobileMenu(!state.mobileMenuOpen);
+  });
+
   dom.navButtons.forEach((button) => {
     button.addEventListener("click", () => {
       if (button.dataset.resetPostcard === "true") {
@@ -689,19 +838,35 @@ function bindEvents() {
         resetPostcardExperience();
       }
 
+      if (button.id === "submitAnotherButton") return;
       setView(button.dataset.viewTarget);
     });
   });
 
-  dom.receiveClosenessRange.addEventListener("input", (event) => {
-    const sliderValue = Number(event.target.value);
-    const match = closenessOptions.find((option) => option.sliderValue === sliderValue) || closenessOptions[0];
-    updateReceiveCloseness(match.value);
+  dom.receiveFurtherButton.addEventListener("click", () => {
+    changeReceiveClosenessBy(-1);
   });
 
+  dom.receiveCloserButton.addEventListener("click", () => {
+    changeReceiveClosenessBy(1);
+  });
+
+  dom.receivePhotoStage.addEventListener("wheel", (event) => {
+    if (state.activeView !== "receive" || state.receiveStep !== 1) return;
+    event.preventDefault();
+    changeReceiveClosenessBy(event.deltaY > 0 ? -1 : 1);
+  }, { passive: false });
+
   dom.appShell.addEventListener("click", (event) => {
+    const homeCard = event.target.closest("[data-home-target]");
+    if (homeCard && !event.target.closest(".card-arrow")) {
+      setView(homeCard.dataset.homeTarget);
+      return;
+    }
+
     const nextStep = event.target.closest("[data-step-next]");
     if (nextStep) {
+      if (nextStep.disabled) return;
       setReceiveStep(Number(nextStep.dataset.stepNext));
       return;
     }
@@ -709,12 +874,6 @@ function bindEvents() {
     const prevStep = event.target.closest("[data-step-prev]");
     if (prevStep) {
       setReceiveStep(Number(prevStep.dataset.stepPrev));
-      return;
-    }
-
-    const closenessSelect = event.target.closest("[data-closeness-select]");
-    if (closenessSelect) {
-      updateReceiveCloseness(closenessSelect.dataset.closenessSelect);
       return;
     }
 
@@ -742,8 +901,20 @@ function bindEvents() {
     }
   });
 
+  dom.appShell.addEventListener("keydown", (event) => {
+    const homeCard = event.target.closest("[data-home-target]");
+    if (!homeCard) return;
+
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      setView(homeCard.dataset.homeTarget);
+    }
+  });
+
   dom.sendPostcardButton.addEventListener("click", () => {
+    if (dom.sendPostcardButton.disabled) return;
     dom.sendStatus.textContent = "Sending postcard...";
+    dom.sendPostcardButton.disabled = true;
     dom.sendingStage.classList.remove("is-sending");
     void dom.sendingStage.offsetWidth;
     dom.sendingStage.classList.add("is-sending");
@@ -752,10 +923,15 @@ function bindEvents() {
       dom.sendStatus.textContent = "The archive has answered.";
       renderReceiveResults();
       setReceiveStep(5);
+      dom.sendPostcardButton.disabled = false;
     }, 1200);
   });
 
+  dom.storyHintButton.addEventListener("click", insertStoryHint);
   dom.submissionForm.addEventListener("submit", submitStory);
+  dom.galleryFiltersToggle?.addEventListener("click", () => {
+    setGalleryFiltersOpen(!state.galleryFiltersOpen);
+  });
 
   dom.submissionForm.addEventListener("change", (event) => {
     if (event.target.name === "narrativeFocuses") {
@@ -795,16 +971,45 @@ function bindEvents() {
   });
 
   window.addEventListener("hashchange", bootFromLocation);
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 720 && state.mobileMenuOpen) {
+      setMobileMenu(false);
+    }
+  });
 
   window.addEventListener("keydown", (event) => {
-    const shouldToggle = (event.metaKey || event.ctrlKey) && event.shiftKey && event.key.toLowerCase() === "a";
-    if (shouldToggle) {
+    const activeTag = document.activeElement?.tagName?.toLowerCase();
+    const isTypingTarget = ["input", "textarea", "select"].includes(activeTag);
+    const shouldToggleAdmin = (event.metaKey || event.ctrlKey) && event.shiftKey && event.key.toLowerCase() === "a";
+
+    if (shouldToggleAdmin) {
       event.preventDefault();
       toggleAdminVisibility();
+      return;
     }
 
-    if (event.key === "Escape" && dom.storyDialog.hasAttribute("open")) {
+    if (event.key === "Escape" && dom.storyDialog.open) {
       dom.storyDialog.close?.();
+      return;
+    }
+
+    if (event.key === "Escape" && state.mobileMenuOpen) {
+      setMobileMenu(false);
+      return;
+    }
+
+    if (isTypingTarget) return;
+
+    if (state.activeView === "receive" && state.receiveStep === 1) {
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        changeReceiveClosenessBy(-1);
+      }
+
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        changeReceiveClosenessBy(1);
+      }
     }
   });
 }
