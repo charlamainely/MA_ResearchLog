@@ -5,9 +5,6 @@ on:
     branches:
       - main
       - master
-    paths:
-      - ".github/workflows/story-archive-pages.yml"
-      - "prototypes/story_archive/**"
   workflow_dispatch:
 
 permissions:
@@ -32,10 +29,19 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload story archive artifact
+      - name: Prepare Pages artifact
+        run: |
+          mkdir -p _site
+          rsync -av \
+            --exclude ".git" \
+            --exclude ".github" \
+            --exclude ".vscode" \
+            ./ ./_site/
+
+      - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: prototypes/story_archive
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment

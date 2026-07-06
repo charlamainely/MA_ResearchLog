@@ -82,6 +82,9 @@ button {
   width: var(--shell);
   margin: 0 auto;
 }
+.site-footer{
+  margin-bottom:20px;
+}
 
 .site-header-shell {
   display: grid;

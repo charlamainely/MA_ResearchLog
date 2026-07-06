@@ -22,26 +22,26 @@ Optional prototype admin panel:
 - add `?admin=1` to the URL, or
 - press `Ctrl+Shift+A` or `Cmd+Shift+A`
 
-## Deploy as its own site
+## Deploy inside the main site
 
 This repo now includes a dedicated GitHub Pages workflow:
 
 - [.github/workflows/story-archive-pages.yml](/Users/lydukhanhhan/Documents/MA_ResearchLog/.github/workflows/story-archive-pages.yml)
 
-It deploys only:
+The site structure is now:
 
-- [prototypes/story_archive/](/Users/lydukhanhhan/Documents/MA_ResearchLog/prototypes/story_archive/)
+- root homepage mailbox: [index.html](/Users/lydukhanhhan/Documents/MA_ResearchLog/index.html)
+- research log homepage: [research-log/index.html](/Users/lydukhanhhan/Documents/MA_ResearchLog/research-log/index.html)
+- mailbox source folder: [prototypes/story_archive/](/Users/lydukhanhhan/Documents/MA_ResearchLog/prototypes/story_archive/)
 
-That means this prototype can live on its own Pages URL, separate from the rest of the research log, without moving it into a new repository.
+The workflow deploys the whole repo as one site, with the mailbox at the domain root and the research log attached as a subpage.
 
 ### First-time GitHub Pages setup
 
 1. Push the workflow to GitHub.
 2. In the repository settings, open `Pages`.
 3. Set the source to `GitHub Actions`.
-4. Run the `Deploy Stories Mailbox` workflow, or push a change to:
-   - `.github/workflows/story-archive-pages.yml`
-   - anything inside `prototypes/story_archive/`
+4. Run the `Deploy Stories Mailbox` workflow, or push a change to the repo.
 
 ### Custom domain later
 
@@ -50,15 +50,9 @@ When you are ready to attach a domain:
 1. In GitHub repository settings, open `Pages`.
 2. Enter your custom domain there.
 3. Add the required DNS records at your domain provider.
-4. If you want the domain to persist as part of the deployed artifact, add a `CNAME` file inside [prototypes/story_archive/](/Users/lydukhanhhan/Documents/MA_ResearchLog/prototypes/story_archive/) with the domain as its only line.
+4. The mailbox will load at the domain root, and the research log will live at `/research-log/index.html`.
 
-Example:
-
-```txt
-stories.yourdomain.com
-```
-
-Because the deployment publishes the folder contents directly, the archive will behave like a standalone site at the domain root.
+If you want to persist the custom domain in the repo later, add a root-level `CNAME` file.
 
 ## Turn on real submissions with Supabase
 

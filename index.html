@@ -1,245 +1,475 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My MA Research Log</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stories Mailbox</title>
+  <meta
+    name="description"
+    content="A playful public archive for family and intergenerational stories, shaped as postcards, envelopes, and handwritten letters."
+  >
   <link rel="stylesheet" href="https://use.typekit.net/kau7emn.css">
-  <link rel="stylesheet" href="assets/styles.css?v=20260624-homepage-v22"/>
+  <link rel="stylesheet" href="prototypes/story_archive/styles.css">
 </head>
-<body class="homepage">
-  <div id="navbar"></div>
-  <script src="assets/nav-inject.js?v=20260624-homepage-v4" defer></script>
-
-  <div class="homepage-fit-shell">
-    <main class="container home-main">
-      <div class="home-layout">
-      <aside class="home-side home-side-left" aria-label="Featured research outputs">
-        <h1 class="announcement-title">New Research Outputs!</h1>
-
-        <button class="spotlight-button spotlight-button-tall" type="button" aria-label="Featured game collection">
-          <img src="icons/updated/thumbnail_gamebox.png" alt="Living Familial Archives game collection poster">
-        </button>
-
-        <button class="spotlight-button" type="button" aria-label="Stories mailbox teaser">
-          <img src="icons/updated/thumbnail_mailbox.png" alt="Stories Mailbox poster">
-        </button>
-      </aside>
-
-      <section class="home-center-panel" id="weekly-logs" aria-label="Weekly logs and primary sections">
-        <div class="home-center-columns">
-          <section class="home-log-column">
-            <div class="home-panel-header">
-              <h2 class="semester-title" id="semester-title">Semester 1</h2>
-              <h2 class="semester-title" id="semester-title">Weekly Logs</h2>
-            </div>
-            <br>
-
-            <div class="semester-grid" id="semester-grid" aria-live="polite"></div>
-
-            <div class="semester-nav">
-              <button class="semester-toggle" id="semester-prev" type="button" aria-label="Previous semester">
-                <span class="semester-toggle-arrow" aria-hidden="true">&larr;</span>
-                <span class="semester-toggle-label">Previous Semester</span>
-              </button>
-
-              <button class="semester-toggle" id="semester-next" type="button" aria-label="Next semester">
-                <span class="semester-toggle-label">Next Semester</span>
-                <span class="semester-toggle-arrow" aria-hidden="true">&rarr;</span>
-              </button>
-            </div>
-          </section>
-
-          <section class="home-links-column" aria-label="Research sections">
-            <h2 class="semester-title" id="semester-title">Research Activities</h2>
-            <br>
-            <a class="home-section-row home-section-row-link" href="literature/index.html">
-              <div class="home-section-copy">
-                <h2 class="home-section-title">Literature Review</h2>
-                <span class="home-section-link">Read about my Literature Review <span aria-hidden="true">&rarr;</span></span>
-              </div>
-              <img class="home-section-icon" src="icons/updated/icon_literature.png" alt="">
-            </a>
-
-            <a class="home-section-row home-section-row-link" href="fieldwork/index.html">
-              <div class="home-section-copy">
-                <h2 class="home-section-title">Fieldwork</h2>
-                <span class="home-section-link">Read about my Fieldwork <span aria-hidden="true">&rarr;</span></span>
-              </div>
-              <img class="home-section-icon" src="icons/updated/icon_fieldwork.png" alt="">
-            </a>
-
-            <a class="home-section-row home-section-row-link" href="cases/index.html">
-              <div class="home-section-copy">
-                <h2 class="home-section-title">Case Studies</h2>
-                <span class="home-section-link">Read about my Case Studies <span aria-hidden="true">&rarr;</span></span>
-              </div>
-              <img class="home-section-icon" src="icons/updated/icon_case_studies.png" alt="">
-            </a>
-
-            <a class="home-section-row home-section-row-link" href="exercises/index.html">
-              <div class="home-section-copy">
-                <h2 class="home-section-title">Exercises</h2>
-                <span class="home-section-link">See my class exercises <span aria-hidden="true">&rarr;</span></span>
-              </div>
-              <img class="home-section-icon" src="icons/updated/icon_exercises.png" alt="">
-            </a>
-
-            <a class="home-section-row home-section-row-link" href="process/index.html">
-              <div class="home-section-copy">
-                <h2 class="home-section-title">Prototypes</h2>
-                <span class="home-section-link">Read about my prototypes <span aria-hidden="true">&rarr;</span></span>
-              </div>
-              <img class="home-section-icon" src="icons/updated/icon_prototypes.png" alt="">
-            </a>
-          </section>
-        </div>
-      </section>
-
-      <aside class="home-side home-side-right" aria-label="Events and quick links">
-        <button class="events-button spotlight-button" type="button" aria-label="Upcoming events preview">
-          <img src="icons/updated/thumbnail_events.png" alt="Upcoming events teaser">
-        </button>
-
-        <section class="quick-links-panel">
-          <h2 class="quick-links-title">Quick Links</h2>
-          <ul class="quick-links-list">
-            <li><a href="tool/content_generator_v2.html"><span aria-hidden="true">&#8599;</span> Log Writer</a></li>
-            <li><a href="prototypes/concept_map/index.html"><span aria-hidden="true">&#8599;</span> Concept Map</a></li>
-            <li><a href="prototypes/conversation_deck/index.html"><span aria-hidden="true">&#8599;</span> While We Were Young</a></li>
-            <li><a href="prototypes/sim_city/index.html"><span aria-hidden="true">&#8599;</span> Belief in Motion</a></li>
-            <li><a href="prototypes/life_game/index.html"><span aria-hidden="true">&#8599;</span> Greener Grass</a></li>
-            <li><a href="prototypes/story_archive/index.html"><span aria-hidden="true">&#8599;</span> Postmarked Stories</a></li>
-            <li><a href="prototypes/greener_grass/index.html"><span aria-hidden="true">&#8599;</span> Greener Grass V02</a></li>
-          </ul>
-        </section>
-      </aside>
+<body data-view="home">
+  <header class="site-header">
+    <div class="site-header-shell">
+      <div class="brand-block">
+        <a class="brand-mark" href="#home" aria-label="Stories Mailbox home">
+          <img src="prototypes/story_archive/assets/logo-stories-mailbox.png" alt="Stories Mailbox">
+        </a>
       </div>
-    </main>
-  </div>
+      <div class="header-meta">
+        <p class="site-intro">
+          A playful public archive for family and intergenerational stories, shaped as postcards, envelopes, and handwritten letters.
+        </p>
 
-  <footer class="footer footer-home">
-    <div class="container">
-      <p>&copy; 2025 - 2026 Ly Du Khanh Han. All rights reserved.</p>
+        <button type="button" class="mobile-menu-toggle" id="mobileMenuToggle" aria-expanded="false" aria-controls="topNav" aria-label="Open navigation menu">
+          <span class="mobile-menu-bar" aria-hidden="true"></span>
+          <span class="mobile-menu-bar" aria-hidden="true"></span>
+          <span class="mobile-menu-bar" aria-hidden="true"></span>
+        </button>
+
+        <nav class="top-nav" id="topNav" aria-label="Stories Mailbox navigation">
+          <button type="button" class="nav-link is-active" data-view-target="home">
+            <span class="nav-link-icon" aria-hidden="true">
+              <img class="nav-link-icon-closed" src="prototypes/story_archive/assets/icon-envelope-closed.svg" alt="">
+              <img class="nav-link-icon-open" src="prototypes/story_archive/assets/icon-envelope-open.svg" alt="">
+            </span>
+            <span class="nav-link-text">Home</span>
+          </button>
+          <button type="button" class="nav-link" data-view-target="receive">
+            <span class="nav-link-icon" aria-hidden="true">
+              <img class="nav-link-icon-closed" src="prototypes/story_archive/assets/icon-envelope-closed.svg" alt="">
+              <img class="nav-link-icon-open" src="prototypes/story_archive/assets/icon-envelope-open.svg" alt="">
+            </span>
+            <span class="nav-link-text">Receive<br>a story</span>
+          </button>
+          <button type="button" class="nav-link" data-view-target="submit">
+            <span class="nav-link-icon" aria-hidden="true">
+              <img class="nav-link-icon-closed" src="prototypes/story_archive/assets/icon-envelope-closed.svg" alt="">
+              <img class="nav-link-icon-open" src="prototypes/story_archive/assets/icon-envelope-open.svg" alt="">
+            </span>
+            <span class="nav-link-text">Send<br>a story</span>
+          </button>
+          <button type="button" class="nav-link" data-view-target="gallery">
+            <span class="nav-link-icon" aria-hidden="true">
+              <img class="nav-link-icon-closed" src="prototypes/story_archive/assets/icon-envelope-closed.svg" alt="">
+              <img class="nav-link-icon-open" src="prototypes/story_archive/assets/icon-envelope-open.svg" alt="">
+            </span>
+            <span class="nav-link-text">Browse<br>archive</span>
+          </button>
+          <button type="button" class="nav-link nav-link-admin" data-view-target="admin" hidden>
+            <span class="nav-link-icon" aria-hidden="true">
+              <img class="nav-link-icon-closed" src="prototypes/story_archive/assets/icon-envelope-closed.svg" alt="">
+              <img class="nav-link-icon-open" src="prototypes/story_archive/assets/icon-envelope-open.svg" alt="">
+            </span>
+            <span class="nav-link-text">Review<br>panel</span>
+          </button>
+        </nav>
+      </div>
     </div>
+  </header>
+
+  <main class="page-shell" id="appShell">
+    <noscript>
+      <section class="paper-panel">
+        <h2>JavaScript required</h2>
+        <p>This prototype needs JavaScript enabled because stories, filters, and submissions are handled client-side.</p>
+      </section>
+    </noscript>
+
+    <section class="view-panel" data-view="home" aria-labelledby="home-title">
+      <div class="mail-rain" aria-hidden="true">
+        <span class="mail-rain-item"></span>
+        <span class="mail-rain-item"></span>
+        <span class="mail-rain-item"></span>
+        <span class="mail-rain-item"></span>
+        <span class="mail-rain-item"></span>
+        <span class="mail-rain-item"></span>
+        <span class="mail-rain-item"></span>
+        <span class="mail-rain-item"></span>
+        <span class="mail-rain-item"></span>
+        <span class="mail-rain-item"></span>
+        <span class="mail-rain-item"></span>
+        <span class="mail-rain-item"></span>
+        <span class="mail-rain-item"></span>
+        <span class="mail-rain-item"></span>
+        <span class="mail-rain-item"></span>
+        <span class="mail-rain-item"></span>
+        <span class="mail-rain-item"></span>
+        <span class="mail-rain-item"></span>
+      </div>
+
+      <div class="home-copy">
+        <h2 id="home-title" class="page-title home-title" tabindex="-1">WELCOME TO A PUBLIC ARCHIVE MADE OF STORIES THAT TRAVEL.</h2>
+        <p class="page-lead">
+          This prototype explores how family memories might be shared as postcards, received as letters, and gathered in a soft public archive.
+        </p>
+      </div>
+
+      <section class="choice-grid" aria-label="Main options">
+        <article class="choice-card" data-home-target="receive" tabindex="0" role="button" aria-label="Go to receive a story">
+          <div class="choice-card-art">
+            <span class="choice-number">01</span>
+            <span class="choice-icon-stack" aria-hidden="true">
+              <img src="prototypes/story_archive/assets/icon-mailbox.png" alt="" class="choice-icon choice-icon-default">
+              <img src="prototypes/story_archive/assets/icon-mailbox-hover.png" alt="" class="choice-icon choice-icon-hover">
+            </span>
+          </div>
+          <div class="choice-card-body">
+            <h3>RECEIVE A STORY</h3>
+            <p>Move through a postcard ritual and receive matching stories in envelopes.</p>
+          </div>
+          <button type="button" class="card-arrow" data-view-target="receive" aria-label="Receive a story">→</button>
+        </article>
+
+        <article class="choice-card" data-home-target="submit" tabindex="0" role="button" aria-label="Go to send a story">
+          <div class="choice-card-art">
+            <span class="choice-number">02</span>
+            <span class="choice-icon-stack" aria-hidden="true">
+              <img src="prototypes/story_archive/assets/icon-envelope-large.png" alt="" class="choice-icon choice-icon-default">
+              <img src="prototypes/story_archive/assets/icon-envelope-large-hover.png" alt="" class="choice-icon choice-icon-hover">
+            </span>
+          </div>
+          <div class="choice-card-body">
+            <h3>SEND A STORY</h3>
+            <p>Submit your own memory. When Supabase is configured, it is sent for review and stored as pending.</p>
+          </div>
+          <button type="button" class="card-arrow" data-view-target="submit" aria-label="Send a story">→</button>
+        </article>
+
+        <article class="choice-card" data-home-target="gallery" tabindex="0" role="button" aria-label="Go to browse archive">
+          <div class="choice-card-art">
+            <span class="choice-number">03</span>
+            <span class="choice-icon-stack" aria-hidden="true">
+              <img src="prototypes/story_archive/assets/icon-folder.png" alt="" class="choice-icon choice-icon-default">
+              <img src="prototypes/story_archive/assets/icon-folder-hover.png" alt="" class="choice-icon choice-icon-hover">
+            </span>
+          </div>
+          <div class="choice-card-body">
+            <h3>BROWSE ARCHIVE</h3>
+            <p>Explore approved stories in a filterable gallery of envelopes and letters.</p>
+          </div>
+          <button type="button" class="card-arrow" data-view-target="gallery" aria-label="Browse archive">→</button>
+        </article>
+      </section>
+    </section>
+
+    <section class="view-panel receive-view" data-view="receive" hidden aria-labelledby="receive-title">
+      <div class="receive-shell">
+        <h2 id="receive-title" class="page-title receive-title" tabindex="-1">SEND A POSTCARD AND WAIT FOR LETTERS BACK</h2>
+
+        <ol class="stepper" aria-label="Postcard steps">
+          <li class="stepper-item is-current" data-step-marker="1"><span>01</span><strong>Take a family photo</strong></li>
+          <li class="stepper-item" data-step-marker="2"><span>02</span><strong>Choose a stamp</strong></li>
+          <li class="stepper-item" data-step-marker="3"><span>03</span><strong>Choose a mood</strong></li>
+          <li class="stepper-item" data-step-marker="4"><span>04</span><strong>Send your postcard</strong></li>
+          <li class="stepper-item" data-step-marker="5"><span>05</span><strong>Read the responses</strong></li>
+        </ol>
+
+        <div class="receive-step receive-step-stage" data-receive-step="1">
+          <div class="receive-step-copy">
+            <h3>Adjust the camera focus to match how close you feel to your family...</h3>
+          </div>
+
+          <div class="focus-stage" id="receivePhotoStage" tabindex="0" aria-describedby="receiveClosenessText">
+            <div class="focus-orb focus-orb-left" aria-hidden="true"></div>
+            <div class="focus-orb focus-orb-right" aria-hidden="true"></div>
+
+            <button type="button" class="focus-nav focus-nav-left" id="receiveFurtherButton" aria-label="Move to a more distant closeness stage">
+              <span class="focus-arrow focus-arrow-left" aria-hidden="true"></span>
+              <span>Further</span>
+            </button>
+
+            <div class="family-stage-display">
+              <div class="family-stage-frame" id="familyPhotoPreview" aria-live="polite">
+                <!-- Swap these placeholder illustration files in /assets later as the final artwork is ready. -->
+                <div id="familyPhotoFrames" class="family-photo-frames"></div>
+                <div class="family-stage-fallback" aria-hidden="true"></div>
+              </div>
+
+              <div class="closeness-readout">
+                <h4 id="receiveClosenessLabel"></h4>
+                <p id="receiveClosenessText" class="selection-note"></p>
+              </div>
+            </div>
+
+            <button type="button" class="focus-nav focus-nav-right" id="receiveCloserButton" aria-label="Move to a closer closeness stage">
+              <span class="focus-arrow focus-arrow-right" aria-hidden="true"></span>
+              <span>Closer</span>
+            </button>
+          </div>
+
+          <div class="step-actions step-actions-end">
+            <button type="button" class="action-button" data-step-next="2">Continue</button>
+          </div>
+        </div>
+
+        <div class="receive-step" data-receive-step="2" hidden>
+          <div class="receive-step-copy">
+            <h3>Choose a stamp that matches the narrative focus you want to see...</h3>
+          </div>
+          <div id="receiveStampGrid" class="stamp-grid" role="radiogroup" aria-label="Narrative focus stamps"></div>
+          <div class="step-actions step-actions-wide">
+            <button type="button" class="action-button action-button-secondary" data-step-prev="1">Back</button>
+            <button type="button" class="action-button" data-step-next="3">Continue</button>
+          </div>
+        </div>
+
+        <div class="receive-step" data-receive-step="3" hidden>
+          <div class="receive-step-copy">
+            <h3>Choose the mood of the story you want to receive...</h3>
+          </div>
+          <div id="receiveToneGrid" class="tone-grid" role="radiogroup" aria-label="Tone options"></div>
+          <div class="step-actions step-actions-wide">
+            <button type="button" class="action-button action-button-secondary" data-step-prev="2">Back</button>
+            <button type="button" class="action-button" data-step-next="4">Continue</button>
+          </div>
+        </div>
+
+        <div class="receive-step" data-receive-step="4" hidden>
+          <div class="receive-step-copy receive-step-copy-center">
+            <h3>Review your choices and send!</h3>
+          </div>
+
+          <div class="review-stage">
+            <div class="review-photo-card">
+              <div class="review-photo-card-inner" id="reviewPhotoCard">
+                <p>Family illustration here</p>
+              </div>
+            </div>
+
+            <div class="review-postcard" id="reviewPostcard">
+              <div class="review-stamp">
+                <img id="reviewStampImage" src="prototypes/story_archive/assets/stamp_what.png" alt="Selected narrative focus stamp">
+              </div>
+              <h4>REVIEW YOUR POSTCARD</h4>
+              <div id="receiveSummary" class="review-summary"></div>
+            </div>
+          </div>
+
+          <div class="step-actions step-actions-wide">
+            <button type="button" class="action-button action-button-secondary" data-step-prev="3">Back</button>
+            <button type="button" class="action-button" id="sendPostcardButton">Send it!</button>
+          </div>
+          <p class="selection-note send-status" id="sendStatus" aria-live="polite"></p>
+
+          <div class="sending-stage" id="sendingStage" aria-hidden="true">
+            <div class="mailbox">
+              <div class="mailbox-flag"></div>
+              <div class="mailbox-slot"></div>
+            </div>
+            <div class="postcard-flight">
+              <div class="flight-card">TO THE ARCHIVE</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="receive-step" data-receive-step="5" hidden>
+          <div class="receive-step-copy receive-step-copy-center">
+            <h3>You’ve got mail!</h3>
+            <p id="receiveResultsMeta" class="results-meta"></p>
+          </div>
+
+          <div id="receiveResults" class="story-grid"></div>
+
+          <div id="receiveEmptyState" class="empty-state" hidden>
+            <h4>No envelopes arrived just yet.</h4>
+            <p>Try another postcard combination, browse the archive, or submit a story of your own.</p>
+            <div class="empty-actions">
+              <button type="button" class="action-button action-button-secondary" data-reset-postcard="true" data-view-target="receive">Start another postcard</button>
+              <button type="button" class="action-button action-button-secondary" data-view-target="gallery">Browse the archive</button>
+              <button type="button" class="action-button" data-view-target="submit">Send a story!</button>
+            </div>
+          </div>
+
+          <div class="step-actions receive-results-actions">
+            <button type="button" class="action-button action-button-secondary" data-reset-postcard="true" data-view-target="receive">Try again</button>
+            <button type="button" class="action-button action-button-secondary" data-view-target="home">Return home</button>
+            <button type="button" class="action-button action-button-secondary" data-view-target="gallery">Browse the archive</button>
+            <button type="button" class="action-button" data-view-target="submit">Send a story!</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view-panel submit-view" data-view="submit" hidden aria-labelledby="submit-title">
+      <div class="submit-hero">
+        <h2 id="submit-title" class="page-title submit-title" tabindex="-1">SHARE A <br>MEMORY</h2>
+        <p class="submit-intro">
+          Some family stories are warm.<br>
+          Some are difficult.<br>
+          Some are still unfinished.<br>
+          Take time to gather the stories from your family. These can be funny childhood memories, family anecdotes, moments of misunderstanding, life advice, or reflections on how things have changed across generations.
+        </p>
+      </div>
+
+      <div class="paper-panel submit-panel">
+        <form id="submissionForm" class="submission-form" novalidate>
+          <section class="form-section">
+            <div class="form-section-heading">
+              <h3>What’s your story?</h3>
+              <div class="hint-row">
+                <button type="button" class="hint-button" id="storyHintButton">Hint me!</button>
+                <p>If you can’t think of a story, try using the Hint feature to receive a random and helpful prompt!</p>
+              </div>
+            </div>
+            <p id="storyHintOutput" class="hint-output" hidden aria-live="polite"></p>
+            <label class="sr-only" for="storyText">Story text</label>
+            <textarea
+              id="storyText"
+              name="storyText"
+              rows="8"
+              required
+              placeholder="Type your story here..."
+            ></textarea>
+          </section>
+
+          <section class="form-section">
+            <div class="form-section-heading">
+              <h3>Family closeness</h3>
+              <p>How close do you feel to your family?</p>
+            </div>
+            <fieldset class="form-row">
+              <legend class="sr-only">Family closeness</legend>
+              <div id="submissionClosenessOptions" class="closeness-line-selector"></div>
+            </fieldset>
+          </section>
+
+          <section class="form-section">
+            <div class="form-section-heading">
+              <h3>Narrative focus</h3>
+              <p>What were the most important elements in your story? Choose at least 1 and up to 3</p>
+            </div>
+            <fieldset class="form-row">
+              <legend class="sr-only">Narrative focus</legend>
+              <div id="submissionFocusOptions" class="checkbox-grid"></div>
+              <p id="focusValidationMessage" class="selection-note" aria-live="polite"></p>
+            </fieldset>
+          </section>
+
+          <div class="submit-form-split">
+            <section class="form-section">
+              <div class="form-section-heading">
+                <h3>Mood &amp; Tone</h3>
+                <p>What’s the overall tone of your story? Pick 1</p>
+              </div>
+              <fieldset class="form-row">
+                <legend class="sr-only">Tone</legend>
+                <div id="submissionToneOptions" class="submission-tone-grid"></div>
+              </fieldset>
+            </section>
+
+            <section class="form-section">
+              <div class="form-section-heading">
+                <h3>Language</h3>
+                <p>What’s the language your story is written in?</p>
+              </div>
+              <div class="form-row">
+                <label class="sr-only" for="language">Language</label>
+                <select id="language" name="language" required>
+                  <option value="Vietnamese">Vietnamese</option>
+                  <option value="English" selected>English</option>
+                  <option value="Bilingual">Bilingual</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </section>
+          </div>
+          <br>
+          <div class="form-row consent-row">
+            <label class="consent-check">
+              <input id="consent" name="consent" type="checkbox" required>
+              <span>I understand this story may be reviewed before appearing publicly in the archive.</span>
+            </label>
+          </div>
+          <br>
+          <div class="form-actions form-actions-center">
+            <button type="submit" class="action-button submit-button">Mail my story</button>
+            <p id="submissionStatus" class="selection-note" aria-live="polite"></p>
+          </div>
+        </form>
+
+        <section id="submissionConfirmation" class="confirmation-card" hidden aria-live="polite">
+          <h3>Your story has been sent for review.</h3>
+          <p id="submissionConfirmationText">It has been saved locally in this browser with a pending status.</p>
+          <div class="empty-actions">
+            <button type="button" class="action-button action-button-secondary" id="submitAnotherButton">Submit another story</button>
+            <button type="button" class="action-button action-button-secondary" data-view-target="gallery">Read stories</button>
+            <button type="button" class="action-button" data-view-target="home">Return home</button>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="view-panel gallery-view" data-view="gallery" hidden aria-labelledby="gallery-title">
+      <div class="section-heading section-heading-wide">
+        <h2 id="gallery-title" class="page-title gallery-title" tabindex="-1">BROWSE THE ARCHIVE</h2>
+        <p class="gallery-desc">Use the filters to look through approved stories by narrative focus, tone, and family closeness.</p>
+      </div>
+
+      <div class="paper-panel gallery-panel">
+        <div class="gallery-filters-shell">
+          <button type="button" class="action-button action-button-secondary filters-toggle" id="galleryFiltersToggle" aria-expanded="true" aria-controls="galleryFiltersWrap">Filters</button>
+          <div id="galleryFiltersWrap" class="gallery-filters-wrap">
+            <form id="galleryFilters" class="filters-bar">
+              <label>
+                <span>Narrative focus</span>
+                <select id="galleryFocusFilter" name="focus"></select>
+              </label>
+              <label>
+                <span>Tone</span>
+                <select id="galleryToneFilter" name="tone"></select>
+              </label>
+              <label>
+                <span>Family closeness</span>
+                <select id="galleryClosenessFilter" name="familyCloseness"></select>
+              </label>
+              <button type="button" class="action-button action-button-secondary" id="resetGalleryFilters">Reset filters</button>
+            </form>
+          </div>
+        </div>
+
+        <p id="galleryMeta" class="results-meta"></p>
+        <div id="galleryGrid" class="story-grid"></div>
+        <div id="galleryEmptyState" class="empty-state" hidden>
+          <h4>No stories match these filters.</h4>
+          <p>Reset the filters or try a different combination.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="view-panel admin-view" data-view="admin" hidden aria-labelledby="admin-title">
+      <div class="section-heading section-heading-wide">
+        <h2 id="admin-title" class="page-title gallery-title" tabindex="-1">LOCAL REVIEW PANEL</h2>
+        <p>This local review panel is only used in browser-storage prototype mode.</p>
+      </div>
+
+      <div class="paper-panel">
+        <p id="adminMeta" class="results-meta"></p>
+        <div id="adminList" class="admin-list"></div>
+        <div id="adminEmptyState" class="empty-state" hidden>
+          <h4>No pending submissions.</h4>
+          <p>Submit a story first, then return here to approve or reject it locally.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="footer-link" href="research-log/index.html">Go to research log</a>
+    <p>Static prototype for GitHub Pages. Configure Supabase to store real submissions and approved stories.</p>
+    <button type="button" class="footer-link" id="adminToggleButton" hidden>Open review panel</button>
   </footer>
 
-  <script>
-    const semesters = [
-      {
-        title: 'Semester 1',
-        weeks: [
-          { label: 'Week 04', href: 'log/week-04.html' },
-          { label: 'Week 05', href: 'log/week-05.html' },
-          { label: 'Week 06', href: 'log/week-06.html' },
-          { label: 'Week 07', href: 'log/week-07.html' },
-          { label: 'Week 08', href: 'log/week-08.html' },
-          { label: 'Week 09', href: 'log/week-09.html' },
-          { label: 'Week 10', href: 'log/week-10.html' },
-          { label: 'Week 11', href: 'log/week-11.html' },
-          { label: 'Week 12', href: 'log/week-12.html' },
-          { label: 'Week 13', href: 'log/week-13.html' }
-        ]
-      },
-      {
-        title: 'Semester 2',
-        weeks: [
-          { label: 'Week 01', href: 'log/s2-week-01.html' },
-          { label: 'Week 02', href: 'log/s2-week-02.html' },
-          { label: 'Week 03', href: 'log/s2-week-03.html' },
-          { label: 'Week 04', href: 'log/s2-week-04.html' },
-          { label: 'Week 05', href: 'log/s2-week-05.html' },
-          { label: 'Week 06', href: 'log/s2-week-06.html' },
-          { label: 'Week 07', href: 'log/s2-week-07.html' },
-          { label: 'Week 08', href: 'log/s2-week-08.html' },
-          { label: 'Week 09', href: 'log/s2-week-09.html' },
-          { label: 'Week 10', href: 'log/s2-week-10.html' },
-          { label: 'Week 11', href: 'log/s2-week-11.html' },
-          { label: 'Week 12', href: 'log/s2-week-12.html' }
-        ]
-      },
-      {
-        title: 'Semester 3',
-        weeks: [
-          { label: 'Week 01', href: 'log/s3-week-01.html' },
-          { label: 'Week 02', href: 'log/s3-week-02.html' },
-          { label: 'Week 03', href: 'log/s3-week-03.html' },
-          { label: 'Week 04', href: 'log/s3-week-04.html' },
-          { label: 'Week 05', href: 'log/s3-week-05.html' }
-        ]
-      }
-    ];
+  <dialog id="storyDialog" class="story-dialog" aria-labelledby="storyDialogTitle">
+    <form method="dialog" class="dialog-close-form">
+      <button type="submit" class="dialog-close-button" aria-label="Close story">Close</button>
+    </form>
+    <article id="storyDialogContent" class="letter-sheet"></article>
+  </dialog>
 
-    const semesterTitle = document.getElementById('semester-title');
-    const semesterGrid = document.getElementById('semester-grid');
-    const prevButton = document.getElementById('semester-prev');
-    const nextButton = document.getElementById('semester-next');
-    const homepageShell = document.querySelector('.homepage-fit-shell');
-    let activeSemester = semesters.length - 1;
-    let fitFrame = 0;
-
-    function renderSemester() {
-      const semester = semesters[activeSemester];
-      semesterTitle.textContent = semester.title;
-      semesterGrid.innerHTML = semester.weeks.map((week) => `
-        <a class="calendar-card" href="${week.href}">
-          <img src="icons/updated/icon_calendar.png" alt="">
-          <span>${week.label}</span>
-        </a>
-      `).join('');
-
-      prevButton.disabled = activeSemester === 0;
-      nextButton.disabled = activeSemester === semesters.length - 1;
-    }
-
-    prevButton.addEventListener('click', () => {
-      if (activeSemester === 0) return;
-      activeSemester -= 1;
-      renderSemester();
-    });
-
-    nextButton.addEventListener('click', () => {
-      if (activeSemester === semesters.length - 1) return;
-      activeSemester += 1;
-      renderSemester();
-    });
-
-    function fitHomepageToWindow() {
-      if (!homepageShell) return;
-
-      homepageShell.style.setProperty('--homepage-scale', '1');
-
-      if (window.innerWidth <= 1100) {
-        document.documentElement.style.removeProperty('--homepage-fit-width');
-        return;
-      }
-
-      const nav = document.getElementById('site-nav');
-      const footer = document.querySelector('.footer-home');
-      const navHeight = nav ? nav.getBoundingClientRect().height : 0;
-      const footerHeight = footer ? footer.getBoundingClientRect().height : 0;
-      const shellRect = homepageShell.getBoundingClientRect();
-      const availableHeight = Math.max(window.innerHeight - navHeight - footerHeight - 12, 0);
-      const scale = Math.min(
-        (window.innerWidth - 16) / shellRect.width,
-        availableHeight / shellRect.height,
-        1
-      );
-
-      homepageShell.style.setProperty('--homepage-scale', scale.toFixed(4));
-      document.documentElement.style.setProperty('--homepage-fit-width', `${(shellRect.width * scale).toFixed(2)}px`);
-    }
-
-    function queueHomepageFit() {
-      cancelAnimationFrame(fitFrame);
-      fitFrame = requestAnimationFrame(fitHomepageToWindow);
-    }
-
-    renderSemester();
-    queueHomepageFit();
-    window.addEventListener('resize', queueHomepageFit);
-    window.addEventListener('load', queueHomepageFit);
-    document.fonts?.ready.then(queueHomepageFit);
-  </script>
+  <script type="module" src="prototypes/story_archive/app.js"></script>
 </body>
 </html>

@@ -57,8 +57,7 @@
       return '/' + parts[0] + '/';
     }
 
-    // 3) Local dev or other hosting: use first folder if present, else "/"
-    if (parts.length >= 1) return '/' + parts[0] + '/';
+    // 3) Custom domains and other hosts should treat the repo as the site root.
     return '/';
   }
 
