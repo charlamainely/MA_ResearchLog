@@ -1,7 +1,14 @@
 import { APPROVED_STORIES } from "./data/stories.js";
+import {
+  createPendingStoryInSupabase,
+  fetchApprovedStoriesFromSupabase,
+  isSupabaseEnabled,
+  shouldIncludeSeedStories
+} from "./supabase-api.js";
 
 const STORAGE_KEY = "story-archive-submissions-v1";
 const ADMIN_FLAG_KEY = "story-archive-admin-visible-v1";
+const REMOTE_MODE = isSupabaseEnabled();
 
 const STORY_HINTS = [
   "Think of a family object that only makes sense inside your household. What story sits behind it?",
@@ -150,6 +157,7 @@ const dom = {
   focusValidationMessage: document.getElementById("focusValidationMessage"),
   submissionStatus: document.getElementById("submissionStatus"),
   submissionConfirmation: document.getElementById("submissionConfirmation"),
+  submissionConfirmationText: document.getElementById("submissionConfirmationText"),
   submitAnotherButton: document.getElementById("submitAnotherButton"),
   galleryFilters: document.getElementById("galleryFilters"),
   galleryFiltersToggle: document.getElementById("galleryFiltersToggle"),
@@ -187,6 +195,8 @@ const state = {
   mobileMenuOpen: false,
   galleryFiltersOpen: true,
   postcard: { ...defaultPostcardState },
+  remoteApprovedStories: [],
+  remoteLoadState: REMOTE_MODE ? "loading" : "disabled",
   galleryFilters: {
     focus: "all",
     tone: "all",
@@ -196,6 +206,7 @@ const state = {
 };
 
 function shouldShowAdminPanel() {
+  if (REMOTE_MODE) return false;
   const params = new URLSearchParams(window.location.search);
   return params.get("admin") === "1" || window.localStorage.getItem(ADMIN_FLAG_KEY) === "true";
 }
@@ -237,16 +248,34 @@ function getLocalStories() {
   return safeReadStorage().slice().sort(sortByNewest);
 }
 
+function mergeStoriesById(...storyLists) {
+  const merged = new Map();
+
+  storyLists.flat().forEach((story) => {
+    if (!story?.id) return;
+    merged.set(story.id, story);
+  });
+
+  return [...merged.values()].sort(sortByNewest);
+}
+
 function getApprovedStories() {
-  return [...APPROVED_STORIES, ...getLocalStories().filter((story) => story.status === "approved")].sort(sortByNewest);
+  const seedStories = shouldIncludeSeedStories() ? APPROVED_STORIES : [];
+  const localApprovedStories = REMOTE_MODE ? [] : getLocalStories().filter((story) => story.status === "approved");
+  return mergeStoriesById(seedStories, state.remoteApprovedStories, localApprovedStories);
 }
 
 function getPendingStories() {
+  if (REMOTE_MODE) return [];
   return getLocalStories().filter((story) => story.status === "pending");
 }
 
 function getStoryById(storyId) {
-  return [...APPROVED_STORIES, ...getLocalStories()].find((story) => story.id === storyId);
+  return mergeStoriesById(
+    shouldIncludeSeedStories() ? APPROVED_STORIES : [],
+    state.remoteApprovedStories,
+    REMOTE_MODE ? [] : getLocalStories()
+  ).find((story) => story.id === storyId);
 }
 
 function createStoryId() {
@@ -255,6 +284,26 @@ function createStoryId() {
   }
 
   return `local-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+}
+
+async function refreshApprovedStories() {
+  if (!REMOTE_MODE) return;
+
+  state.remoteLoadState = "loading";
+
+  try {
+    state.remoteApprovedStories = await fetchApprovedStoriesFromSupabase();
+    state.remoteLoadState = "ready";
+  } catch (error) {
+    state.remoteLoadState = "error";
+    console.error("Could not fetch approved stories from Supabase.", error);
+  }
+
+  renderGallery();
+
+  if (state.activeView === "receive" && state.receiveStep === 5) {
+    renderReceiveResults();
+  }
 }
 
 function escapeHtml(value) {
@@ -616,11 +665,26 @@ function applyGalleryFilters(stories) {
 function renderGallery() {
   const stories = applyGalleryFilters(getApprovedStories());
   dom.galleryGrid.innerHTML = stories.map((story) => buildStoryCard({ story, matchType: "Archive story" }, "gallery")).join("");
-  dom.galleryMeta.textContent = `${stories.length} approved stor${stories.length === 1 ? "y" : "ies"} shown.`;
+  if (REMOTE_MODE && state.remoteLoadState === "loading") {
+    dom.galleryMeta.textContent = "Loading approved stories from Supabase...";
+  } else if (REMOTE_MODE && state.remoteLoadState === "error") {
+    dom.galleryMeta.textContent = `${stories.length} approved stor${stories.length === 1 ? "y" : "ies"} shown. Supabase could not be reached, so only fallback stories are visible.`;
+  } else {
+    dom.galleryMeta.textContent = `${stories.length} approved stor${stories.length === 1 ? "y" : "ies"} shown.`;
+  }
   dom.galleryEmptyState.hidden = stories.length > 0;
 }
 
 function renderAdminPanel() {
+  if (REMOTE_MODE) {
+    dom.adminList.innerHTML = "";
+    dom.adminMeta.textContent = "Moderation is now handled in Supabase. Use the dashboard to approve or reject pending stories.";
+    dom.adminEmptyState.hidden = false;
+    dom.adminEmptyState.querySelector("h4").textContent = "Supabase moderation is active.";
+    dom.adminEmptyState.querySelector("p").textContent = "This local review panel is disabled while the project is connected to Supabase.";
+    return;
+  }
+
   const pendingStories = getPendingStories();
   dom.adminList.innerHTML = pendingStories.map((story) => {
     const focusList = story.narrativeFocuses.map((focusValue) => getFocusMeta(focusValue).label).join(", ");
@@ -723,6 +787,7 @@ function updateAdminVisibility() {
 }
 
 function toggleAdminVisibility(forceVisible) {
+  if (REMOTE_MODE) return;
   state.adminVisible = typeof forceVisible === "boolean" ? forceVisible : !state.adminVisible;
   window.localStorage.setItem(ADMIN_FLAG_KEY, String(state.adminVisible));
   updateAdminVisibility();
@@ -763,7 +828,7 @@ function insertStoryHint() {
   dom.storyHintOutput.textContent = hint;
 }
 
-function submitStory(event) {
+async function submitStory(event) {
   event.preventDefault();
 
   const formData = new FormData(dom.submissionForm);
@@ -787,8 +852,7 @@ function submitStory(event) {
     return;
   }
 
-  const localStories = getLocalStories();
-  localStories.push({
+  const newStory = {
     id: createStoryId(),
     storyText,
     narrativeFocuses,
@@ -798,13 +862,36 @@ function submitStory(event) {
     language,
     status: "pending",
     createdAt: new Date().toISOString()
-  });
+  };
 
-  safeWriteStorage(localStories);
-  dom.submissionStatus.textContent = "";
-  dom.submissionForm.hidden = true;
-  dom.submissionConfirmation.hidden = false;
-  renderAdminPanel();
+  const submitButton = dom.submissionForm.querySelector('button[type="submit"]');
+  if (submitButton) submitButton.disabled = true;
+
+  try {
+    if (REMOTE_MODE) {
+      dom.submissionStatus.textContent = "Sending your story to the archive...";
+      await createPendingStoryInSupabase(newStory);
+      dom.submissionConfirmationText.textContent = "It has been sent to Supabase with a pending status and will only appear publicly after review.";
+      await refreshApprovedStories();
+    } else {
+      const localStories = getLocalStories();
+      localStories.push(newStory);
+      safeWriteStorage(localStories);
+      dom.submissionConfirmationText.textContent = "It has been saved locally in this browser with a pending status.";
+      renderAdminPanel();
+    }
+
+    dom.submissionStatus.textContent = "";
+    dom.submissionForm.hidden = true;
+    dom.submissionConfirmation.hidden = false;
+  } catch (error) {
+    console.error("Could not submit story.", error);
+    dom.submissionStatus.textContent = error instanceof Error
+      ? error.message
+      : "Could not send your story right now. Please try again.";
+  } finally {
+    if (submitButton) submitButton.disabled = false;
+  }
 }
 
 function approveOrRejectLocalStory(storyId, nextStatus) {
@@ -1014,7 +1101,7 @@ function bindEvents() {
   });
 }
 
-function init() {
+async function init() {
   renderOptionControls();
   updateReceiveCloseness(state.postcard.familyCloseness);
   updateReceiveFocus(state.postcard.selectedNarrativeFocus);
@@ -1027,6 +1114,10 @@ function init() {
   renderAdminPanel();
   bindEvents();
   bootFromLocation();
+
+  if (REMOTE_MODE) {
+    await refreshApprovedStories();
+  }
 }
 
 init();

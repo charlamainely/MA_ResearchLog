@@ -134,7 +134,7 @@
           </div>
           <div class="choice-card-body">
             <h3>SEND A STORY</h3>
-            <p>Submit your own memory. For now it is stored locally and marked pending review.</p>
+            <p>Submit your own memory. When Supabase is configured, it is sent for review and stored as pending.</p>
           </div>
           <button type="button" class="card-arrow" data-view-target="submit" aria-label="Send a story">→</button>
         </article>
@@ -393,7 +393,7 @@
 
         <section id="submissionConfirmation" class="confirmation-card" hidden aria-live="polite">
           <h3>Your story has been sent for review.</h3>
-          <p>It has been saved locally in this browser with a pending status.</p>
+          <p id="submissionConfirmationText">It has been saved locally in this browser with a pending status.</p>
           <div class="empty-actions">
             <button type="button" class="action-button action-button-secondary" id="submitAnotherButton">Submit another story</button>
             <button type="button" class="action-button action-button-secondary" data-view-target="gallery">Read stories</button>
@@ -443,7 +443,7 @@
     <section class="view-panel admin-view" data-view="admin" hidden aria-labelledby="admin-title">
       <div class="section-heading section-heading-wide">
         <h2 id="admin-title" class="page-title gallery-title" tabindex="-1">LOCAL REVIEW PANEL</h2>
-        <p>This prototype-only view lets you approve or reject locally stored submissions for testing.</p>
+        <p>This local review panel is only used in browser-storage prototype mode.</p>
       </div>
 
       <div class="paper-panel">
@@ -459,7 +459,7 @@
 
   <footer class="site-footer">
     <a class="footer-link" href="../../index.html">Back to research log</a>
-    <p>Static prototype for GitHub Pages. Pending submissions are stored in this browser only.</p>
+    <p>Static prototype for GitHub Pages. Configure Supabase to store real submissions and approved stories.</p>
     <button type="button" class="footer-link" id="adminToggleButton" hidden>Open review panel</button>
   </footer>
 
