@@ -10,6 +10,10 @@ const STORAGE_KEY = "story-archive-submissions-v1";
 const ADMIN_FLAG_KEY = "story-archive-admin-visible-v1";
 const REMOTE_MODE = isSupabaseEnabled();
 
+function assetUrl(path) {
+  return new URL(path, import.meta.url).href;
+}
+
 const STORY_HINTS = [
   "Think of a family object that only makes sense inside your household. What story sits behind it?",
   "Recall a meal where something small revealed a larger family feeling. What happened?",
@@ -24,42 +28,42 @@ const narrativeFocusOptions = [
     label: "WHAT",
     displayTitle: "Keepsake",
     description: "Objects, actions & events",
-    asset: "./assets/stamp_what.png"
+    asset: assetUrl("./assets/stamp_what.png")
   },
   {
     value: "why",
     label: "WHY",
     displayTitle: "Reason",
     description: "Meanings, motives & significance",
-    asset: "./assets/stamp_why.png"
+    asset: assetUrl("./assets/stamp_why.png")
   },
   {
     value: "where",
     label: "WHERE",
     displayTitle: "Places",
     description: "Physical spaces or locations",
-    asset: "./assets/stamp_where.png"
+    asset: assetUrl("./assets/stamp_where.png")
   },
   {
     value: "when",
     label: "WHEN",
     displayTitle: "Moments",
     description: "Special occasions or memorable times",
-    asset: "./assets/stamp_when.png"
+    asset: assetUrl("./assets/stamp_when.png")
   },
   {
     value: "who",
     label: "WHO",
     displayTitle: "Person",
     description: "Specific characters & relationships",
-    asset: "./assets/stamp_who.png"
+    asset: assetUrl("./assets/stamp_who.png")
   },
   {
     value: "how",
     label: "HOW",
     displayTitle: "Gestures",
     description: "Rituals, habits or way of doing things",
-    asset: "./assets/stamp_how.png"
+    asset: assetUrl("./assets/stamp_how.png")
   }
 ];
 
@@ -74,7 +78,7 @@ const closenessOptions = [
     value: "distant",
     label: "Distant",
     statement: "There’s some distance between us.",
-    asset: "./assets/family-distance-01.png",
+    asset: assetUrl("./assets/family-distance-01.png"),
     orbLeft: "24%",
     orbRight: "76%"
   },
@@ -82,7 +86,7 @@ const closenessOptions = [
     value: "not-close",
     label: "Not close",
     statement: "We are not close right now.",
-    asset: "./assets/family-distance-02.png",
+    asset: assetUrl("./assets/family-distance-02.png"),
     orbLeft: "29%",
     orbRight: "71%"
   },
@@ -90,7 +94,7 @@ const closenessOptions = [
     value: "complicated",
     label: "Complicated",
     statement: "It feels complicated.",
-    asset: "./assets/family-distance-03.png",
+    asset: assetUrl("./assets/family-distance-03.png"),
     orbLeft: "35%",
     orbRight: "65%"
   },
@@ -98,7 +102,7 @@ const closenessOptions = [
     value: "somewhat-close",
     label: "Somewhat close",
     statement: "It feels normal being with my family.",
-    asset: "./assets/family-distance-04.png",
+    asset: assetUrl("./assets/family-distance-04.png"),
     orbLeft: "41%",
     orbRight: "59%"
   },
@@ -106,7 +110,7 @@ const closenessOptions = [
     value: "close",
     label: "Close",
     statement: "We are close and speak often.",
-    asset: "./assets/family-distance-05.png",
+    asset: assetUrl("./assets/family-distance-05.png"),
     orbLeft: "45%",
     orbRight: "55%"
   },
@@ -114,7 +118,7 @@ const closenessOptions = [
     value: "very-close",
     label: "Very close",
     statement: "We share everything with each other.",
-    asset: "./assets/family-distance-06.png",
+    asset: assetUrl("./assets/family-distance-06.png"),
     orbLeft: "48%",
     orbRight: "52%"
   }
