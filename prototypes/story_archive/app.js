@@ -875,7 +875,7 @@ async function submitStory(event) {
     if (REMOTE_MODE) {
       dom.submissionStatus.textContent = "Sending your story to the archive...";
       await createPendingStoryInSupabase(newStory);
-      dom.submissionConfirmationText.textContent = "It has been sent to Supabase with a pending status and will only appear publicly after review.";
+      dom.submissionConfirmationText.textContent = "Your story is now pending review and will appear publicly after approval, usually within one day.";
       await refreshApprovedStories();
     } else {
       const localStories = getLocalStories();

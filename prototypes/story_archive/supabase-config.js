@@ -1,7 +1,7 @@
 export const STORY_ARCHIVE_SUPABASE = {
-  enabled: false,
-  url: "",
-  anonKey: "",
+  enabled: true,
+  url: "https://ixsvjidyelgqtynpmayi.supabase.co",
+  anonKey: "sb_publishable_ucrH-cfYXZltETN7qLokAg_7Z4f1_N8",
   table: "stories",
   includeSeedStories: true
 };

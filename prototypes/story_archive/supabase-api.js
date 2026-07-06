@@ -68,7 +68,7 @@ function buildHeaders({ write = false } = {}) {
 
   if (write) {
     headers["Content-Type"] = "application/json";
-    headers.Prefer = "return=representation";
+    headers.Prefer = "return=minimal";
   }
 
   return headers;
@@ -118,11 +118,7 @@ export async function createPendingStoryInSupabase(story) {
     throw new Error("Supabase is not configured yet.");
   }
 
-  const params = new URLSearchParams({
-    select: "id,story_text,narrative_focuses,tone,family_closeness,display_name,language,status,created_at"
-  });
-
-  const response = await fetch(buildEndpoint(params), {
+  const response = await fetch(buildEndpoint(new URLSearchParams()), {
     method: "POST",
     headers: buildHeaders({ write: true }),
     body: JSON.stringify(buildStoryPayload(story))
@@ -132,6 +128,5 @@ export async function createPendingStoryInSupabase(story) {
     throw new Error(await readErrorMessage(response));
   }
 
-  const rows = await response.json();
-  return Array.isArray(rows) && rows[0] ? parseStoryRow(rows[0]) : null;
+  return story;
 }
