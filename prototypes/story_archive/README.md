@@ -74,13 +74,17 @@ Setup steps:
    - `anonKey`: your publishable / anon key
 5. Set `enabled: true`.
 6. Keep `table: "stories"` unless you rename the table.
-7. Leave `includeSeedStories: true` if you want the sample stories to remain visible until your Supabase table is populated. Set it to `false` once you no longer want the local seed stories mixed in.
+7. Set `includeSeedStories` based on whether you want placeholder sample stories mixed into the live archive. It is now set to `false` by default so only real approved stories appear.
+8. Re-run [supabase-schema.sql](/Users/lydukhanhhan/Documents/MA_ResearchLog/prototypes/story_archive/supabase-schema.sql) if you want to use the built-in admin review page. The updated policies allow authenticated admin users to read pending stories and change their status.
+9. In Supabase, create one admin user in `Authentication` → `Users`.
+10. In Supabase `Authentication` settings, disable public signups if you want only manually created admin accounts to be able to sign in.
 
 Important:
 
 - use the publishable / anon key only
 - do not put the `service_role` key in frontend code
-- moderation is manual for now: approve or reject pending rows in the Supabase dashboard
+- create admin users manually in Supabase Auth
+- do not expose the admin account password publicly
 
 ## Data model
 
@@ -92,6 +96,8 @@ Every story follows this structure:
 {
   id: string,
   storyText: string,
+  promptText?: string,
+  showPrompt?: boolean,
   narrativeFocuses: string[],
   tone: string,
   familyCloseness: string,
@@ -107,6 +113,11 @@ Runtime data behavior:
 - approved sample stories are loaded from the static data file
 - if Supabase is configured, approved remote stories are fetched from the `stories` table
 - if Supabase is configured, submitted stories are inserted into Supabase with `status: "pending"`
+- if a story includes a prompt or guiding question, it can be stored separately as `promptText`
+- prompts only appear publicly when `showPrompt` is enabled for that story in the admin editor
+- if a visitor submits a story after using the Hint button, that hint is stored with the submission as `promptText`
+- if Supabase is configured and an admin user signs in, pending remote stories can be reviewed from the built-in admin page
+- if Supabase is configured and an admin user signs in, the admin page can also load the full story library and edit stories directly
 - if Supabase is not configured, submitted stories are saved to `localStorage` with `status: "pending"`
 - locally approved stories from the admin panel are merged into the public gallery and postcard matching results only in local prototype mode
 - pending and rejected stories never appear in the public archive
@@ -140,14 +151,14 @@ The UI code in [app.js](/Users/lydukhanhhan/Documents/MA_ResearchLog/prototypes/
 2. Supabase mode
    - approved stories come from the Supabase `stories` table
    - submissions are inserted into Supabase as `pending`
+   - authenticated admin users can review pending stories and edit existing stories directly from the admin page
 
 The frontend still uses the same app-level story shape, and [supabase-api.js](/Users/lydukhanhhan/Documents/MA_ResearchLog/prototypes/story_archive/supabase-api.js) maps between database snake_case and UI camelCase fields.
 
 ## Current limitations
 
-- there is still no admin auth flow in the frontend
-- moderation is manual in the Supabase dashboard
+- the admin page uses Supabase Auth email/password sign-in
+- if public signups stay enabled in Supabase, any authenticated user could access moderation
 - there is no spam protection or rate limiting yet
 - if Supabase is not configured, submissions remain browser-local and do not sync across devices
-- the admin panel is only a prototype tool for local testing when Supabase mode is off
-- sample stories are hand-authored seed data
+- sample stories remain available in [data/stories.js](/Users/lydukhanhhan/Documents/MA_ResearchLog/prototypes/story_archive/data/stories.js) but are disabled by default in live Supabase mode

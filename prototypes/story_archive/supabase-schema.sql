@@ -1,6 +1,8 @@
 create table if not exists public.stories (
   id text primary key,
   story_text text not null check (char_length(trim(story_text)) > 0),
+  prompt_text text,
+  show_prompt boolean not null default false,
   narrative_focuses text[] not null check (cardinality(narrative_focuses) between 1 and 3),
   tone text not null check (tone in ('positive', 'neutral', 'negative')),
   family_closeness text not null check (family_closeness in ('distant', 'not-close', 'complicated', 'somewhat-close', 'close', 'very-close')),
@@ -10,8 +12,13 @@ create table if not exists public.stories (
   created_at timestamptz not null default now()
 );
 
+alter table public.stories add column if not exists prompt_text text;
+alter table public.stories add column if not exists show_prompt boolean not null default false;
+
 grant usage on schema public to anon;
 grant select, insert on public.stories to anon;
+grant usage on schema public to authenticated;
+grant select, update on public.stories to authenticated;
 
 alter table public.stories enable row level security;
 
@@ -29,4 +36,17 @@ for insert
 to anon
 with check (status = 'pending');
 
--- Approve or reject stories manually in the Supabase dashboard for now.
+drop policy if exists "Authenticated users can read all stories" on public.stories;
+create policy "Authenticated users can read all stories"
+on public.stories
+for select
+to authenticated
+using (true);
+
+drop policy if exists "Authenticated users can update story status" on public.stories;
+create policy "Authenticated users can update story status"
+on public.stories
+for update
+to authenticated
+using (true)
+with check (status in ('approved', 'pending', 'rejected'));

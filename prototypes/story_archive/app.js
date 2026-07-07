@@ -1,13 +1,21 @@
 import { APPROVED_STORIES } from "./data/stories.js";
 import {
   createPendingStoryInSupabase,
+  fetchAllStoriesFromSupabase,
+  fetchPendingStoriesFromSupabase,
   fetchApprovedStoriesFromSupabase,
   isSupabaseEnabled,
-  shouldIncludeSeedStories
+  refreshAdminSession,
+  signInAdminWithPassword,
+  signOutAdmin,
+  shouldIncludeSeedStories,
+  updateStoryInSupabase,
+  updateStoryStatusInSupabase
 } from "./supabase-api.js";
 
 const STORAGE_KEY = "story-archive-submissions-v1";
 const ADMIN_FLAG_KEY = "story-archive-admin-visible-v1";
+const ADMIN_SESSION_KEY = "story-archive-admin-session-v1";
 const REMOTE_MODE = isSupabaseEnabled();
 
 function assetUrl(path) {
@@ -175,9 +183,31 @@ const dom = {
   galleryEmptyState: document.getElementById("galleryEmptyState"),
   adminViewButton: document.querySelector(".nav-link-admin"),
   adminToggleButton: document.getElementById("adminToggleButton"),
+  adminAuthPanel: document.getElementById("adminAuthPanel"),
+  adminPanel: document.getElementById("adminPanel"),
+  adminLoginForm: document.getElementById("adminLoginForm"),
+  adminAuthStatus: document.getElementById("adminAuthStatus"),
+  adminSessionMeta: document.getElementById("adminSessionMeta"),
+  adminRefreshButton: document.getElementById("adminRefreshButton"),
+  adminSignOutButton: document.getElementById("adminSignOutButton"),
+  adminViewMode: document.getElementById("adminViewMode"),
+  adminStatusFilter: document.getElementById("adminStatusFilter"),
+  adminStatusFilterLabel: document.getElementById("adminStatusFilterLabel"),
   adminMeta: document.getElementById("adminMeta"),
+  adminTableHead: document.getElementById("adminTableHead"),
   adminList: document.getElementById("adminList"),
   adminEmptyState: document.getElementById("adminEmptyState"),
+  adminStoryEditor: document.getElementById("adminStoryEditor"),
+  adminStoryEditorForm: document.getElementById("adminStoryEditorForm"),
+  adminEditorStatus: document.getElementById("adminEditorStatus"),
+  adminEditStoryText: document.getElementById("adminEditStoryText"),
+  adminEditPromptText: document.getElementById("adminEditPromptText"),
+  adminEditShowPrompt: document.getElementById("adminEditShowPrompt"),
+  adminEditLanguage: document.getElementById("adminEditLanguage"),
+  adminEditFamilyCloseness: document.getElementById("adminEditFamilyCloseness"),
+  adminEditTone: document.getElementById("adminEditTone"),
+  adminEditStatus: document.getElementById("adminEditStatus"),
+  adminEditFocusOptions: document.getElementById("adminEditFocusOptions"),
   storyDialog: document.getElementById("storyDialog"),
   storyDialogContent: document.getElementById("storyDialogContent")
 };
@@ -200,19 +230,88 @@ const state = {
   galleryFiltersOpen: true,
   postcard: { ...defaultPostcardState },
   remoteApprovedStories: [],
+  remotePendingStories: [],
+  remoteAllStories: [],
   remoteLoadState: REMOTE_MODE ? "loading" : "disabled",
+  adminLoadState: REMOTE_MODE ? "idle" : "disabled",
+  adminSession: REMOTE_MODE ? readStoredAdminSession() : null,
+  adminViewMode: "pending",
+  adminStatusFilter: "all",
+  adminEditingStoryId: null,
+  activeSubmissionHint: "",
   galleryFilters: {
     focus: "all",
     tone: "all",
     familyCloseness: "all"
   },
-  adminVisible: shouldShowAdminPanel()
+  adminVisible: REMOTE_MODE ? true : shouldShowAdminPanel()
 };
 
 function shouldShowAdminPanel() {
   if (REMOTE_MODE) return false;
   const params = new URLSearchParams(window.location.search);
   return params.get("admin") === "1" || window.localStorage.getItem(ADMIN_FLAG_KEY) === "true";
+}
+
+function readStoredAdminSession() {
+  try {
+    const raw = window.localStorage.getItem(ADMIN_SESSION_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : null;
+  } catch (error) {
+    console.error("Could not read the saved admin session.", error);
+    return null;
+  }
+}
+
+function saveAdminSession(session) {
+  state.adminSession = session;
+  window.localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify(session));
+}
+
+function clearAdminSession() {
+  state.adminSession = null;
+  state.remotePendingStories = [];
+  state.remoteAllStories = [];
+  state.adminLoadState = REMOTE_MODE ? "idle" : "disabled";
+  window.localStorage.removeItem(ADMIN_SESSION_KEY);
+}
+
+async function getValidAdminSession() {
+  if (!state.adminSession) {
+    throw new Error("Please sign in to review submissions.");
+  }
+
+  if (Number(state.adminSession.expiresAt) > Date.now() + 30_000) {
+    return state.adminSession;
+  }
+
+  if (!state.adminSession.refreshToken) {
+    clearAdminSession();
+    throw new Error("Your admin session expired. Please sign in again.");
+  }
+
+  try {
+    const refreshedSession = await refreshAdminSession(state.adminSession.refreshToken);
+    saveAdminSession(refreshedSession);
+    return refreshedSession;
+  } catch (error) {
+    clearAdminSession();
+    throw error instanceof Error
+      ? error
+      : new Error("Your admin session expired. Please sign in again.");
+  }
+}
+
+async function restoreAdminSession() {
+  if (!REMOTE_MODE || !state.adminSession) return;
+
+  try {
+    await getValidAdminSession();
+  } catch (error) {
+    console.error("Could not restore the admin session.", error);
+  }
 }
 
 function setMobileMenu(open) {
@@ -274,12 +373,52 @@ function getPendingStories() {
   return getLocalStories().filter((story) => story.status === "pending");
 }
 
+function getAdminStories() {
+  if (REMOTE_MODE) {
+    const stories = state.adminViewMode === "library"
+      ? state.remoteAllStories
+      : state.remotePendingStories;
+
+    return stories.filter((story) => {
+      if (state.adminViewMode !== "library" || state.adminStatusFilter === "all") {
+        return true;
+      }
+
+      return story.status === state.adminStatusFilter;
+    });
+  }
+
+  const stories = getLocalStories();
+  return stories.filter((story) => {
+    if (state.adminViewMode !== "library") {
+      return story.status === "pending";
+    }
+
+    if (state.adminStatusFilter === "all") {
+      return true;
+    }
+
+    return story.status === state.adminStatusFilter;
+  });
+}
+
 function getStoryById(storyId) {
   return mergeStoriesById(
     shouldIncludeSeedStories() ? APPROVED_STORIES : [],
     state.remoteApprovedStories,
+    state.remotePendingStories,
+    state.remoteAllStories,
     REMOTE_MODE ? [] : getLocalStories()
   ).find((story) => story.id === storyId);
+}
+
+function getStoryPromptText(story) {
+  return typeof story?.promptText === "string" ? story.promptText.trim() : "";
+}
+
+function shouldShowPrompt(story, { includeHiddenPrompt = false } = {}) {
+  const promptText = getStoryPromptText(story);
+  return includeHiddenPrompt ? Boolean(promptText) : Boolean(promptText && story?.showPrompt);
 }
 
 function createStoryId() {
@@ -307,6 +446,10 @@ async function refreshApprovedStories() {
 
   if (state.activeView === "receive" && state.receiveStep === 5) {
     renderReceiveResults();
+  }
+
+  if (state.activeView === "admin") {
+    renderAdminPanel();
   }
 }
 
@@ -414,6 +557,27 @@ function renderOptionControls() {
       </span>
     </label>
   `).join("");
+
+  if (dom.adminEditFocusOptions) {
+    dom.adminEditFocusOptions.innerHTML = narrativeFocusOptions.map((option) => `
+      <label class="check-option admin-check-option">
+        <input type="checkbox" name="adminNarrativeFocuses" value="${option.value}">
+        <span class="check-box" aria-hidden="true"></span>
+        <span class="check-copy">
+          <strong>${escapeHtml(option.label.charAt(0) + option.label.slice(1).toLowerCase())}</strong>
+          <span>${escapeHtml(option.description)}</span>
+        </span>
+      </label>
+    `).join("");
+  }
+
+  fillSelect(dom.adminEditFamilyCloseness, "Choose closeness", closenessOptions, "label");
+  fillSelect(dom.adminEditTone, "Choose tone", toneOptions, "label");
+  fillSelect(dom.adminStatusFilter, "All statuses", [
+    { value: "pending", label: "Pending" },
+    { value: "approved", label: "Approved" },
+    { value: "rejected", label: "Rejected" }
+  ], "label");
 
   fillSelect(dom.galleryFocusFilter, "All narrative focuses", narrativeFocusOptions, "displayTitle");
   fillSelect(dom.galleryToneFilter, "All tones", toneOptions, "label");
@@ -599,9 +763,63 @@ function findMatchingStories(criteria) {
   return results;
 }
 
-function storyPreview(storyText) {
-  const trimmed = storyText.trim();
+function storyPreview(story, { includeHiddenPrompt = false } = {}) {
+  const promptText = shouldShowPrompt(story, { includeHiddenPrompt })
+    ? `Prompt: ${getStoryPromptText(story)} Response: `
+    : "";
+  const trimmed = `${promptText}${String(story?.storyText || "").trim()}`.trim();
   return trimmed.length > 132 ? `${trimmed.slice(0, 129)}...` : trimmed;
+}
+
+function buildAdminRow(story, { isLibraryView, remoteMode }) {
+  const focusList = story.narrativeFocuses.map((focusValue) => getFocusMeta(focusValue).label).join(", ");
+  const closeness = getClosenessMeta(story.familyCloseness).label;
+  const tone = getToneMeta(story.tone).label.charAt(0) + getToneMeta(story.tone).label.slice(1).toLowerCase();
+  const promptStatus = getStoryPromptText(story)
+    ? story.showPrompt ? "Shown" : "Hidden"
+    : "None";
+
+  return `
+    <article class="admin-card admin-row" data-status="${escapeHtml(story.status)}">
+      <div class="admin-row-cell admin-row-status">
+        <span class="admin-row-label">Status</span>
+        <strong>${escapeHtml(story.status)}</strong>
+      </div>
+      <div class="admin-row-cell">
+        <span class="admin-row-label">Language</span>
+        <span>${escapeHtml(story.language)}</span>
+      </div>
+      <div class="admin-row-cell">
+        <span class="admin-row-label">Closeness</span>
+        <span>${escapeHtml(closeness)}</span>
+      </div>
+      <div class="admin-row-cell">
+        <span class="admin-row-label">Focus</span>
+        <span>${escapeHtml(focusList)}</span>
+      </div>
+      <div class="admin-row-cell">
+        <span class="admin-row-label">Tone</span>
+        <span>${escapeHtml(tone)}</span>
+      </div>
+      <div class="admin-row-cell">
+        <span class="admin-row-label">Prompt</span>
+        <span>${escapeHtml(promptStatus)}</span>
+      </div>
+      <div class="admin-row-cell admin-row-story">
+        <span class="admin-row-label">Story</span>
+        <span>${escapeHtml(storyPreview(story, { includeHiddenPrompt: true }))}</span>
+      </div>
+      <div class="admin-row-cell admin-row-actions">
+        <span class="admin-row-label">Actions</span>
+        <div class="admin-actions">
+          <button type="button" class="admin-action" data-admin-edit="${story.id}">Edit</button>
+          ${story.status !== "approved" ? `<button type="button" class="admin-action" data-admin-action="approved" data-story-id="${story.id}">${remoteMode ? "Show" : "Show locally"}</button>` : ""}
+          ${story.status !== "rejected" ? `<button type="button" class="admin-action" data-admin-action="rejected" data-story-id="${story.id}">${remoteMode ? "Hide" : "Hide locally"}</button>` : ""}
+          <button type="button" class="admin-action" data-story-open="${story.id}" data-force-show-prompt="true">Read</button>
+        </div>
+      </div>
+    </article>
+  `;
 }
 
 function buildStoryCard(match, context) {
@@ -622,7 +840,7 @@ function buildStoryCard(match, context) {
     >
       ${showMatch ? `<span class="match-pill">${escapeHtml(match.matchType)}</span>` : ""}
       <div class="story-card-body">
-        <p class="story-card-preview">${escapeHtml(storyPreview(story.storyText))}</p>
+        <p class="story-card-preview">${escapeHtml(storyPreview(story))}</p>
       </div>
       <div class="story-card-footer">
         <div class="story-card-top-tags">
@@ -672,49 +890,140 @@ function renderGallery() {
   if (REMOTE_MODE && state.remoteLoadState === "loading") {
     dom.galleryMeta.textContent = "Loading approved stories from Supabase...";
   } else if (REMOTE_MODE && state.remoteLoadState === "error") {
-    dom.galleryMeta.textContent = `${stories.length} approved stor${stories.length === 1 ? "y" : "ies"} shown. Supabase could not be reached, so only fallback stories are visible.`;
+    dom.galleryMeta.textContent = shouldIncludeSeedStories()
+      ? `${stories.length} approved stor${stories.length === 1 ? "y" : "ies"} shown. Supabase could not be reached, so only fallback stories are visible.`
+      : "Approved stories could not be loaded right now. Please try again.";
   } else {
     dom.galleryMeta.textContent = `${stories.length} approved stor${stories.length === 1 ? "y" : "ies"} shown.`;
   }
   dom.galleryEmptyState.hidden = stories.length > 0;
 }
 
-function renderAdminPanel() {
-  if (REMOTE_MODE) {
-    dom.adminList.innerHTML = "";
-    dom.adminMeta.textContent = "Moderation is now handled in Supabase. Use the dashboard to approve or reject pending stories.";
-    dom.adminEmptyState.hidden = false;
-    dom.adminEmptyState.querySelector("h4").textContent = "Supabase moderation is active.";
-    dom.adminEmptyState.querySelector("p").textContent = "This local review panel is disabled while the project is connected to Supabase.";
+async function refreshAdminData() {
+  if (!REMOTE_MODE || !state.adminSession) {
+    state.remotePendingStories = [];
+    state.remoteAllStories = [];
+    state.adminLoadState = REMOTE_MODE ? "idle" : "disabled";
+    renderAdminPanel();
     return;
   }
 
-  const pendingStories = getPendingStories();
-  dom.adminList.innerHTML = pendingStories.map((story) => {
-    const focusList = story.narrativeFocuses.map((focusValue) => getFocusMeta(focusValue).label).join(", ");
-    const closeness = getClosenessMeta(story.familyCloseness).label;
-    return `
-      <article class="admin-card">
-        <h4>Anonymous submission</h4>
-        <p><strong>Language:</strong> ${escapeHtml(story.language)}</p>
-        <p><strong>Closeness:</strong> ${escapeHtml(closeness)}</p>
-        <p><strong>Focus:</strong> ${escapeHtml(focusList)}</p>
-        <p><strong>Tone:</strong> ${escapeHtml(getToneMeta(story.tone).label.charAt(0) + getToneMeta(story.tone).label.slice(1).toLowerCase())}</p>
-        <p>${escapeHtml(story.storyText)}</p>
-        <div class="admin-actions">
-          <button type="button" class="admin-action" data-admin-action="approved" data-story-id="${story.id}">Approve locally</button>
-          <button type="button" class="admin-action" data-admin-action="rejected" data-story-id="${story.id}">Reject locally</button>
-          <button type="button" class="admin-action" data-story-open="${story.id}">Read as letter</button>
-        </div>
-      </article>
-    `;
-  }).join("");
+  state.adminLoadState = "loading";
+  renderAdminPanel();
 
-  dom.adminMeta.textContent = `${pendingStories.length} pending local submission${pendingStories.length === 1 ? "" : "s"}.`;
-  dom.adminEmptyState.hidden = pendingStories.length > 0;
+  try {
+    const session = await getValidAdminSession();
+    const [pendingStories, allStories] = await Promise.all([
+      fetchPendingStoriesFromSupabase(session.accessToken),
+      fetchAllStoriesFromSupabase(session.accessToken)
+    ]);
+    state.remotePendingStories = pendingStories;
+    state.remoteAllStories = allStories;
+    state.adminLoadState = "ready";
+  } catch (error) {
+    state.adminLoadState = "error";
+    state.remotePendingStories = [];
+    state.remoteAllStories = [];
+    dom.adminAuthStatus.textContent = error instanceof Error
+      ? error.message
+      : "Could not load pending submissions right now.";
+  }
+
+  renderAdminPanel();
 }
 
-function renderStoryDialog(storyId) {
+function renderAdminPanel() {
+  const isLibraryView = state.adminViewMode === "library";
+  const adminToolbarHeading = dom.adminPanel?.querySelector(".admin-toolbar-copy h3");
+  if (dom.adminViewMode) {
+    dom.adminViewMode.value = state.adminViewMode;
+  }
+  if (dom.adminStatusFilter) {
+    dom.adminStatusFilter.value = state.adminStatusFilter;
+  }
+  if (dom.adminStatusFilterLabel) {
+    dom.adminStatusFilterLabel.hidden = !isLibraryView;
+  }
+  if (adminToolbarHeading) {
+    adminToolbarHeading.textContent = isLibraryView ? "Story library" : "Pending submissions";
+  }
+
+  if (REMOTE_MODE) {
+    const isSignedIn = Boolean(state.adminSession);
+    dom.adminAuthPanel.hidden = isSignedIn;
+    dom.adminPanel.hidden = !isSignedIn;
+
+    if (!isSignedIn) {
+      dom.adminTableHead.hidden = true;
+      dom.adminList.innerHTML = "";
+      dom.adminMeta.textContent = "";
+      dom.adminEmptyState.hidden = false;
+      dom.adminEmptyState.querySelector("h4").textContent = "Admin sign-in required.";
+      dom.adminEmptyState.querySelector("p").textContent = "Sign in with your Supabase admin email and password to review submissions.";
+      return;
+    }
+
+    dom.adminAuthStatus.textContent = "";
+    dom.adminSessionMeta.textContent = state.adminSession?.user?.email
+      ? `Signed in as ${state.adminSession.user.email}`
+      : "Signed in to review pending submissions.";
+
+    if (state.adminLoadState === "loading") {
+      dom.adminMeta.textContent = isLibraryView ? "Loading story library..." : "Loading pending submissions...";
+      dom.adminTableHead.hidden = true;
+      dom.adminList.innerHTML = "";
+      dom.adminEmptyState.hidden = true;
+      return;
+    }
+
+    if (state.adminLoadState === "error") {
+      dom.adminMeta.textContent = "Pending submissions could not be loaded right now.";
+      dom.adminTableHead.hidden = true;
+      dom.adminList.innerHTML = "";
+      dom.adminEmptyState.hidden = false;
+      dom.adminEmptyState.querySelector("h4").textContent = "Could not load submissions.";
+      dom.adminEmptyState.querySelector("p").textContent = "Try refreshing the queue or sign in again.";
+      return;
+    }
+
+    const stories = getAdminStories();
+    dom.adminTableHead.hidden = stories.length === 0;
+    dom.adminList.innerHTML = stories.map((story) => buildAdminRow(story, {
+      isLibraryView,
+      remoteMode: true
+    })).join("");
+
+    dom.adminMeta.textContent = isLibraryView
+      ? `${stories.length} stor${stories.length === 1 ? "y" : "ies"} in the library view.`
+      : `${stories.length} pending submission${stories.length === 1 ? "" : "s"}.`;
+    dom.adminEmptyState.hidden = stories.length > 0;
+    dom.adminEmptyState.querySelector("h4").textContent = isLibraryView ? "No stories in this filter." : "No pending submissions.";
+    dom.adminEmptyState.querySelector("p").textContent = isLibraryView
+      ? "Try a different status filter or submit a new story."
+      : "New stories will appear here as soon as they are submitted.";
+    return;
+  }
+
+  dom.adminAuthPanel.hidden = true;
+  dom.adminPanel.hidden = false;
+  const stories = getAdminStories();
+  dom.adminTableHead.hidden = stories.length === 0;
+  dom.adminList.innerHTML = stories.map((story) => buildAdminRow(story, {
+    isLibraryView,
+    remoteMode: false
+  })).join("");
+
+  dom.adminMeta.textContent = isLibraryView
+    ? `${stories.length} local stor${stories.length === 1 ? "y" : "ies"} in the library view.`
+    : `${stories.length} pending local submission${stories.length === 1 ? "" : "s"}.`;
+  dom.adminEmptyState.hidden = stories.length > 0;
+  dom.adminEmptyState.querySelector("h4").textContent = isLibraryView ? "No stories in this filter." : "No pending submissions.";
+  dom.adminEmptyState.querySelector("p").textContent = isLibraryView
+    ? "Try a different status filter or submit a new story."
+    : "Submit a story first, then return here to approve or reject it locally.";
+}
+
+function renderStoryDialog(storyId, { forceShowPrompt = false } = {}) {
   const story = getStoryById(storyId);
   if (!story) return;
 
@@ -728,6 +1037,15 @@ function renderStoryDialog(storyId) {
     .filter(Boolean)
     .map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`)
     .join("");
+  const promptText = getStoryPromptText(story);
+  const promptMarkup = shouldShowPrompt(story, { includeHiddenPrompt: forceShowPrompt })
+    ? `
+      <section class="letter-prompt-section">
+        <h3>Prompt</h3>
+        <p>${escapeHtml(promptText)}</p>
+      </section>
+    `
+    : "";
 
   dom.storyDialogContent.innerHTML = `
     <header class="letter-header">
@@ -738,6 +1056,7 @@ function renderStoryDialog(storyId) {
         ${focusTags}
       </div>
     </header>
+    ${promptMarkup}
     <div class="letter-body">${paragraphs}</div>
   `;
 
@@ -753,7 +1072,7 @@ function renderStoryDialog(storyId) {
 }
 
 function setView(viewName) {
-  if (viewName === "admin" && !state.adminVisible) {
+  if (viewName === "admin" && !state.adminVisible && !REMOTE_MODE) {
     viewName = "home";
   }
 
@@ -778,10 +1097,22 @@ function setView(viewName) {
   if (heading) heading.focus?.();
 
   if (viewName === "gallery") renderGallery();
-  if (viewName === "admin") renderAdminPanel();
+  if (viewName === "admin") {
+    renderAdminPanel();
+    if (REMOTE_MODE && state.adminSession && state.adminLoadState !== "loading") {
+      void refreshAdminData();
+    }
+  }
 }
 
 function updateAdminVisibility() {
+  if (REMOTE_MODE) {
+    dom.adminViewButton.hidden = true;
+    dom.adminToggleButton.hidden = false;
+    dom.adminToggleButton.textContent = state.adminSession ? "Open admin" : "Admin login";
+    return;
+  }
+
   dom.adminViewButton.hidden = !state.adminVisible;
   dom.adminToggleButton.hidden = !state.adminVisible;
 
@@ -807,6 +1138,7 @@ function resetSubmissionForm() {
   dom.submissionStatus.textContent = "";
   dom.storyHintOutput.hidden = true;
   dom.storyHintOutput.textContent = "";
+  state.activeSubmissionHint = "";
 }
 
 function validateFocusSelection() {
@@ -826,10 +1158,154 @@ function validateFocusSelection() {
   }
 }
 
+function validateAdminFocusSelection() {
+  const checked = [...dom.adminStoryEditorForm.querySelectorAll('input[name="adminNarrativeFocuses"]:checked')];
+  const allInputs = [...dom.adminStoryEditorForm.querySelectorAll('input[name="adminNarrativeFocuses"]')];
+
+  allInputs.forEach((input) => {
+    input.disabled = checked.length >= 3 && !input.checked;
+  });
+
+  return checked.length >= 1 && checked.length <= 3;
+}
+
+function syncAdminPromptVisibilityControl() {
+  if (!dom.adminEditPromptText || !dom.adminEditShowPrompt) return;
+  const hasPrompt = dom.adminEditPromptText.value.trim().length > 0;
+  dom.adminEditShowPrompt.disabled = !hasPrompt;
+  if (!hasPrompt) {
+    dom.adminEditShowPrompt.checked = false;
+  }
+}
+
 function insertStoryHint() {
   const hint = STORY_HINTS[Math.floor(Math.random() * STORY_HINTS.length)];
+  state.activeSubmissionHint = hint;
   dom.storyHintOutput.hidden = false;
   dom.storyHintOutput.textContent = hint;
+}
+
+function openAdminEditor(storyId) {
+  const story = getStoryById(storyId);
+  if (!story || !dom.adminStoryEditorForm) return;
+
+  state.adminEditingStoryId = storyId;
+  dom.adminEditStoryText.value = story.storyText;
+  dom.adminEditPromptText.value = getStoryPromptText(story);
+  dom.adminEditShowPrompt.checked = Boolean(story.showPrompt && getStoryPromptText(story));
+  syncAdminPromptVisibilityControl();
+  dom.adminEditLanguage.value = story.language;
+  dom.adminEditFamilyCloseness.value = story.familyCloseness;
+  dom.adminEditTone.value = story.tone;
+  dom.adminEditStatus.value = story.status;
+  dom.adminEditorStatus.textContent = "";
+
+  [...dom.adminStoryEditorForm.querySelectorAll('input[name="adminNarrativeFocuses"]')].forEach((input) => {
+    input.checked = story.narrativeFocuses.includes(input.value);
+  });
+
+  validateAdminFocusSelection();
+
+  if (dom.adminStoryEditor.open) {
+    dom.adminStoryEditor.close();
+  }
+
+  if (typeof dom.adminStoryEditor.showModal === "function") {
+    dom.adminStoryEditor.showModal();
+  } else {
+    dom.adminStoryEditor.setAttribute("open", "true");
+  }
+}
+
+function closeAdminEditor() {
+  state.adminEditingStoryId = null;
+  dom.adminEditorStatus.textContent = "";
+  dom.adminStoryEditor.close?.();
+}
+
+async function saveAdminStoryEdits(event) {
+  event.preventDefault();
+
+  if (!state.adminEditingStoryId) {
+    dom.adminEditorStatus.textContent = "No story is selected for editing.";
+    return;
+  }
+
+  const formData = new FormData(dom.adminStoryEditorForm);
+  const storyText = String(formData.get("adminStoryText") || "").trim();
+  const promptText = String(formData.get("adminPromptText") || "").trim();
+  const showPrompt = promptText ? formData.get("adminShowPrompt") === "on" : false;
+  const language = String(formData.get("adminLanguage") || "").trim();
+  const familyCloseness = String(formData.get("adminFamilyCloseness") || "").trim();
+  const tone = String(formData.get("adminTone") || "").trim();
+  const status = String(formData.get("adminStatus") || "").trim();
+  const narrativeFocuses = formData.getAll("adminNarrativeFocuses").map(String);
+
+  if (!storyText || !language || !familyCloseness || !tone || !status) {
+    dom.adminEditorStatus.textContent = "Complete all fields before saving.";
+    return;
+  }
+
+  if (narrativeFocuses.length < 1 || narrativeFocuses.length > 3) {
+    dom.adminEditorStatus.textContent = "Choose between 1 and 3 narrative focuses.";
+    return;
+  }
+
+  const submitButton = dom.adminStoryEditorForm.querySelector('button[type="submit"]');
+  if (submitButton) submitButton.disabled = true;
+  dom.adminEditorStatus.textContent = "Saving changes...";
+
+  try {
+    if (REMOTE_MODE) {
+      const session = await getValidAdminSession();
+      await updateStoryInSupabase(state.adminEditingStoryId, {
+        storyText,
+        promptText,
+        showPrompt,
+        narrativeFocuses,
+        tone,
+        familyCloseness,
+        displayName: "Anonymous",
+        language,
+        status
+      }, session.accessToken);
+      await Promise.all([
+        refreshAdminData(),
+        refreshApprovedStories()
+      ]);
+    } else {
+      const updatedStories = getLocalStories().map((story) => {
+        if (story.id !== state.adminEditingStoryId) return story;
+        return {
+          ...story,
+          storyText,
+          promptText,
+          showPrompt,
+          narrativeFocuses,
+          tone,
+          familyCloseness,
+          language,
+          status
+        };
+      });
+
+      safeWriteStorage(updatedStories);
+      renderAdminPanel();
+      renderGallery();
+      if (state.activeView === "receive" && state.receiveStep === 5) {
+        renderReceiveResults();
+      }
+    }
+
+    closeAdminEditor();
+  } catch (error) {
+    console.error("Could not save story edits.", error);
+    dom.adminEditorStatus.textContent = error instanceof Error
+      ? error.message
+      : "Could not save changes right now.";
+  } finally {
+    if (submitButton) submitButton.disabled = false;
+  }
 }
 
 async function submitStory(event) {
@@ -859,6 +1335,8 @@ async function submitStory(event) {
   const newStory = {
     id: createStoryId(),
     storyText,
+    promptText: state.activeSubmissionHint,
+    showPrompt: false,
     narrativeFocuses,
     tone,
     familyCloseness,
@@ -898,7 +1376,79 @@ async function submitStory(event) {
   }
 }
 
-function approveOrRejectLocalStory(storyId, nextStatus) {
+async function submitAdminLogin(event) {
+  event.preventDefault();
+
+  const formData = new FormData(dom.adminLoginForm);
+  const email = String(formData.get("adminEmail") || formData.get("email") || "").trim();
+  const password = String(formData.get("adminPassword") || formData.get("password") || "");
+
+  if (!email || !password) {
+    dom.adminAuthStatus.textContent = "Enter both your email and password.";
+    return;
+  }
+
+  const submitButton = dom.adminLoginForm.querySelector('button[type="submit"]');
+  if (submitButton) submitButton.disabled = true;
+  dom.adminAuthStatus.textContent = "Signing in...";
+
+  try {
+    const session = await signInAdminWithPassword({ email, password });
+    saveAdminSession(session);
+    dom.adminAuthStatus.textContent = "";
+    dom.adminLoginForm.reset();
+    updateAdminVisibility();
+    renderAdminPanel();
+    await refreshAdminData();
+    await refreshApprovedStories();
+  } catch (error) {
+    console.error("Could not sign in as admin.", error);
+    dom.adminAuthStatus.textContent = error instanceof Error
+      ? error.message
+      : "Could not sign in right now.";
+    clearAdminSession();
+    updateAdminVisibility();
+    renderAdminPanel();
+  } finally {
+    if (submitButton) submitButton.disabled = false;
+  }
+}
+
+async function handleAdminSignOut() {
+  const accessToken = state.adminSession?.accessToken || "";
+  try {
+    await signOutAdmin(accessToken);
+  } catch (error) {
+    console.error("Could not sign out cleanly.", error);
+  }
+
+  clearAdminSession();
+  dom.adminAuthStatus.textContent = "";
+  updateAdminVisibility();
+  renderAdminPanel();
+}
+
+async function approveOrRejectStory(storyId, nextStatus) {
+  if (REMOTE_MODE) {
+    dom.adminMeta.textContent = nextStatus === "approved" ? "Approving story..." : "Rejecting story...";
+
+    try {
+      const session = await getValidAdminSession();
+      await updateStoryStatusInSupabase(storyId, nextStatus, session.accessToken);
+      await Promise.all([
+        refreshAdminData(),
+        refreshApprovedStories()
+      ]);
+    } catch (error) {
+      console.error("Could not update story status.", error);
+      dom.adminMeta.textContent = error instanceof Error
+        ? error.message
+        : "Could not update story status right now.";
+      renderAdminPanel();
+    }
+    return;
+  }
+
   const localStories = getLocalStories();
   const updatedStories = localStories.map((story) => {
     if (story.id !== storyId) return story;
@@ -982,13 +1532,21 @@ function bindEvents() {
 
     const openStory = event.target.closest("[data-story-open]");
     if (openStory) {
-      renderStoryDialog(openStory.dataset.storyOpen);
+      renderStoryDialog(openStory.dataset.storyOpen, {
+        forceShowPrompt: openStory.dataset.forceShowPrompt === "true"
+      });
       return;
     }
 
     const adminAction = event.target.closest("[data-admin-action]");
     if (adminAction) {
-      approveOrRejectLocalStory(adminAction.dataset.storyId, adminAction.dataset.adminAction);
+      void approveOrRejectStory(adminAction.dataset.storyId, adminAction.dataset.adminAction);
+      return;
+    }
+
+    const adminEdit = event.target.closest("[data-admin-edit]");
+    if (adminEdit) {
+      openAdminEditor(adminEdit.dataset.adminEdit);
     }
   });
 
@@ -1020,6 +1578,13 @@ function bindEvents() {
 
   dom.storyHintButton.addEventListener("click", insertStoryHint);
   dom.submissionForm.addEventListener("submit", submitStory);
+  dom.adminEditPromptText?.addEventListener("input", syncAdminPromptVisibilityControl);
+  dom.adminLoginForm?.addEventListener("submit", (event) => {
+    void submitAdminLogin(event);
+  });
+  dom.adminStoryEditorForm?.addEventListener("submit", (event) => {
+    void saveAdminStoryEdits(event);
+  });
   dom.galleryFiltersToggle?.addEventListener("click", () => {
     setGalleryFiltersOpen(!state.galleryFiltersOpen);
   });
@@ -1027,6 +1592,12 @@ function bindEvents() {
   dom.submissionForm.addEventListener("change", (event) => {
     if (event.target.name === "narrativeFocuses") {
       validateFocusSelection();
+    }
+  });
+
+  dom.adminStoryEditorForm?.addEventListener("change", (event) => {
+    if (event.target.name === "adminNarrativeFocuses") {
+      validateAdminFocusSelection();
     }
   });
 
@@ -1059,6 +1630,23 @@ function bindEvents() {
 
   dom.adminToggleButton.addEventListener("click", () => {
     setView("admin");
+  });
+  dom.adminViewMode?.addEventListener("change", () => {
+    state.adminViewMode = dom.adminViewMode.value;
+    renderAdminPanel();
+    if (REMOTE_MODE && state.adminSession) {
+      void refreshAdminData();
+    }
+  });
+  dom.adminStatusFilter?.addEventListener("change", () => {
+    state.adminStatusFilter = dom.adminStatusFilter.value;
+    renderAdminPanel();
+  });
+  dom.adminRefreshButton?.addEventListener("click", () => {
+    void refreshAdminData();
+  });
+  dom.adminSignOutButton?.addEventListener("click", () => {
+    void handleAdminSignOut();
   });
 
   window.addEventListener("hashchange", bootFromLocation);
@@ -1106,6 +1694,10 @@ function bindEvents() {
 }
 
 async function init() {
+  if (REMOTE_MODE) {
+    await restoreAdminSession();
+  }
+
   renderOptionControls();
   updateReceiveCloseness(state.postcard.familyCloseness);
   updateReceiveFocus(state.postcard.selectedNarrativeFocus);
@@ -1121,6 +1713,9 @@ async function init() {
 
   if (REMOTE_MODE) {
     await refreshApprovedStories();
+    if (state.adminSession) {
+      await refreshAdminData();
+    }
   }
 }
 

@@ -442,16 +442,68 @@
 
     <section class="view-panel admin-view" data-view="admin" hidden aria-labelledby="admin-title">
       <div class="section-heading section-heading-wide">
-        <h2 id="admin-title" class="page-title gallery-title" tabindex="-1">LOCAL REVIEW PANEL</h2>
-        <p>This local review panel is only used in browser-storage prototype mode.</p>
+        <h2 id="admin-title" class="page-title gallery-title" tabindex="-1">ADMIN REVIEW</h2>
+        <p>Sign in to review pending submissions and approve or reject stories without opening Supabase.</p>
       </div>
 
-      <div class="paper-panel">
+      <div class="paper-panel" id="adminAuthPanel">
+        <form id="adminLoginForm" class="admin-login-form" novalidate>
+          <label>
+            <span>Email</span>
+            <input id="adminEmail" name="adminEmail" type="email" autocomplete="username" required>
+          </label>
+          <label>
+            <span>Password</span>
+            <input id="adminPassword" name="adminPassword" type="password" autocomplete="current-password" required>
+          </label>
+          <div class="admin-login-actions">
+            <button type="submit" class="action-button">Sign in</button>
+            <p id="adminAuthStatus" class="selection-note" aria-live="polite"></p>
+          </div>
+        </form>
+      </div>
+
+      <div class="paper-panel" id="adminPanel" hidden>
+        <div class="admin-toolbar">
+          <div class="admin-toolbar-copy">
+            <h3>Pending submissions</h3>
+            <p id="adminSessionMeta" class="selection-note">Signed in to review pending submissions.</p>
+          </div>
+          <div class="admin-toolbar-controls">
+            <label>
+              <span>View</span>
+              <select id="adminViewMode" name="adminViewMode">
+                <option value="pending" selected>Pending review</option>
+                <option value="library">Full library</option>
+              </select>
+            </label>
+            <label id="adminStatusFilterLabel" hidden>
+              <span>Status</span>
+              <select id="adminStatusFilter" name="adminStatusFilter">
+                <option value="all" selected>All statuses</option>
+              </select>
+            </label>
+          </div>
+          <div class="admin-toolbar-actions">
+            <button type="button" class="action-button action-button-secondary" id="adminRefreshButton">Refresh</button>
+            <button type="button" class="action-button action-button-secondary" id="adminSignOutButton">Sign out</button>
+          </div>
+        </div>
         <p id="adminMeta" class="results-meta"></p>
+        <div class="admin-table-head" id="adminTableHead">
+          <span>Status</span>
+          <span>Language</span>
+          <span>Closeness</span>
+          <span>Focus</span>
+          <span>Tone</span>
+          <span>Prompt</span>
+          <span>Story</span>
+          <span>Actions</span>
+        </div>
         <div id="adminList" class="admin-list"></div>
         <div id="adminEmptyState" class="empty-state" hidden>
           <h4>No pending submissions.</h4>
-          <p>Submit a story first, then return here to approve or reject it locally.</p>
+          <p>New stories will appear here as soon as they are submitted.</p>
         </div>
       </div>
     </section>
@@ -460,7 +512,7 @@
   <footer class="site-footer">
     <a class="footer-link" href="../../research-log/index.html">Back to research log</a>
     <p>Stories Mailbox is now collecting submissions. Approved stories appear publicly after review.</p>
-    <button type="button" class="footer-link" id="adminToggleButton" hidden>Open review panel</button>
+    <button type="button" class="footer-link" id="adminToggleButton" hidden>Admin login</button>
   </footer>
 
   <dialog id="storyDialog" class="story-dialog" aria-labelledby="storyDialogTitle">
@@ -468,6 +520,74 @@
       <button type="submit" class="dialog-close-button" aria-label="Close story">Close</button>
     </form>
     <article id="storyDialogContent" class="letter-sheet"></article>
+  </dialog>
+
+  <dialog id="adminStoryEditor" class="story-dialog admin-story-editor" aria-labelledby="adminEditorTitle">
+    <form method="dialog" class="dialog-close-form">
+      <button type="submit" class="dialog-close-button" aria-label="Close editor">Close</button>
+    </form>
+    <form id="adminStoryEditorForm" class="letter-sheet admin-editor-sheet" novalidate>
+      <div class="admin-editor-header">
+        <h2 id="adminEditorTitle">Edit story</h2>
+        <p>Edit text, categories, and visibility status directly from the library.</p>
+      </div>
+
+      <label class="admin-editor-field admin-editor-field-wide">
+        <span>Story text</span>
+        <textarea id="adminEditStoryText" name="adminStoryText" rows="8" required></textarea>
+      </label>
+
+      <label class="admin-editor-field admin-editor-field-wide">
+        <span>Prompt or question (optional)</span>
+        <textarea id="adminEditPromptText" name="adminPromptText" rows="4" placeholder="Optional guiding prompt or question"></textarea>
+      </label>
+
+      <label class="consent-check admin-toggle-check">
+        <input id="adminEditShowPrompt" name="adminShowPrompt" type="checkbox">
+        <span>Show this prompt publicly above the response in letter view.</span>
+      </label>
+
+      <div class="admin-editor-grid">
+        <label class="admin-editor-field">
+          <span>Language</span>
+          <select id="adminEditLanguage" name="adminLanguage" required>
+            <option value="Vietnamese">Vietnamese</option>
+            <option value="English">English</option>
+            <option value="Bilingual">Bilingual</option>
+            <option value="Other">Other</option>
+          </select>
+        </label>
+
+        <label class="admin-editor-field">
+          <span>Family closeness</span>
+          <select id="adminEditFamilyCloseness" name="adminFamilyCloseness" required></select>
+        </label>
+
+        <label class="admin-editor-field">
+          <span>Tone</span>
+          <select id="adminEditTone" name="adminTone" required></select>
+        </label>
+
+        <label class="admin-editor-field">
+          <span>Status</span>
+          <select id="adminEditStatus" name="adminStatus" required>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </label>
+      </div>
+
+      <fieldset class="form-row admin-editor-field admin-editor-field-wide">
+        <legend>Narrative focus</legend>
+        <div id="adminEditFocusOptions" class="checkbox-grid admin-editor-focus-grid"></div>
+      </fieldset>
+
+      <div class="admin-editor-actions">
+        <button type="submit" class="action-button">Save changes</button>
+        <p id="adminEditorStatus" class="selection-note" aria-live="polite"></p>
+      </div>
+    </form>
   </dialog>
 
   <script type="module" src="./app.js"></script>
