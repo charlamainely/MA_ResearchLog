@@ -306,9 +306,15 @@
       </div>
 
       <div class="paper-panel submit-panel">
-        <form id="submissionForm" class="submission-form" novalidate>
-          <section class="form-section">
-            <div class="form-section-heading">
+        <form id="submissionForm" class="submission-form submission-wizard" novalidate>
+          <ol class="stepper submit-stepper" aria-label="Story submission steps">
+            <li class="stepper-item is-current" data-submit-step-marker="1"><span>01</span><strong>Write your story</strong></li>
+            <li class="stepper-item" data-submit-step-marker="2"><span>02</span><strong>Decorate your postcard</strong></li>
+            <li class="stepper-item" data-submit-step-marker="3"><span>03</span><strong>Send your story</strong></li>
+          </ol>
+
+          <section class="submit-stage" data-submit-step="1">
+            <div class="submit-stage-copy submit-stage-copy-centered">
               <h3>What’s your story?</h3>
               <div class="hint-row">
                 <button type="button" class="hint-button" id="storyHintButton">Hint me!</button>
@@ -324,82 +330,125 @@
               required
               placeholder="Type your story here..."
             ></textarea>
-          </section>
-
-          <section class="form-section">
-            <div class="form-section-heading">
-              <h3>Family closeness</h3>
-              <p>How close do you feel to your family?</p>
+            <div class="step-actions submit-step-actions-center">
+              <button type="button" class="action-button" id="submissionStep1Next" data-submit-next="2">Continue</button>
             </div>
-            <fieldset class="form-row">
-              <legend class="sr-only">Family closeness</legend>
-              <div id="submissionClosenessOptions" class="closeness-line-selector"></div>
-            </fieldset>
           </section>
 
-          <section class="form-section">
-            <div class="form-section-heading">
-              <h3>Narrative focus</h3>
-              <p>What were the most important elements in your story? Choose at least 1 and up to 3</p>
+          <section class="submit-stage" data-submit-step="2" hidden>
+            <div class="submit-decorate-grid">
+              <section class="submit-choice-column" data-submit-mobile-panel-section="closeness">
+                <div class="submit-choice-copy">
+                  <h3>Family closeness</h3>
+                  <p>How close do you feel to your family?</p>
+                </div>
+                <fieldset class="form-row submit-choice-fieldset">
+                  <legend class="sr-only">Family closeness</legend>
+                  <div id="submissionClosenessOptions" class="submit-closeness-grid"></div>
+                </fieldset>
+              </section>
+
+              <section class="submit-preview-column">
+                <div id="submissionPreviewStage2" class="submission-preview-shell" aria-live="polite"></div>
+                <div class="step-actions step-actions-wide submit-stage2-actions">
+                  <button type="button" class="action-button action-button-secondary" data-submit-prev="1">Back</button>
+                  <button type="button" class="action-button" id="submissionStep2Next" data-submit-next="3">Continue</button>
+                </div>
+              </section>
+
+              <div class="submit-mobile-carousel-nav submit-mobile-carousel-nav-left">
+                <button type="button" class="submit-mobile-nav-button" id="submitMobilePrevButton" aria-label="Show previous decorate section">
+                  <span class="submit-mobile-nav-arrow submit-mobile-nav-arrow-left" aria-hidden="true"></span>
+                  <span class="submit-mobile-nav-label" id="submitMobilePrevLabel">Mood &amp; Tone</span>
+                </button>
+              </div>
+
+              <div class="submit-mobile-carousel-nav submit-mobile-carousel-nav-right">
+                <button type="button" class="submit-mobile-nav-button" id="submitMobileNextButton" aria-label="Show next decorate section">
+                  <span class="submit-mobile-nav-arrow submit-mobile-nav-arrow-right" aria-hidden="true"></span>
+                  <span class="submit-mobile-nav-label" id="submitMobileNextLabel">Narrative focus</span>
+                </button>
+              </div>
+
+              <section class="submit-choice-column submit-choice-column-right">
+                <div class="submit-choice-group" data-submit-mobile-panel-section="focus">
+                  <div class="submit-choice-copy">
+                    <h3>Narrative focus</h3>
+                    <p>What were the most important elements in your story? Choose at least 1 and up to 3.</p>
+                  </div>
+                  <fieldset class="form-row submit-choice-fieldset">
+                    <legend class="sr-only">Narrative focus</legend>
+                    <div id="submissionFocusOptions" class="submit-focus-grid"></div>
+                  </fieldset>
+                </div>
+
+                <div class="submit-choice-group" data-submit-mobile-panel-section="tone">
+                  <div class="submit-choice-copy">
+                    <h3>Mood &amp; Tone</h3>
+                    <p>What’s the overall tone of your story? Pick 1.</p>
+                  </div>
+                  <fieldset class="form-row submit-choice-fieldset">
+                    <legend class="sr-only">Tone</legend>
+                    <div id="submissionToneOptions" class="submit-tone-grid"></div>
+                  </fieldset>
+                </div>
+              </section>
             </div>
-            <fieldset class="form-row">
-              <legend class="sr-only">Narrative focus</legend>
-              <div id="submissionFocusOptions" class="checkbox-grid"></div>
-              <p id="focusValidationMessage" class="selection-note" aria-live="polite"></p>
-            </fieldset>
+
           </section>
 
-          <div class="submit-form-split">
-            <section class="form-section">
-              <div class="form-section-heading">
-                <h3>Mood &amp; Tone</h3>
-                <p>What’s the overall tone of your story? Pick 1</p>
-              </div>
-              <fieldset class="form-row">
-                <legend class="sr-only">Tone</legend>
-                <div id="submissionToneOptions" class="submission-tone-grid"></div>
-              </fieldset>
-            </section>
+          <section class="submit-stage" data-submit-step="3" hidden>
+            <div id="submissionReviewStage" class="submission-review-layout">
+              <section class="submission-review-copy">
+                <div class="submit-choice-copy">
+                  <h3>Language</h3>
+                  <p>What’s the language your story is written in?</p>
+                </div>
+                <div class="form-row">
+                  <label class="sr-only" for="language">Language</label>
+                  <select id="language" name="language" required>
+                    <option value="Vietnamese">Vietnamese</option>
+                    <option value="English" selected>English</option>
+                    <option value="Bilingual">Bilingual</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
 
-            <section class="form-section">
-              <div class="form-section-heading">
-                <h3>Language</h3>
-                <p>What’s the language your story is written in?</p>
+                <div class="form-row consent-row">
+                  <label class="consent-check">
+                    <input id="consent" name="consent" type="checkbox" required>
+                    <span>I understand this story may be reviewed before appearing publicly in the archive.</span>
+                  </label>
+                </div>
+
+                <p id="submissionStatus" class="selection-note" aria-live="polite"></p>
+
+                <div class="step-actions step-actions-wide submit-review-actions">
+                  <button type="button" class="action-button action-button-secondary" data-submit-prev="2">Back</button>
+                  <button type="submit" class="action-button submit-button" id="submissionMailButton">Mail my story</button>
+                </div>
+              </section>
+
+              <section class="submission-review-preview">
+                <div id="submissionPreviewStage3" class="submission-preview-shell"></div>
+              </section>
+            </div>
+
+            <section id="submissionConfirmation" class="confirmation-card submission-success-layout" hidden aria-live="polite">
+              <div class="submission-success-copy">
+                <h3>Your story has been sent for review.</h3>
+                <p id="submissionConfirmationText">Your story is now pending review and will appear publicly after approval, usually within one day.</p>
+                <div class="empty-actions submission-success-actions">
+                  <button type="button" class="action-button action-button-secondary" id="saveKeepsakeButton">Save as image</button>
+                  <button type="button" class="action-button" id="submitAnotherButton">Submit another story</button>
+                </div>
               </div>
-              <div class="form-row">
-                <label class="sr-only" for="language">Language</label>
-                <select id="language" name="language" required>
-                  <option value="Vietnamese">Vietnamese</option>
-                  <option value="English" selected>English</option>
-                  <option value="Bilingual">Bilingual</option>
-                  <option value="Other">Other</option>
-                </select>
+              <div class="submission-success-preview">
+                <div id="submissionPreviewSuccess" class="submission-preview-shell"></div>
               </div>
             </section>
-          </div>
-          <br>
-          <div class="form-row consent-row">
-            <label class="consent-check">
-              <input id="consent" name="consent" type="checkbox" required>
-              <span>I understand this story may be reviewed before appearing publicly in the archive.</span>
-            </label>
-          </div>
-          <br>
-          <div class="form-actions form-actions-center">
-            <button type="submit" class="action-button submit-button">Mail my story</button>
-            <p id="submissionStatus" class="selection-note" aria-live="polite"></p>
-          </div>
+          </section>
         </form>
-
-        <section id="submissionConfirmation" class="confirmation-card" hidden aria-live="polite">
-          <h3>Your story has been sent for review.</h3>
-          <p id="submissionConfirmationText">Your story is now pending review and will appear publicly after approval, usually within one day.</p>
-          <div class="empty-actions">
-            <button type="button" class="action-button action-button-secondary" id="submitAnotherButton">Submit another story</button>
-            <button type="button" class="action-button action-button-secondary" data-view-target="gallery">Read stories</button>
-            <button type="button" class="action-button" data-view-target="home">Return home</button>
-          </div>
-        </section>
       </div>
     </section>
 

@@ -81,6 +81,12 @@ const toneOptions = [
   { value: "negative", label: "NEGATIVE", descriptor: "Heavy or unresolved" }
 ];
 
+const submitMobilePanels = [
+  { value: "closeness", label: "Family closeness" },
+  { value: "focus", label: "Narrative focus" },
+  { value: "tone", label: "Mood & Tone" }
+];
+
 const closenessOptions = [
   {
     value: "distant",
@@ -160,17 +166,33 @@ const dom = {
   receiveResultsMeta: document.getElementById("receiveResultsMeta"),
   receiveResults: document.getElementById("receiveResults"),
   receiveEmptyState: document.getElementById("receiveEmptyState"),
+  submitView: document.querySelector(".submit-view"),
   submissionForm: document.getElementById("submissionForm"),
+  submitStepPanels: [...document.querySelectorAll("[data-submit-step]")],
+  submitStep2Panel: document.querySelector('[data-submit-step="2"]'),
+  submitStepMarkers: [...document.querySelectorAll("[data-submit-step-marker]")],
   storyHintButton: document.getElementById("storyHintButton"),
   storyHintOutput: document.getElementById("storyHintOutput"),
+  submissionStep1Next: document.getElementById("submissionStep1Next"),
+  submissionStep2Next: document.getElementById("submissionStep2Next"),
+  submitMobilePrevButton: document.getElementById("submitMobilePrevButton"),
+  submitMobileNextButton: document.getElementById("submitMobileNextButton"),
+  submitMobilePrevLabel: document.getElementById("submitMobilePrevLabel"),
+  submitMobileNextLabel: document.getElementById("submitMobileNextLabel"),
+  submissionMailButton: document.getElementById("submissionMailButton"),
   submissionClosenessOptions: document.getElementById("submissionClosenessOptions"),
   submissionFocusOptions: document.getElementById("submissionFocusOptions"),
   submissionToneOptions: document.getElementById("submissionToneOptions"),
+  submissionPreviewStage2: document.getElementById("submissionPreviewStage2"),
+  submissionPreviewStage3: document.getElementById("submissionPreviewStage3"),
+  submissionPreviewSuccess: document.getElementById("submissionPreviewSuccess"),
+  submissionReviewStage: document.getElementById("submissionReviewStage"),
   focusValidationMessage: document.getElementById("focusValidationMessage"),
   submissionStatus: document.getElementById("submissionStatus"),
   submissionConfirmation: document.getElementById("submissionConfirmation"),
   submissionConfirmationText: document.getElementById("submissionConfirmationText"),
   submitAnotherButton: document.getElementById("submitAnotherButton"),
+  saveKeepsakeButton: document.getElementById("saveKeepsakeButton"),
   galleryFilters: document.getElementById("galleryFilters"),
   galleryFiltersToggle: document.getElementById("galleryFiltersToggle"),
   galleryFiltersWrap: document.getElementById("galleryFiltersWrap"),
@@ -226,6 +248,8 @@ const defaultSubmissionState = {
 const state = {
   activeView: "home",
   receiveStep: 1,
+  submitStep: 1,
+  submitMobilePanel: "closeness",
   mobileMenuOpen: false,
   galleryFiltersOpen: true,
   postcard: { ...defaultPostcardState },
@@ -527,10 +551,12 @@ function renderOptionControls() {
   `).join("");
 
   dom.submissionClosenessOptions.innerHTML = closenessOptions.map((option) => `
-    <label class="closeness-option">
+    <label class="submit-closeness-card">
       <input type="radio" name="familyCloseness" value="${option.value}" ${option.value === defaultSubmissionState.familyCloseness ? "checked" : ""} required>
-      <span class="closeness-option-node" aria-hidden="true"></span>
-      <span>
+      <span class="submit-closeness-card-art">
+        <img src="${option.asset}" alt="" loading="lazy">
+      </span>
+      <span class="submit-closeness-card-copy">
         <strong>${escapeHtml(option.label)}</strong>
         <span>${escapeHtml(option.statement)}</span>
       </span>
@@ -538,22 +564,23 @@ function renderOptionControls() {
   `).join("");
 
   dom.submissionFocusOptions.innerHTML = narrativeFocusOptions.map((option) => `
-    <label class="check-option">
+    <label class="submit-stamp-option">
       <input type="checkbox" name="narrativeFocuses" value="${option.value}">
-      <span class="check-box" aria-hidden="true"></span>
-      <span class="check-copy">
-        <strong>${escapeHtml(option.label.charAt(0) + option.label.slice(1).toLowerCase())}</strong>
+      <span class="submit-stamp-art">
+        <img src="${option.asset}" alt="" loading="lazy">
+      </span>
+      <span class="submit-stamp-copy">
+        <strong>${escapeHtml(option.displayTitle)}</strong>
         <span>${escapeHtml(option.description)}</span>
       </span>
     </label>
   `).join("");
 
   dom.submissionToneOptions.innerHTML = toneOptions.map((option) => `
-    <label class="tone-option">
+    <label class="submit-tone-option" data-tone="${option.value}">
       <input type="radio" name="tone" value="${option.value}" ${option.value === defaultSubmissionState.tone ? "checked" : ""} required>
-      <span class="check-box" aria-hidden="true"></span>
-      <span class="tone-copy">
-        <strong>${escapeHtml(option.label.charAt(0) + option.label.slice(1).toLowerCase())}</strong>
+      <span class="submit-tone-swatch">
+        <strong>${escapeHtml(option.label)}</strong>
       </span>
     </label>
   `).join("");
@@ -716,6 +743,270 @@ function resetPostcardExperience() {
   dom.receiveEmptyState.hidden = true;
   dom.sendingStage.classList.remove("is-sending");
   setReceiveStep(1);
+}
+
+function getSubmissionValues() {
+  const formData = new FormData(dom.submissionForm);
+  return {
+    storyText: String(formData.get("storyText") || "").trim(),
+    familyCloseness: String(formData.get("familyCloseness") || ""),
+    narrativeFocuses: formData.getAll("narrativeFocuses").map(String),
+    tone: String(formData.get("tone") || ""),
+    language: String(formData.get("language") || ""),
+    consent: formData.get("consent") === "on"
+  };
+}
+
+function renderSubmissionPreview() {
+  const values = getSubmissionValues();
+  const closeness = getClosenessMeta(values.familyCloseness || defaultSubmissionState.familyCloseness);
+  const tone = getToneMeta(values.tone || defaultSubmissionState.tone);
+  const previewText = values.storyText || "Your story will appear here once you start writing.";
+  const selectedFocuses = values.narrativeFocuses.slice(0, 3);
+  const stamps = Array.from({ length: 3 }, (_, index) => {
+    const focusValue = selectedFocuses[index];
+    if (!focusValue) {
+      return `<div class="submission-preview-stamp-slot is-empty" aria-hidden="true"></div>`;
+    }
+
+    const focus = getFocusMeta(focusValue);
+    return `
+      <div class="submission-preview-stamp-slot">
+        <img src="${focus.asset}" alt="${escapeHtml(focus.label)} stamp" class="submission-preview-stamp submission-preview-stamp-${focus.value}">
+      </div>
+    `;
+  }).join("");
+
+  const previewMarkup = `
+    <div class="submission-preview">
+      <div class="submission-preview-photo">
+        <img src="${closeness.asset}" alt="${escapeHtml(closeness.label)} family illustration">
+      </div>
+      <div class="submission-preview-card" data-tone="${tone.value}">
+        <div class="submission-preview-story">
+          <p>${escapeHtml(previewText).replaceAll("\n", "<br>")}</p>
+        </div>
+        <div class="submission-preview-stamps">${stamps}</div>
+      </div>
+    </div>
+  `;
+
+  [dom.submissionPreviewStage2, dom.submissionPreviewStage3, dom.submissionPreviewSuccess].forEach((node) => {
+    if (node) {
+      node.innerHTML = previewMarkup;
+    }
+  });
+}
+
+function getSubmitMobilePanelIndex(value) {
+  return Math.max(0, submitMobilePanels.findIndex((panel) => panel.value === value));
+}
+
+function updateSubmitMobileCarousel() {
+  if (!dom.submitStep2Panel) return;
+
+  dom.submitStep2Panel.setAttribute("data-submit-mobile-panel", state.submitMobilePanel);
+
+  const currentIndex = getSubmitMobilePanelIndex(state.submitMobilePanel);
+  const prevPanel = submitMobilePanels[(currentIndex - 1 + submitMobilePanels.length) % submitMobilePanels.length];
+  const nextPanel = submitMobilePanels[(currentIndex + 1) % submitMobilePanels.length];
+
+  if (dom.submitMobilePrevLabel) {
+    dom.submitMobilePrevLabel.textContent = prevPanel.label;
+  }
+
+  if (dom.submitMobileNextLabel) {
+    dom.submitMobileNextLabel.textContent = nextPanel.label;
+  }
+}
+
+function cycleSubmitMobilePanel(direction) {
+  const currentIndex = getSubmitMobilePanelIndex(state.submitMobilePanel);
+  const nextIndex = (currentIndex + direction + submitMobilePanels.length) % submitMobilePanels.length;
+  state.submitMobilePanel = submitMobilePanels[nextIndex].value;
+  updateSubmitMobileCarousel();
+}
+
+function updateSubmissionStepper() {
+  dom.submitView?.setAttribute("data-submit-step", String(state.submitStep));
+  updateSubmitMobileCarousel();
+
+  dom.submitStepMarkers.forEach((marker) => {
+    const markerStep = Number(marker.dataset.submitStepMarker);
+    marker.classList.toggle("is-current", markerStep === state.submitStep);
+    marker.classList.toggle("is-complete", markerStep < state.submitStep);
+  });
+
+  dom.submitStepPanels.forEach((panel) => {
+    panel.hidden = Number(panel.dataset.submitStep) !== state.submitStep;
+  });
+
+  updateSubmissionStepValidity();
+}
+
+function setSubmitStep(step) {
+  state.submitStep = step;
+  updateSubmissionStepper();
+}
+
+function updateSubmissionStepValidity() {
+  const values = getSubmissionValues();
+  const hasStory = Boolean(values.storyText);
+  const hasDecorations = Boolean(values.familyCloseness) && Boolean(values.tone)
+    && values.narrativeFocuses.length >= 1 && values.narrativeFocuses.length <= 3;
+  const readyToSubmit = hasStory && hasDecorations && Boolean(values.language) && values.consent;
+
+  if (dom.submissionStep1Next) {
+    dom.submissionStep1Next.disabled = !hasStory;
+  }
+
+  if (dom.submissionStep2Next) {
+    dom.submissionStep2Next.disabled = !hasDecorations;
+  }
+
+  if (dom.submissionMailButton) {
+    dom.submissionMailButton.disabled = !readyToSubmit;
+  }
+}
+
+function resetSubmissionWizard() {
+  state.submitStep = 1;
+  state.submitMobilePanel = "closeness";
+  if (dom.submissionReviewStage) {
+    dom.submissionReviewStage.hidden = false;
+  }
+  dom.submissionConfirmation.hidden = true;
+  updateSubmissionStepper();
+  renderSubmissionPreview();
+}
+
+function loadImage(url) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = () => reject(new Error(`Could not load image: ${url}`));
+    image.src = url;
+  });
+}
+
+function fillSubmissionPattern(context, tone, width, height) {
+  context.save();
+  context.fillStyle = tone === "positive" ? "#fee74b" : tone === "negative" ? "#1729e9" : "#e6a7f7";
+  context.fillRect(0, 0, width, height);
+
+  if (tone === "positive") {
+    context.fillStyle = "#1729e9";
+    for (let y = 18; y < height; y += 28) {
+      for (let x = 18; x < width; x += 28) {
+        context.beginPath();
+        context.arc(x, y, 2.3, 0, Math.PI * 2);
+        context.fill();
+      }
+    }
+  } else if (tone === "neutral") {
+    context.strokeStyle = "#1729e9";
+    context.lineWidth = 2;
+    for (let y = 28; y < height; y += 38) {
+      context.beginPath();
+      context.moveTo(0, y);
+      context.lineTo(width, y);
+      context.stroke();
+    }
+  } else {
+    context.strokeStyle = "#fee74b";
+    context.lineWidth = 4;
+    for (let x = -height; x < width; x += 36) {
+      context.beginPath();
+      context.moveTo(x, 0);
+      context.lineTo(x + height, height);
+      context.stroke();
+    }
+  }
+
+  context.restore();
+}
+
+async function downloadSubmissionKeepsake() {
+  const values = getSubmissionValues();
+  const closeness = getClosenessMeta(values.familyCloseness || defaultSubmissionState.familyCloseness);
+  const tone = getToneMeta(values.tone || defaultSubmissionState.tone);
+  const stamps = values.narrativeFocuses.slice(0, 3).map(getFocusMeta);
+  const familyImage = await loadImage(closeness.asset);
+  const stampImages = await Promise.all(stamps.map((stamp) => loadImage(stamp.asset)));
+
+  const canvas = document.createElement("canvas");
+  canvas.width = 1600;
+  canvas.height = 1100;
+  const context = canvas.getContext("2d");
+  if (!context) throw new Error("Could not create the keepsake image.");
+
+  context.fillStyle = "#fff0ed";
+  context.fillRect(0, 0, canvas.width, canvas.height);
+
+  const photoX = 860;
+  const photoY = 210;
+  const photoWidth = 520;
+  const photoHeight = 360;
+  context.save();
+  context.translate(photoX + photoWidth / 2, photoY + photoHeight / 2);
+  context.rotate(-0.06);
+  context.drawImage(familyImage, -photoWidth / 2, -photoHeight / 2, photoWidth, photoHeight);
+  context.restore();
+
+  const cardX = 280;
+  const cardY = 420;
+  const cardWidth = 760;
+  const cardHeight = 470;
+  context.save();
+  context.translate(cardX, cardY);
+  fillSubmissionPattern(context, tone.value, cardWidth, cardHeight);
+  context.restore();
+
+  context.fillStyle = "#000000";
+  context.font = '34px "national-park", sans-serif';
+  context.textBaseline = "top";
+
+  const maxTextWidth = 0.76 * cardWidth;
+  const lineHeight = 44;
+  const textX = cardX + 34;
+  let textY = cardY + 32;
+  const lines = [];
+  (values.storyText || "Your story").split(/\n+/).forEach((paragraph) => {
+    const words = paragraph.split(/\s+/).filter(Boolean);
+    let line = "";
+    words.forEach((word) => {
+      const candidate = line ? `${line} ${word}` : word;
+      if (context.measureText(candidate).width <= maxTextWidth) {
+        line = candidate;
+      } else {
+        if (line) lines.push(line);
+        line = word;
+      }
+    });
+    if (line) lines.push(line);
+    lines.push("");
+  });
+  lines.slice(0, 10).forEach((row) => {
+    context.fillText(row, textX, textY);
+    textY += lineHeight;
+  });
+
+  stampImages.forEach((image, index) => {
+    const width = 132;
+    const height = 132;
+    const x = cardX + cardWidth - width - 26;
+    const y = cardY + 28 + index * 144;
+    context.save();
+    context.translate(x + width / 2, y + height / 2);
+    context.rotate(index === 1 ? -0.03 : index === 2 ? 0.05 : 0);
+    context.drawImage(image, -width / 2, -height / 2, width, height);
+    context.restore();
+  });
+
+  const link = document.createElement("a");
+  link.download = "stories-mailbox-keepsake.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
 }
 
 function matchScore(story, criteria) {
@@ -1097,6 +1388,10 @@ function setView(viewName) {
   if (heading) heading.focus?.();
 
   if (viewName === "gallery") renderGallery();
+  if (viewName === "submit") {
+    renderSubmissionPreview();
+    updateSubmissionStepValidity();
+  }
   if (viewName === "admin") {
     renderAdminPanel();
     if (REMOTE_MODE && state.adminSession && state.adminLoadState !== "loading") {
@@ -1134,11 +1429,14 @@ function resetSubmissionForm() {
   const defaultTone = dom.submissionForm.querySelector(`input[name="tone"][value="${defaultSubmissionState.tone}"]`);
   if (defaultCloseness) defaultCloseness.checked = true;
   if (defaultTone) defaultTone.checked = true;
-  dom.focusValidationMessage.textContent = "";
+  if (dom.focusValidationMessage) {
+    dom.focusValidationMessage.textContent = "";
+  }
   dom.submissionStatus.textContent = "";
   dom.storyHintOutput.hidden = true;
   dom.storyHintOutput.textContent = "";
   state.activeSubmissionHint = "";
+  resetSubmissionWizard();
 }
 
 function validateFocusSelection() {
@@ -1148,14 +1446,6 @@ function validateFocusSelection() {
   allFocusInputs.forEach((input) => {
     input.disabled = checked.length >= 3 && !input.checked;
   });
-
-  if (checked.length === 0) {
-    dom.focusValidationMessage.textContent = "Choose at least one narrative focus.";
-  } else if (checked.length >= 3) {
-    dom.focusValidationMessage.textContent = "You have reached the maximum of three narrative focuses.";
-  } else {
-    dom.focusValidationMessage.textContent = "";
-  }
 }
 
 function validateAdminFocusSelection() {
@@ -1364,8 +1654,11 @@ async function submitStory(event) {
     }
 
     dom.submissionStatus.textContent = "";
-    dom.submissionForm.hidden = true;
+    if (dom.submissionReviewStage) {
+      dom.submissionReviewStage.hidden = true;
+    }
     dom.submissionConfirmation.hidden = false;
+    renderSubmissionPreview();
   } catch (error) {
     console.error("Could not submit story.", error);
     dom.submissionStatus.textContent = error instanceof Error
@@ -1518,6 +1811,19 @@ function bindEvents() {
       return;
     }
 
+    const nextSubmitStep = event.target.closest("[data-submit-next]");
+    if (nextSubmitStep) {
+      if (nextSubmitStep.disabled) return;
+      setSubmitStep(Number(nextSubmitStep.dataset.submitNext));
+      return;
+    }
+
+    const prevSubmitStep = event.target.closest("[data-submit-prev]");
+    if (prevSubmitStep) {
+      setSubmitStep(Number(prevSubmitStep.dataset.submitPrev));
+      return;
+    }
+
     const focusSelect = event.target.closest("[data-focus-select]");
     if (focusSelect) {
       updateReceiveFocus(focusSelect.dataset.focusSelect);
@@ -1578,6 +1884,12 @@ function bindEvents() {
 
   dom.storyHintButton.addEventListener("click", insertStoryHint);
   dom.submissionForm.addEventListener("submit", submitStory);
+  dom.submitMobilePrevButton?.addEventListener("click", () => {
+    cycleSubmitMobilePanel(-1);
+  });
+  dom.submitMobileNextButton?.addEventListener("click", () => {
+    cycleSubmitMobilePanel(1);
+  });
   dom.adminEditPromptText?.addEventListener("input", syncAdminPromptVisibilityControl);
   dom.adminLoginForm?.addEventListener("submit", (event) => {
     void submitAdminLogin(event);
@@ -1593,6 +1905,13 @@ function bindEvents() {
     if (event.target.name === "narrativeFocuses") {
       validateFocusSelection();
     }
+    renderSubmissionPreview();
+    updateSubmissionStepValidity();
+  });
+
+  dom.submissionForm.addEventListener("input", () => {
+    renderSubmissionPreview();
+    updateSubmissionStepValidity();
   });
 
   dom.adminStoryEditorForm?.addEventListener("change", (event) => {
@@ -1602,9 +1921,16 @@ function bindEvents() {
   });
 
   dom.submitAnotherButton.addEventListener("click", () => {
-    dom.submissionConfirmation.hidden = true;
-    dom.submissionForm.hidden = false;
     resetSubmissionForm();
+  });
+
+  dom.saveKeepsakeButton?.addEventListener("click", () => {
+    void downloadSubmissionKeepsake().catch((error) => {
+      console.error("Could not save the keepsake image.", error);
+      dom.submissionStatus.textContent = error instanceof Error
+        ? error.message
+        : "Could not save the keepsake image right now.";
+    });
   });
 
   dom.galleryFilters.addEventListener("change", () => {
@@ -1706,6 +2032,8 @@ async function init() {
   updateAdminVisibility();
   resetSubmissionForm();
   validateFocusSelection();
+  updateSubmissionStepper();
+  renderSubmissionPreview();
   renderGallery();
   renderAdminPanel();
   bindEvents();
