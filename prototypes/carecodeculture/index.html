@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Care Code Culture</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <canvas class="ascii-rain" id="ascii-rain" aria-hidden="true"></canvas>
+
+  <header class="site-header">
+    <nav class="site-nav" aria-label="Primary">
+      <a class="nav-pill" href="#introduction">introduction</a>
+      <a class="nav-pill" href="#artists">artists</a>
+      <a class="nav-pill" href="#artworks">artworks</a>
+      <a class="nav-pill" href="#events">events</a>
+      <a class="nav-pill" href="#information">information</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <section class="hero-section" id="top">
+      <div class="hero-word-cluster" aria-label="Care Code Culture">
+        <div class="hero-word hero-word-care">care</div>
+        <div class="hero-word hero-word-code">code</div>
+        <div class="hero-word hero-word-culture">culture</div>
+      </div>
+      <a class="hero-register" href="#events">register for workshops</a>
+    </section>
+
+    <section class="content-section intro-section" id="introduction">
+      <h2 class="section-title"><span class="section-title-prefix">_</span>introduction</h2>
+      <div class="intro-copy">
+        <p>
+          This exhibition gathers six research-led works that explore what is often overlooked.
+          In a landscape where technology is driven by efficiency and visibility, these projects
+          turn instead to the quiet infrastructures of everyday life.
+        </p>
+        <p>
+          Working with interactions, systems, and installation, the artists treat technology as
+          a medium of inquiry, exploring how design might hold, interpret, or reveal what eludes
+          preservation. Using research-through-design approaches, the works move between
+          investigation and experience, inviting audiences to spend time with what is usually
+          passed over.
+        </p>
+        <p>
+          A series of workshops and talks extends the exhibition into a shared space for
+          discussing processes, research methods, and conversations with the wider creative
+          technology community.
+        </p>
+      </div>
+    </section>
+
+    <section class="content-section artists-section" id="artists">
+      <h2 class="section-title"><span class="section-title-prefix">_</span>artists</h2>
+      <div class="artists-layout">
+        <div class="artist-list" id="artist-list" role="tablist" aria-label="Artist lineup">
+          <button class="artist-option" type="button" data-artist="jade-sia" role="tab" aria-selected="false">Jade Sia</button>
+          <button class="artist-option" type="button" data-artist="khuu-thuy-linh" role="tab" aria-selected="false">Khuu Thuy Linh</button>
+          <button class="artist-option is-selected" type="button" data-artist="ly-du-khanh-han" role="tab" aria-selected="true">Ly Du Khanh Han</button>
+          <button class="artist-option" type="button" data-artist="matsurah-maidin" role="tab" aria-selected="false">Matsurah Maidin</button>
+          <button class="artist-option" type="button" data-artist="mega-mario" role="tab" aria-selected="false">Mega Mario</button>
+          <button class="artist-option" type="button" data-artist="pann-lim" role="tab" aria-selected="false">Pann Lim</button>
+        </div>
+
+        <div class="artist-visual-column">
+          <div class="artist-image-frame">
+            <div class="artist-image-placeholder" id="artist-image" aria-label="Artist photo placeholder">
+              <span class="artist-image-label" id="artist-image-label"></span>
+              <div class="artist-image-loader" id="artist-image-loader" aria-hidden="true"></div>
+            </div>
+          </div>
+        </div>
+
+        <article class="artist-detail" id="artist-detail">
+          <h3 class="artist-name" id="artist-name">LY DU KHANH HAN</h3>
+          <p class="artist-title" id="artist-title">
+            Interdisciplinary Designer &amp; Researcher<br>
+            LASALLE College of the Arts (MA Design), Singapore
+          </p>
+          <p class="artist-description" id="artist-description">
+            Ly Du Khanh Han is a Vietnamese designer-researcher and interdisciplinary creative
+            based in Singapore, currently pursuing an MA in Design at LASALLE College of the Arts.
+            Han's research investigates the design of play as a mode of engagement and participation,
+            particularly how play can function as a methodological tool for community-driven approaches
+            to archiving and cultural continuity. Across their broader practice, Han works at the
+            intersection of screenwriting, animation, and game design, with a longstanding interest
+            in how interactivity reshapes narrative form. With experience in creative coding and
+            interactive prototyping, Han's practice bridges narrative research and implementation,
+            treating tools and systems as spaces for experimental inquiry. Website: www.haanly.com
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="content-section artworks-section" id="artworks">
+      <h2 class="section-title"><span class="section-title-prefix">_</span>artworks</h2>
+      <div class="artwork-carousel" aria-label="Artwork placeholders">
+        <div class="artwork-track">
+          <div class="artwork-card">artwork 01</div>
+          <div class="artwork-card">artwork 02</div>
+          <div class="artwork-card">artwork 03</div>
+          <div class="artwork-card">artwork 04</div>
+          <div class="artwork-card">artwork 05</div>
+          <div class="artwork-card">artwork 06</div>
+          <div class="artwork-card">artwork 01</div>
+          <div class="artwork-card">artwork 02</div>
+          <div class="artwork-card">artwork 03</div>
+          <div class="artwork-card">artwork 04</div>
+          <div class="artwork-card">artwork 05</div>
+          <div class="artwork-card">artwork 06</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section events-section" id="events">
+      <h2 class="section-title"><span class="section-title-prefix">_</span>events</h2>
+
+      <div class="event-day-list" id="event-day-list" role="tablist" aria-label="Event days">
+        <button class="day-pill is-selected" type="button" data-day="2026-08-08" role="tab" aria-selected="true">saturday - 8.8.26</button>
+        <button class="day-pill" type="button" data-day="2026-08-09" role="tab" aria-selected="false">sunday - 9.8.26</button>
+        <button class="day-pill" type="button" data-day="2026-08-10" role="tab" aria-selected="false">monday - 10.8.26</button>
+        <button class="day-pill" type="button" data-day="2026-08-11" role="tab" aria-selected="false">tuesday - 11.8.26</button>
+      </div>
+
+      <div class="events-layout">
+        <div class="event-slot-list" id="event-slot-list" aria-label="Event schedule"></div>
+        <article class="event-detail" id="event-detail">
+          <h3 class="event-title" id="event-title"></h3>
+          <p class="event-host" id="event-host"></p>
+          <div class="event-description-block">
+            <p class="event-description is-collapsed" id="event-description"></p>
+            <button class="read-more-button" id="event-read-more" type="button">read more</button>
+          </div>
+          <a class="event-register" id="event-register" href="#">register now!</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="content-section information-section" id="information">
+      <h2 class="section-title"><span class="section-title-prefix">_</span>information</h2>
+      <div class="information-layout">
+        <div class="information-copy">
+          <p>Opening time: 9:00 AM - 5:00 PM</p>
+          <p>Dates: 8 - 11.8.2026</p>
+          <p>Location: #02-05, Aliwal Arts Centre</p>
+          <p>Contact: carecodeculture@gmail.com</p>
+          <p class="information-note">
+            This event and all workshops are free entry! Slots in workshop are available upon
+            registration.
+          </p>
+        </div>
+        <div class="map-panel" aria-label="Map placeholder">
+          <div class="map-grid"></div>
+          <div class="map-route map-route-a"></div>
+          <div class="map-route map-route-b"></div>
+          <div class="map-pin">ALIWAL</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-rule"></div>
+    <div class="footer-content">
+      <span class="footer-pill">follow us on</span>
+      <div class="footer-links">
+        <a href="#" aria-label="Instagram">instagram</a>
+        <a href="#" aria-label="Facebook">facebook</a>
+        <a href="#" aria-label="YouTube">youtube</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
