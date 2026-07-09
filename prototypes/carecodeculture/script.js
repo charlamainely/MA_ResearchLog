@@ -13,42 +13,48 @@ const artists = {
     title: "Art Director & Researcher\nLASALLE College of the Arts (MA Design), Singapore",
     description:
       "Jade Sia is an award-winning designer with a decade of global experience in branding and motion graphics. Her practice is defined by a blend of technical precision and visual fluidity, crafting narratives that resonate on both strategic and emotional levels.\n\nCurrently pursuing a Master of Design at LASALLE College of the Arts, Jade is pivoting her expertise into spatial and speculative design. Her project, The Family Hub, introduces a systemic approach to urban care, merging technical guidelines, digital narratives, and physical prototypes. By reimagining public infrastructure as an integrated system of empathy, she seeks to redefine how design can foster social equity and human connection.\n\nWebsite: https://www.thesiaaa.com/",
-    imageLabel: "JADE"
+    imageLabel: "JADE",
+    imageSrc: "./images/artists/artist_jadesia.png"
   },
   "khuu-thuy-linh": {
     name: "KHUU THUY LINH",
     title: "Design-based Researcher\nLASALLE College of the Arts, Singapore",
     description:
       "Starting out from the field of communication design, Linh's practice is based mainly in the digital world, where she communicates innovative concepts through thoughtful digital products. Contrary to how the corporate world puts it, design has never been the last step for every product. To Linh, design is also a way to understand the world. Taking a Master's in Design program in the time of uncertainty and AI dominance, she explores how design can do more when it is expected to be less. That is when she delves into tangible user interfaces, design fiction, and experience design and adapts them to examine one of the complexities caused by AI technology: its invisible water-consuming nature. It is an ongoing process which aims to illuminate an effective communication strategy to inform the public about a problem that they are contributing to but are not directly affected by.",
-    imageLabel: "LINH"
+    imageLabel: "LINH",
+    imageSrc: "./images/artists/artist_khuuthuylinh.png"
   },
   "ly-du-khanh-han": {
     name: "LY DU KHANH HAN",
     title: "Interdisciplinary Designer & Researcher\nLASALLE College of the Arts (MA Design), Singapore",
     description:
       "Ly Du Khanh Han is a Vietnamese designer-researcher and interdisciplinary creative based in Singapore, currently pursuing an MA in Design at LASALLE College of the Arts. Han's research investigates the design of play as a mode of engagement and participation, particularly how play can function as a methodological tool for community-driven approaches to archiving and cultural continuity.\n\nAcross their broader practice, Han works at the intersection of screenwriting, animation, and game design, with a longstanding interest in how interactivity reshapes narrative form. With experience in creative coding and interactive prototyping, Han's practice bridges narrative research and implementation, treating tools and systems as spaces for experimental inquiry.\n\nWebsite: www.haaanly.com",
-    imageLabel: "HAN"
+    imageLabel: "HAN",
+    imageSrc: "./images/artists/artist_lydukhanhhan.png"
   },
   "matsurah-maidin": {
     name: "MATSURAH MAIDIN",
     title: "Designer, Researcher\nLASALLE College of the Arts (MA Design), Singapore",
     description:
       "Masturah is an Experience Designer and Design Researcher whose 15-year career resists the silos of the tech industry. She works fluidly between product strategy, data analytics, and visual craft, not just as a generalist, but as a translator who believes great design lives in the gaps between business logic and human behavior. Her portfolio includes high-impact work for multinational clients and agile brand-builds for startups. Her deepest commitment lies in mentorship and the messy, collaborative process of making.\n\nHer current practice is shaped by her MA in Design at LASALLE College of the Arts, where she researches Colloquial Malay as a Negotiated Cultural Identity. This inquiry challenges the dominance of standardised interfaces, proposing instead that vernacular language and local nuance are critical infrastructure for decolonised, resonant design. Her exhibited work explores how spatial design, interaction design and visual narrative can carry the weight of cultural negotiation in an increasingly globalised digital landscape.",
-    imageLabel: "MATSURAH"
+    imageLabel: "MATSURAH",
+    imageSrc: "./images/artists/artist_matsurah.png"
   },
   "mega-mario": {
     name: "MEGA MARIO",
     title: "Design-based Researcher\nLASALLE College of the Arts (MA Design), Singapore",
     description:
       "Mega Mario is an Indonesian designer and producer based in Singapore, currently pursuing a Master of Arts in Design at LASALLE College of the Arts. With over nine years of experience across packaging design, brand identity, social media content, and editorial video production, her practice bridges commercial and research-based design.\n\nHer current research explores the relationship between design, environment, and knowledge systems, focusing on soil as a form of knowledge within agricultural contexts in Indonesia. She investigates how soil is understood through embodied experience and how this knowledge can be supported and shared through design.\n\nWorking through field research and material experimentation, Mega develops sensory tools and installations that engage with soil as both substance and narrative. Her ongoing project, Under The Surface, proposes a living archive for preserving and exchanging soil knowledge across generations.",
-    imageLabel: "MARIO"
+    imageLabel: "MARIO",
+    imageSrc: "./images/artists/artist_megamario.png"
   },
   "pann-lim": {
     name: "PANN LIM",
     title: "Creative Director\nKinetic Singapore",
     description:
       "Pann Lim is the Co-Founder and Creative Director of Kinetic Singapore. He believes that design without an idea is a sin, a belief that has guided his work for nearly three decades. Passionate about design, advertising and communication, Pann has won over 550 industry awards, including Gold Pencils at The One Show and a Yellow Pencil at D&AD. Under his leadership, Kinetic was ranked fifth in the world for Design Agency by D&AD in 2022. He was named Creative Director of the Year by the Institute of Advertising Singapore in 2012 and has received the President's Design Award, Singapore's highest design honour, four times, including Designer of the Year in 2013. Pann has been Jury President and judge at D&AD, Adfest and the Kancil Awards and chaired the Singapore Creative Circle Awards in 2016.\n\nIn 2011, he started Holycrap, a family art collective with his wife and two kids, and published Rubbish Famzine, which gained a devoted following. Issues 1 to 12 were acquired by the Singapore Art Museum for their permanent design collection. Pann continues to mentor young designers through talks and advisory roles at design schools. While pursuing his MA at LASALLE College of the Arts, University of the Arts Singapore, he developed the Eleven Dimensions of the Human Soul of Design, a framework for design practice that defines what remains irreplaceably human in the age of A.I.",
-    imageLabel: "PANN"
+    imageLabel: "PANN",
+    imageSrc: "./images/artists/artist_pannlim.png"
   }
 };
 
@@ -131,6 +137,7 @@ const artistName = document.getElementById("artist-name");
 const artistTitle = document.getElementById("artist-title");
 const artistDescription = document.getElementById("artist-description");
 const artistImage = document.getElementById("artist-image");
+const artistImagePhoto = document.getElementById("artist-image-photo");
 const artistImageLabel = document.getElementById("artist-image-label");
 const artistImageLoader = document.getElementById("artist-image-loader");
 
@@ -266,6 +273,9 @@ function animateArtistContent(artist) {
   artistTitle.innerHTML = "";
   artistDescription.innerHTML = "";
   artistImageLabel.textContent = artist.imageLabel;
+  artistImagePhoto.src = artist.imageSrc || "";
+  artistImagePhoto.alt = artist.imageSrc ? `${artist.name} portrait` : "";
+  artistImage.classList.toggle("has-image", Boolean(artist.imageSrc));
   triggerArtistImageLoad();
 
   typeTextInto(artistName, artist.name, 18, token, () => {
