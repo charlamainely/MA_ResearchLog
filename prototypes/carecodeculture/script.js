@@ -33,11 +33,11 @@ const artists = {
     imageSrc: "./images/artists/artist_lydukhanhhan.png"
   },
   "matsurah-maidin": {
-    name: "MATSURAH MAIDIN",
+    name: "MASTURAH MAIDIN",
     title: "Designer, Researcher\nLASALLE College of the Arts (MA Design), Singapore",
     description:
       "Masturah is an Experience Designer and Design Researcher whose 15-year career resists the silos of the tech industry. She works fluidly between product strategy, data analytics, and visual craft, not just as a generalist, but as a translator who believes great design lives in the gaps between business logic and human behavior. Her portfolio includes high-impact work for multinational clients and agile brand-builds for startups. Her deepest commitment lies in mentorship and the messy, collaborative process of making.\n\nHer current practice is shaped by her MA in Design at LASALLE College of the Arts, where she researches Colloquial Malay as a Negotiated Cultural Identity. This inquiry challenges the dominance of standardised interfaces, proposing instead that vernacular language and local nuance are critical infrastructure for decolonised, resonant design. Her exhibited work explores how spatial design, interaction design and visual narrative can carry the weight of cultural negotiation in an increasingly globalised digital landscape.",
-    imageLabel: "MATSURAH",
+    imageLabel: "MASTURAH",
     imageSrc: "./images/artists/artist_matsurah.png"
   },
   "mega-mario": {
